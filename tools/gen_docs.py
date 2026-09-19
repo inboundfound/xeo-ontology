@@ -18,7 +18,7 @@ HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 NS = "https://inboundfound.github.io/weo-ontology/weo#"
 MODULES = [
     "weo-core.ttl", "weo-visibility.ttl", "weo-engagement.ttl",
-    "weo-decision.ttl", "weo-strategy.ttl", "weo-align.ttl",
+    "weo-decision.ttl", "weo-strategy.ttl", "weo-delivery.ttl", "weo-align.ttl",
 ]
 EPI = URIRef(NS + "epistemicLayer")
 GROUNDED = URIRef(NS + "groundedIn")

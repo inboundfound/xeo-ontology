@@ -12,7 +12,7 @@ weo: a owl:Ontology ;
     dct:title "WEO Core Ontology (Web Engine Optimization)" ;
     dct:description "Standards-grounded observation layer for web-engine data in a property graph. WEO generalizes the xEO family (SEO, GEO, AEO): one vocabulary for how search, generative, and answer engines see and serve web content. Entities are durable, episodes are immutable, derivations carry provenance. Interpretations and decisions are modeled in higher layers." ;
     dct:creator "Inbound Found" ;
-    owl:versionInfo "0.3.0" .
+    owl:versionInfo "0.4.0" .
 
 # --- Annotation properties -------------------------------------------------
 

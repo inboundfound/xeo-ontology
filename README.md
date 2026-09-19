@@ -6,7 +6,7 @@ web content. One graph model for the whole **xEO** family: SEO, GEO, AEO, and
 whatever letter comes next.
 
 **Prefix:** `weo:` · **Namespace:** `https://inboundfound.github.io/weo-ontology/weo#`
-· **Status:** v0.3 — open draft, built to be riffed on. Issues and PRs welcome.
+· **Status:** v0.4 — open draft, built to be riffed on. Issues and PRs welcome.
 
 ## Why "WEO"
 
@@ -47,6 +47,8 @@ acronyms.
 | `weo-engagement.ttl` | draft v0 | `SearchIntent` individuals (Broder 2002, extended), `ConversionPoint` (+ `CallToAction` / `LeadCaptureForm` / `GatedAsset`), `ConversionEvent`, `crmRecordRef` (the CRM join key), `attributedResponse` (pre-click attribution — a labeled interpretation) |
 | `weo-decision.ttl` | the interpretation tier | `Diagnostic`, `Gap`, `Tactic`, `Capability`, `Experiment`, `Outcome`, `Recommendation`; the chain `reveals`→`addressableBy`→`requiresCapability` (scope gate)→`tests`/`inContext`→`recommends`/`supportedBy`. Classes, never values — `gapType`/`inIntervention`/`onDimension`/`atPriority` are `skos:Concept` slots you fill. |
 | `weo-strategy.ttl` | the norms tier | `Practice` (a standing rule: `guardrail` vetoes a candidate, `preference` reorders it, `guidance` caveats it), `Playbook` (a reusable discipline bundle); `constrains`, `appliesToConcept`, `appliedPractice` (the audit edge — why a candidate was blocked), `supersedes` (revisable, never deleted), `hasRole` (page roles as a derivation, not regexes), `appliesAtScope` (the tenancy specificity ladder). Governs **how** a `Recommendation` is allowed to be made. |
+| `weo-delivery.ttl` | the delivery layer | `Project` (the contract — `engagementType`, `interventionQuota`, `cadence`/`durationDays`, what's `inScope`), `Campaign` (a body of work `aboutTopic`, covering URLs and Terms), `Objective` → `MetricTarget` (the intent, as targets a later `Outcome` is read against). `Recommendation` `issuedFor` a campaign; `Experiment` `measures` a target. The layer the decision and norms tiers left open. |
+| `weo-schemes.ttl` · `schemes.json` | reference values | **The slots, filled.** SKOS concept schemes for every `skos:Concept` slot and controlled string in the ontology — 20 schemes, ~100 concepts: gap types, verdicts, priority, the intervention catalogue, lifecycles, metrics, epistemic layers. Every value lifted from a production implementation and sourced. `schemes.json` is the generated projection for anything that builds an enum at boot. |
 | `weo-align.ttl` | interoperability | Optional bridges — schema.org (`WebSite`, `WebPage`, `Brand`, `Observation`), PROV-O (`Crawl`→`Activity`, `Engine`→`SoftwareAgent`, `LLMResponse`→`Entity`), SKOS (`Topic`→`Concept`, `childOf`→`broader`). **Alignments, not dependencies.** |
 | `context.jsonld` | interoperability | A JSON-LD `@context` mapping graph labels/relationships/properties to IRIs — turns a Neo4j export into valid RDF/JSON-LD in one pass. |
 | `schema.cypher` | property graph | Neo4j 5.x constraints + indexes for every module |
@@ -66,6 +68,7 @@ engine-side data has been missing.
   engagement  ConversionPoint · SearchIntent   ConversionEvent
   decision    Gap · Tactic · Capability        Experiment (→ Outcome)
   strategy    Practice · Playbook               (norms — rules, not events)
+  delivery    Project · Campaign                (Objective → MetricTarget: the intent)
 
   observations attach facts to entities/episodes (FETCHED, CITES, MENTIONS…)
   derivations carry method/model/confidence (IN_TOPIC, embeddingRef…)
@@ -191,15 +194,57 @@ object properties resolve to node references, datatype properties carry their
   (`Practice`, `practiceKind`, `appliesToConcept`, `appliedPractice`), never the
   rules themselves. "Never 301 a paginated archive" is an instance you author, and
   which Practices a given tenancy activates or overrides is data, not schema.
-- **Filled-in taxonomies** — the actual interventions, priorities, gap types,
-  and the dimensions a tactic is scored on (impact / risk / time-to-value) with
-  their weightings. Those are `skos:Concept` schemes and instances you slot in,
-  never classes baked into the vocabulary. Ship your blend; keep the frame.
+- **Filled-in taxonomies, as classes** — the actual interventions, priorities,
+  gap types, and the dimensions a tactic is scored on are `skos:Concept` schemes
+  you slot in, never classes baked into the vocabulary. Ship your blend; keep the
+  frame. What *is* here, separately, is one blend published as a reference —
+  see "The slots, filled" below.
 - **Vendor vocabularies** — your CRM and analytics stack join via identity keys
   (`crmRecordRef`, `datasetUri`), never as imported schemas.
 - **Quality scores and other unfalsifiable constructs** — if it isn't an
   observation, a provenance-carrying derivation, a labeled interpretation, or a
   norm that says so out loud, it doesn't get a term.
+
+## The slots, filled — reference schemes
+
+An ontology that ships classes and never values leaves slots: `weo:gapType`,
+`weo:atPriority`, `weo:inIntervention`, `weo:status`. A slot nobody fills gets
+filled locally, once per consumer, in prose — and the same status ends up
+described five different ways across five systems.
+
+`weo-schemes.ttl` fills the slots with the vocabulary one agency actually runs in
+production, lifted verbatim from the repos named in each scheme's `dct:source`.
+It is published under its own namespace (`weos:`) so it stays separable from
+the ontology proper: **adopt a scheme as-is, extend it, or replace it** — the
+slot is what WEO defines; a scheme is one answer.
+
+| Scheme | Fills | Concepts |
+|---|---|---|
+| `gapType` | `weo:gapType` | 14 — what kind of deficit a Diagnostic found |
+| `gapVerdict` | `weo:verdict` | 5 — attack · fix first · defend · hold · ignore |
+| `intervention` | `weo:inIntervention` | 8 — **the service catalogue**: what an agency can deploy, who controls it, lead time |
+| `priority` | `weo:atPriority` | 3 — now · next · later |
+| `recommendationStatus` · `experimentStatus` · `practiceStatus` | `weo:status` | the three lifecycles |
+| `practiceKind` · `practiceSource` · `practiceOutcome` | the norms tier | how a rule acts, where it came from, what it did |
+| `outcomeResult` · `outcomeResultReason` | `weo:result` · `weo:resultReason` | did it move, and why it couldn't be judged |
+| `objectiveMetric` · `targetKind` · `engagementType` · `cadence` · `effort` · `execution` | the delivery layer | |
+| `magnitudeUnit` | `weo:magnitudeUnit` | 8 — a size is never rendered bare |
+| `epistemicLayer` | `weo:epistemicLayer` | the six kinds of claim, one IRI each |
+
+Two conventions make them consumable by software: `skos:notation` on every
+concept is **the code** — the exact string a system stores or sends — and
+`schemes.json` is a generated projection of the whole file, so a catalog can
+build a JSON Schema `enum` at boot without parsing Turtle:
+
+```python
+import json, urllib.request
+schemes = json.load(urllib.request.urlopen(
+    "https://raw.githubusercontent.com/inboundfound/weo-ontology/main/schemes.json"))["schemes"]
+GAP_TYPES = [c["code"] for c in schemes["gapType"]["concepts"]]   # 14 codes, in stated order
+```
+
+Regenerate with `python tools/gen_schemes.py` after editing the TTL; never edit
+the JSON by hand.
 
 ## Using it
 
@@ -209,9 +254,11 @@ cat schema.cypher | cypher-shell -u neo4j -p <password>
 ```
 
 The TTL files are plain OWL — load `weo-core`, `weo-visibility`,
-`weo-engagement`, `weo-decision`, `weo-strategy`, and (if you want the crosswalk)
-`weo-align` into any triple store or ontology editor. Decision builds on core;
-strategy builds on decision; the rest stand alone. To publish graph data as linked data, serve your
+`weo-engagement`, `weo-decision`, `weo-strategy`, `weo-delivery`, and (if you
+want the crosswalk) `weo-align` into any triple store or ontology editor.
+Decision builds on core; strategy and delivery build on decision; the rest stand
+alone. `weo-schemes` is SKOS data, not ontology — load it where you want the
+reference values. To publish graph data as linked data, serve your
 Neo4j export under `context.jsonld` and it validates as RDF/JSON-LD.
 
 **Namespace.** Terms currently resolve under GitHub Pages

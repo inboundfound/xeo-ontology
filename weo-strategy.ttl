@@ -143,4 +143,13 @@ weo:strategy-module a owl:Ontology ;
     dct:title "WEO Strategy (the norms tier)" ;
     dct:description "The layer weo-decision deliberately left open: the standing rules — best practices, SOPs, lessons learned — that veto, reorder, or caveat a Recommendation before it reaches a human, the reusable Playbooks those rules travel in, and the tenancy axis that decides whose rules win. Introduces the norm stratum: a claim about what SHOULD govern a choice, as opposed to what is or is inferred to be." ;
     dct:creator "Inbound Found" ;
-    owl:versionInfo "0.3.0" .
+    owl:versionInfo "0.4.0" .
+
+# --- Audit-edge value ---------------------------------------------------------
+# Appended at the foot, line-stable. What a Practice DID when it fired — the
+# value carried on appliedPractice. Published in weo-schemes.ttl (practiceOutcome).
+
+weo:practiceOutcome a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    weo:epistemicLayer "derivation" ;
+    dct:description "Carried on an appliedPractice edge: 'vetoed' (a guardrail removed the candidate), 'reranked' (a preference moved it), or 'caveated' (guidance flagged it and changed nothing). One value per practiceKind. Domain left open because it rides on the edge, not on a node." .

@@ -27,7 +27,7 @@ weo:align-module a owl:Ontology ;
     dct:title "WEO Alignment (schema.org · PROV-O · SKOS)" ;
     dct:description "Optional crosswalk from WEO terms to foundational web vocabularies. Alignments, not imports: WEO is self-contained without them." ;
     dct:creator "Inbound Found" ;
-    owl:versionInfo "0.3.0" ;
+    owl:versionInfo "0.4.0" ;
     rdfs:seeAlso <https://schema.org/> , <http://www.w3.org/ns/prov#> ,
                  <http://www.w3.org/2004/02/skos/core#> .
 
@@ -128,3 +128,11 @@ weo:evidencedBy rdfs:subPropertyOf prov:wasDerivedFrom ;
 
 weo:supportedBy rdfs:subPropertyOf prov:wasDerivedFrom ;
     rdfs:comment "A recommendation is derived from the precedent experiments that back it." .
+
+# ===========================================================================
+# Delivery layer (weo-delivery.ttl) — schema.org bridge. Only Project has a
+# published counterpart; Campaign, Objective and MetricTarget are WEO-native.
+# ===========================================================================
+
+weo:Project skos:closeMatch schema:Project ;
+    rdfs:comment "A WEO Project is a contracted body of work on one website with a quota and a scope; schema:Project is the closest published class. closeMatch, not equivalence: WEO's carries an engagement shape schema.org has no notion of." .
