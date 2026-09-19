@@ -202,4 +202,39 @@ weo:decision-module a owl:Ontology ;
     dct:title "WEO Decision (the interpretation tier)" ;
     dct:description "The top stratum of the core sample: where an observed condition becomes a diagnosed Gap, a Gap becomes candidate Tactics, the capability gate filters them to what is in reach, prior Experiments say which tactic has earned trust, and a Recommendation is issued — labeled, honestly, as an interpretation. Ships CLASSES, never VALUES: the dimensions, weights, and governing rules live one layer higher, in weo-strategy." ;
     dct:creator "Inbound Found" ;
-    owl:versionInfo "0.3.0" .
+    owl:versionInfo "0.4.0" .
+
+# --- Gap disposition and size ------------------------------------------------
+# Appended at the foot (line-stable for the consumers that cite this file by
+# line number). What a Gap carries once an operator has looked at it: a verdict,
+# and a magnitude in a stated unit. Values for both are published in
+# weo-schemes.ttl (gapVerdict, magnitudeUnit).
+
+weo:verdict a owl:ObjectProperty ;
+    rdfs:domain weo:Gap ; rdfs:range skos:Concept ;
+    weo:epistemicLayer "interpretation" ;
+    dct:description "The operator's disposition on a diagnosed gap, as a slotted-in concept (attack, fix_first, defend, hold, ignore — see weo-schemes). Distinct from gapType, which says what KIND of deficit it is; the verdict says what we intend to do about it. Carried by one finding per topic per analysis: it is a property of the topic's scoreboard row, not of every finding beneath it." .
+
+weo:magnitude a owl:DatatypeProperty ;
+    rdfs:domain weo:Gap ; rdfs:range xsd:decimal ;
+    weo:epistemicLayer "derivation" ;
+    dct:description "How big the gap is, where the finding IS a size. Required together with magnitudeUnit and never alone: a magnitude with no unit is an uninterpretable number, a unit with no magnitude is noise." .
+
+weo:magnitudeUnit a owl:ObjectProperty ;
+    rdfs:domain weo:Gap ; rdfs:range skos:Concept ;
+    weo:epistemicLayer "derivation" ;
+    dct:description "The unit magnitude is read in, as a slotted-in concept (impressions, clicks, referring_domains, words, ... — see weo-schemes). A unit that names its own provenance, like sessions_estimated, is how a derived figure is kept from rendering as a measured one." .
+
+# --- Outcome reading -----------------------------------------------------------
+# What an Outcome says once read: did it move, and if it could not be judged,
+# why. Values published in weo-schemes.ttl (outcomeResult, outcomeResultReason).
+
+weo:result a owl:DatatypeProperty ;
+    rdfs:domain weo:Outcome ; rdfs:range xsd:string ;
+    weo:epistemicLayer "observation" ;
+    dct:description "'significant', 'no_change' or 'inconclusive'. Answers DID THIS MOVE; lift's sign answers which way. A regression is significant — the value never smuggles a direction in." .
+
+weo:resultReason a owl:DatatypeProperty ;
+    rdfs:domain weo:Outcome ; rdfs:range xsd:string ;
+    weo:epistemicLayer "observation" ;
+    dct:description "Why an outcome was inconclusive, from a small controlled set (window_incomplete, co_intervention, confounded_external, baseline_unavailable, ...). The two confounder reasons differ on purpose: a co-intervention keeps its lift and shares attribution; an external confounder records none." .

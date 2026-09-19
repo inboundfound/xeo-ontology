@@ -148,6 +148,35 @@ FOR (p:Practice) ON (p.source);
 CREATE INDEX applied_practice_method IF NOT EXISTS
 FOR ()-[a:APPLIED_PRACTICE]-() ON (a.method);
 
+// ========== DELIVERY (projects, campaigns, objectives) ==========
+// The container work is delivered in. Projects and campaigns are tenant-scoped
+// entities; objectives and metric targets are interpretations that experiments
+// are read against — so none of them are ever deleted, only stamped deletedAt.
+
+CREATE CONSTRAINT project_id IF NOT EXISTS
+FOR (p:Project) REQUIRE p.id IS UNIQUE;
+
+CREATE CONSTRAINT campaign_id IF NOT EXISTS
+FOR (c:Campaign) REQUIRE c.id IS UNIQUE;
+
+CREATE CONSTRAINT objective_id IF NOT EXISTS
+FOR (o:Objective) REQUIRE o.id IS UNIQUE;
+
+// A target's id is what measured history anchors to; soft-deleted, never dropped.
+CREATE CONSTRAINT metric_target_id IF NOT EXISTS
+FOR (t:MetricTarget) REQUIRE t.id IS UNIQUE;
+
+// "Everything live for this website" is the list view; deletedAt filters it.
+CREATE INDEX project_website IF NOT EXISTS
+FOR (p:Project) ON (p.websiteId);
+
+CREATE INDEX campaign_website IF NOT EXISTS
+FOR (c:Campaign) ON (c.websiteId);
+
+// The quota gate counts open recommendations per campaign, by status.
+CREATE INDEX recommendation_status IF NOT EXISTS
+FOR (r:Recommendation) ON (r.status);
+
 // ========== NOTES ==========
 // Embeddings live in an external vector store; the graph keeps only the
 // derivation claim (embeddingRef, embeddingModel, embeddedAt) on :Term.

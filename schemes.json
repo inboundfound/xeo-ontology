@@ -1,0 +1,859 @@
+{
+  "$comment": "Generated from weo-schemes.ttl by tools/gen_schemes.py — do not edit by hand.",
+  "namespace": "https://inboundfound.github.io/weo-ontology/schemes#",
+  "ontology": "https://inboundfound.github.io/weo-ontology/weo#",
+  "version": "0.4.0",
+  "schemes": {
+    "cadence": {
+      "iri": "https://inboundfound.github.io/weo-ontology/schemes#cadence",
+      "label": "Retainer cadences",
+      "fillsSlot": "weo:cadence",
+      "description": "The recurring period a retainer's intervention quota resets over. Applies to retainer Projects only.",
+      "source": "if-control-center packages/contracts/src/objective-metric.ts (PROJECT_CADENCES) · launch-guardian LG_PROJECT_CADENCES",
+      "ordered": true,
+      "concepts": [
+        {
+          "code": "monthly",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#cadence-monthly",
+          "label": "Monthly",
+          "definition": "Quota resets each month",
+          "note": null
+        },
+        {
+          "code": "quarterly",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#cadence-quarterly",
+          "label": "Quarterly",
+          "definition": "Quota resets each quarter",
+          "note": null
+        }
+      ]
+    },
+    "effort": {
+      "iri": "https://inboundfound.github.io/weo-ontology/schemes#effort",
+      "label": "Effort estimates",
+      "fillsSlot": "weo:effortEstimate",
+      "description": "How long a Recommendation is expected to take to execute — a categorical horizon, not a score. Scored dimensions (impact, risk, time-to-value) belong on a TacticAssessment via onDimension; this is the delivery-side estimate an operator plans a cycle around.",
+      "source": "if-control-center packages/contracts/src/recommendation.ts (RECOMMENDATION_EFFORTS)",
+      "ordered": true,
+      "concepts": [
+        {
+          "code": "hours",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#effort-hours",
+          "label": "Hours",
+          "definition": "Done inside a working day",
+          "note": null
+        },
+        {
+          "code": "days",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#effort-days",
+          "label": "A day or two",
+          "definition": "A short, bounded piece of work",
+          "note": null
+        },
+        {
+          "code": "weeks",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#effort-weeks",
+          "label": "Weeks",
+          "definition": "A multi-week deliverable",
+          "note": null
+        },
+        {
+          "code": "quarter",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#effort-quarter",
+          "label": "A quarter",
+          "definition": "A programme, not a task",
+          "note": null
+        }
+      ]
+    },
+    "engagementType": {
+      "iri": "https://inboundfound.github.io/weo-ontology/schemes#engagementType",
+      "label": "Engagement types",
+      "fillsSlot": "weo:engagementType",
+      "description": "The shape of a Project's contract — the discriminator for how its scope is expressed. A retainer caps interventions per recurring period (cadence); a one-off caps them over a fixed run (durationDays). The intervention quota is common to both and always required: a scope of work with no ceiling is not a scope.",
+      "source": "if-control-center packages/contracts/src/objective-metric.ts (ENGAGEMENT_TYPES) · launch-guardian LG_ENGAGEMENT_TYPES",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "oneoff",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#engagementType-oneoff",
+          "label": "One-off",
+          "definition": "Fixed run; the quota covers durationDays",
+          "note": null
+        },
+        {
+          "code": "retainer",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#engagementType-retainer",
+          "label": "Retainer",
+          "definition": "Recurring; the quota resets every cadence period",
+          "note": null
+        }
+      ]
+    },
+    "epistemicLayer": {
+      "iri": "https://inboundfound.github.io/weo-ontology/schemes#epistemicLayer",
+      "label": "Epistemic layers",
+      "fillsSlot": "weo:epistemicLayer",
+      "description": "The six kinds of claim a WEO term can make, in order from bedrock to governance. The annotation property types TERMS; publishing the six here as a scheme gives a consumer tagging INSTANCES the same six values under one IRI each. Whether WEO itself should own an instance-level layer property is a separate decision this scheme does not make.",
+      "source": "weo-core.ttl (weo:epistemicLayer)",
+      "ordered": true,
+      "concepts": [
+        {
+          "code": "entity",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#epistemicLayer-entity",
+          "label": "Entity",
+          "definition": "A durable identity — a website, a page, a term, a brand",
+          "note": null
+        },
+        {
+          "code": "episode",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#epistemicLayer-episode",
+          "label": "Episode",
+          "definition": "Something that happened at a time; immutable once finished — a crawl, a captured response, an experiment",
+          "note": null
+        },
+        {
+          "code": "observation",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#epistemicLayer-observation",
+          "label": "Observation",
+          "definition": "A measured fact, grounded in a standard or an API contract",
+          "note": null
+        },
+        {
+          "code": "derivation",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#epistemicLayer-derivation",
+          "label": "Derivation",
+          "definition": "Model or algorithm output; carries method, model and confidence",
+          "note": null
+        },
+        {
+          "code": "interpretation",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#epistemicLayer-interpretation",
+          "label": "Interpretation",
+          "definition": "A labeled claim — a diagnosed gap, a recommendation, an objective",
+          "note": null
+        },
+        {
+          "code": "norm",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#epistemicLayer-norm",
+          "label": "Norm",
+          "definition": "A standing rule about a class of cases — a Practice",
+          "note": null
+        }
+      ]
+    },
+    "execution": {
+      "iri": "https://inboundfound.github.io/weo-ontology/schemes#execution",
+      "label": "Who executes",
+      "fillsSlot": "weo:execution",
+      "description": "Who does the work a Recommendation calls for. ours spends the engagement's intervention allowance; advised does not, because advisory work is not agency capacity. This is the delivery-side half of the scope gate: requiresCapability says whether the work is possible, execution says whose hours it costs.",
+      "source": "if-control-center packages/contracts/src/recommendation.ts (RECOMMENDATION_EXECUTIONS)",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "advised",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#execution-advised",
+          "label": "Client does it",
+          "definition": "Advisory — outside the allowance; the client executes",
+          "note": null
+        },
+        {
+          "code": "ours",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#execution-ours",
+          "label": "We do it",
+          "definition": "Spends the engagement allowance",
+          "note": null
+        }
+      ]
+    },
+    "experimentStatus": {
+      "iri": "https://inboundfound.github.io/weo-ontology/schemes#experimentStatus",
+      "label": "Experiment lifecycle",
+      "fillsSlot": "weo:status",
+      "description": "Lifecycle of an Experiment, as weo:status on that node. unmeasurable covers two arrivals with one word — an operator cleared the measured set, or the website has no search-performance history to measure against; the record says which.",
+      "source": "if-control-center packages/contracts/src/recommendation.ts (EXPERIMENT_STATUSES)",
+      "ordered": true,
+      "concepts": [
+        {
+          "code": "measuring",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#experimentStatus-measuring",
+          "label": "Measuring",
+          "definition": "Inside its results window; observations still arriving",
+          "note": null
+        },
+        {
+          "code": "concluded",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#experimentStatus-concluded",
+          "label": "Concluded",
+          "definition": "Window closed; an Outcome is recorded and immutable",
+          "note": null
+        },
+        {
+          "code": "cancelled",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#experimentStatus-cancelled",
+          "label": "Cancelled",
+          "definition": "Stopped before conclusion, with a reason",
+          "note": null
+        },
+        {
+          "code": "unmeasurable",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#experimentStatus-unmeasurable",
+          "label": "Not measurable",
+          "definition": "No usable baseline or observation stream",
+          "note": null
+        }
+      ]
+    },
+    "gapType": {
+      "iri": "https://inboundfound.github.io/weo-ontology/schemes#gapType",
+      "label": "Gap types",
+      "fillsSlot": "weo:gapType",
+      "description": "The kinds of Gap a Diagnostic can reveal, in the priority order the structural comparison states them. Five structural findings, four deep-content axes (a missing FAQ block, a missing spec table, a missing certification and a page written for the wrong buyer stage are four different interventions drawn from different tactic categories), four non-structural findings, and one site-level finding. There is deliberately no backlink value: the referring-domain profile is a separate remit. domain_authority_deficit is not that — it is the finding that the page fight is already winnable and the SITE is what is losing.",
+      "source": "if-control-center packages/contracts/src/gap.ts (GAP_TYPES, GAP_TYPE_LABELS, GAP_TYPE_HINTS) · launch-guardian LG_GAP_TYPES",
+      "ordered": true,
+      "concepts": [
+        {
+          "code": "missing_page",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#gapType-missing_page",
+          "label": "No page for this topic",
+          "definition": "They hold a page for this topic and we have none",
+          "note": null
+        },
+        {
+          "code": "orphaned",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#gapType-orphaned",
+          "label": "Orphaned page",
+          "definition": "Strong content almost nothing links to — a promotion problem, not a content one",
+          "note": null
+        },
+        {
+          "code": "buried",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#gapType-buried",
+          "label": "Buried in the architecture",
+          "definition": "Served from too deep in the site against a top-level page",
+          "note": null
+        },
+        {
+          "code": "thin_content",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#gapType-thin_content",
+          "label": "Thin page",
+          "definition": "Comparable page, materially less on it",
+          "note": null
+        },
+        {
+          "code": "split",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#gapType-split",
+          "label": "Split across pages",
+          "definition": "Several of our pages share this topic and compete with each other",
+          "note": null
+        },
+        {
+          "code": "content_subtopic",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#gapType-content_subtopic",
+          "label": "Missing subtopic",
+          "definition": "Questions their page answers and ours does not",
+          "note": null
+        },
+        {
+          "code": "content_format_asset",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#gapType-content_format_asset",
+          "label": "Missing format asset",
+          "definition": "Specs, comparison tables, calculators, downloads or schema we lack",
+          "note": null
+        },
+        {
+          "code": "content_proof",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#gapType-content_proof",
+          "label": "Missing proof",
+          "definition": "Named projects, data or certifications we do not show",
+          "note": null
+        },
+        {
+          "code": "content_intent_fit",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#gapType-content_intent_fit",
+          "label": "Buyer-stage mismatch",
+          "definition": "Theirs is written for a different stage of the buyer journey",
+          "note": null
+        },
+        {
+          "code": "visibility_deficit",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#gapType-visibility_deficit",
+          "label": "Visibility shortfall",
+          "definition": "Estimated traffic we are losing on this topic",
+          "note": null
+        },
+        {
+          "code": "position_climb",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#gapType-position_climb",
+          "label": "Position climb",
+          "definition": "We already rank here — this is a climb on an asset we own",
+          "note": null
+        },
+        {
+          "code": "zero_click",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#gapType-zero_click",
+          "label": "Ranking without clicks",
+          "definition": "On page one, drawing impressions and no clicks — snippet and intent work",
+          "note": null
+        },
+        {
+          "code": "project_footprint",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#gapType-project_footprint",
+          "label": "Project footprint",
+          "definition": "They rank for named projects that represent a portfolio asset",
+          "note": null
+        },
+        {
+          "code": "domain_authority_deficit",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#gapType-domain_authority_deficit",
+          "label": "Outranked by the site, not the page",
+          "definition": "Our page holds up, but their domain outranks ours — a satellite, not a page edit",
+          "note": null
+        }
+      ]
+    },
+    "gapVerdict": {
+      "iri": "https://inboundfound.github.io/weo-ontology/schemes#gapVerdict",
+      "label": "Gap verdicts",
+      "fillsSlot": "weo:verdict",
+      "description": "A topic's disposition on the scoreboard — the operator-facing decision about a Gap. Carried by exactly one finding per topic per analysis: a verdict is a property of the topic, and a topic's other findings carry none rather than repeating a disposition the analysis did not reach for them.",
+      "source": "if-control-center packages/contracts/src/gap.ts (GAP_VERDICTS) · launch-guardian LG_GAP_VERDICTS",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "attack",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#gapVerdict-attack",
+          "label": "Attack",
+          "definition": "They hold a strong page and we have none or a weak one",
+          "note": null
+        },
+        {
+          "code": "defend",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#gapVerdict-defend",
+          "label": "Defend",
+          "definition": "Comparable, and our own trend is falling",
+          "note": null
+        },
+        {
+          "code": "fix_first",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#gapVerdict-fix_first",
+          "label": "Fix first",
+          "definition": "Our content is strong but orphaned, split or buried",
+          "note": null
+        },
+        {
+          "code": "hold",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#gapVerdict-hold",
+          "label": "Hold",
+          "definition": "Ours is the stronger page",
+          "note": null
+        },
+        {
+          "code": "ignore",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#gapVerdict-ignore",
+          "label": "Ignore",
+          "definition": "Off-ICP or unwinnable",
+          "note": null
+        }
+      ]
+    },
+    "intervention": {
+      "iri": "https://inboundfound.github.io/weo-ontology/schemes#intervention",
+      "label": "Interventions — the service catalogue",
+      "fillsSlot": "weo:inIntervention",
+      "description": "The categories of work an agency can deploy — its service catalogue, as WEO's Intervention taxonomy. A Tactic is inIntervention exactly one of these; a Project's contract scope is expressed over them. Each carries who controls the work (agency, client, or the community) and a typical lead time, because both decide whether a recommendation is deliverable or advisory. The experiment ledger keys the same categories by numeric code; that crosswalk is the ledger's own catalogue, not restated here.",
+      "source": "weo-graph-kit seed/framework.cypher (InterventionType) · if-event-ledger tactic_category (numeric codes, served by the ledger's catalog endpoint)",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "brand-entity-ops",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#intervention-brand-entity-ops",
+          "label": "Brand / entity operations",
+          "definition": "Entity truth, author entities, brand accuracy across the web",
+          "note": "category consulting · controlled by client · lead time variable"
+        },
+        {
+          "code": "community-mobilization",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#intervention-community-mobilization",
+          "label": "Community mobilization",
+          "definition": "The floor beneath the floor — only works if the counter-narrative already exists unprompted",
+          "note": "category community · controlled by community · lead time 8+ weeks"
+        },
+        {
+          "code": "content-optimization",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#intervention-content-optimization",
+          "label": "Content optimization / refresh",
+          "definition": "Revising pages the client already holds",
+          "note": "category content optimization · controlled by agency · lead time 1–2 weeks"
+        },
+        {
+          "code": "editorial-placement",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#intervention-editorial-placement",
+          "label": "Third-party editorial placement",
+          "definition": "Earned media: a placement on a third-party editorial surface",
+          "note": "category earned media · controlled by agency · lead time 2–4 weeks"
+        },
+        {
+          "code": "local-placement",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#intervention-local-placement",
+          "label": "Local / community placement",
+          "definition": "Earned media: a placement on a local or community surface",
+          "note": "category earned media · controlled by agency · lead time 2–4 weeks"
+        },
+        {
+          "code": "onsite-content-advisory",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#intervention-onsite-content-advisory",
+          "label": "Onsite content advisory",
+          "definition": "Content direction the client's own team executes",
+          "note": "category consulting · controlled by client · lead time variable"
+        },
+        {
+          "code": "owned-content-creation",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#intervention-owned-content-creation",
+          "label": "Owned content creation",
+          "definition": "New pages or assets on the client's own site",
+          "note": "category content creation · controlled by agency · lead time 4–8 weeks"
+        },
+        {
+          "code": "technical-onsite",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#intervention-technical-onsite",
+          "label": "Technical onsite work",
+          "definition": "Site infrastructure, rendering, schema, performance — executed by the client's engineers",
+          "note": "category consulting · controlled by client · lead time variable"
+        }
+      ]
+    },
+    "magnitudeUnit": {
+      "iri": "https://inboundfound.github.io/weo-ontology/schemes#magnitudeUnit",
+      "label": "Magnitude units",
+      "fillsSlot": "weo:magnitudeUnit",
+      "description": "The unit of a Gap's size, where the finding IS a size. A magnitude is never rendered bare. sessions_estimated names the CTR-model provenance in the unit itself, so a derived session figure can never render as a measured one. referring_domains counts domains pointing at a site and is deliberately a separate unit from inlinks, which counts a crawl's internal links — one unit for both would invite a comparison between them.",
+      "source": "if-control-center packages/contracts/src/gap.ts (MAGNITUDE_UNITS) · launch-guardian LG_MAGNITUDE_UNITS",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "clicks",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#magnitudeUnit-clicks",
+          "label": "Clicks",
+          "definition": "{n} clicks",
+          "note": null
+        },
+        {
+          "code": "impressions",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#magnitudeUnit-impressions",
+          "label": "Impressions",
+          "definition": "{n} impressions",
+          "note": null
+        },
+        {
+          "code": "inlinks",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#magnitudeUnit-inlinks",
+          "label": "Internal links",
+          "definition": "{n} internal links, counted by a crawl",
+          "note": null
+        },
+        {
+          "code": "keywords",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#magnitudeUnit-keywords",
+          "label": "Keywords",
+          "definition": "{n} keywords",
+          "note": null
+        },
+        {
+          "code": "positions",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#magnitudeUnit-positions",
+          "label": "Positions",
+          "definition": "{n} positions",
+          "note": null
+        },
+        {
+          "code": "referring_domains",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#magnitudeUnit-referring_domains",
+          "label": "Referring domains",
+          "definition": "{n} referring domains pointing at the site",
+          "note": null
+        },
+        {
+          "code": "sessions_estimated",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#magnitudeUnit-sessions_estimated",
+          "label": "Sessions (estimated)",
+          "definition": "≈{n} sessions/mo, derived by a CTR model — never a measured figure",
+          "note": null
+        },
+        {
+          "code": "words",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#magnitudeUnit-words",
+          "label": "Words",
+          "definition": "{n} words",
+          "note": null
+        }
+      ]
+    },
+    "objectiveMetric": {
+      "iri": "https://inboundfound.github.io/weo-ontology/schemes#objectiveMetric",
+      "label": "Objective metrics",
+      "fillsSlot": "weo:metric",
+      "description": "The metrics a MetricTarget can be set on. Half the vocabulary is lower-is-better — position and rank_absolute are 1-based ranks — so a target's direction is DERIVED from the metric, never client input; a shared +20% across metrics would silently ask for a rank 20% worse. The note on each concept records direction and unit.",
+      "source": "if-control-center packages/contracts/src/objective-metric.ts (OBJECTIVE_METRICS, METRIC_DIRECTIONS, METRIC_UNIT_OF) · launch-guardian LG_OBJECTIVE_METRICS",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "clicks",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#objectiveMetric-clicks",
+          "label": "Clicks",
+          "definition": "Search clicks over the window",
+          "note": "direction up · unit count · source GSC"
+        },
+        {
+          "code": "ctr",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#objectiveMetric-ctr",
+          "label": "CTR",
+          "definition": "Clickthrough rate over the window",
+          "note": "direction up · unit percent · source GSC"
+        },
+        {
+          "code": "etv",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#objectiveMetric-etv",
+          "label": "Est. traffic value",
+          "definition": "Estimated traffic value",
+          "note": "direction up · unit currency · source DataForSEO"
+        },
+        {
+          "code": "impressions",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#objectiveMetric-impressions",
+          "label": "Impressions",
+          "definition": "Search impressions over the window",
+          "note": "direction up · unit count · source GSC"
+        },
+        {
+          "code": "position",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#objectiveMetric-position",
+          "label": "Avg position",
+          "definition": "Average SERP position over the window",
+          "note": "direction down · unit rank · source GSC"
+        },
+        {
+          "code": "rank_absolute",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#objectiveMetric-rank_absolute",
+          "label": "Rank",
+          "definition": "Absolute rank from a rank tracker",
+          "note": "direction down · unit rank · source DataForSEO"
+        }
+      ]
+    },
+    "outcomeResult": {
+      "iri": "https://inboundfound.github.io/weo-ontology/schemes#outcomeResult",
+      "label": "Outcome results",
+      "fillsSlot": "weo:result",
+      "description": "Whether an Outcome moved. A regression IS significant: result answers did this move, and the lift's sign answers which way. The labels must not smuggle a direction in.",
+      "source": "if-control-center packages/contracts/src/recommendation.ts (OUTCOME_RESULTS)",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "inconclusive",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#outcomeResult-inconclusive",
+          "label": "Inconclusive",
+          "definition": "Could not be judged — see resultReason",
+          "note": null
+        },
+        {
+          "code": "no_change",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#outcomeResult-no_change",
+          "label": "No change",
+          "definition": "Measured, and it did not move",
+          "note": null
+        },
+        {
+          "code": "significant",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#outcomeResult-significant",
+          "label": "Moved",
+          "definition": "The measured change clears the significance bar, in either direction",
+          "note": null
+        }
+      ]
+    },
+    "outcomeResultReason": {
+      "iri": "https://inboundfound.github.io/weo-ontology/schemes#outcomeResultReason",
+      "label": "Why an outcome was inconclusive",
+      "fillsSlot": "weo:resultReason",
+      "description": "Why an Outcome could not be read cleanly. The two confounder reasons read differently on purpose: co_intervention keeps its lift and names the rows it shares attribution with; confounded_external records none. below_volume_floor and no_page_data are not the same sentence — the second asserts an absence, the first says there is data and not yet enough of it.",
+      "source": "if-control-center packages/contracts/src/recommendation.ts (OUTCOME_RESULT_REASONS)",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "baseline_unavailable",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#outcomeResultReason-baseline_unavailable",
+          "label": "No search history before this shipped",
+          "definition": "Nothing to compare against",
+          "note": null
+        },
+        {
+          "code": "below_volume_floor",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#outcomeResultReason-below_volume_floor",
+          "label": "Not enough traffic to judge",
+          "definition": "The page has data, and not yet enough for a percentage to mean anything",
+          "note": null
+        },
+        {
+          "code": "co_intervention",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#outcomeResultReason-co_intervention",
+          "label": "Shared with other work of ours",
+          "definition": "Another of our interventions touched the same pages in the window; lift is kept and attribution is shared",
+          "note": null
+        },
+        {
+          "code": "confounded_external",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#outcomeResultReason-confounded_external",
+          "label": "Something outside our work changed the page",
+          "definition": "An external event confounds the window; no lift is recorded",
+          "note": null
+        },
+        {
+          "code": "no_page_data",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#outcomeResultReason-no_page_data",
+          "label": "No search data for this page",
+          "definition": "A complete window with no rows at all on the address",
+          "note": null
+        },
+        {
+          "code": "no_qualifying_snapshot",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#outcomeResultReason-no_qualifying_snapshot",
+          "label": "Waiting on a reading",
+          "definition": "No qualifying rank snapshot has arrived yet",
+          "note": null
+        },
+        {
+          "code": "window_incomplete",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#outcomeResultReason-window_incomplete",
+          "label": "Window still filling",
+          "definition": "The results window has not closed",
+          "note": null
+        }
+      ]
+    },
+    "practiceKind": {
+      "iri": "https://inboundfound.github.io/weo-ontology/schemes#practiceKind",
+      "label": "Practice kinds",
+      "fillsSlot": "weo:practiceKind",
+      "description": "How a Practice acts on a candidate recommendation. Kept as a small controlled value rather than a subclass.",
+      "source": "weo-strategy.ttl (weo:practiceKind) · if-control-center PRACTICE_KINDS",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "guardrail",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#practiceKind-guardrail",
+          "label": "Guardrail",
+          "definition": "Veto a matching candidate",
+          "note": null
+        },
+        {
+          "code": "guidance",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#practiceKind-guidance",
+          "label": "Guidance",
+          "definition": "Attach a caveat; change nothing",
+          "note": null
+        },
+        {
+          "code": "preference",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#practiceKind-preference",
+          "label": "Preference",
+          "definition": "Reorder a matching candidate",
+          "note": null
+        }
+      ]
+    },
+    "practiceOutcome": {
+      "iri": "https://inboundfound.github.io/weo-ontology/schemes#practiceOutcome",
+      "label": "What a Practice did",
+      "fillsSlot": "weo:practiceOutcome",
+      "description": "What a Practice did to a candidate when it fired — the value carried on the appliedPractice audit edge. One outcome per practiceKind: a guardrail vetoes, a preference reranks, guidance caveats.",
+      "source": "if-control-center packages/contracts/src/recommendation.ts (PRACTICE_OUTCOMES) · launch-guardian LG_PRACTICE_OUTCOMES",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "caveated",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#practiceOutcome-caveated",
+          "label": "Flagged",
+          "definition": "Guidance attached a caveat and changed nothing else",
+          "note": null
+        },
+        {
+          "code": "reranked",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#practiceOutcome-reranked",
+          "label": "Reordered",
+          "definition": "A preference moved the candidate up or down",
+          "note": null
+        },
+        {
+          "code": "vetoed",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#practiceOutcome-vetoed",
+          "label": "Blocked",
+          "definition": "A guardrail removed the candidate",
+          "note": null
+        }
+      ]
+    },
+    "practiceSource": {
+      "iri": "https://inboundfound.github.io/weo-ontology/schemes#practiceSource",
+      "label": "Practice provenance",
+      "fillsSlot": "weo:source",
+      "description": "Where a Practice came from — the confidence ratchet. authored stands on a human's authority; claimed ships low-confidence with a halfLife and decays unless experiments promote it; learned is earned from the experiment ledger, and its confidence ratchets with Outcomes. One class holds a firm SOP and a fragile claim without conflating their trust.",
+      "source": "weo-strategy.ttl (weo:source, on a Practice) · if-control-center PRACTICE_SOURCES",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "authored",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#practiceSource-authored",
+          "label": "Authored",
+          "definition": "A human SOP or best-practice — high standing, durable",
+          "note": null
+        },
+        {
+          "code": "claimed",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#practiceSource-claimed",
+          "label": "Claimed",
+          "definition": "An unproven assertion — ships low-confidence, decays over its halfLife unless promoted",
+          "note": null
+        },
+        {
+          "code": "learned",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#practiceSource-learned",
+          "label": "Learned",
+          "definition": "Earned from the experiment ledger; confidence ratchets with Outcomes",
+          "note": null
+        }
+      ]
+    },
+    "practiceStatus": {
+      "iri": "https://inboundfound.github.io/weo-ontology/schemes#practiceStatus",
+      "label": "Practice lifecycle",
+      "fillsSlot": "weo:status",
+      "description": "Lifecycle of a Practice, as weo:status on that node. A proposed Practice is visible but does not fire; superseding one deprecates it — retired, never deleted, so the record of what it vetoed survives.",
+      "source": "weo-strategy.ttl (weo:status, on a Practice) · if-control-center PRACTICE_STATUSES",
+      "ordered": true,
+      "concepts": [
+        {
+          "code": "proposed",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#practiceStatus-proposed",
+          "label": "Proposed",
+          "definition": "Visible; does not fire",
+          "note": null
+        },
+        {
+          "code": "active",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#practiceStatus-active",
+          "label": "Active",
+          "definition": "Fires on matching candidates",
+          "note": null
+        },
+        {
+          "code": "deprecated",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#practiceStatus-deprecated",
+          "label": "Deprecated",
+          "definition": "Superseded; retained for the audit trail",
+          "note": null
+        }
+      ]
+    },
+    "priority": {
+      "iri": "https://inboundfound.github.io/weo-ontology/schemes#priority",
+      "label": "Priority tiers",
+      "fillsSlot": "weo:atPriority",
+      "description": "The priority a Recommendation is issued at. Three tiers, read as a horizon rather than a severity: now, next, later. Where another system speaks critical/high/medium/low, map critical and high to P0, medium to P1, low to P2 — the mapping is documented here so it is not re-decided per consumer.",
+      "source": "if-control-center packages/contracts/src/recommendation.ts (RECOMMENDATION_PRIORITY_TIERS) · launch-guardian",
+      "ordered": true,
+      "concepts": [
+        {
+          "code": "P0",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#priority-P0",
+          "label": "Now",
+          "definition": "Do this in the current cycle",
+          "note": null
+        },
+        {
+          "code": "P1",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#priority-P1",
+          "label": "Next",
+          "definition": "Queued behind the current cycle",
+          "note": null
+        },
+        {
+          "code": "P2",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#priority-P2",
+          "label": "Later",
+          "definition": "Worth doing; not yet scheduled",
+          "note": null
+        }
+      ]
+    },
+    "recommendationStatus": {
+      "iri": "https://inboundfound.github.io/weo-ontology/schemes#recommendationStatus",
+      "label": "Recommendation execution lifecycle",
+      "fillsSlot": "weo:status",
+      "description": "The execution lifecycle of a Recommendation, as weo:status on that node. pending, in_progress and blocked are the OPEN states — they still consume an engagement's intervention quota. The delivery board buckets these five into recommended / active / blocked / measuring / completed, where measuring is a completed recommendation still inside its results window; that bucketing is a derived view, not a second vocabulary. A system with a skipped state maps it to cancelled.",
+      "source": "if-control-center packages/contracts/src/recommendation.ts (RECOMMENDATION_STATUSES) · launch-guardian LG_RECOMMENDATION_STATUSES",
+      "ordered": true,
+      "concepts": [
+        {
+          "code": "pending",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#recommendationStatus-pending",
+          "label": "Proposed",
+          "definition": "Issued and not yet started; counts as open work",
+          "note": null
+        },
+        {
+          "code": "in_progress",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#recommendationStatus-in_progress",
+          "label": "In progress",
+          "definition": "Being executed; counts as open work",
+          "note": null
+        },
+        {
+          "code": "blocked",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#recommendationStatus-blocked",
+          "label": "Blocked",
+          "definition": "Cannot proceed — a dependency, an approval, or a client direction; still counts as open work",
+          "note": null
+        },
+        {
+          "code": "cancelled",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#recommendationStatus-cancelled",
+          "label": "Cancelled",
+          "definition": "Withdrawn with a recorded reason; never silently dropped",
+          "note": null
+        },
+        {
+          "code": "completed",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#recommendationStatus-completed",
+          "label": "Done",
+          "definition": "Shipped; measuring until its results window closes",
+          "note": null
+        }
+      ]
+    },
+    "targetKind": {
+      "iri": "https://inboundfound.github.io/weo-ontology/schemes#targetKind",
+      "label": "Target kinds",
+      "fillsSlot": "weo:targetKind",
+      "description": "How a MetricTarget's targetValue is read: as an absolute value of the metric, or as a percent change from the captured baseline.",
+      "source": "if-control-center packages/contracts/src/objective-metric.ts (OBJECTIVE_TARGET_KINDS) · launch-guardian LG_OBJECTIVE_TARGET_KINDS",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "absolute",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#targetKind-absolute",
+          "label": "Absolute",
+          "definition": "targetValue is a value of the metric itself",
+          "note": null
+        },
+        {
+          "code": "percent",
+          "iri": "https://inboundfound.github.io/weo-ontology/schemes#targetKind-percent",
+          "label": "Percent lift",
+          "definition": "targetValue is a relative change from baseline, in the metric's better direction",
+          "note": null
+        }
+      ]
+    }
+  }
+}

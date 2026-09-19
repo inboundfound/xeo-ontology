@@ -1,0 +1,204 @@
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix dct:  <http://purl.org/dc/terms/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix weo:  <https://inboundfound.github.io/weo-ontology/weo#> .
+
+# WEO Delivery module — the container the work happens in.
+#
+# The decision tier says WHAT to do (a Recommendation closes a Gap with a Tactic)
+# and the norms tier says what SHOULD govern that call. Neither says for whom,
+# under which contract, against which goal, or with how much room left this
+# month. That is delivery, and until this module it lived only in the
+# implementations: a Project with a quota and a scope, a Campaign against a
+# topic with an Objective, and the targets an experiment is finally read against.
+#
+#   Website hasProject Project                     (the contract: type, quota, scope)
+#   Project hasCampaign Campaign                   (a body of work against one Topic)
+#   Campaign hasObjective Objective hasTarget MetricTarget   (the intent, as targets)
+#   Recommendation issuedFor Campaign              (a call lands in a campaign)
+#   Experiment measures MetricTarget               (and is read against its target)
+#
+# Two layers meet here and are kept apart on purpose. Project and Campaign are
+# ENTITIES: they exist because a contract was signed and a topic was chosen.
+# Objective and MetricTarget are INTERPRETATIONS: an intent set at creation, a
+# call about what should move. A target is named a target and never a result —
+# weo:Outcome is the measured side, an observation, and the two must never share
+# a name or the experiment loop will conflate the goal with the reading.
+#
+# The scope gate now has two halves. weo-decision's requiresCapability + approved
+# asks CAN we (is the lever available); this module's inScope + execution asks
+# DID THEY BUY IT and WHOSE HOURS DOES IT COST. A recommendation is deliverable
+# when both say yes; advisory when the capability exists but the contract or the
+# allowance does not cover it.
+#
+# Named Project, not Engagement, deliberately: weo-engagement.ttl already uses
+# "engagement" for the conversion seam (forms, CTAs, the CRM join), and the
+# implementations this module is lifted from call the container a Project.
+#
+# DISCIPLINE (unchanged): classes, never values. engagementType, cadence,
+# metric and the rest take their values from weo-schemes.ttl — published
+# reference schemes a consumer adopts or replaces.
+#
+# DEPENDENCIES, declared honestly: builds on core (Website, URL, Term, Topic),
+# decision (Recommendation, Experiment), and uses SKOS for its slots.
+
+weo:delivery-module a owl:Ontology ;
+    dct:title "WEO Delivery (projects, campaigns, objectives)" ;
+    dct:description "The container work is delivered in: a Project (the contract — type, quota, scope), its Campaigns (a body of work against one Topic), the Objective each campaign is measured by, and the MetricTargets an Experiment is read against. Lifted from a production implementation; fills the layer the decision and norms tiers left open." ;
+    dct:creator "Inbound Found" ;
+    owl:versionInfo "0.4.0" .
+
+# --- Classes ----------------------------------------------------------------
+
+weo:Project a owl:Class ;
+    rdfs:label "Project" ;
+    weo:epistemicLayer "entity" ;
+    dct:description "The contractual container for a body of work on one Website. Declares its engagementType (retainer or one-off), an interventionQuota (a scope of work with no ceiling is not a scope), a cadence the quota resets over (retainer) or a durationDays it runs for (one-off), and the Interventions and Tactics inScope under the contract. Never destroyed: its campaigns, objectives and targets are the substrate the end-of-campaign report and the experiment loop read, so it is stamped deletedAt and filtered, not deleted." .
+
+weo:Campaign a owl:Class ;
+    rdfs:label "Campaign" ;
+    weo:epistemicLayer "entity" ;
+    dct:description "A body of work inside a Project against one Topic: the URLs and Terms it covers, and the single Objective it is measured by. Recommendations are issuedFor a campaign, and it is the unit an operator plans a cycle around. Soft-deleted like its Project." .
+
+weo:Objective a owl:Class ;
+    rdfs:label "Objective" ;
+    weo:epistemicLayer "interpretation" ;
+    dct:description "What a Campaign intends to move: an operator-written statement in prose (carried verbatim — the recommendation agent reads it as the goal), a resultsWindowDays every target is measured over, and one or more MetricTargets of which exactly one isPrimary. An intent set at creation. A campaign has one reporting horizon, distinct from the Project's work window: a two-month engagement can carry a six-month results window." .
+
+weo:MetricTarget a owl:Class ;
+    rdfs:label "Metric Target" ;
+    weo:epistemicLayer "interpretation" ;
+    dct:description "One measurable target of an Objective: metric X should reach targetValue, read as absolute or as a percent lift from a captured baseline. Named a target and never a key result: weo:Outcome is 'the measured result an experiment produced', an observation, and a goal must not share a name with a reading. Each target is its own node so the experiment loop can hang observations off it; a target dropped on edit is stamped deletedAt, never destroyed, because its id is what measured history is anchored to." .
+
+# --- Object properties -------------------------------------------------------
+
+weo:hasProject a owl:ObjectProperty ;
+    rdfs:domain weo:Website ; rdfs:range weo:Project ;
+    weo:epistemicLayer "entity" ;
+    dct:description "The projects contracted against this website. Tenancy rides on websiteId, as everywhere." .
+
+weo:hasCampaign a owl:ObjectProperty ;
+    rdfs:domain weo:Project ; rdfs:range weo:Campaign ;
+    weo:epistemicLayer "entity" .
+
+weo:inScope a owl:ObjectProperty ;
+    rdfs:domain weo:Project ;
+    weo:epistemicLayer "entity" ;
+    dct:description "What the contract covers: an Intervention (a whole category of work, including tactics added to the catalogue later) or a specific Tactic within one. Range left open across those two terms. The contractual half of the scope gate — requiresCapability + approved asks whether the lever exists; this asks whether it was bought." .
+
+weo:aboutTopic a owl:ObjectProperty ;
+    rdfs:domain weo:Campaign ; rdfs:range weo:Topic ;
+    weo:epistemicLayer "entity" ;
+    dct:description "The topic cluster this campaign works. Topics are site-scoped derivations in core; a campaign binds to one." .
+
+weo:coversUrl a owl:ObjectProperty ;
+    rdfs:domain weo:Campaign ; rdfs:range weo:URL ;
+    weo:epistemicLayer "entity" ;
+    dct:description "A page inside the campaign's cluster. May carry a priority flag marking the pages the campaign is really about." .
+
+weo:coversTerm a owl:ObjectProperty ;
+    rdfs:domain weo:Campaign ; rdfs:range weo:Term ;
+    weo:epistemicLayer "entity" ;
+    dct:description "A term inside the campaign's cluster — the queries its objective is measured against." .
+
+weo:hasObjective a owl:ObjectProperty ;
+    rdfs:domain weo:Campaign ; rdfs:range weo:Objective ;
+    weo:epistemicLayer "interpretation" ;
+    dct:description "Exactly one per campaign." .
+
+weo:hasTarget a owl:ObjectProperty ;
+    rdfs:domain weo:Objective ; rdfs:range weo:MetricTarget ;
+    weo:epistemicLayer "interpretation" ;
+    dct:description "The objective's measurable targets. Non-empty; exactly one target isPrimary — what the recommendation agent optimises for. The rest are the secondary metrics an impact-radius check widens to." .
+
+weo:issuedFor a owl:ObjectProperty ;
+    rdfs:domain weo:Recommendation ; rdfs:range weo:Campaign ;
+    weo:epistemicLayer "interpretation" ;
+    dct:description "The campaign a recommendation was issued into. Its execution lifecycle (weo:status), effortEstimate and execution live here: a recommendation is a decision-tier call until it lands in a campaign, and delivery state from then on." .
+
+weo:measures a owl:ObjectProperty ;
+    rdfs:domain weo:Experiment ; rdfs:range weo:MetricTarget ;
+    weo:epistemicLayer "observation" ;
+    dct:description "The target an experiment's Outcome is read against. Carries a role — primary or secondary — matching the target's standing in its objective, and a basis saying which pages were measured (the ones the recommendation applied to, the gap's evidence, or the pages actually changed)." .
+
+weo:effortEstimate a owl:ObjectProperty ;
+    rdfs:domain weo:Recommendation ; rdfs:range skos:Concept ;
+    weo:epistemicLayer "interpretation" ;
+    dct:description "How long executing the recommendation is expected to take, as a slotted-in concept (hours, days, weeks, a quarter — see weo-schemes). A categorical horizon for planning a cycle, not a scored dimension: impact, risk and time-to-value belong on a TacticAssessment via onDimension." .
+
+weo:execution a owl:ObjectProperty ;
+    rdfs:domain weo:Recommendation ; rdfs:range skos:Concept ;
+    weo:epistemicLayer "interpretation" ;
+    dct:description "Who does the work, as a slotted-in concept: ours (spends the project's intervention allowance) or advised (the client executes; not agency capacity). The half of the scope gate that says whose hours a recommendation costs." .
+
+# --- Datatype properties -----------------------------------------------------
+# weo:status on a Recommendation is its execution lifecycle (pending, in_progress,
+# blocked, cancelled, completed); on an Experiment it is measuring, concluded,
+# cancelled, unmeasurable. Both value sets are published in weo-schemes.ttl. The
+# property is declared domain-free in weo-strategy for exactly this reason.
+
+weo:engagementType a owl:DatatypeProperty ;
+    rdfs:domain weo:Project ; rdfs:range xsd:string ;
+    weo:epistemicLayer "entity" ;
+    dct:description "'retainer' or 'oneoff' — the discriminator for how scope is expressed. A retainer caps interventions per cadence period; a one-off caps them over durationDays. Sending both cadence and durationDays is a contradiction and is rejected at the edge." .
+
+weo:interventionQuota a owl:DatatypeProperty ;
+    rdfs:domain weo:Project ; rdfs:range xsd:integer ;
+    weo:epistemicLayer "entity" ;
+    dct:description "Ceiling on interventions this project may deploy per period (retainer) or in total (one-off). Always present. Recommendations in an open status — pending, in_progress, blocked — consume it; advised work does not." .
+
+weo:cadence a owl:DatatypeProperty ;
+    rdfs:domain weo:Project ; rdfs:range xsd:string ;
+    weo:epistemicLayer "entity" ;
+    dct:description "'monthly' or 'quarterly' — the period a retainer's quota resets over. Set for retainer, absent for one-off." .
+
+weo:durationDays a owl:DatatypeProperty ;
+    rdfs:domain weo:Project ; rdfs:range xsd:integer ;
+    weo:epistemicLayer "entity" ;
+    dct:description "Fixed run length of a one-off project. Set for oneoff, absent for retainer." .
+
+weo:resultsWindowDays a owl:DatatypeProperty ;
+    rdfs:domain weo:Objective ; rdfs:range xsd:integer ;
+    weo:epistemicLayer "interpretation" ;
+    dct:description "The measurement window every target in this objective is read over. One horizon per campaign; per-target windows are deliberately not modelled." .
+
+weo:metric a owl:DatatypeProperty ;
+    rdfs:domain weo:MetricTarget ; rdfs:range xsd:string ;
+    weo:epistemicLayer "interpretation" ;
+    dct:description "Which metric the target is set on — clicks, impressions, ctr, position, rank_absolute, etv (see weo-schemes objectiveMetric). The value vocabulary is the consumer's; the reference scheme records each metric's direction and unit." .
+
+weo:direction a owl:DatatypeProperty ;
+    rdfs:domain weo:MetricTarget ; rdfs:range xsd:string ;
+    weo:epistemicLayer "interpretation" ;
+    dct:description "'up' or 'down' — which way is better for this metric. DERIVED from metric, never client input: position and rank are 1-based, so a shared '+20%' would silently ask for a rank 20% worse." .
+
+weo:targetKind a owl:DatatypeProperty ;
+    rdfs:domain weo:MetricTarget ; rdfs:range xsd:string ;
+    weo:epistemicLayer "interpretation" ;
+    dct:description "'absolute' (targetValue is a value of the metric) or 'percent' (a relative change from baseline in the metric's better direction)." .
+
+weo:targetValue a owl:DatatypeProperty ;
+    rdfs:domain weo:MetricTarget ; rdfs:range xsd:decimal ;
+    weo:epistemicLayer "interpretation" ;
+    dct:description "The value the metric should reach, interpreted per targetKind. Bounded per metric and kind at the edge — a percentage, a count, a rank and a currency do not share a range." .
+
+weo:baseline a owl:DatatypeProperty ;
+    rdfs:domain weo:MetricTarget ; rdfs:range xsd:decimal ;
+    weo:epistemicLayer "observation" ;
+    dct:description "The metric's value when the target was set — the anchor 'how far beyond target' is measured from. An observation captured onto an interpretation; baselineCapturedAt says when, because it is not the same instant as the target's creation." .
+
+weo:baselineCapturedAt a owl:DatatypeProperty ;
+    rdfs:domain weo:MetricTarget ; rdfs:range xsd:dateTime ;
+    weo:epistemicLayer "observation" .
+
+weo:isPrimary a owl:DatatypeProperty ;
+    rdfs:domain weo:MetricTarget ; rdfs:range xsd:boolean ;
+    weo:epistemicLayer "interpretation" ;
+    dct:description "Exactly one target per objective. The one the agent optimises for." .
+
+weo:deletedAt a owl:DatatypeProperty ;
+    rdfs:range xsd:dateTime ;
+    weo:epistemicLayer "entity" ;
+    dct:description "Soft-delete stamp. WEO never destroys a node something else was derived from — weo-strategy states the rule for a Practice (destroying it destroys the record of what it vetoed) and it holds here for a Project, a Campaign, or a MetricTarget that measured history hangs off. Absent on a live node; domain left open so any revisable term can carry it." .
