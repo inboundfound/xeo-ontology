@@ -2,9 +2,9 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
 @prefix dct:  <http://purl.org/dc/terms/> .
-@prefix weo:  <https://inboundfound.github.io/weo-ontology/weo#> .
+@prefix xeo:  <https://xeoontology.org/xeo#> .
 
-# WEO Engagement module — DRAFT (v0).
+# XEO Engagement module — DRAFT (v0).
 #
 # The seam between web-engine visibility and the pipeline: intents,
 # conversion points, and conversion events, with pointers into whatever CRM
@@ -16,76 +16,76 @@
 # attributedResponse). Interpretations carry method and confidence; they are claims,
 # not facts, and agents assembling context can filter them out.
 
-weo:engagement-module a owl:Ontology ;
-    dct:title "WEO Engagement (draft)" ;
+xeo:engagement-module a owl:Ontology ;
+    dct:title "XEO Engagement (draft)" ;
     dct:description "DRAFT v0. The seam between web-engine visibility and the pipeline: intents, conversion points, conversion events, and identity-key pointers into whatever CRM you run." ;
     dct:creator "Inbound Found" ;
-    owl:versionInfo "0.4.0" .
+    owl:versionInfo "0.5.0" .
 
 # --- Intent ------------------------------------------------------------------
 
-weo:SearchIntent a owl:Class ;
+xeo:SearchIntent a owl:Class ;
     rdfs:label "Search Intent" ;
-    weo:epistemicLayer "entity" ;
-    weo:groundedIn "Broder (2002), 'A taxonomy of web search', as extended in common practice" ;
+    xeo:epistemicLayer "entity" ;
+    xeo:groundedIn "Broder (2002), 'A taxonomy of web search', as extended in common practice" ;
     dct:description "Why the person is asking. Modeled as named individuals, not free strings." .
 
-weo:Informational a weo:SearchIntent , owl:NamedIndividual ; rdfs:label "Informational" .
-weo:Navigational  a weo:SearchIntent , owl:NamedIndividual ; rdfs:label "Navigational" .
-weo:CommercialInvestigation a weo:SearchIntent , owl:NamedIndividual ; rdfs:label "Commercial Investigation" .
-weo:Transactional a weo:SearchIntent , owl:NamedIndividual ; rdfs:label "Transactional" .
+xeo:Informational a xeo:SearchIntent , owl:NamedIndividual ; rdfs:label "Informational" .
+xeo:Navigational  a xeo:SearchIntent , owl:NamedIndividual ; rdfs:label "Navigational" .
+xeo:CommercialInvestigation a xeo:SearchIntent , owl:NamedIndividual ; rdfs:label "Commercial Investigation" .
+xeo:Transactional a xeo:SearchIntent , owl:NamedIndividual ; rdfs:label "Transactional" .
 
-weo:targetsIntent a owl:ObjectProperty ;
-    rdfs:range weo:SearchIntent ;
-    weo:epistemicLayer "interpretation" ;
+xeo:targetsIntent a owl:ObjectProperty ;
+    rdfs:range xeo:SearchIntent ;
+    xeo:epistemicLayer "interpretation" ;
     dct:description "A URL or Prompt is aimed at this intent. A strategist's or model's claim — carries method and confidence." .
 
 # --- Conversion points (entities on the page) ---------------------------------
 
-weo:ConversionPoint a owl:Class ;
+xeo:ConversionPoint a owl:Class ;
     rdfs:label "Conversion Point" ;
-    weo:epistemicLayer "entity" ;
+    xeo:epistemicLayer "entity" ;
     dct:description "A durable on-page mechanism that turns attention into a pipeline event." .
 
-weo:CallToAction a owl:Class ; rdfs:subClassOf weo:ConversionPoint ;
+xeo:CallToAction a owl:Class ; rdfs:subClassOf xeo:ConversionPoint ;
     rdfs:label "Call To Action" .
 
-weo:LeadCaptureForm a owl:Class ; rdfs:subClassOf weo:ConversionPoint ;
+xeo:LeadCaptureForm a owl:Class ; rdfs:subClassOf xeo:ConversionPoint ;
     rdfs:label "Lead Capture Form" .
 
-weo:GatedAsset a owl:Class ; rdfs:subClassOf weo:ConversionPoint ;
+xeo:GatedAsset a owl:Class ; rdfs:subClassOf xeo:ConversionPoint ;
     rdfs:label "Gated Asset" ;
     dct:description "Content exchanged for contact information." .
 
-weo:hasConversionPoint a owl:ObjectProperty ;
-    rdfs:domain weo:URL ; rdfs:range weo:ConversionPoint ;
-    weo:epistemicLayer "observation" ;
+xeo:hasConversionPoint a owl:ObjectProperty ;
+    rdfs:domain xeo:URL ; rdfs:range xeo:ConversionPoint ;
+    xeo:epistemicLayer "observation" ;
     dct:description "Observed presence of a conversion point on a page (crawl-attributed, bitemporal like linksTo)." .
 
 # --- Conversion events (episodes) ---------------------------------------------
 
-weo:ConversionEvent a owl:Class ;
+xeo:ConversionEvent a owl:Class ;
     rdfs:label "Conversion Event" ;
-    weo:epistemicLayer "episode" ;
+    xeo:epistemicLayer "episode" ;
     dct:description "A submission/click/unlock that happened at a time. Immutable once recorded." .
 
-weo:capturedBy a owl:ObjectProperty ;
-    rdfs:domain weo:ConversionEvent ; rdfs:range weo:ConversionPoint ;
-    weo:epistemicLayer "observation" .
+xeo:capturedBy a owl:ObjectProperty ;
+    rdfs:domain xeo:ConversionEvent ; rdfs:range xeo:ConversionPoint ;
+    xeo:epistemicLayer "observation" .
 
-weo:occurredAt a owl:DatatypeProperty ;
-    rdfs:domain weo:ConversionEvent ; rdfs:range xsd:dateTime ;
-    weo:epistemicLayer "episode" .
+xeo:occurredAt a owl:DatatypeProperty ;
+    rdfs:domain xeo:ConversionEvent ; rdfs:range xsd:dateTime ;
+    xeo:epistemicLayer "episode" .
 
-weo:crmRecordRef a owl:DatatypeProperty ;
+xeo:crmRecordRef a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
-    weo:epistemicLayer "entity" ;
-    weo:canonicalStore "crm" ;
+    xeo:epistemicLayer "entity" ;
+    xeo:canonicalStore "crm" ;
     dct:description "Identity-key pointer to the CRM object (form id, contact id, deal id) in whatever system runs the pipeline. The join contract to the post-click world — the graph never mirrors the CRM's schema." .
 
 # --- Pre-click attribution (an interpretation, and labeled as one) --------------
 
-weo:attributedResponse a owl:ObjectProperty ;
-    rdfs:domain weo:ConversionEvent ; rdfs:range weo:LLMResponse ;
-    weo:epistemicLayer "interpretation" ;
+xeo:attributedResponse a owl:ObjectProperty ;
+    rdfs:domain xeo:ConversionEvent ; rdfs:range xeo:LLMResponse ;
+    xeo:epistemicLayer "interpretation" ;
     dct:description "The claim that this conversion traces to engine visibility captured in this response episode. Multi-engine attribution is inherently inferential: this edge MUST carry method and confidence, and honest implementations will leave it sparse." .

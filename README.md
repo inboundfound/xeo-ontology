@@ -1,18 +1,27 @@
-# WEO — the Web Engine Optimization ontology
+# XEO — the ontology for the xEO family
 
-A small, standards-grounded vocabulary for how **web engines** — search engines,
-generative overviews, answer engines, conversational agents — see, cite, and serve
-web content. One graph model for the whole **xEO** family: SEO, GEO, AEO, and
-whatever letter comes next.
+A small, standards-grounded vocabulary for how engines — search engines, generative
+overviews, answer engines, conversational agents — see, cite, and serve web content.
+One graph model for the whole **xEO** family: SEO, GEO, AEO, and whatever letter
+comes next.
 
-**Prefix:** `weo:` · **Namespace:** `https://inboundfound.github.io/weo-ontology/weo#`
-· **Status:** v0.4 — open draft, built to be riffed on. Issues and PRs welcome.
+The `x` is the variable. That is the whole point of the name: the letter in front
+keeps changing, and the discipline behind it doesn't.
 
-## Why "WEO"
+**Prefix:** `xeo:` · **Namespace:** `https://xeoontology.org/xeo#`
+· **Status:** v0.5 — open draft, built to be riffed on. Issues and PRs welcome.
+
+> **Namespace note.** Term IRIs resolve at `xeoontology.org`, not at this repo.
+> Whoever serves that domain must publish `/xeo` (the term docs), `/schemes`,
+> `/context.jsonld` and `/schemes.json` from this repo's contents, or every IRI
+> here 404s. The namespace deliberately does not point at a GitHub org, so the
+> vocabulary's identity survives a repo move, an org rename, or a change of host.
+
+## Why "XEO"
 
 Marketers already think in `-EO`: SEO, then GEO, then AEO. The engines keep
 changing; the discipline — *make your content legible and creditable to the machine
-between you and your audience* — doesn't. WEO names that discipline once, and the
+between you and your audience* — doesn't. XEO names that discipline once, and the
 ontology's `Engine` taxonomy absorbs new surfaces as subclasses instead of new
 acronyms.
 
@@ -42,20 +51,20 @@ acronyms.
 
 | File | Layer | Contents |
 |---|---|---|
-| `weo-core.ttl` | the SEO substrate | `Website`, `URL`, `Term`, `Crawl`, `SerpSnapshot`, `Topic`, `SearchPerformanceFact`; `FETCHED`, `LINKS_TO`, `REDIRECTS_TO`, `HAS_CANONICAL`, `RANKS_FOR` (windowed rollups with `datasetUri` provenance), `HAS_RESULT`, `IN_TOPIC` |
-| `weo-visibility.ttl` | the xEO layer | `Engine` (+ `SearchEngine` / `GenerativeEngine` / `AnswerEngine` / `ConversationalAgent`), `Brand`, `Prompt`, `LLMResponse`; `CITES`, `MENTIONS {mentionRank}`, `FANS_OUT_TO` (fan-out queries **are** Terms — the join back to rank data), `VISIBILITY_FOR` rollups (`mentionRate`, `citationRate`) |
-| `weo-engagement.ttl` | draft v0 | `SearchIntent` individuals (Broder 2002, extended), `ConversionPoint` (+ `CallToAction` / `LeadCaptureForm` / `GatedAsset`), `ConversionEvent`, `crmRecordRef` (the CRM join key), `attributedResponse` (pre-click attribution — a labeled interpretation) |
-| `weo-decision.ttl` | the interpretation tier | `Diagnostic`, `Gap`, `Tactic`, `Capability`, `Experiment`, `Outcome`, `Recommendation`; the chain `reveals`→`addressableBy`→`requiresCapability` (scope gate)→`tests`/`inContext`→`recommends`/`supportedBy`. Classes, never values — `gapType`/`inIntervention`/`onDimension`/`atPriority` are `skos:Concept` slots you fill. |
-| `weo-strategy.ttl` | the norms tier | `Practice` (a standing rule: `guardrail` vetoes a candidate, `preference` reorders it, `guidance` caveats it), `Playbook` (a reusable discipline bundle); `constrains`, `appliesToConcept`, `appliedPractice` (the audit edge — why a candidate was blocked), `supersedes` (revisable, never deleted), `hasRole` (page roles as a derivation, not regexes), `appliesAtScope` (the tenancy specificity ladder). Governs **how** a `Recommendation` is allowed to be made. |
-| `weo-delivery.ttl` | the delivery layer | `Project` (the contract — `engagementType`, `interventionQuota`, `cadence`/`durationDays`, what's `inScope`), `Campaign` (a body of work `aboutTopic`, covering URLs and Terms), `Objective` → `MetricTarget` (the intent, as targets a later `Outcome` is read against). `Recommendation` `issuedFor` a campaign; `Experiment` `measures` a target. The layer the decision and norms tiers left open. |
-| `weo-schemes.ttl` · `schemes.json` | reference values | **The slots, filled.** SKOS concept schemes for every `skos:Concept` slot and controlled string in the ontology — 20 schemes, ~100 concepts: gap types, verdicts, priority, the intervention catalogue, lifecycles, metrics, epistemic layers. Every value lifted from a production implementation and sourced. `schemes.json` is the generated projection for anything that builds an enum at boot. |
-| `weo-align.ttl` | interoperability | Optional bridges — schema.org (`WebSite`, `WebPage`, `Brand`, `Observation`), PROV-O (`Crawl`→`Activity`, `Engine`→`SoftwareAgent`, `LLMResponse`→`Entity`), SKOS (`Topic`→`Concept`, `childOf`→`broader`). **Alignments, not dependencies.** |
+| `xeo-core.ttl` | the SEO substrate | `Website`, `URL`, `Term`, `Crawl`, `SerpSnapshot`, `Topic`, `SearchPerformanceFact`; `FETCHED`, `LINKS_TO`, `REDIRECTS_TO`, `HAS_CANONICAL`, `RANKS_FOR` (windowed rollups with `datasetUri` provenance), `HAS_RESULT`, `IN_TOPIC` |
+| `xeo-visibility.ttl` | the xEO layer | `Engine` (+ `SearchEngine` / `GenerativeEngine` / `AnswerEngine` / `ConversationalAgent`), `Brand`, `Prompt`, `LLMResponse`; `CITES`, `MENTIONS {mentionRank}`, `FANS_OUT_TO` (fan-out queries **are** Terms — the join back to rank data), `VISIBILITY_FOR` rollups (`mentionRate`, `citationRate`) |
+| `xeo-engagement.ttl` | draft v0 | `SearchIntent` individuals (Broder 2002, extended), `ConversionPoint` (+ `CallToAction` / `LeadCaptureForm` / `GatedAsset`), `ConversionEvent`, `crmRecordRef` (the CRM join key), `attributedResponse` (pre-click attribution — a labeled interpretation) |
+| `xeo-decision.ttl` | the interpretation tier | `Diagnostic`, `Gap`, `Tactic`, `Capability`, `Experiment`, `Outcome`, `Recommendation`; the chain `reveals`→`addressableBy`→`requiresCapability` (scope gate)→`tests`/`inContext`→`recommends`/`supportedBy`. Classes, never values — `gapType`/`inIntervention`/`onDimension`/`atPriority` are `skos:Concept` slots you fill. |
+| `xeo-strategy.ttl` | the norms tier | `Practice` (a standing rule: `guardrail` vetoes a candidate, `preference` reorders it, `guidance` caveats it), `Playbook` (a reusable discipline bundle); `constrains`, `appliesToConcept`, `appliedPractice` (the audit edge — why a candidate was blocked), `supersedes` (revisable, never deleted), `hasRole` (page roles as a derivation, not regexes), `appliesAtScope` (the tenancy specificity ladder). Governs **how** a `Recommendation` is allowed to be made. |
+| `xeo-delivery.ttl` | the delivery layer | `Project` (the contract — `engagementType`, `interventionQuota`, `cadence`/`durationDays`, what's `inScope`), `Campaign` (a body of work `aboutTopic`, covering URLs and Terms), `Objective` → `MetricTarget` (the intent, as targets a later `Outcome` is read against). `Recommendation` `issuedFor` a campaign; `Experiment` `measures` a target. The layer the decision and norms tiers left open. |
+| `xeo-schemes.ttl` · `schemes.json` | reference values | **The slots, filled.** SKOS concept schemes for every `skos:Concept` slot and controlled string in the ontology — 20 schemes, ~100 concepts: gap types, verdicts, priority, the intervention catalogue, lifecycles, metrics, epistemic layers. Every value lifted from a production implementation and sourced. `schemes.json` is the generated projection for anything that builds an enum at boot. |
+| `xeo-align.ttl` | interoperability | Optional bridges — schema.org (`WebSite`, `WebPage`, `Brand`, `Observation`), PROV-O (`Crawl`→`Activity`, `Engine`→`SoftwareAgent`, `LLMResponse`→`Entity`), SKOS (`Topic`→`Concept`, `childOf`→`broader`). **Alignments, not dependencies.** |
 | `context.jsonld` | interoperability | A JSON-LD `@context` mapping graph labels/relationships/properties to IRIs — turns a Neo4j export into valid RDF/JSON-LD in one pass. |
 | `schema.cypher` | property graph | Neo4j 5.x constraints + indexes for every module |
 
 The core module is the stable substrate. Visibility is field-tested against a
 working tracker/response-capture/Neo4j implementation. Decision and strategy are
-implemented in production (see `weo-graph-kit` for a runnable slice). Engagement
+implemented in production (see `xeo-graph-kit` for a runnable slice). Engagement
 is an early draft published for discussion — the "pre-click funnel" seam that
 engine-side data has been missing.
 
@@ -119,7 +128,7 @@ RETURN e.id, cp.crmRecordRef, collect(r.id) AS candidate_responses;
 
 ## The decision layer — from an observation to a labeled recommendation
 
-`weo-decision.ttl` is where facts become a plan, honestly labeled as
+`xeo-decision.ttl` is where facts become a plan, honestly labeled as
 interpretation. It is the one chain the whole model builds toward —
 
 ```
@@ -155,20 +164,20 @@ is the right base for the "bring your own scheme" layer.)
 
 ## Interoperability — stands alone, bridges out
 
-WEO has **no hard dependency**: core, visibility, and engagement load and reason
+XEO has **no hard dependency**: core, visibility, and engagement load and reason
 with zero external vocabularies present. It grounds its own terms in primary
 standards (HTTP, WHATWG, the GSC API) rather than borrowing another SEO ontology.
 
-For anyone who already speaks the foundational web vocabularies, `weo-align.ttl`
+For anyone who already speaks the foundational web vocabularies, `xeo-align.ttl`
 is an **optional crosswalk** — alignments, not imports:
 
 - **schema.org** (the neutral base for web entities): `Website`→`schema:WebSite`,
   `URL`→`schema:WebPage`, `Brand`→`schema:Brand`, `SearchPerformanceFact`→`schema:Observation`.
-  Two calibrated choices keep the bridges honest: `weo:URL` is a `skos:closeMatch`
-  (not an equivalence) to `schema:WebPage`, because WEO deliberately keeps the
+  Two calibrated choices keep the bridges honest: `xeo:URL` is a `skos:closeMatch`
+  (not an equivalence) to `schema:WebPage`, because XEO deliberately keeps the
   address (entity) separate from the page's rendered state (a Fetch observation);
   metrics map to `schema:Observation`, never a reified score class.
-- **PROV-O** (the provenance spine): WEO's epistemic layering *is* provenance.
+- **PROV-O** (the provenance spine): XEO's epistemic layering *is* provenance.
   `Crawl` is a `prov:Activity`, `Engine` a `prov:SoftwareAgent`, a captured
   `LLMResponse` a `prov:Entity` attributed (`onEngine`→`prov:wasAttributedTo`) to
   the engine that generated it. The decision layer extends the same spine — an
@@ -179,7 +188,7 @@ is an **optional crosswalk** — alignments, not imports:
   scheme — of topics, gaps, or funnel stages — without editing the ontology.
 
 Alignment uses `skos:closeMatch` where the correspondence is approximate (no
-forced logical entailment) and `rdfs:subClassOf`/`subPropertyOf` only where a WEO
+forced logical entailment) and `rdfs:subClassOf`/`subPropertyOf` only where a XEO
 term is a genuine specialization. The bridges assert nothing false and can be
 ignored entirely.
 
@@ -190,7 +199,7 @@ object properties resolve to node references, datatype properties carry their
 
 ## What is deliberately NOT here
 
-- **Filled-in norms** — `weo-strategy` ships the *mechanism* for standing rules
+- **Filled-in norms** — `xeo-strategy` ships the *mechanism* for standing rules
   (`Practice`, `practiceKind`, `appliesToConcept`, `appliedPractice`), never the
   rules themselves. "Never 301 a paginated archive" is an instance you author, and
   which Practices a given tenancy activates or overrides is data, not schema.
@@ -207,29 +216,29 @@ object properties resolve to node references, datatype properties carry their
 
 ## The slots, filled — reference schemes
 
-An ontology that ships classes and never values leaves slots: `weo:gapType`,
-`weo:atPriority`, `weo:inIntervention`, `weo:status`. A slot nobody fills gets
+An ontology that ships classes and never values leaves slots: `xeo:gapType`,
+`xeo:atPriority`, `xeo:inIntervention`, `xeo:status`. A slot nobody fills gets
 filled locally, once per consumer, in prose — and the same status ends up
 described five different ways across five systems.
 
-`weo-schemes.ttl` fills the slots with the vocabulary one agency actually runs in
+`xeo-schemes.ttl` fills the slots with the vocabulary one agency actually runs in
 production, lifted verbatim from the repos named in each scheme's `dct:source`.
-It is published under its own namespace (`weos:`) so it stays separable from
+It is published under its own namespace (`xeos:`) so it stays separable from
 the ontology proper: **adopt a scheme as-is, extend it, or replace it** — the
-slot is what WEO defines; a scheme is one answer.
+slot is what XEO defines; a scheme is one answer.
 
 | Scheme | Fills | Concepts |
 |---|---|---|
-| `gapType` | `weo:gapType` | 14 — what kind of deficit a Diagnostic found |
-| `gapVerdict` | `weo:verdict` | 5 — attack · fix first · defend · hold · ignore |
-| `intervention` | `weo:inIntervention` | 8 — **the service catalogue**: what an agency can deploy, who controls it, lead time |
-| `priority` | `weo:atPriority` | 3 — now · next · later |
-| `recommendationStatus` · `experimentStatus` · `practiceStatus` | `weo:status` | the three lifecycles |
+| `gapType` | `xeo:gapType` | 14 — what kind of deficit a Diagnostic found |
+| `gapVerdict` | `xeo:verdict` | 5 — attack · fix first · defend · hold · ignore |
+| `intervention` | `xeo:inIntervention` | 8 — **the service catalogue**: what an agency can deploy, who controls it, lead time |
+| `priority` | `xeo:atPriority` | 3 — now · next · later |
+| `recommendationStatus` · `experimentStatus` · `practiceStatus` | `xeo:status` | the three lifecycles |
 | `practiceKind` · `practiceSource` · `practiceOutcome` | the norms tier | how a rule acts, where it came from, what it did |
-| `outcomeResult` · `outcomeResultReason` | `weo:result` · `weo:resultReason` | did it move, and why it couldn't be judged |
+| `outcomeResult` · `outcomeResultReason` | `xeo:result` · `xeo:resultReason` | did it move, and why it couldn't be judged |
 | `objectiveMetric` · `targetKind` · `engagementType` · `cadence` · `effort` · `execution` | the delivery layer | |
-| `magnitudeUnit` | `weo:magnitudeUnit` | 8 — a size is never rendered bare |
-| `epistemicLayer` | `weo:epistemicLayer` | the six kinds of claim, one IRI each |
+| `magnitudeUnit` | `xeo:magnitudeUnit` | 8 — a size is never rendered bare |
+| `epistemicLayer` | `xeo:epistemicLayer` | the six kinds of claim, one IRI each |
 
 Two conventions make them consumable by software: `skos:notation` on every
 concept is **the code** — the exact string a system stores or sends — and
@@ -239,7 +248,7 @@ build a JSON Schema `enum` at boot without parsing Turtle:
 ```python
 import json, urllib.request
 schemes = json.load(urllib.request.urlopen(
-    "https://raw.githubusercontent.com/inboundfound/weo-ontology/main/schemes.json"))["schemes"]
+    "https://raw.githubusercontent.com/inboundfound/xeo-ontology/main/schemes.json"))["schemes"]
 GAP_TYPES = [c["code"] for c in schemes["gapType"]["concepts"]]   # 14 codes, in stated order
 ```
 
@@ -253,17 +262,17 @@ the JSON by hand.
 cat schema.cypher | cypher-shell -u neo4j -p <password>
 ```
 
-The TTL files are plain OWL — load `weo-core`, `weo-visibility`,
-`weo-engagement`, `weo-decision`, `weo-strategy`, `weo-delivery`, and (if you
-want the crosswalk) `weo-align` into any triple store or ontology editor.
+The TTL files are plain OWL — load `xeo-core`, `xeo-visibility`,
+`xeo-engagement`, `xeo-decision`, `xeo-strategy`, `xeo-delivery`, and (if you
+want the crosswalk) `xeo-align` into any triple store or ontology editor.
 Decision builds on core; strategy and delivery build on decision; the rest stand
-alone. `weo-schemes` is SKOS data, not ontology — load it where you want the
+alone. `xeo-schemes` is SKOS data, not ontology — load it where you want the
 reference values. To publish graph data as linked data, serve your
 Neo4j export under `context.jsonld` and it validates as RDF/JSON-LD.
 
 **Namespace.** Terms currently resolve under GitHub Pages
-(`https://inboundfound.github.io/weo-ontology/weo#`). The intended permanent home
-is **weoontology.org** — served with content negotiation so each term IRI
+(`https://xeoontology.org/xeo#`). The intended permanent home
+is **xeoontology.org** — served with content negotiation so each term IRI
 resolves to human docs (HTML) or the ontology (Turtle). Local term names never
 change, so a w3id.org-style redirect can front either host without breaking any
 published IRI.

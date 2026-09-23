@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Generate schemes.json — the reference schemes as plain JSON.
 
-weo-schemes.ttl is the source of truth: SKOS concept schemes filling the slots
+xeo-schemes.ttl is the source of truth: SKOS concept schemes filling the slots
 the ontology leaves open (gapType, atPriority, inIntervention, status, ...).
 Nobody should parse Turtle at boot to build a JSON Schema enum, so this
 projects the same schemes to JSON, the way context.jsonld ships a
@@ -23,11 +23,11 @@ from rdflib.collection import Collection
 from rdflib.namespace import DCTERMS, OWL, SKOS
 
 HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SRC = os.path.join(HERE, "weo-schemes.ttl")
+SRC = os.path.join(HERE, "xeo-schemes.ttl")
 DEST = os.path.join(HERE, "schemes.json")
 
-WEO = Namespace("https://inboundfound.github.io/weo-ontology/weo#")
-WEOS = Namespace("https://inboundfound.github.io/weo-ontology/schemes#")
+XEO = Namespace("https://xeoontology.org/xeo#")
+XEOS = Namespace("https://xeoontology.org/schemes#")
 
 
 def local(iri: URIRef) -> str:
@@ -36,10 +36,10 @@ def local(iri: URIRef) -> str:
 
 def curie(iri: URIRef) -> str:
     s = str(iri)
-    if s.startswith(str(WEO)):
-        return "weo:" + local(iri)
-    if s.startswith(str(WEOS)):
-        return "weos:" + local(iri)
+    if s.startswith(str(XEO)):
+        return "xeo:" + local(iri)
+    if s.startswith(str(XEOS)):
+        return "xeos:" + local(iri)
     return s
 
 
@@ -87,7 +87,7 @@ def main() -> int:
                 "note": text(g, c, SKOS.note),
             })
 
-        fills = g.value(scheme, WEO.fillsSlot)
+        fills = g.value(scheme, XEO.fillsSlot)
         schemes[local(scheme)] = {
             "iri": str(scheme),
             "label": text(g, scheme, SKOS.prefLabel),
@@ -99,9 +99,9 @@ def main() -> int:
         }
 
     out = {
-        "$comment": "Generated from weo-schemes.ttl by tools/gen_schemes.py — do not edit by hand.",
-        "namespace": str(WEOS),
-        "ontology": str(WEO),
+        "$comment": "Generated from xeo-schemes.ttl by tools/gen_schemes.py — do not edit by hand.",
+        "namespace": str(XEOS),
+        "ontology": str(XEO),
         "version": version,
         "schemes": schemes,
     }
