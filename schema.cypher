@@ -1,4 +1,4 @@
-// WEO Ontology — Neo4j 5.x schema (core + visibility + engagement + decision + strategy)
+// XEO Ontology — Neo4j 5.x schema (core + visibility + engagement + decision + strategy)
 // Entities are durable, episodes are immutable, tenancy lives in properties.
 
 // ========== CORE ==========
@@ -126,7 +126,7 @@ FOR (g:Gap) ON (g.websiteId);
 // Practices and Playbooks are authored once and reused; what varies per tenant is
 // which Playbooks are activated and which Practices are overridden. Both are
 // global by id — tenancy rides on the activation and override edges, not on the
-// rule itself. Matches weo-graph-kit/seed/practices.cypher.
+// rule itself. Matches xeo-graph-kit/seed/practices.cypher.
 
 CREATE CONSTRAINT practice_id IF NOT EXISTS
 FOR (p:Practice) REQUIRE p.id IS UNIQUE;

@@ -2,11 +2,11 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
 @prefix dct:  <http://purl.org/dc/terms/> .
-@prefix weo:  <https://inboundfound.github.io/weo-ontology/weo#> .
+@prefix xeo:  <https://xeoontology.org/xeo#> .
 
-# WEO Visibility module — the xEO layer.
+# XEO Visibility module — the xEO layer.
 #
-# Extends WEO Core with the terms needed once "the engine" stops being a
+# Extends XEO Core with the terms needed once "the engine" stops being a
 # results page and starts being an answer: generative overviews, answer
 # engines, conversational agents. Same discipline as core — entities are
 # durable, episodes (captured responses) are immutable, observations are
@@ -14,139 +14,139 @@
 # produced carries provenance. Field-tested against a working
 # tracker + response-capture + Neo4j implementation before publication.
 
-weo:visibility-module a owl:Ontology ;
-    dct:title "WEO Visibility (the xEO layer)" ;
-    dct:description "Extends WEO Core with the terms needed once the engine stops being a results page and starts being an answer: engines, prompts, captured responses, citations, mentions, and the visibility rollups over them." ;
+xeo:visibility-module a owl:Ontology ;
+    dct:title "XEO Visibility (the xEO layer)" ;
+    dct:description "Extends XEO Core with the terms needed once the engine stops being a results page and starts being an answer: engines, prompts, captured responses, citations, mentions, and the visibility rollups over them." ;
     dct:creator "Inbound Found" ;
-    owl:versionInfo "0.4.0" .
+    owl:versionInfo "0.5.0" .
 
 # --- Classes ----------------------------------------------------------------
 
-weo:Engine a owl:Class ;
+xeo:Engine a owl:Class ;
     rdfs:label "Engine" ;
-    weo:epistemicLayer "entity" ;
+    xeo:epistemicLayer "entity" ;
     dct:description "A system that mediates between a person's question and web content. The taxonomy below is operational, not doctrinal — subclass as engines evolve." .
 
-weo:SearchEngine a owl:Class ; rdfs:subClassOf weo:Engine ;
+xeo:SearchEngine a owl:Class ; rdfs:subClassOf xeo:Engine ;
     rdfs:label "Search Engine" ;
     dct:description "Classic ranked-results retrieval (the SEO surface)." .
 
-weo:GenerativeEngine a owl:Class ; rdfs:subClassOf weo:Engine ;
+xeo:GenerativeEngine a owl:Class ; rdfs:subClassOf xeo:Engine ;
     rdfs:label "Generative Engine" ;
     dct:description "Search-integrated generated answers — AI overviews and AI modes (the GEO surface)." .
 
-weo:AnswerEngine a owl:Class ; rdfs:subClassOf weo:Engine ;
+xeo:AnswerEngine a owl:Class ; rdfs:subClassOf xeo:Engine ;
     rdfs:label "Answer Engine" ;
     dct:description "Assistants that answer with web search and citations (the AEO surface)." .
 
-weo:ConversationalAgent a owl:Class ; rdfs:subClassOf weo:Engine ;
+xeo:ConversationalAgent a owl:Class ; rdfs:subClassOf xeo:Engine ;
     rdfs:label "Conversational Agent" ;
     dct:description "Multi-turn agents and voice surfaces acting on a user's behalf." .
 
-weo:Brand a owl:Class ;
+xeo:Brand a owl:Class ;
     rdfs:label "Brand" ;
-    weo:epistemicLayer "entity" ;
+    xeo:epistemicLayer "entity" ;
     dct:description "A named market identity that engines may mention, cite, or recommend. Distinct from Website: a brand can be visible on the whole web, not only its own origin." .
 
-weo:Prompt a owl:Class ;
+xeo:Prompt a owl:Class ;
     rdfs:label "Prompt" ;
-    weo:epistemicLayer "entity" ;
+    xeo:epistemicLayer "entity" ;
     dct:description "A tracked natural-language question posed to engines. Distinct from Term: a prompt is what a person asks; the engine's retrieval fans out into Terms." .
 
-weo:LLMResponse a owl:Class ;
+xeo:LLMResponse a owl:Class ;
     rdfs:label "LLM Response" ;
-    weo:epistemicLayer "episode" ;
+    xeo:epistemicLayer "episode" ;
     dct:description "One captured response from one engine/model for one Prompt at a moment: time-bounded, source-attributed, immutable once captured. The visibility sibling of SerpSnapshot." .
 
 # --- Object properties -------------------------------------------------------
 
-weo:tracksPrompt a owl:ObjectProperty ;
-    rdfs:domain weo:Website ; rdfs:range weo:Prompt ;
-    weo:epistemicLayer "entity" ;
+xeo:tracksPrompt a owl:ObjectProperty ;
+    rdfs:domain xeo:Website ; rdfs:range xeo:Prompt ;
+    xeo:epistemicLayer "entity" ;
     dct:description "This tenant tracks this prompt. Tenancy is data, not schema." .
 
-weo:hasResponse a owl:ObjectProperty ;
-    rdfs:domain weo:Prompt ; rdfs:range weo:LLMResponse ;
-    weo:epistemicLayer "episode" .
+xeo:hasResponse a owl:ObjectProperty ;
+    rdfs:domain xeo:Prompt ; rdfs:range xeo:LLMResponse ;
+    xeo:epistemicLayer "episode" .
 
-weo:onEngine a owl:ObjectProperty ;
-    rdfs:domain weo:LLMResponse ; rdfs:range weo:Engine ;
-    weo:epistemicLayer "episode" ;
+xeo:onEngine a owl:ObjectProperty ;
+    rdfs:domain xeo:LLMResponse ; rdfs:range xeo:Engine ;
+    xeo:epistemicLayer "episode" ;
     dct:description "Which engine (and, via model/modelVersion properties, which model) produced this response." .
 
-weo:cites a owl:ObjectProperty ;
-    rdfs:domain weo:LLMResponse ; rdfs:range weo:URL ;
-    weo:epistemicLayer "observation" ;
-    weo:groundedIn "Engine response citation annotations (per-provider API contract)" ;
+xeo:cites a owl:ObjectProperty ;
+    rdfs:domain xeo:LLMResponse ; rdfs:range xeo:URL ;
+    xeo:epistemicLayer "observation" ;
+    xeo:groundedIn "Engine response citation annotations (per-provider API contract)" ;
     dct:description "The response grounded on this URL, per the engine's own citation annotations. Carries citationRank where the engine orders its sources. The visibility sibling of hasResult." .
 
-weo:mentions a owl:ObjectProperty ;
-    rdfs:domain weo:LLMResponse ; rdfs:range weo:Brand ;
-    weo:epistemicLayer "observation" ;
+xeo:mentions a owl:ObjectProperty ;
+    rdfs:domain xeo:LLMResponse ; rdfs:range xeo:Brand ;
+    xeo:epistemicLayer "observation" ;
     dct:description "The brand's name appears in the response text. Carries mentionRank (order of first appearance) — high mention counts at poor ranks are the 'named among twelve, championed never' pattern. Extraction method (string match, NER model) must be recorded; model-extracted mentions are derivations, not observations." .
 
-weo:fansOutTo a owl:ObjectProperty ;
-    rdfs:domain weo:Prompt ; rdfs:range weo:Term ;
-    weo:epistemicLayer "observation" ;
-    weo:groundedIn "Engine-reported retrieval queries (per-provider API contract)" ;
+xeo:fansOutTo a owl:ObjectProperty ;
+    rdfs:domain xeo:Prompt ; rdfs:range xeo:Term ;
+    xeo:epistemicLayer "observation" ;
+    xeo:groundedIn "Engine-reported retrieval queries (per-provider API contract)" ;
     dct:description "A retrieval query the engine reported issuing while answering this prompt. Fan-out queries ARE Terms — the join between the xEO layer and classic rank data. Carries the reporting engine and capture episode." .
 
-weo:visibilityFor a owl:ObjectProperty ;
-    rdfs:domain weo:Prompt ; rdfs:range weo:Brand ;
-    weo:epistemicLayer "observation" ;
-    weo:canonicalStore "neo4j" ;
+xeo:visibilityFor a owl:ObjectProperty ;
+    rdfs:domain xeo:Prompt ; rdfs:range xeo:Brand ;
+    xeo:epistemicLayer "observation" ;
+    xeo:canonicalStore "neo4j" ;
     dct:description "Windowed rollup of response-level observations for a (prompt, brand) pair: mentionRate, citationRate, responses, periodStart, periodEnd, source, datasetUri. Mirrors the ranksFor rollup pattern — raw responses are the authoritative record; this is the traversal-friendly projection." .
 
 # --- Datatype properties ------------------------------------------------------
 
-weo:capturedAt a owl:DatatypeProperty ;
-    rdfs:domain weo:LLMResponse ; rdfs:range xsd:dateTime ;
-    weo:epistemicLayer "episode" .
+xeo:capturedAt a owl:DatatypeProperty ;
+    rdfs:domain xeo:LLMResponse ; rdfs:range xsd:dateTime ;
+    xeo:epistemicLayer "episode" .
 
-weo:model a owl:DatatypeProperty ;
-    rdfs:domain weo:LLMResponse ; rdfs:range xsd:string ;
-    weo:epistemicLayer "episode" ;
+xeo:model a owl:DatatypeProperty ;
+    rdfs:domain xeo:LLMResponse ; rdfs:range xsd:string ;
+    xeo:epistemicLayer "episode" ;
     dct:description "Model identifier + version as reported at capture time. Without this the episode is not comparable across time." .
 
-weo:webSearchEnabled a owl:DatatypeProperty ;
-    rdfs:domain weo:LLMResponse ; rdfs:range xsd:boolean ;
-    weo:epistemicLayer "episode" ;
+xeo:webSearchEnabled a owl:DatatypeProperty ;
+    rdfs:domain xeo:LLMResponse ; rdfs:range xsd:boolean ;
+    xeo:epistemicLayer "episode" ;
     dct:description "Whether the engine could search the web for this response. Citation behavior differs sharply with this flag; never pool across it silently." .
 
-weo:mentionRank a owl:DatatypeProperty ;
+xeo:mentionRank a owl:DatatypeProperty ;
     rdfs:range xsd:integer ;
-    weo:epistemicLayer "observation" ;
+    xeo:epistemicLayer "observation" ;
     dct:description "1-based order of the brand's first appearance in the response text. Carried on mentions edges." .
 
-weo:mentionRate a owl:DatatypeProperty ;
+xeo:mentionRate a owl:DatatypeProperty ;
     rdfs:range xsd:decimal ;
-    weo:epistemicLayer "observation" ;
+    xeo:epistemicLayer "observation" ;
     dct:description "Share of captured responses in the window that mention the brand. Carried on visibilityFor rollups." .
 
-weo:citationRate a owl:DatatypeProperty ;
+xeo:citationRate a owl:DatatypeProperty ;
     rdfs:range xsd:decimal ;
-    weo:epistemicLayer "observation" ;
+    xeo:epistemicLayer "observation" ;
     dct:description "Share of captured responses in the window that cite the brand's owned URLs. Cited and mentioned diverge — a page can ground an answer that names someone else." .
 
 # --- Relationship-carried properties -----------------------------------------
 # Declared for the same reason as core's: context.jsonld already publishes them.
 
-weo:text a owl:DatatypeProperty ;
+xeo:text a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
-    weo:epistemicLayer "entity" ;
+    xeo:epistemicLayer "entity" ;
     dct:description "The natural-language body of a Prompt as posed to the engine. Part of a Prompt's identity together with websiteId." .
 
-weo:modelVersion a owl:DatatypeProperty ;
+xeo:modelVersion a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
-    weo:epistemicLayer "episode" ;
+    xeo:epistemicLayer "episode" ;
     dct:description "The model build reported at capture time, where the engine distinguishes it from the model name. Without model + modelVersion an episode is not comparable across time." .
 
-weo:citationRank a owl:DatatypeProperty ;
+xeo:citationRank a owl:DatatypeProperty ;
     rdfs:range xsd:integer ;
-    weo:epistemicLayer "observation" ;
+    xeo:epistemicLayer "observation" ;
     dct:description "1-based order of a cited source where the engine orders its citations. Carried on cites; absent where the engine reports an unordered set." .
 
-weo:responses a owl:DatatypeProperty ;
+xeo:responses a owl:DatatypeProperty ;
     rdfs:range xsd:integer ;
-    weo:epistemicLayer "observation" ;
+    xeo:epistemicLayer "observation" ;
     dct:description "How many captured responses the rollup window covers — the denominator behind mentionRate and citationRate. Carried on visibilityFor; a rate without it cannot be weighted." .

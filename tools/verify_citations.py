@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
-"""Verify that consuming code's references to WEO terms still resolve.
+"""Verify that consuming code's references to XEO terms still resolve.
 
-Consumers annotate their models with the WEO term each one implements. There are
+Consumers annotate their models with the XEO term each one implements. There are
 two ways to write that reference, and this checks both.
 
 TERM REFERENCES (preferred) name the term itself:
 
-    // `weo:Recommendation` (`weo-decision.ttl`)
+    // `xeo:Recommendation` (`xeo-decision.ttl`)
 
 A term name is stable for the life of the term, so the only way this goes wrong
 is if the term is renamed or removed — which this catches.
 
 LINE CITATIONS name a position in a file:
 
-    // weo-decision.ttl:78-82
+    // xeo-decision.ttl:78-82
 
 These are exact when written and silently false the moment anything is inserted
 above them. Nothing breaks; the comment just starts naming a different term, and
@@ -51,9 +51,9 @@ import subprocess
 import sys
 
 ONTOLOGY_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-CITATION = re.compile(r"(weo-[a-z]+\.ttl):(\d+)(?:\s*-\s*(\d+))?")
-TERM_REF = re.compile(r"(?<![\w-])weo:([A-Za-z][\w-]*)")
-DECLARATION = re.compile(r"^weo:([\w-]+)\s+(?:a\s|rdfs:|skos:)")
+CITATION = re.compile(r"(xeo-[a-z]+\.ttl):(\d+)(?:\s*-\s*(\d+))?")
+TERM_REF = re.compile(r"(?<![\w-])xeo:([A-Za-z][\w-]*)")
+DECLARATION = re.compile(r"^xeo:([\w-]+)\s+(?:a\s|rdfs:|skos:)")
 SKIP_DIRS = {".git", "node_modules", "dist", "build", ".next", "coverage", "__pycache__"}
 TEXT_SUFFIXES = (".ts", ".tsx", ".js", ".mjs", ".cjs", ".py", ".md", ".cypher", ".graphql", ".gql")
 
@@ -79,7 +79,7 @@ def load_ontology() -> dict[str, tuple[dict[int, str], int]]:
     return {
         name: term_spans(os.path.join(ONTOLOGY_DIR, name))
         for name in os.listdir(ONTOLOGY_DIR)
-        if name.startswith("weo-") and name.endswith(".ttl")
+        if name.startswith("xeo-") and name.endswith(".ttl")
     }
 
 
@@ -94,7 +94,7 @@ def sources(root: str, ref: str | None):
     me = os.path.basename(__file__)
     if ref:
         listing = subprocess.run(
-            ["git", "grep", "-l", "-e", r"weo-.*\.ttl:", "-e", r"weo:", ref],
+            ["git", "grep", "-l", "-e", r"xeo-.*\.ttl:", "-e", r"xeo:", ref],
             cwd=root, capture_output=True, text=True,
         )
         for spec in listing.stdout.split():
@@ -115,7 +115,7 @@ def sources(root: str, ref: str | None):
                 text = open(path, encoding="utf-8").read()
             except (UnicodeDecodeError, OSError):
                 continue
-            if "ttl:" in text or "weo:" in text:
+            if "ttl:" in text or "xeo:" in text:
                 yield os.path.relpath(path, root), text
 
 
@@ -123,7 +123,7 @@ def declared_terms() -> set[str]:
     """Every term any module declares — the vocabulary a consumer may name."""
     terms: set[str] = set()
     for name in os.listdir(ONTOLOGY_DIR):
-        if not (name.startswith("weo-") and name.endswith(".ttl")):
+        if not (name.startswith("xeo-") and name.endswith(".ttl")):
             continue
         with open(os.path.join(ONTOLOGY_DIR, name), encoding="utf-8") as handle:
             for line in handle:
@@ -145,7 +145,7 @@ def check(roots: list[str], ref: str | None) -> int:
                 for term in TERM_REF.findall(line):
                     status = "OK" if term in vocabulary else "UNDECLARED"
                     term_rows.append((label, filename, line_number,
-                                      "weo:" + term, status))
+                                      "xeo:" + term, status))
                 for hit in CITATION.finditer(line):
                     name = hit.group(1)
                     start = int(hit.group(2))
@@ -167,10 +167,10 @@ def check(roots: list[str], ref: str | None) -> int:
                     else:
                         status = "SPANS-MULTIPLE"
                     rows.append((label, filename, line_number, hit.group(0), status,
-                                 " + ".join("weo:" + f for f in found)))
+                                 " + ".join("xeo:" + f for f in found)))
 
     if not rows and not term_rows:
-        print("No WEO references found. Nothing to verify.")
+        print("No XEO references found. Nothing to verify.")
         return 0
 
     failures = [row for row in rows if row[4] != "OK"]
@@ -188,7 +188,7 @@ def check(roots: list[str], ref: str | None) -> int:
               f"{len(failures)} to fix")
         if failures:
             print("\n  Re-anchor a failing citation to the term name "
-                  "(`weo:Recommendation`) rather than widening the range.")
+                  "(`xeo:Recommendation`) rather than widening the range.")
         print()
 
     if term_rows:

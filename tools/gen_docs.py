@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-"""Generate weo/index.html — human-readable docs for the WEO ontology.
+"""Generate xeo/index.html — human-readable docs for the XEO ontology.
 
-Reads the weo-*.ttl modules and emits ONE self-contained HTML page. Because WEO
-uses a hash namespace (…/weo#Term), the whole ontology is a single document and
+Reads the xeo-*.ttl modules and emits ONE self-contained HTML page. Because XEO
+uses a hash namespace (…/xeo#Term), the whole ontology is a single document and
 each term is a #fragment within it — so giving every term an ``id`` here is what
-makes its IRI resolve (…/weo#Gap scrolls to the Gap section).
+makes its IRI resolve (…/xeo#Gap scrolls to the Gap section).
 
 Requires rdflib (``pip install rdflib``).
-Usage:  python tools/gen_docs.py        # writes weo/index.html
+Usage:  python tools/gen_docs.py        # writes xeo/index.html
 """
 import html
 import os
@@ -15,17 +15,17 @@ from rdflib import Graph, RDF, RDFS, OWL, URIRef
 from rdflib.namespace import DCTERMS
 
 HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-NS = "https://inboundfound.github.io/weo-ontology/weo#"
+NS = "https://xeoontology.org/xeo#"
 MODULES = [
-    "weo-core.ttl", "weo-visibility.ttl", "weo-engagement.ttl",
-    "weo-decision.ttl", "weo-strategy.ttl", "weo-delivery.ttl", "weo-align.ttl",
+    "xeo-core.ttl", "xeo-visibility.ttl", "xeo-engagement.ttl",
+    "xeo-decision.ttl", "xeo-strategy.ttl", "xeo-delivery.ttl", "xeo-align.ttl",
 ]
 EPI = URIRef(NS + "epistemicLayer")
 GROUNDED = URIRef(NS + "groundedIn")
 STORE = URIRef(NS + "canonicalStore")
 
 PREFIXES = {
-    NS: "weo:",
+    NS: "xeo:",
     "https://schema.org/": "schema:",
     "http://www.w3.org/ns/prov#": "prov:",
     "http://www.w3.org/2004/02/skos/core#": "skos:",
@@ -118,7 +118,7 @@ def main():
     objprops = grp(OWL.ObjectProperty, "Object properties")
     dataprops = grp(OWL.DatatypeProperty, "Datatype properties")
     annprops = grp(OWL.AnnotationProperty, "Annotation properties")
-    # individuals: typed by a weo class, not themselves a class/property
+    # individuals: typed by an xeo class, not themselves a class/property
     typed = {s for s in set(g.subjects()) if str(s).startswith(NS)}
     meta = set(g.subjects(RDF.type, OWL.Class)) | set(g.subjects(RDF.type, OWL.ObjectProperty)) \
         | set(g.subjects(RDF.type, OWL.DatatypeProperty)) | set(g.subjects(RDF.type, OWL.AnnotationProperty))
@@ -137,9 +137,9 @@ def main():
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>WEO — Web Engine Optimization ontology (terms)</title>
-<meta name="description" content="Term reference for the WEO ontology: classes, properties, and individuals across the core, visibility, engagement, decision, and strategy modules.">
-<link rel="alternate" type="text/turtle" href="weo-core.ttl">
+<title>XEO — the xEO family ontology (terms)</title>
+<meta name="description" content="Term reference for the XEO ontology: classes, properties, and individuals across the core, visibility, engagement, decision, and strategy modules.">
+<link rel="alternate" type="text/turtle" href="xeo-core.ttl">
 <style>
 :root {{ color-scheme: light dark; --bg:#f7f5ef; --surface:#fffdf8; --text:#17181c;
   --muted:#5b5f5a; --border:#ddd8c8; --accent:#1f4d4d; --link:#1f4d4d; }}
@@ -181,21 +181,21 @@ code {{ font-family:ui-monospace,SFMono-Regular,Menlo,monospace; }}
 </head>
 <body>
 <div class="wrap">
-<h1>WEO — the Web Engine Optimization ontology</h1>
-<p class="tag">Namespace <code>{NS}</code> · prefix <code>weo:</code> · v0.2 ·
-<a href="https://github.com/inboundfound/weo-ontology">repo</a> · CC BY 4.0</p>
-<p class="lead">One standards-grounded vocabulary for how web engines — search,
+<h1>XEO — the ontology for the xEO family</h1>
+<p class="tag">Namespace <code>{NS}</code> · prefix <code>xeo:</code> · v0.2 ·
+<a href="https://github.com/inboundfound/xeo-ontology">repo</a> · CC BY 4.0</p>
+<p class="lead">One standards-grounded vocabulary for how engines — search,
 generative, answer, conversational — see, cite, and serve content. Every term is
 typed by the kind of claim it makes; the strata run from durable bedrock to
 interpretive surface:</p>
 <div class="legend">{legend}</div>
-<div class="modnote">Modules: <code>weo-core</code> (substrate) ·
-<code>weo-visibility</code> (xEO) · <code>weo-engagement</code> (draft) ·
-<code>weo-decision</code> (interpretation tier) · <code>weo-strategy</code> (norms tier) ·
-<code>weo-align</code> (schema.org / PROV-O / SKOS bridges). Machine-readable Turtle:
-<a href="weo-core.ttl">core</a>, <a href="weo-visibility.ttl">visibility</a>,
-<a href="weo-engagement.ttl">engagement</a>, <a href="weo-decision.ttl">decision</a>,
-<a href="weo-strategy.ttl">strategy</a>, <a href="weo-align.ttl">align</a>;
+<div class="modnote">Modules: <code>xeo-core</code> (substrate) ·
+<code>xeo-visibility</code> (xEO) · <code>xeo-engagement</code> (draft) ·
+<code>xeo-decision</code> (interpretation tier) · <code>xeo-strategy</code> (norms tier) ·
+<code>xeo-align</code> (schema.org / PROV-O / SKOS bridges). Machine-readable Turtle:
+<a href="xeo-core.ttl">core</a>, <a href="xeo-visibility.ttl">visibility</a>,
+<a href="xeo-engagement.ttl">engagement</a>, <a href="xeo-decision.ttl">decision</a>,
+<a href="xeo-strategy.ttl">strategy</a>, <a href="xeo-align.ttl">align</a>;
 JSON-LD <a href="context.jsonld">context</a>.</div>
 {classes}
 {objprops}
@@ -206,8 +206,8 @@ JSON-LD <a href="context.jsonld">context</a>.</div>
 </body>
 </html>
 '''
-    os.makedirs(os.path.join(HERE, "weo"), exist_ok=True)
-    dest = os.path.join(HERE, "weo", "index.html")
+    os.makedirs(os.path.join(HERE, "xeo"), exist_ok=True)
+    dest = os.path.join(HERE, "xeo", "index.html")
     with open(dest, "w", encoding="utf-8") as fh:
         fh.write(out)
     n = out.count('class="term"')

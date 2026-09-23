@@ -1,0 +1,1087 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>XEO — the xEO family ontology (terms)</title>
+<meta name="description" content="Term reference for the XEO ontology: classes, properties, and individuals across the core, visibility, engagement, decision, and strategy modules.">
+<link rel="alternate" type="text/turtle" href="xeo-core.ttl">
+<style>
+:root { color-scheme: light dark; --bg:#f7f5ef; --surface:#fffdf8; --text:#17181c;
+  --muted:#5b5f5a; --border:#ddd8c8; --accent:#1f4d4d; --link:#1f4d4d; }
+@media (prefers-color-scheme: dark) { :root { --bg:#0d0f0d; --surface:#141714;
+  --text:#e6e8e1; --muted:#8a9089; --border:#262a24; --accent:#5fd9c0; --link:#5fd9c0; } }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--text);
+  font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
+.wrap { max-width:900px; margin:0 auto; padding:2.5rem 1.25rem 6rem; }
+h1,h2,h3 { font-family:Charter,"Iowan Old Style",Georgia,serif; line-height:1.2; }
+h1 { font-size:2rem; margin:0 0 .25rem; }
+.tag { color:var(--muted); font-size:.9rem; }
+h2 { margin:3rem 0 1rem; padding-bottom:.35rem; border-bottom:1px solid var(--border);
+  font-size:1.4rem; }
+h2 .n, h3 .mod { color:var(--muted); font-size:.7em; font-weight:400; }
+.term { background:var(--surface); border:1px solid var(--border); border-radius:8px;
+  padding:1rem 1.15rem; margin:.9rem 0; scroll-margin-top:1rem; }
+.term h3 { margin:0 0 .35rem; font-size:1.12rem; display:flex; align-items:center;
+  gap:.5rem; flex-wrap:wrap; }
+.term h3 .mod { margin-left:auto; }
+.iri { color:var(--muted); font-size:.82rem; }
+.term p { margin:.5rem 0 .25rem; }
+dl { margin:.5rem 0 0; border-top:1px dashed var(--border); padding-top:.5rem; }
+.row { display:flex; gap:.75rem; padding:.15rem 0; }
+.row dt { flex:0 0 8.5rem; color:var(--muted); font-size:.85rem; }
+.row dd { margin:0; font-size:.9rem; }
+a { color:var(--link); text-decoration:none; }
+a:hover { text-decoration:underline; }
+a.ext::after { content:" ↗"; font-size:.75em; opacity:.6; }
+code { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; }
+.layer { font-size:.65rem; text-transform:uppercase; letter-spacing:.04em;
+  padding:.1rem .45rem; border-radius:999px; color:#fff; background:var(--h);
+  font-family:system-ui; font-weight:600; }
+.legend { display:flex; gap:.4rem; flex-wrap:wrap; margin:1rem 0 0; }
+.lead { color:var(--muted); max-width:60ch; }
+.modnote { background:var(--surface); border:1px solid var(--border); border-radius:8px;
+  padding:.75rem 1rem; margin:1.25rem 0; font-size:.9rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>XEO — the ontology for the xEO family</h1>
+<p class="tag">Namespace <code>https://xeoontology.org/xeo#</code> · prefix <code>xeo:</code> · v0.2 ·
+<a href="https://github.com/inboundfound/xeo-ontology">repo</a> · CC BY 4.0</p>
+<p class="lead">One standards-grounded vocabulary for how engines — search,
+generative, answer, conversational — see, cite, and serve content. Every term is
+typed by the kind of claim it makes; the strata run from durable bedrock to
+interpretive surface:</p>
+<div class="legend"><span class="layer" style="--h:#718096">entity</span><span class="layer" style="--h:#319795">episode</span><span class="layer" style="--h:#38A169">observation</span><span class="layer" style="--h:#805AD5">derivation</span><span class="layer" style="--h:#DD6B20">interpretation</span><span class="layer" style="--h:#D69E2E">norm</span></div>
+<div class="modnote">Modules: <code>xeo-core</code> (substrate) ·
+<code>xeo-visibility</code> (xEO) · <code>xeo-engagement</code> (draft) ·
+<code>xeo-decision</code> (interpretation tier) · <code>xeo-strategy</code> (norms tier) ·
+<code>xeo-align</code> (schema.org / PROV-O / SKOS bridges). Machine-readable Turtle:
+<a href="xeo-core.ttl">core</a>, <a href="xeo-visibility.ttl">visibility</a>,
+<a href="xeo-engagement.ttl">engagement</a>, <a href="xeo-decision.ttl">decision</a>,
+<a href="xeo-strategy.ttl">strategy</a>, <a href="xeo-align.ttl">align</a>;
+JSON-LD <a href="context.jsonld">context</a>.</div>
+<h2 id="classes">Classes <span class="n">36</span></h2>
+<section id="AnswerEngine" class="term">
+  <h3>Answer Engine <span class="mod">xeo-visibility</span></h3>
+  <code class="iri">xeo:AnswerEngine</code>
+  <p>Assistants that answer with web search and citations (the AEO surface).</p>
+  <dl><div class="row"><dt>subclass of</dt><dd><a href="#Engine">xeo:Engine</a></dd></div></dl>
+</section>
+<section id="Brand" class="term">
+  <h3>Brand <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-visibility</span></h3>
+  <code class="iri">xeo:Brand</code>
+  <p>A named market identity that engines may mention, cite, or recommend. Distinct from Website: a brand can be visible on the whole web, not only its own origin.</p>
+  <dl><div class="row"><dt>closeMatch</dt><dd><a href="https://schema.org/Brand" class="ext">schema:Brand</a></dd></div></dl>
+</section>
+<section id="CallToAction" class="term">
+  <h3>Call To Action <span class="mod">xeo-engagement</span></h3>
+  <code class="iri">xeo:CallToAction</code>
+  <p></p>
+  <dl><div class="row"><dt>subclass of</dt><dd><a href="#ConversionPoint">xeo:ConversionPoint</a></dd></div></dl>
+</section>
+<section id="Campaign" class="term">
+  <h3>Campaign <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-delivery</span></h3>
+  <code class="iri">xeo:Campaign</code>
+  <p>A body of work inside a Project against one Topic: the URLs and Terms it covers, and the single Objective it is measured by. Recommendations are issuedFor a campaign, and it is the unit an operator plans a cycle around. Soft-deleted like its Project.</p>
+  
+</section>
+<section id="Capability" class="term">
+  <h3>Capability <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-decision</span></h3>
+  <code class="iri">xeo:Capability</code>
+  <p>A lever or strength a party can bring to bear (content, technical, PR, brand, ...). The unit of the scope gate: a Tactic is in reach only when every Capability it requires is approved. Specific capabilities are instances, not subclasses.</p>
+  
+</section>
+<section id="ConversationalAgent" class="term">
+  <h3>Conversational Agent <span class="mod">xeo-visibility</span></h3>
+  <code class="iri">xeo:ConversationalAgent</code>
+  <p>Multi-turn agents and voice surfaces acting on a user&#x27;s behalf.</p>
+  <dl><div class="row"><dt>subclass of</dt><dd><a href="#Engine">xeo:Engine</a></dd></div></dl>
+</section>
+<section id="ConversionEvent" class="term">
+  <h3>Conversion Event <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-engagement</span></h3>
+  <code class="iri">xeo:ConversionEvent</code>
+  <p>A submission/click/unlock that happened at a time. Immutable once recorded.</p>
+  <dl><div class="row"><dt>subclass of</dt><dd><a href="http://www.w3.org/ns/prov#Activity" class="ext">prov:Activity</a></dd></div></dl>
+</section>
+<section id="ConversionPoint" class="term">
+  <h3>Conversion Point <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-engagement</span></h3>
+  <code class="iri">xeo:ConversionPoint</code>
+  <p>A durable on-page mechanism that turns attention into a pipeline event.</p>
+  
+</section>
+<section id="Crawl" class="term">
+  <h3>Crawl <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:Crawl</code>
+  <p>One crawl run over one Website: time-bounded, agent-attributed, immutable once finished.</p>
+  <dl><div class="row"><dt>subclass of</dt><dd><a href="http://www.w3.org/ns/prov#Activity" class="ext">prov:Activity</a></dd></div></dl>
+</section>
+<section id="Diagnostic" class="term">
+  <h3>Diagnostic <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-decision</span></h3>
+  <code class="iri">xeo:Diagnostic</code>
+  <p>A named, reusable check or framework that reads observations and reveals gaps (e.g. a waterfall-position assessment). The framework is durable; each finding it produces is a Gap.</p>
+  
+</section>
+<section id="Engine" class="term">
+  <h3>Engine <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-visibility</span></h3>
+  <code class="iri">xeo:Engine</code>
+  <p>A system that mediates between a person&#x27;s question and web content. The taxonomy below is operational, not doctrinal — subclass as engines evolve.</p>
+  <dl><div class="row"><dt>subclass of</dt><dd><a href="http://www.w3.org/ns/prov#SoftwareAgent" class="ext">prov:SoftwareAgent</a></dd></div></dl>
+</section>
+<section id="Experiment" class="term">
+  <h3>Experiment <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-decision</span></h3>
+  <code class="iri">xeo:Experiment</code>
+  <p>A test of a tactic that ran over a time window: immutable once concluded, method-attributed. The precedent record the decision layer learns from.</p>
+  <dl><div class="row"><dt>subclass of</dt><dd><a href="http://www.w3.org/ns/prov#Activity" class="ext">prov:Activity</a></dd></div></dl>
+</section>
+<section id="Gap" class="term">
+  <h3>Gap <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-decision</span></h3>
+  <code class="iri">xeo:Gap</code>
+  <p>A diagnosed deficit between current and desired visibility. First-order, but a claim: asserted by a Diagnostic from evidence, never observed directly. Its kind (gapType) is a slotted-in skos:Concept — e.g. a Citation-Waterfall stage — not a subclass baked into the ontology.</p>
+  
+</section>
+<section id="GatedAsset" class="term">
+  <h3>Gated Asset <span class="mod">xeo-engagement</span></h3>
+  <code class="iri">xeo:GatedAsset</code>
+  <p>Content exchanged for contact information.</p>
+  <dl><div class="row"><dt>subclass of</dt><dd><a href="#ConversionPoint">xeo:ConversionPoint</a></dd></div></dl>
+</section>
+<section id="GenerativeEngine" class="term">
+  <h3>Generative Engine <span class="mod">xeo-visibility</span></h3>
+  <code class="iri">xeo:GenerativeEngine</code>
+  <p>Search-integrated generated answers — AI overviews and AI modes (the GEO surface).</p>
+  <dl><div class="row"><dt>subclass of</dt><dd><a href="#Engine">xeo:Engine</a></dd></div></dl>
+</section>
+<section id="Intervention" class="term">
+  <h3>Intervention <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-decision</span></h3>
+  <code class="iri">xeo:Intervention</code>
+  <p>A category of tactic in a controlled vocabulary you bring. A skos:Concept, so a whole intervention taxonomy slots in without touching the ontology.</p>
+  <dl><div class="row"><dt>subclass of</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div></dl>
+</section>
+<section id="LLMResponse" class="term">
+  <h3>LLM Response <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-visibility</span></h3>
+  <code class="iri">xeo:LLMResponse</code>
+  <p>One captured response from one engine/model for one Prompt at a moment: time-bounded, source-attributed, immutable once captured. The visibility sibling of SerpSnapshot.</p>
+  <dl><div class="row"><dt>subclass of</dt><dd><a href="http://www.w3.org/ns/prov#Entity" class="ext">prov:Entity</a></dd></div></dl>
+</section>
+<section id="LeadCaptureForm" class="term">
+  <h3>Lead Capture Form <span class="mod">xeo-engagement</span></h3>
+  <code class="iri">xeo:LeadCaptureForm</code>
+  <p></p>
+  <dl><div class="row"><dt>subclass of</dt><dd><a href="#ConversionPoint">xeo:ConversionPoint</a></dd></div></dl>
+</section>
+<section id="MetricTarget" class="term">
+  <h3>Metric Target <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-delivery</span></h3>
+  <code class="iri">xeo:MetricTarget</code>
+  <p>One measurable target of an Objective: metric X should reach targetValue, read as absolute or as a percent lift from a captured baseline. Named a target and never a key result: xeo:Outcome is &#x27;the measured result an experiment produced&#x27;, an observation, and a goal must not share a name with a reading. Each target is its own node so the experiment loop can hang observations off it; a target dropped on edit is stamped deletedAt, never destroyed, because its id is what measured history is anchored to.</p>
+  
+</section>
+<section id="Objective" class="term">
+  <h3>Objective <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-delivery</span></h3>
+  <code class="iri">xeo:Objective</code>
+  <p>What a Campaign intends to move: an operator-written statement in prose (carried verbatim — the recommendation agent reads it as the goal), a resultsWindowDays every target is measured over, and one or more MetricTargets of which exactly one isPrimary. An intent set at creation. A campaign has one reporting horizon, distinct from the Project&#x27;s work window: a two-month engagement can carry a six-month results window.</p>
+  
+</section>
+<section id="Outcome" class="term">
+  <h3>Outcome <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-decision</span></h3>
+  <code class="iri">xeo:Outcome</code>
+  <p>The measured result an experiment produced (lift, delta, significance). The measurement is an observation; any claim that the tactic CAUSED it is an interpretation, carried on the Recommendation, not asserted here.</p>
+  <dl><div class="row"><dt>subclass of</dt><dd><a href="http://www.w3.org/ns/prov#Entity" class="ext">prov:Entity</a></dd></div></dl>
+</section>
+<section id="Playbook" class="term">
+  <h3>Playbook <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-strategy</span></h3>
+  <code class="iri">xeo:Playbook</code>
+  <p>A reusable, discipline-scoped bundle of Diagnostics, Tactics, and Practices — an &#x27;SEO playbook&#x27;, an &#x27;AEO playbook&#x27;, a &#x27;local playbook&#x27;. Durable and named, like a Diagnostic. Its scope is the DISCIPLINE, not the account: a Playbook is authored once (by the community or an agency) and reused across every client. What varies per client or campaign is which Playbooks a tenancy activates and which Practices it overrides — never the Playbook itself.</p>
+  
+</section>
+<section id="Practice" class="term">
+  <h3>Practice <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-strategy</span></h3>
+  <code class="iri">xeo:Practice</code>
+  <p>A standing rule that governs how recommendations are made under stated conditions. Best-practices, SOPs, and lessons-learned are all Practices, distinguished by source, not by class. A Practice does one of three things (practiceKind): veto a candidate (guardrail), reorder it (preference), or attach a caveat (guidance). Revisable and versioned (supersedes); scoped to the concepts it appliesToConcept; audited on the recommendations it fired on (appliedPractice).</p>
+  
+</section>
+<section id="Project" class="term">
+  <h3>Project <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-delivery</span></h3>
+  <code class="iri">xeo:Project</code>
+  <p>The contractual container for a body of work on one Website. Declares its engagementType (retainer or one-off), an interventionQuota (a scope of work with no ceiling is not a scope), a cadence the quota resets over (retainer) or a durationDays it runs for (one-off), and the Interventions and Tactics inScope under the contract. Never destroyed: its campaigns, objectives and targets are the substrate the end-of-campaign report and the experiment loop read, so it is stamped deletedAt and filtered, not deleted.</p>
+  <dl><div class="row"><dt>closeMatch</dt><dd><a href="https://schema.org/Project" class="ext">schema:Project</a></dd></div></dl>
+</section>
+<section id="Prompt" class="term">
+  <h3>Prompt <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-visibility</span></h3>
+  <code class="iri">xeo:Prompt</code>
+  <p>A tracked natural-language question posed to engines. Distinct from Term: a prompt is what a person asks; the engine&#x27;s retrieval fans out into Terms.</p>
+  
+</section>
+<section id="Recommendation" class="term">
+  <h3>Recommendation <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-decision</span></h3>
+  <code class="iri">xeo:Recommendation</code>
+  <p>The labeled claim the whole chain exists to produce: deploy this Tactic to close this Gap, supported by these Experiments, at a given priority. An interpretation — carries method, confidence, and who/what issued it.</p>
+  
+</section>
+<section id="SearchEngine" class="term">
+  <h3>Search Engine <span class="mod">xeo-visibility</span></h3>
+  <code class="iri">xeo:SearchEngine</code>
+  <p>Classic ranked-results retrieval (the SEO surface).</p>
+  <dl><div class="row"><dt>subclass of</dt><dd><a href="#Engine">xeo:Engine</a></dd></div></dl>
+</section>
+<section id="SearchIntent" class="term">
+  <h3>Search Intent <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-engagement</span></h3>
+  <code class="iri">xeo:SearchIntent</code>
+  <p>Why the person is asking. Modeled as named individuals, not free strings.</p>
+  <dl><div class="row"><dt>grounded in</dt><dd>Broder (2002), &#x27;A taxonomy of web search&#x27;, as extended in common practice</dd></div></dl>
+</section>
+<section id="SearchPerformanceFact" class="term">
+  <h3>Search Performance Fact <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:SearchPerformanceFact</code>
+  <p>The atomic ground-truth metric row for one (websiteId, address, term, date [, device, country]) tuple. Never instantiated as graph relationships; the graph carries windowed ranksFor rollups whose datasetUri points back to the authoritative table.</p>
+  <dl><div class="row"><dt>closeMatch</dt><dd><a href="https://schema.org/Observation" class="ext">schema:Observation</a></dd></div><div class="row"><dt>grounded in</dt><dd>Google Search Console Search Analytics API</dd></div><div class="row"><dt>canonical store</dt><dd>bigquery</dd></div></dl>
+</section>
+<section id="SerpSnapshot" class="term">
+  <h3>SERP Snapshot <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:SerpSnapshot</code>
+  <p>One observation of a search results page for a Term at a moment, for a stated engine, locale, and device.</p>
+  <dl><div class="row"><dt>subclass of</dt><dd><a href="http://www.w3.org/ns/prov#Entity" class="ext">prov:Entity</a></dd></div></dl>
+</section>
+<section id="Tactic" class="term">
+  <h3>Tactic <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-decision</span></h3>
+  <code class="iri">xeo:Tactic</code>
+  <p>A durable, named approach that can address gaps. Categorized by a slotted-in intervention taxonomy (inIntervention), scored on slotted-in dimensions (assessedAs -&gt; TacticAssessment), and gated by the Capabilities it requires.</p>
+  
+</section>
+<section id="TacticAssessment" class="term">
+  <h3>Tactic Assessment <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-decision</span></h3>
+  <code class="iri">xeo:TacticAssessment</code>
+  <p>A scored estimate of a tactic on ONE dimension (onDimension), carrying score, method, and confidence. The dimension set (impact / risk / time-to-value, or ICE, or your own) and how dimensions are weighted are a strategy-layer concern; this class only records that an assessment was made, on what dimension, and by what method.</p>
+  
+</section>
+<section id="Term" class="term">
+  <h3>Term <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:Term</code>
+  <p>A search query string, unique by name. Data sources are attributed on observations that mention the term, never as subtypes of the term.</p>
+  
+</section>
+<section id="Topic" class="term">
+  <h3>Topic <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:Topic</code>
+  <p>A named grouping of Terms produced by a clustering or labeling process. Site-scoped. Assignments carry method, model, and confidence.</p>
+  <dl><div class="row"><dt>subclass of</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div></dl>
+</section>
+<section id="URL" class="term">
+  <h3>URL <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:URL</code>
+  <p>A resource address within a Website. Durable identity; the state of the resource at a time is recorded by Fetch observations.</p>
+  <dl><div class="row"><dt>closeMatch</dt><dd><a href="https://schema.org/WebPage" class="ext">schema:WebPage</a></dd></div><div class="row"><dt>grounded in</dt><dd>WHATWG URL Standard</dd></div></dl>
+</section>
+<section id="Website" class="term">
+  <h3>Website <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:Website</code>
+  <p>A site under observation, identified by its origin. The tenancy scope for URLs, crawls, and topics.</p>
+  <dl><div class="row"><dt>closeMatch</dt><dd><a href="https://schema.org/WebSite" class="ext">schema:WebSite</a></dd></div><div class="row"><dt>grounded in</dt><dd>WHATWG URL Standard (origin)</dd></div></dl>
+</section>
+<h2 id="object-properties">Object properties <span class="n">61</span></h2>
+<section id="aboutTopic" class="term">
+  <h3>aboutTopic <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-delivery</span></h3>
+  <code class="iri">xeo:aboutTopic</code>
+  <p>The topic cluster this campaign works. Topics are site-scoped derivations in core; a campaign binds to one.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Campaign">xeo:Campaign</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Topic">xeo:Topic</a></dd></div></dl>
+</section>
+<section id="activates" class="term">
+  <h3>activates <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-strategy</span></h3>
+  <code class="iri">xeo:activates</code>
+  <p>A tenancy context puts a Playbook into effect for a body of work. Domain left open: model your own tenancy node (agency, client, engagement, campaign) and point it here — this module stays agnostic about the account hierarchy, which is expressed through appliesAtScope.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="#Playbook">xeo:Playbook</a></dd></div></dl>
+</section>
+<section id="addressableBy" class="term">
+  <h3>addressableBy <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-decision</span></h3>
+  <code class="iri">xeo:addressableBy</code>
+  <p>A candidate tactic for closing this gap — a claim, made before the scope gate is applied.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Gap">xeo:Gap</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Tactic">xeo:Tactic</a></dd></div></dl>
+</section>
+<section id="appliedPractice" class="term">
+  <h3>appliedPractice <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-strategy</span></h3>
+  <code class="iri">xeo:appliedPractice</code>
+  <p>Audit edge: this Practice was evaluated against this recommendation and fired. Carries method and confidence — the application is a computed derivation, not itself a norm. The transparent record of why a candidate was blocked, demoted, or flagged.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Recommendation">xeo:Recommendation</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Practice">xeo:Practice</a></dd></div></dl>
+</section>
+<section id="appliesAtScope" class="term">
+  <h3>appliesAtScope <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-strategy</span></h3>
+  <code class="iri">xeo:appliesAtScope</code>
+  <p>The tenancy level at which a Practice (or activation or override) applies, as a slotted-in concept. A recommended hierarchy is default &lt; agency &lt; client &lt; engagement &lt; campaign &lt; user. Domain left open so it can annotate any strategy-layer assertion. Resolution is most-specific-wins: a client-level Practice overrides an agency default, which overrides the shipped default. This is the &#x27;customization&#x27; axis — not a lens, a specificity ladder.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div></dl>
+</section>
+<section id="appliesToConcept" class="term">
+  <h3>appliesToConcept <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-strategy</span></h3>
+  <code class="iri">xeo:appliesToConcept</code>
+  <p>Binds a Practice to the slotted-in concepts it applies to — a page role (hasRole), an Intervention, a gapType, a Capability. Bring your own schemes; the Practice fires only where a candidate carries a matching concept.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Practice">xeo:Practice</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div></dl>
+</section>
+<section id="assessedAs" class="term">
+  <h3>assessedAs <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-decision</span></h3>
+  <code class="iri">xeo:assessedAs</code>
+  <p>Links a tactic to a per-dimension scored estimate.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Tactic">xeo:Tactic</a></dd></div><div class="row"><dt>range</dt><dd><a href="#TacticAssessment">xeo:TacticAssessment</a></dd></div></dl>
+</section>
+<section id="atPriority" class="term">
+  <h3>atPriority <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-decision</span></h3>
+  <code class="iri">xeo:atPriority</code>
+  <p>Priority as a slotted-in concept — bring your own scheme (P0/P1/P2, now/next/later, ...).</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Recommendation">xeo:Recommendation</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div></dl>
+</section>
+<section id="attributedResponse" class="term">
+  <h3>attributedResponse <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-engagement</span></h3>
+  <code class="iri">xeo:attributedResponse</code>
+  <p>The claim that this conversion traces to engine visibility captured in this response episode. Multi-engine attribution is inherently inferential: this edge MUST carry method and confidence, and honest implementations will leave it sparse.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#ConversionEvent">xeo:ConversionEvent</a></dd></div><div class="row"><dt>range</dt><dd><a href="#LLMResponse">xeo:LLMResponse</a></dd></div></dl>
+</section>
+<section id="authoredBy" class="term">
+  <h3>authoredBy <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-strategy</span></h3>
+  <code class="iri">xeo:authoredBy</code>
+  <p>The party that authored a Practice (or an activation or override). Range left open — a person, an agency, the system, or a prov:Agent in your own graph. One half of the customization axis: with appliesAtScope, it decides whose rule wins.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Practice">xeo:Practice</a></dd></div></dl>
+</section>
+<section id="capturedBy" class="term">
+  <h3>capturedBy <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-engagement</span></h3>
+  <code class="iri">xeo:capturedBy</code>
+  <p></p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#ConversionEvent">xeo:ConversionEvent</a></dd></div><div class="row"><dt>range</dt><dd><a href="#ConversionPoint">xeo:ConversionPoint</a></dd></div></dl>
+</section>
+<section id="childOf" class="term">
+  <h3>childOf <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:childOf</code>
+  <p>Topic childOf Topic: the child points to its broader parent, matching skos:broader.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Topic">xeo:Topic</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Topic">xeo:Topic</a></dd></div><div class="row"><dt>subproperty of</dt><dd><a href="http://www.w3.org/2004/02/skos/core#broader" class="ext">skos:broader</a></dd></div></dl>
+</section>
+<section id="cites" class="term">
+  <h3>cites <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-visibility</span></h3>
+  <code class="iri">xeo:cites</code>
+  <p>The response grounded on this URL, per the engine&#x27;s own citation annotations. Carries citationRank where the engine orders its sources. The visibility sibling of hasResult.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#LLMResponse">xeo:LLMResponse</a></dd></div><div class="row"><dt>range</dt><dd><a href="#URL">xeo:URL</a></dd></div><div class="row"><dt>grounded in</dt><dd>Engine response citation annotations (per-provider API contract)</dd></div></dl>
+</section>
+<section id="closesGap" class="term">
+  <h3>closesGap <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-decision</span></h3>
+  <code class="iri">xeo:closesGap</code>
+  <p>The gap this recommendation aims to close.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Recommendation">xeo:Recommendation</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Gap">xeo:Gap</a></dd></div></dl>
+</section>
+<section id="constrains" class="term">
+  <h3>constrains <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-strategy</span></h3>
+  <code class="iri">xeo:constrains</code>
+  <p>The Practice governs recommendations matching its conditions — vetoing, reordering, or caveating per its practiceKind. Which recommendations &#x27;match&#x27; is set by appliesToConcept.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Practice">xeo:Practice</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Recommendation">xeo:Recommendation</a></dd></div></dl>
+</section>
+<section id="coversTerm" class="term">
+  <h3>coversTerm <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-delivery</span></h3>
+  <code class="iri">xeo:coversTerm</code>
+  <p>A term inside the campaign&#x27;s cluster — the queries its objective is measured against.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Campaign">xeo:Campaign</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Term">xeo:Term</a></dd></div></dl>
+</section>
+<section id="coversUrl" class="term">
+  <h3>coversUrl <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-delivery</span></h3>
+  <code class="iri">xeo:coversUrl</code>
+  <p>A page inside the campaign&#x27;s cluster. May carry a priority flag marking the pages the campaign is really about.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Campaign">xeo:Campaign</a></dd></div><div class="row"><dt>range</dt><dd><a href="#URL">xeo:URL</a></dd></div></dl>
+</section>
+<section id="effortEstimate" class="term">
+  <h3>effortEstimate <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-delivery</span></h3>
+  <code class="iri">xeo:effortEstimate</code>
+  <p>How long executing the recommendation is expected to take, as a slotted-in concept (hours, days, weeks, a quarter — see xeo-schemes). A categorical horizon for planning a cycle, not a scored dimension: impact, risk and time-to-value belong on a TacticAssessment via onDimension.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Recommendation">xeo:Recommendation</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div></dl>
+</section>
+<section id="evidencedBy" class="term">
+  <h3>evidencedBy <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-decision</span></h3>
+  <code class="iri">xeo:evidencedBy</code>
+  <p>The observed facts a gap was derived from — a Prompt&#x27;s visibilityFor rollup, a URL&#x27;s ranksFor, a SerpSnapshot. The seam tying the interpretation tier back down to the substrate. Range left open: any observation-bearing term.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Gap">xeo:Gap</a></dd></div><div class="row"><dt>subproperty of</dt><dd><a href="http://www.w3.org/ns/prov#wasDerivedFrom" class="ext">prov:wasDerivedFrom</a></dd></div></dl>
+</section>
+<section id="execution" class="term">
+  <h3>execution <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-delivery</span></h3>
+  <code class="iri">xeo:execution</code>
+  <p>Who does the work, as a slotted-in concept: ours (spends the project&#x27;s intervention allowance) or advised (the client executes; not agency capacity). The half of the scope gate that says whose hours a recommendation costs.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Recommendation">xeo:Recommendation</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div></dl>
+</section>
+<section id="fansOutTo" class="term">
+  <h3>fansOutTo <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-visibility</span></h3>
+  <code class="iri">xeo:fansOutTo</code>
+  <p>A retrieval query the engine reported issuing while answering this prompt. Fan-out queries ARE Terms — the join between the xEO layer and classic rank data. Carries the reporting engine and capture episode.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Prompt">xeo:Prompt</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Term">xeo:Term</a></dd></div><div class="row"><dt>grounded in</dt><dd>Engine-reported retrieval queries (per-provider API contract)</dd></div></dl>
+</section>
+<section id="fetched" class="term">
+  <h3>fetched <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:fetched</code>
+  <p>An HTTP fetch of a URL within a crawl. In the property graph this relationship carries statusCode, contentType, title, metaDescription, robotsMeta, contentHash, fetchedAt.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Crawl">xeo:Crawl</a></dd></div><div class="row"><dt>range</dt><dd><a href="#URL">xeo:URL</a></dd></div><div class="row"><dt>grounded in</dt><dd>RFC 9110 (HTTP Semantics)</dd></div></dl>
+</section>
+<section id="gapType" class="term">
+  <h3>gapType <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-decision</span></h3>
+  <code class="iri">xeo:gapType</code>
+  <p>The kind of gap, as a slotted-in concept (e.g. a Citation-Waterfall stage). Bring your own scheme.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Gap">xeo:Gap</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div></dl>
+</section>
+<section id="hasCampaign" class="term">
+  <h3>hasCampaign <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-delivery</span></h3>
+  <code class="iri">xeo:hasCampaign</code>
+  <p></p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Project">xeo:Project</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Campaign">xeo:Campaign</a></dd></div></dl>
+</section>
+<section id="hasCanonical" class="term">
+  <h3>hasCanonical <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:hasCanonical</code>
+  <p></p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#URL">xeo:URL</a></dd></div><div class="row"><dt>range</dt><dd><a href="#URL">xeo:URL</a></dd></div><div class="row"><dt>grounded in</dt><dd>RFC 6596 (The Canonical Link Relation)</dd></div></dl>
+</section>
+<section id="hasConversionPoint" class="term">
+  <h3>hasConversionPoint <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-engagement</span></h3>
+  <code class="iri">xeo:hasConversionPoint</code>
+  <p>Observed presence of a conversion point on a page (crawl-attributed, bitemporal like linksTo).</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#URL">xeo:URL</a></dd></div><div class="row"><dt>range</dt><dd><a href="#ConversionPoint">xeo:ConversionPoint</a></dd></div></dl>
+</section>
+<section id="hasCrawl" class="term">
+  <h3>hasCrawl <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:hasCrawl</code>
+  <p></p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Website">xeo:Website</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Crawl">xeo:Crawl</a></dd></div></dl>
+</section>
+<section id="hasObjective" class="term">
+  <h3>hasObjective <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-delivery</span></h3>
+  <code class="iri">xeo:hasObjective</code>
+  <p>Exactly one per campaign.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Campaign">xeo:Campaign</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Objective">xeo:Objective</a></dd></div></dl>
+</section>
+<section id="hasProject" class="term">
+  <h3>hasProject <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-delivery</span></h3>
+  <code class="iri">xeo:hasProject</code>
+  <p>The projects contracted against this website. Tenancy rides on websiteId, as everywhere.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Website">xeo:Website</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Project">xeo:Project</a></dd></div></dl>
+</section>
+<section id="hasResponse" class="term">
+  <h3>hasResponse <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-visibility</span></h3>
+  <code class="iri">xeo:hasResponse</code>
+  <p></p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Prompt">xeo:Prompt</a></dd></div><div class="row"><dt>range</dt><dd><a href="#LLMResponse">xeo:LLMResponse</a></dd></div></dl>
+</section>
+<section id="hasResult" class="term">
+  <h3>hasResult <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:hasResult</code>
+  <p>A result observed on the SERP. Carries position and resultType.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#SerpSnapshot">xeo:SerpSnapshot</a></dd></div><div class="row"><dt>range</dt><dd><a href="#URL">xeo:URL</a></dd></div></dl>
+</section>
+<section id="hasRole" class="term">
+  <h3>hasRole <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-strategy</span></h3>
+  <code class="iri">xeo:hasRole</code>
+  <p>The structural role a URL plays on its site, as a slotted-in concept. A recommended starter scheme is coarse and purpose-based: brand-core (home, about), commercial (services, products, sales), content (articles, marketing), infrastructure (pagination, archives, tag and category indexes). Assignment is a DERIVATION from graph and crawl structure — inbound link_position, index-vs-leaf link patterns, template similarity — not URL-string matching; it carries method and confidence, and &#x27;unknown&#x27; is a valid, conservative state. Parallels core&#x27;s inTopic. Norms bind to these roles via appliesToConcept, so &#x27;never redirect an infrastructure page for ranking&#x27; is a rule over a role, not a growing list of regexes.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#URL">xeo:URL</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div></dl>
+</section>
+<section id="hasSnapshot" class="term">
+  <h3>hasSnapshot <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:hasSnapshot</code>
+  <p></p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Term">xeo:Term</a></dd></div><div class="row"><dt>range</dt><dd><a href="#SerpSnapshot">xeo:SerpSnapshot</a></dd></div></dl>
+</section>
+<section id="hasTarget" class="term">
+  <h3>hasTarget <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-delivery</span></h3>
+  <code class="iri">xeo:hasTarget</code>
+  <p>The objective&#x27;s measurable targets. Non-empty; exactly one target isPrimary — what the recommendation agent optimises for. The rest are the secondary metrics an impact-radius check widens to.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Objective">xeo:Objective</a></dd></div><div class="row"><dt>range</dt><dd><a href="#MetricTarget">xeo:MetricTarget</a></dd></div></dl>
+</section>
+<section id="inContext" class="term">
+  <h3>inContext <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-decision</span></h3>
+  <code class="iri">xeo:inContext</code>
+  <p>The gap the experiment was run against. The precedent-similarity key: &#x27;has this tactic worked on a gap like mine?&#x27; is a match on gapType through this edge.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Experiment">xeo:Experiment</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Gap">xeo:Gap</a></dd></div></dl>
+</section>
+<section id="inIntervention" class="term">
+  <h3>inIntervention <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-decision</span></h3>
+  <code class="iri">xeo:inIntervention</code>
+  <p>The intervention category this tactic belongs to. Parallels core&#x27;s inTopic.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Tactic">xeo:Tactic</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Intervention">xeo:Intervention</a></dd></div></dl>
+</section>
+<section id="inScope" class="term">
+  <h3>inScope <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-delivery</span></h3>
+  <code class="iri">xeo:inScope</code>
+  <p>What the contract covers: an Intervention (a whole category of work, including tactics added to the catalogue later) or a specific Tactic within one. Range left open across those two terms. The contractual half of the scope gate — requiresCapability + approved asks whether the lever exists; this asks whether it was bought.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Project">xeo:Project</a></dd></div></dl>
+</section>
+<section id="inTopic" class="term">
+  <h3>inTopic <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:inTopic</code>
+  <p>Process-attributed topic assignment. Carries method, model, confidence, assignedAt.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Term">xeo:Term</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Topic">xeo:Topic</a></dd></div><div class="row"><dt>closeMatch</dt><dd><a href="https://schema.org/about" class="ext">schema:about</a></dd></div></dl>
+</section>
+<section id="includes" class="term">
+  <h3>includes <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-strategy</span></h3>
+  <code class="iri">xeo:includes</code>
+  <p>A Diagnostic, Tactic, or Practice bundled into this Playbook. Range left open across the three decision/norm terms it may hold.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Playbook">xeo:Playbook</a></dd></div></dl>
+</section>
+<section id="issuedFor" class="term">
+  <h3>issuedFor <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-delivery</span></h3>
+  <code class="iri">xeo:issuedFor</code>
+  <p>The campaign a recommendation was issued into. Its execution lifecycle (xeo:status), effortEstimate and execution live here: a recommendation is a decision-tier call until it lands in a campaign, and delivery state from then on.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Recommendation">xeo:Recommendation</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Campaign">xeo:Campaign</a></dd></div></dl>
+</section>
+<section id="linksTo" class="term">
+  <h3>linksTo <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:linksTo</code>
+  <p>An observed hyperlink. Carries anchorText, rel, firstSeenAt, lastSeenAt, lastSeenCrawlId.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#URL">xeo:URL</a></dd></div><div class="row"><dt>range</dt><dd><a href="#URL">xeo:URL</a></dd></div><div class="row"><dt>grounded in</dt><dd>WHATWG HTML §4.5.1 (the a element)</dd></div></dl>
+</section>
+<section id="magnitudeUnit" class="term">
+  <h3>magnitudeUnit <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-decision</span></h3>
+  <code class="iri">xeo:magnitudeUnit</code>
+  <p>The unit magnitude is read in, as a slotted-in concept (impressions, clicks, referring_domains, words, ... — see xeo-schemes). A unit that names its own provenance, like sessions_estimated, is how a derived figure is kept from rendering as a measured one.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Gap">xeo:Gap</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div></dl>
+</section>
+<section id="measures" class="term">
+  <h3>measures <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-delivery</span></h3>
+  <code class="iri">xeo:measures</code>
+  <p>The target an experiment&#x27;s Outcome is read against. Carries a role — primary or secondary — matching the target&#x27;s standing in its objective, and a basis saying which pages were measured (the ones the recommendation applied to, the gap&#x27;s evidence, or the pages actually changed).</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Experiment">xeo:Experiment</a></dd></div><div class="row"><dt>range</dt><dd><a href="#MetricTarget">xeo:MetricTarget</a></dd></div></dl>
+</section>
+<section id="mentions" class="term">
+  <h3>mentions <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-visibility</span></h3>
+  <code class="iri">xeo:mentions</code>
+  <p>The brand&#x27;s name appears in the response text. Carries mentionRank (order of first appearance) — high mention counts at poor ranks are the &#x27;named among twelve, championed never&#x27; pattern. Extraction method (string match, NER model) must be recorded; model-extracted mentions are derivations, not observations.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#LLMResponse">xeo:LLMResponse</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Brand">xeo:Brand</a></dd></div></dl>
+</section>
+<section id="onDimension" class="term">
+  <h3>onDimension <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-decision</span></h3>
+  <code class="iri">xeo:onDimension</code>
+  <p>The dimension being scored, as a slotted-in concept (impact, risk, time-to-value, ICE, RICE, ...). Bring your own dimension scheme.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#TacticAssessment">xeo:TacticAssessment</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div></dl>
+</section>
+<section id="onEngine" class="term">
+  <h3>onEngine <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-visibility</span></h3>
+  <code class="iri">xeo:onEngine</code>
+  <p>Which engine (and, via model/modelVersion properties, which model) produced this response.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#LLMResponse">xeo:LLMResponse</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Engine">xeo:Engine</a></dd></div><div class="row"><dt>subproperty of</dt><dd><a href="http://www.w3.org/ns/prov#wasAttributedTo" class="ext">prov:wasAttributedTo</a></dd></div></dl>
+</section>
+<section id="partOf" class="term">
+  <h3>partOf <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:partOf</code>
+  <p></p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#URL">xeo:URL</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Website">xeo:Website</a></dd></div></dl>
+</section>
+<section id="producedOutcome" class="term">
+  <h3>producedOutcome <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-decision</span></h3>
+  <code class="iri">xeo:producedOutcome</code>
+  <p>The measured result this experiment generated.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Experiment">xeo:Experiment</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Outcome">xeo:Outcome</a></dd></div><div class="row"><dt>subproperty of</dt><dd><a href="http://www.w3.org/ns/prov#generated" class="ext">prov:generated</a></dd></div></dl>
+</section>
+<section id="ranksFor" class="term">
+  <h3>ranksFor <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:ranksFor</code>
+  <p>Windowed rollup projection of SearchPerformanceFacts for a (page, query) pair. Carries clicks, impressions, ctr, avgPosition, periodStart, periodEnd, source, datasetUri, syncedAt.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#URL">xeo:URL</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Term">xeo:Term</a></dd></div><div class="row"><dt>grounded in</dt><dd>Google Search Console Search Analytics API</dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
+</section>
+<section id="recommends" class="term">
+  <h3>recommends <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-decision</span></h3>
+  <code class="iri">xeo:recommends</code>
+  <p>The tactic this recommendation puts forward.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Recommendation">xeo:Recommendation</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Tactic">xeo:Tactic</a></dd></div></dl>
+</section>
+<section id="redirectsTo" class="term">
+  <h3>redirectsTo <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:redirectsTo</code>
+  <p></p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#URL">xeo:URL</a></dd></div><div class="row"><dt>range</dt><dd><a href="#URL">xeo:URL</a></dd></div><div class="row"><dt>grounded in</dt><dd>RFC 9110 §15.4 (Redirection 3xx)</dd></div></dl>
+</section>
+<section id="requiresCapability" class="term">
+  <h3>requiresCapability <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-decision</span></h3>
+  <code class="iri">xeo:requiresCapability</code>
+  <p>A capability that must be approved for this tactic to be in reach. The scope-gate edge: a tactic whose required capabilities are all approved is deployable; otherwise it stays advisory.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Tactic">xeo:Tactic</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Capability">xeo:Capability</a></dd></div></dl>
+</section>
+<section id="reveals" class="term">
+  <h3>reveals <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-decision</span></h3>
+  <code class="iri">xeo:reveals</code>
+  <p>A diagnostic asserts this gap. Carries the assessment method.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Diagnostic">xeo:Diagnostic</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Gap">xeo:Gap</a></dd></div></dl>
+</section>
+<section id="scopedTo" class="term">
+  <h3>scopedTo <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:scopedTo</code>
+  <p>Topics are scoped to a Website rather than a free-standing ConceptScheme; skos:inScheme is the analogous grouping.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Topic">xeo:Topic</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Website">xeo:Website</a></dd></div><div class="row"><dt>seeAlso</dt><dd><a href="http://www.w3.org/2004/02/skos/core#inScheme" class="ext">skos:inScheme</a></dd></div></dl>
+</section>
+<section id="supersedes" class="term">
+  <h3>supersedes <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-strategy</span></h3>
+  <code class="iri">xeo:supersedes</code>
+  <p>This Practice replaces an earlier version. Editing a rule mints a new Practice that supersedes the old (retired to status &#x27;deprecated&#x27;, never deleted) — the version chain that makes the norms layer revisable and auditable.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Practice">xeo:Practice</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Practice">xeo:Practice</a></dd></div></dl>
+</section>
+<section id="supportedBy" class="term">
+  <h3>supportedBy <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-decision</span></h3>
+  <code class="iri">xeo:supportedBy</code>
+  <p>The precedent experiments backing this recommendation — the earned trust behind the pick.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Recommendation">xeo:Recommendation</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Experiment">xeo:Experiment</a></dd></div><div class="row"><dt>subproperty of</dt><dd><a href="http://www.w3.org/ns/prov#wasDerivedFrom" class="ext">prov:wasDerivedFrom</a></dd></div></dl>
+</section>
+<section id="targetsIntent" class="term">
+  <h3>targetsIntent <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-engagement</span></h3>
+  <code class="iri">xeo:targetsIntent</code>
+  <p>A URL or Prompt is aimed at this intent. A strategist&#x27;s or model&#x27;s claim — carries method and confidence.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="#SearchIntent">xeo:SearchIntent</a></dd></div></dl>
+</section>
+<section id="tests" class="term">
+  <h3>tests <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-decision</span></h3>
+  <code class="iri">xeo:tests</code>
+  <p>The tactic this experiment put to the test.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Experiment">xeo:Experiment</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Tactic">xeo:Tactic</a></dd></div></dl>
+</section>
+<section id="tracksPrompt" class="term">
+  <h3>tracksPrompt <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-visibility</span></h3>
+  <code class="iri">xeo:tracksPrompt</code>
+  <p>This tenant tracks this prompt. Tenancy is data, not schema.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Website">xeo:Website</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Prompt">xeo:Prompt</a></dd></div></dl>
+</section>
+<section id="verdict" class="term">
+  <h3>verdict <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-decision</span></h3>
+  <code class="iri">xeo:verdict</code>
+  <p>The operator&#x27;s disposition on a diagnosed gap, as a slotted-in concept (attack, fix_first, defend, hold, ignore — see xeo-schemes). Distinct from gapType, which says what KIND of deficit it is; the verdict says what we intend to do about it. Carried by one finding per topic per analysis: it is a property of the topic&#x27;s scoreboard row, not of every finding beneath it.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Gap">xeo:Gap</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div></dl>
+</section>
+<section id="visibilityFor" class="term">
+  <h3>visibilityFor <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-visibility</span></h3>
+  <code class="iri">xeo:visibilityFor</code>
+  <p>Windowed rollup of response-level observations for a (prompt, brand) pair: mentionRate, citationRate, responses, periodStart, periodEnd, source, datasetUri. Mirrors the ranksFor rollup pattern — raw responses are the authoritative record; this is the traversal-friendly projection.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Prompt">xeo:Prompt</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Brand">xeo:Brand</a></dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
+</section>
+<h2 id="datatype-properties">Datatype properties <span class="n">65</span></h2>
+<section id="address" class="term">
+  <h3>address <span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:address</code>
+  <p>The serialized absolute URL is a schema:url value.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#URL">xeo:URL</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>subproperty of</dt><dd><a href="https://schema.org/url" class="ext">schema:url</a></dd></div><div class="row"><dt>grounded in</dt><dd>WHATWG URL Standard (serialized absolute URL)</dd></div></dl>
+</section>
+<section id="anchorText" class="term">
+  <h3>anchorText <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:anchorText</code>
+  <p></p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>WHATWG HTML §4.5.1</dd></div></dl>
+</section>
+<section id="approved" class="term">
+  <h3>approved <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-decision</span></h3>
+  <code class="iri">xeo:approved</code>
+  <p>Whether this capability is approved for the engagement — the live state of the scope gate. Tenancy-scoped like everything else.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Capability">xeo:Capability</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#boolean" class="ext">xsd:boolean</a></dd></div></dl>
+</section>
+<section id="assignedAt" class="term">
+  <h3>assignedAt <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:assignedAt</code>
+  <p>When a derivation edge was written (e.g. a topic assignment). Carried on inTopic alongside method, model and confidence.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div></dl>
+</section>
+<section id="avgPosition" class="term">
+  <h3>avgPosition <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:avgPosition</code>
+  <p></p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>grounded in</dt><dd>GSC Search Analytics API</dd></div></dl>
+</section>
+<section id="baseline" class="term">
+  <h3>baseline <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-delivery</span></h3>
+  <code class="iri">xeo:baseline</code>
+  <p>The metric&#x27;s value when the target was set — the anchor &#x27;how far beyond target&#x27; is measured from. An observation captured onto an interpretation; baselineCapturedAt says when, because it is not the same instant as the target&#x27;s creation.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#MetricTarget">xeo:MetricTarget</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div></dl>
+</section>
+<section id="baselineCapturedAt" class="term">
+  <h3>baselineCapturedAt <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-delivery</span></h3>
+  <code class="iri">xeo:baselineCapturedAt</code>
+  <p></p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#MetricTarget">xeo:MetricTarget</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div></dl>
+</section>
+<section id="cadence" class="term">
+  <h3>cadence <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-delivery</span></h3>
+  <code class="iri">xeo:cadence</code>
+  <p>&#x27;monthly&#x27; or &#x27;quarterly&#x27; — the period a retainer&#x27;s quota resets over. Set for retainer, absent for one-off.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Project">xeo:Project</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
+<section id="capturedAt" class="term">
+  <h3>capturedAt <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-visibility</span></h3>
+  <code class="iri">xeo:capturedAt</code>
+  <p>The response record was generated at capture time.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#LLMResponse">xeo:LLMResponse</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div><div class="row"><dt>subproperty of</dt><dd><a href="http://www.w3.org/ns/prov#generatedAtTime" class="ext">prov:generatedAtTime</a></dd></div></dl>
+</section>
+<section id="citationRank" class="term">
+  <h3>citationRank <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-visibility</span></h3>
+  <code class="iri">xeo:citationRank</code>
+  <p>1-based order of a cited source where the engine orders its citations. Carried on cites; absent where the engine reports an unordered set.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div></dl>
+</section>
+<section id="citationRate" class="term">
+  <h3>citationRate <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-visibility</span></h3>
+  <code class="iri">xeo:citationRate</code>
+  <p>Share of captured responses in the window that cite the brand&#x27;s owned URLs. Cited and mentioned diverge — a page can ground an answer that names someone else.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div></dl>
+</section>
+<section id="clicks" class="term">
+  <h3>clicks <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:clicks</code>
+  <p></p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div><div class="row"><dt>grounded in</dt><dd>GSC Search Analytics API</dd></div></dl>
+</section>
+<section id="concludedAt" class="term">
+  <h3>concludedAt <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-decision</span></h3>
+  <code class="iri">xeo:concludedAt</code>
+  <p>When the experiment concluded and its outcome became immutable.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Experiment">xeo:Experiment</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div><div class="row"><dt>subproperty of</dt><dd><a href="http://www.w3.org/ns/prov#endedAtTime" class="ext">prov:endedAtTime</a></dd></div></dl>
+</section>
+<section id="confidence" class="term">
+  <h3>confidence <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:confidence</code>
+  <p>0-1 confidence attached to a derivation edge.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div></dl>
+</section>
+<section id="crmRecordRef" class="term">
+  <h3>crmRecordRef <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-engagement</span></h3>
+  <code class="iri">xeo:crmRecordRef</code>
+  <p>Identity-key pointer to the CRM object (form id, contact id, deal id) in whatever system runs the pipeline. The join contract to the post-click world — the graph never mirrors the CRM&#x27;s schema.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
+</section>
+<section id="ctr" class="term">
+  <h3>ctr <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:ctr</code>
+  <p>Clickthrough rate over the rollup window. Carried on ranksFor.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>grounded in</dt><dd>GSC Search Analytics API</dd></div></dl>
+</section>
+<section id="datasetUri" class="term">
+  <h3>datasetUri <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:datasetUri</code>
+  <p>Pointer to the authoritative table a windowed rollup was projected from (e.g. a BigQuery table URI). The provenance contract for ranksFor and visibilityFor: the graph keeps the traversable projection, this says where the ground truth lives.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
+<section id="deletedAt" class="term">
+  <h3>deletedAt <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-delivery</span></h3>
+  <code class="iri">xeo:deletedAt</code>
+  <p>Soft-delete stamp. XEO never destroys a node something else was derived from — xeo-strategy states the rule for a Practice (destroying it destroys the record of what it vetoed) and it holds here for a Project, a Campaign, or a MetricTarget that measured history hangs off. Absent on a live node; domain left open so any revisable term can carry it.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div></dl>
+</section>
+<section id="direction" class="term">
+  <h3>direction <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-delivery</span></h3>
+  <code class="iri">xeo:direction</code>
+  <p>&#x27;up&#x27; or &#x27;down&#x27; — which way is better for this metric. DERIVED from metric, never client input: position and rank are 1-based, so a shared &#x27;+20%&#x27; would silently ask for a rank 20% worse.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#MetricTarget">xeo:MetricTarget</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
+<section id="durationDays" class="term">
+  <h3>durationDays <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-delivery</span></h3>
+  <code class="iri">xeo:durationDays</code>
+  <p>Fixed run length of a one-off project. Set for oneoff, absent for retainer.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Project">xeo:Project</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div></dl>
+</section>
+<section id="embeddingModel" class="term">
+  <h3>embeddingModel <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:embeddingModel</code>
+  <p></p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Term">xeo:Term</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
+<section id="embeddingRef" class="term">
+  <h3>embeddingRef <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:embeddingRef</code>
+  <p>Pointer (collection + id) to the vector in the external store. The geometry lives where ANN search happens; the graph keeps the claim and its provenance.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Term">xeo:Term</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>vector-store</dd></div></dl>
+</section>
+<section id="engagementType" class="term">
+  <h3>engagementType <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-delivery</span></h3>
+  <code class="iri">xeo:engagementType</code>
+  <p>&#x27;retainer&#x27; or &#x27;oneoff&#x27; — the discriminator for how scope is expressed. A retainer caps interventions per cadence period; a one-off caps them over durationDays. Sending both cadence and durationDays is a contradiction and is rejected at the edge.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Project">xeo:Project</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
+<section id="fetchedAt" class="term">
+  <h3>fetchedAt <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:fetchedAt</code>
+  <p>When the fetch observation was made. Carried on fetched.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div></dl>
+</section>
+<section id="firstSeenAt" class="term">
+  <h3>firstSeenAt <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:firstSeenAt</code>
+  <p>When an observed edge (a link, typically) was first seen. Half of the bitemporal pair that makes link liveness answerable.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div></dl>
+</section>
+<section id="halfLife" class="term">
+  <h3>halfLife <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-strategy</span></h3>
+  <code class="iri">xeo:halfLife</code>
+  <p>Optional decay window for a Practice whose source is &#x27;claimed&#x27;: how long the assertion is trusted absent supporting Outcomes. Encodes the reality that today&#x27;s answer-engine tactics may not survive the year — a claim nobody&#x27;s experiments confirm ages out on its own.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Practice">xeo:Practice</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#duration" class="ext">xsd:duration</a></dd></div></dl>
+</section>
+<section id="impressions" class="term">
+  <h3>impressions <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:impressions</code>
+  <p></p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div><div class="row"><dt>grounded in</dt><dd>GSC Search Analytics API</dd></div></dl>
+</section>
+<section id="interventionQuota" class="term">
+  <h3>interventionQuota <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-delivery</span></h3>
+  <code class="iri">xeo:interventionQuota</code>
+  <p>Ceiling on interventions this project may deploy per period (retainer) or in total (one-off). Always present. Recommendations in an open status — pending, in_progress, blocked — consume it; advised work does not.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Project">xeo:Project</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div></dl>
+</section>
+<section id="isPrimary" class="term">
+  <h3>isPrimary <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-delivery</span></h3>
+  <code class="iri">xeo:isPrimary</code>
+  <p>Exactly one target per objective. The one the agent optimises for.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#MetricTarget">xeo:MetricTarget</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#boolean" class="ext">xsd:boolean</a></dd></div></dl>
+</section>
+<section id="lastSeenAt" class="term">
+  <h3>lastSeenAt <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:lastSeenAt</code>
+  <p>When an observed edge was most recently seen. With lastSeenCrawlId this is how a link is known to be live rather than merely once-observed.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div></dl>
+</section>
+<section id="lift" class="term">
+  <h3>lift <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-decision</span></h3>
+  <code class="iri">xeo:lift</code>
+  <p>The measured change the experiment recorded on its target metric.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Outcome">xeo:Outcome</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div></dl>
+</section>
+<section id="magnitude" class="term">
+  <h3>magnitude <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-decision</span></h3>
+  <code class="iri">xeo:magnitude</code>
+  <p>How big the gap is, where the finding IS a size. Required together with magnitudeUnit and never alone: a magnitude with no unit is an uninterpretable number, a unit with no magnitude is noise.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Gap">xeo:Gap</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div></dl>
+</section>
+<section id="mentionRank" class="term">
+  <h3>mentionRank <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-visibility</span></h3>
+  <code class="iri">xeo:mentionRank</code>
+  <p>1-based order of the brand&#x27;s first appearance in the response text. Carried on mentions edges.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div></dl>
+</section>
+<section id="mentionRate" class="term">
+  <h3>mentionRate <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-visibility</span></h3>
+  <code class="iri">xeo:mentionRate</code>
+  <p>Share of captured responses in the window that mention the brand. Carried on visibilityFor rollups.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div></dl>
+</section>
+<section id="metaDescription" class="term">
+  <h3>metaDescription <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:metaDescription</code>
+  <p>The meta description observed on a fetch. Carried on the fetched edge.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>WHATWG HTML (meta name=description)</dd></div></dl>
+</section>
+<section id="method" class="term">
+  <h3>method <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-decision</span></h3>
+  <code class="iri">xeo:method</code>
+  <p>How an interpretation or derivation was produced (model, rule, human analyst). Expected on reveals, assessedAs, and every Recommendation.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
+<section id="metric" class="term">
+  <h3>metric <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-delivery</span></h3>
+  <code class="iri">xeo:metric</code>
+  <p>Which metric the target is set on — clicks, impressions, ctr, position, rank_absolute, etv (see xeo-schemes objectiveMetric). The value vocabulary is the consumer&#x27;s; the reference scheme records each metric&#x27;s direction and unit.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#MetricTarget">xeo:MetricTarget</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
+<section id="model" class="term">
+  <h3>model <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-visibility</span></h3>
+  <code class="iri">xeo:model</code>
+  <p>Model identifier + version as reported at capture time. Without this the episode is not comparable across time.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#LLMResponse">xeo:LLMResponse</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
+<section id="modelVersion" class="term">
+  <h3>modelVersion <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-visibility</span></h3>
+  <code class="iri">xeo:modelVersion</code>
+  <p>The model build reported at capture time, where the engine distinguishes it from the model name. Without model + modelVersion an episode is not comparable across time.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
+<section id="name" class="term">
+  <h3>name <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:name</code>
+  <p>The identifying name of a Term, Topic, Brand, or Capability. Unique within its scope; see schema.cypher for the per-class identity keys.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
+<section id="occurredAt" class="term">
+  <h3>occurredAt <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-engagement</span></h3>
+  <code class="iri">xeo:occurredAt</code>
+  <p></p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#ConversionEvent">xeo:ConversionEvent</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div></dl>
+</section>
+<section id="origin" class="term">
+  <h3>origin <span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:origin</code>
+  <p></p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Website">xeo:Website</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>WHATWG URL Standard (origin serialization)</dd></div></dl>
+</section>
+<section id="periodEnd" class="term">
+  <h3>periodEnd <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:periodEnd</code>
+  <p>Inclusive last day of a rollup window. Carried on ranksFor and visibilityFor.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#date" class="ext">xsd:date</a></dd></div></dl>
+</section>
+<section id="periodStart" class="term">
+  <h3>periodStart <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:periodStart</code>
+  <p>Inclusive first day of a rollup window. Carried on ranksFor and visibilityFor; never pool across windows silently.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#date" class="ext">xsd:date</a></dd></div></dl>
+</section>
+<section id="position" class="term">
+  <h3>position <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:position</code>
+  <p>1-based rank of a result within a SERP snapshot. Carried on hasResult. Distinct from avgPosition, which is a windowed rollup, not a single observation.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div></dl>
+</section>
+<section id="practiceKind" class="term">
+  <h3>practiceKind <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-strategy</span></h3>
+  <code class="iri">xeo:practiceKind</code>
+  <p>How the Practice acts: &#x27;guardrail&#x27; (veto a matching candidate), &#x27;preference&#x27; (reorder it), or &#x27;guidance&#x27; (attach a caveat, change nothing). The mechanism, kept as a small controlled string rather than a subclass.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Practice">xeo:Practice</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
+<section id="practiceOutcome" class="term">
+  <h3>practiceOutcome <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-strategy</span></h3>
+  <code class="iri">xeo:practiceOutcome</code>
+  <p>Carried on an appliedPractice edge: &#x27;vetoed&#x27; (a guardrail removed the candidate), &#x27;reranked&#x27; (a preference moved it), or &#x27;caveated&#x27; (guidance flagged it and changed nothing). One value per practiceKind. Domain left open because it rides on the edge, not on a node.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
+<section id="rationale" class="term">
+  <h3>rationale <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-strategy</span></h3>
+  <code class="iri">xeo:rationale</code>
+  <p>Why the rule exists — surfaced to a user when the Practice fires, so a veto or demotion is explained, never silent.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Practice">xeo:Practice</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
+<section id="rel" class="term">
+  <h3>rel <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:rel</code>
+  <p>The rel attribute of an observed hyperlink (nofollow, sponsored, ugc, ...). Carried on linksTo.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>WHATWG HTML (link types)</dd></div></dl>
+</section>
+<section id="responses" class="term">
+  <h3>responses <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-visibility</span></h3>
+  <code class="iri">xeo:responses</code>
+  <p>How many captured responses the rollup window covers — the denominator behind mentionRate and citationRate. Carried on visibilityFor; a rate without it cannot be weighted.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div></dl>
+</section>
+<section id="result" class="term">
+  <h3>result <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-decision</span></h3>
+  <code class="iri">xeo:result</code>
+  <p>&#x27;significant&#x27;, &#x27;no_change&#x27; or &#x27;inconclusive&#x27;. Answers DID THIS MOVE; lift&#x27;s sign answers which way. A regression is significant — the value never smuggles a direction in.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Outcome">xeo:Outcome</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
+<section id="resultReason" class="term">
+  <h3>resultReason <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-decision</span></h3>
+  <code class="iri">xeo:resultReason</code>
+  <p>Why an outcome was inconclusive, from a small controlled set (window_incomplete, co_intervention, confounded_external, baseline_unavailable, ...). The two confounder reasons differ on purpose: a co-intervention keeps its lift and shares attribution; an external confounder records none.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Outcome">xeo:Outcome</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
+<section id="resultType" class="term">
+  <h3>resultType <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:resultType</code>
+  <p>The kind of SERP result observed (organic, featured snippet, local pack, ...). Carried on hasResult; the vocabulary is per-engine and belongs to the consumer.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
+<section id="resultsWindowDays" class="term">
+  <h3>resultsWindowDays <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-delivery</span></h3>
+  <code class="iri">xeo:resultsWindowDays</code>
+  <p>The measurement window every target in this objective is read over. One horizon per campaign; per-target windows are deliberately not modelled.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Objective">xeo:Objective</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div></dl>
+</section>
+<section id="score" class="term">
+  <h3>score <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-decision</span></h3>
+  <code class="iri">xeo:score</code>
+  <p>The value assigned on the assessed dimension. Scale is defined by the dimension scheme, not fixed here.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#TacticAssessment">xeo:TacticAssessment</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div></dl>
+</section>
+<section id="source" class="term">
+  <h3>source <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-strategy</span></h3>
+  <code class="iri">xeo:source</code>
+  <p>Provenance of an assertion. The value vocabulary is subject-specific. On a Practice: &#x27;authored&#x27; (a human SOP or best-practice — high standing, durable), &#x27;learned&#x27; (earned from the experiment ledger — confidence ratchets with Outcomes), or &#x27;claimed&#x27; (an unproven assertion, e.g. a current answer-engine tactic — ships low-confidence with a halfLife and decays unless experiments promote it); this lets one class hold a firm SOP and a fragile claim without conflating their trust. On a ranksFor or visibilityFor rollup: the data source the window was built from. DOMAIN LEFT OPEN deliberately — rdfs:domain is an entailment rule, not a constraint, so naming xeo:Practice here would silently type every rollup edge carrying a source as a Practice.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
+<section id="statement" class="term">
+  <h3>statement <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-strategy</span></h3>
+  <code class="iri">xeo:statement</code>
+  <p>The rule in plain language, as a human authored or confirmed it — e.g. &#x27;Never 301 a paginated archive URL for ranking purposes.&#x27; The canonical human-facing form; the structural fields (practiceKind, appliesToConcept, constrains) make it executable.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Practice">xeo:Practice</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
+<section id="status" class="term">
+  <h3>status <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-strategy</span></h3>
+  <code class="iri">xeo:status</code>
+  <p>Lifecycle state of a revisable term. The value vocabulary is subject-specific. On a Practice: &#x27;proposed&#x27;, &#x27;active&#x27;, or &#x27;deprecated&#x27; — a proposed Practice is visible but does not fire, and superseding one deprecates it. DOMAIN LEFT OPEN deliberately, so another revisable term (the execution lifecycle of a Recommendation, say) can carry a lifecycle without being entailed a Practice.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
+<section id="statusCode" class="term">
+  <h3>statusCode <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:statusCode</code>
+  <p></p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div><div class="row"><dt>grounded in</dt><dd>RFC 9110 §15 (Status Codes)</dd></div></dl>
+</section>
+<section id="targetKind" class="term">
+  <h3>targetKind <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-delivery</span></h3>
+  <code class="iri">xeo:targetKind</code>
+  <p>&#x27;absolute&#x27; (targetValue is a value of the metric) or &#x27;percent&#x27; (a relative change from baseline in the metric&#x27;s better direction).</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#MetricTarget">xeo:MetricTarget</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
+<section id="targetValue" class="term">
+  <h3>targetValue <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-delivery</span></h3>
+  <code class="iri">xeo:targetValue</code>
+  <p>The value the metric should reach, interpreted per targetKind. Bounded per metric and kind at the edge — a percentage, a count, a rank and a currency do not share a range.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#MetricTarget">xeo:MetricTarget</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div></dl>
+</section>
+<section id="text" class="term">
+  <h3>text <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-visibility</span></h3>
+  <code class="iri">xeo:text</code>
+  <p>The natural-language body of a Prompt as posed to the engine. Part of a Prompt&#x27;s identity together with websiteId.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
+<section id="title" class="term">
+  <h3>title <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:title</code>
+  <p>The document title observed on a fetch. Carried on the fetched edge, not on the URL: the address is durable, the title is what one crawl saw.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>WHATWG HTML (the title element)</dd></div></dl>
+</section>
+<section id="webSearchEnabled" class="term">
+  <h3>webSearchEnabled <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-visibility</span></h3>
+  <code class="iri">xeo:webSearchEnabled</code>
+  <p>Whether the engine could search the web for this response. Citation behavior differs sharply with this flag; never pool across it silently.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#LLMResponse">xeo:LLMResponse</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#boolean" class="ext">xsd:boolean</a></dd></div></dl>
+</section>
+<section id="websiteId" class="term">
+  <h3>websiteId <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:websiteId</code>
+  <p>The tenancy key. Scope lives in this property on every scoped node and edge, never in a dynamic label — the identity half of &#x27;tenancy is data, not schema&#x27;.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
+<h2 id="annotation-properties">Annotation properties <span class="n">3</span></h2>
+<section id="canonicalStore" class="term">
+  <h3>canonicalStore <span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:canonicalStore</code>
+  <p>Where this term&#x27;s instances authoritatively live: neo4j, bigquery, vector-store, crm. The ontology is storage-agnostic; identity keys (websiteId, address, term name, date) join across stores.</p>
+  
+</section>
+<section id="epistemicLayer" class="term">
+  <h3>epistemicLayer <span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:epistemicLayer</code>
+  <p>One of: entity, episode, observation, derivation, interpretation, norm. Types every term by the kind of claim it makes. Core terms stay at entity/episode/observation/derivation; extension modules may introduce interpretation- or norm-layer terms and must mark them.</p>
+  
+</section>
+<section id="groundedIn" class="term">
+  <h3>groundedIn <span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:groundedIn</code>
+  <p>The primary standard or API contract that defines this term&#x27;s meaning.</p>
+  
+</section>
+<h2 id="individuals">Individuals <span class="n">4</span></h2>
+<section id="CommercialInvestigation" class="term">
+  <h3>Commercial Investigation <span class="mod">xeo-engagement</span></h3>
+  <code class="iri">xeo:CommercialInvestigation</code>
+  <p></p>
+  
+</section>
+<section id="Informational" class="term">
+  <h3>Informational <span class="mod">xeo-engagement</span></h3>
+  <code class="iri">xeo:Informational</code>
+  <p></p>
+  
+</section>
+<section id="Navigational" class="term">
+  <h3>Navigational <span class="mod">xeo-engagement</span></h3>
+  <code class="iri">xeo:Navigational</code>
+  <p></p>
+  
+</section>
+<section id="Transactional" class="term">
+  <h3>Transactional <span class="mod">xeo-engagement</span></h3>
+  <code class="iri">xeo:Transactional</code>
+  <p></p>
+  
+</section>
+</div>
+</body>
+</html>
