@@ -188,7 +188,7 @@ is an **optional crosswalk** — alignments, not imports:
   scheme — of topics, gaps, or funnel stages — without editing the ontology.
 
 Alignment uses `skos:closeMatch` where the correspondence is approximate (no
-forced logical entailment) and `rdfs:subClassOf`/`subPropertyOf` only where a XEO
+forced logical entailment) and `rdfs:subClassOf`/`subPropertyOf` only where an XEO
 term is a genuine specialization. The bridges assert nothing false and can be
 ignored entirely.
 

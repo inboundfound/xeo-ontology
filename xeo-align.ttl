@@ -17,7 +17,7 @@
 #   * SKOS mapping relations (skos:closeMatch) express APPROXIMATE cross-vocab
 #     correspondence WITHOUT forcing logical entailment — used wherever the
 #     concepts rhyme but are not provably identical (e.g. xeo:URL ~ schema:WebPage).
-#   * rdfs:subClassOf / rdfs:subPropertyOf are used ONLY where a XEO term is a
+#   * rdfs:subClassOf / rdfs:subPropertyOf are used ONLY where an XEO term is a
 #     genuine specialization of the target (e.g. xeo:Crawl is-a prov:Activity).
 #
 # None of this depends on any third-party SEO vocabulary; schema.org, PROV-O and
@@ -37,7 +37,7 @@ xeo:align-module a owl:Ontology ;
 # ===========================================================================
 
 xeo:Website skos:closeMatch schema:WebSite ;
-    rdfs:comment "A XEO Website is identified by origin and carries tenancy; schema:WebSite is the closest published class." .
+    rdfs:comment "An XEO Website is identified by origin and carries tenancy; schema:WebSite is the closest published class." .
 
 xeo:URL skos:closeMatch schema:WebPage ;
     rdfs:comment "XEO models the URL as the durable address-identity; the page's rendered state at a time is a Fetch observation, not the identity. schema:WebPage is the closest published class for 'the page at this address' — closeMatch, not equivalence, because XEO deliberately separates the address (entity) from the document state (observation)." .
@@ -135,4 +135,4 @@ xeo:supportedBy rdfs:subPropertyOf prov:wasDerivedFrom ;
 # ===========================================================================
 
 xeo:Project skos:closeMatch schema:Project ;
-    rdfs:comment "A XEO Project is a contracted body of work on one website with a quota and a scope; schema:Project is the closest published class. closeMatch, not equivalence: XEO's carries an engagement shape schema.org has no notion of." .
+    rdfs:comment "An XEO Project is a contracted body of work on one website with a quota and a scope; schema:Project is the closest published class. closeMatch, not equivalence: XEO's carries an engagement shape schema.org has no notion of." .

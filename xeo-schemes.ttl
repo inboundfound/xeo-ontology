@@ -857,7 +857,7 @@ xeos:epistemicLayer a skos:ConceptScheme ;
     skos:prefLabel "Epistemic layers"@en ;
     xeo:fillsSlot xeo:epistemicLayer ;
     dct:source "xeo-core.ttl (xeo:epistemicLayer)" ;
-    dct:description "The six kinds of claim a XEO term can make, in order from bedrock to governance. The annotation property types TERMS; publishing the six here as a scheme gives a consumer tagging INSTANCES the same six values under one IRI each. Whether XEO itself should own an instance-level layer property is a separate decision this scheme does not make." .
+    dct:description "The six kinds of claim an XEO term can make, in order from bedrock to governance. The annotation property types TERMS; publishing the six here as a scheme gives a consumer tagging INSTANCES the same six values under one IRI each. Whether XEO itself should own an instance-level layer property is a separate decision this scheme does not make." .
 
 xeos:epistemicLayer-entity a skos:Concept ;
     skos:inScheme xeos:epistemicLayer ;

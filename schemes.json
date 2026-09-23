@@ -94,7 +94,7 @@
       "iri": "https://xeoontology.org/schemes#epistemicLayer",
       "label": "Epistemic layers",
       "fillsSlot": "xeo:epistemicLayer",
-      "description": "The six kinds of claim a XEO term can make, in order from bedrock to governance. The annotation property types TERMS; publishing the six here as a scheme gives a consumer tagging INSTANCES the same six values under one IRI each. Whether XEO itself should own an instance-level layer property is a separate decision this scheme does not make.",
+      "description": "The six kinds of claim an XEO term can make, in order from bedrock to governance. The annotation property types TERMS; publishing the six here as a scheme gives a consumer tagging INSTANCES the same six values under one IRI each. Whether XEO itself should own an instance-level layer property is a separate decision this scheme does not make.",
       "source": "xeo-core.ttl (xeo:epistemicLayer)",
       "ordered": true,
       "concepts": [
