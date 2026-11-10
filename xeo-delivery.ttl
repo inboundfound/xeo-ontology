@@ -65,12 +65,12 @@ xeo:Campaign a owl:Class ;
 xeo:Objective a owl:Class ;
     rdfs:label "Objective" ;
     xeo:epistemicLayer "interpretation" ;
-    dct:description "What a Campaign intends to move: an operator-written statement in prose (carried verbatim — the recommendation agent reads it as the goal), a resultsWindowDays every target is measured over, and one or more MetricTargets of which exactly one isPrimary. An intent set at creation. A campaign has one reporting horizon, distinct from the Project's work window: a two-month engagement can carry a six-month results window." .
+    dct:description "What a Campaign intends to move: an operator-written statement in prose (carried verbatim — the recommendation agent reads it as the goal), a resultsWindowDays every target is measured over, and one or more MetricTargets of which exactly one isPrimary. An intent set at creation. A campaign has one reporting horizon, distinct from the Project's work window: a two-month engagement can carry a six-month results window. The window starts on resultsWindowStart, and the objective-level result is one objectiveReading per target over the campaign's deduplicated scope, never a sum of Outcomes." .
 
 xeo:MetricTarget a owl:Class ;
     rdfs:label "Metric Target" ;
     xeo:epistemicLayer "interpretation" ;
-    dct:description "One measurable target of an Objective: metric X should reach targetValue, read as absolute or as a percent lift from a captured baseline. Named a target and never a key result: xeo:Outcome is 'the measured result an experiment produced', an observation, and a goal must not share a name with a reading. Each target is its own node so the experiment loop can hang observations off it; a target dropped on edit is stamped deletedAt, never destroyed, because its id is what measured history is anchored to." .
+    dct:description "One measurable target of an Objective: the Metric it is set on (metric, the code of a Metric in xeos:metric), the targetValue to reach, read per targetKind as an absolute value or as a change from a captured baseline (baselineReading), and whether it isPrimary. Unit and better direction come from its Metric. Named a target and never a key result: xeo:Outcome is 'the measured result an experiment produced', an observation, and a goal must not share a name with a reading. Each target is its own node so the experiment loop can hang observations off it; a target dropped on edit is stamped deletedAt, never destroyed, because its id is what measured history is anchored to." .
 
 # --- Object properties -------------------------------------------------------
 
@@ -120,7 +120,7 @@ xeo:issuedFor a owl:ObjectProperty ;
 
 xeo:measures a owl:ObjectProperty ;
     rdfs:domain xeo:Experiment ; rdfs:range xeo:MetricTarget ;
-    xeo:epistemicLayer "observation" ;
+    xeo:epistemicLayer "episode" ;
     dct:description "The target an experiment's Outcome is read against. Carries a role — primary or secondary — matching the target's standing in its objective, and a basis saying which pages were measured (the ones the recommendation applied to, the gap's evidence, or the pages actually changed)." .
 
 xeo:effortEstimate a owl:ObjectProperty ;
@@ -162,32 +162,32 @@ xeo:durationDays a owl:DatatypeProperty ;
 xeo:resultsWindowDays a owl:DatatypeProperty ;
     rdfs:domain xeo:Objective ; rdfs:range xsd:integer ;
     xeo:epistemicLayer "interpretation" ;
-    dct:description "The measurement window every target in this objective is read over. One horizon per campaign; per-target windows are deliberately not modelled." .
+    dct:description "The measurement window every target in this objective is read over. One horizon per campaign; per-target windows are deliberately not modelled. Counted in days from resultsWindowStart, that day included." .
 
 xeo:metric a owl:DatatypeProperty ;
     rdfs:domain xeo:MetricTarget ; rdfs:range xsd:string ;
     xeo:epistemicLayer "interpretation" ;
-    dct:description "Which metric the target is set on — clicks, impressions, ctr, position, rank_absolute, etv (see xeo-schemes objectiveMetric). The value vocabulary is the consumer's; the reference scheme records each metric's direction and unit." .
+    dct:description "Which metric the target is set on, as a code: the skos:notation of an xeo:Metric — clicks, ctr, position, mention_rate, sessions, pipeline_created, ... The code resolves in xeos:metric, the reference scheme of Metrics, which states each one's type, unit, better direction and additivity; a consumer may add Metrics of its own. Stays a string in 0.6: the Metric is found by its notation. xeos:objectiveMetric is the earlier list of codes, kept for compatibility." .
 
 xeo:direction a owl:DatatypeProperty ;
     rdfs:domain xeo:MetricTarget ; rdfs:range xsd:string ;
     xeo:epistemicLayer "interpretation" ;
-    dct:description "'up' or 'down' — which way is better for this metric. DERIVED from metric, never client input: position and rank are 1-based, so a shared '+20%' would silently ask for a rank 20% worse." .
+    dct:description "'up' or 'down' — which way is better for this metric. DERIVED from metric, never client input: position and rank are 1-based, so a shared '+20%' would silently ask for a rank 20% worse. Deprecated in 0.6.0, as advice: the direction is now stated once, on the Metric, as betterDirection, and a copy here is a cache of it that can drift. Still valid where stored." .
 
 xeo:targetKind a owl:DatatypeProperty ;
     rdfs:domain xeo:MetricTarget ; rdfs:range xsd:string ;
     xeo:epistemicLayer "interpretation" ;
-    dct:description "'absolute' (targetValue is a value of the metric) or 'percent' (a relative change from baseline in the metric's better direction)." .
+    dct:description "'absolute' (targetValue is a value of the metric) or 'percent' (a relative change from baseline in the metric's better direction). xeos:targetKind also publishes 'relative' (the same change as a quotient) and 'absolute_change' (a change from baseline in the metric's unit, which for a ratio is points), because '+2 on ctr' is otherwise ambiguous." .
 
 xeo:targetValue a owl:DatatypeProperty ;
     rdfs:domain xeo:MetricTarget ; rdfs:range xsd:decimal ;
     xeo:epistemicLayer "interpretation" ;
-    dct:description "The value the metric should reach, interpreted per targetKind. Bounded per metric and kind at the edge — a percentage, a count, a rank and a currency do not share a range." .
+    dct:description "The value the metric should reach, interpreted per targetKind. Bounded per metric and kind at the edge — a percentage, a count, a rank and a currency do not share a range. In the Metric's unit, a ratio as a 0 to 1 quotient; a currency target also states targetCurrency." .
 
 xeo:baseline a owl:DatatypeProperty ;
     rdfs:domain xeo:MetricTarget ; rdfs:range xsd:decimal ;
     xeo:epistemicLayer "observation" ;
-    dct:description "The metric's value when the target was set — the anchor 'how far beyond target' is measured from. An observation captured onto an interpretation; baselineCapturedAt says when, because it is not the same instant as the target's creation." .
+    dct:description "The metric's value when the target was set — the anchor 'how far beyond target' is measured from. An observation captured onto an interpretation; baselineCapturedAt says when, because it is not the same instant as the target's creation. The cached value of baselineReading, which carries the window, scope and source a bare number cannot." .
 
 xeo:baselineCapturedAt a owl:DatatypeProperty ;
     rdfs:domain xeo:MetricTarget ; rdfs:range xsd:dateTime ;
@@ -284,3 +284,68 @@ xeo:baseline rdfs:label "baseline" .
 xeo:baselineCapturedAt rdfs:label "baseline captured at" .
 xeo:isPrimary rdfs:label "is primary" .
 xeo:deletedAt rdfs:label "deleted at" .
+
+# --- v0.6.0 (metrics and CRM pipeline, 2026-11-10) --------------------------------
+# Appended at the foot, so no line above moves. From the two research reports.
+#
+# ADDED. baselineReading, the reading behind a target's cached baseline;
+# resultsWindowStart, because a window length with no start cannot be computed;
+# targetCurrency, because a currency target without a currency cannot be
+# either; and objectiveReading (extension), the one reading an Objective is
+# judged on.
+#
+# xeo:metric STAYS A STRING. The report asks for an object property to a
+# Metric. Consumers store the code, so the property keeps its type and its
+# meaning is tightened instead: the code is the skos:notation of a Metric in
+# xeos:metric, the same "concept stored as its code" reading v0.6.0 gives
+# sentiment, device and linkPosition. Nothing a consumer stores changes.
+#
+# DEPRECATED (advisory). xeo:direction. Its own description said it is derived
+# from the metric; the Metric now states it once, as betterDirection. The term
+# stays declared and valid, and a stored copy is still read.
+#
+# FIXED (layer). xeo:measures was marked observation. It records the design of
+# an experiment, fixed when the experiment is set up, and is an episode.
+#
+# TIGHTENED (in place, above). The descriptions of Objective, MetricTarget,
+# resultsWindowDays, metric, direction, targetKind, targetValue and baseline,
+# one line each.
+
+xeo:baselineReading a owl:ObjectProperty ;
+    rdfs:label "baseline reading" ;
+    rdfs:range xeo:MetricReading ;
+    xeo:epistemicLayer "observation" ;
+    xeo:groundedIn "The API contract of the system named in the reading's source" ;
+    xeo:canonicalStore "neo4j" ;
+    xeo:domainIncludes xeo:MetricTarget , xeo:Outcome ;
+    dct:description "The reading a change is measured from. On a MetricTarget: the reading of its Metric taken when the target was set, of which xeo:baseline is the cached value. On an Outcome: the reading over the window of equal length immediately before the change was applied. One per subject. It carries what a bare number cannot: the window, the scope and the source, so the comparison can be recomputed. Domain left open across the two terms listed." .
+
+xeo:resultsWindowStart a owl:DatatypeProperty ;
+    rdfs:label "results window start" ;
+    rdfs:domain xeo:Objective ; rdfs:range xsd:date ;
+    xeo:epistemicLayer "interpretation" ;
+    xeo:canonicalStore "neo4j" ;
+    dct:description "The first day of the window an Objective's targets are read over. The window runs for resultsWindowDays from this day, which is counted. One per Objective. Without it resultsWindowDays is a length with nowhere to start." .
+
+xeo:targetCurrency a owl:DatatypeProperty ;
+    rdfs:label "target currency" ;
+    rdfs:domain xeo:MetricTarget ; rdfs:range xsd:string ;
+    xeo:epistemicLayer "interpretation" ;
+    xeo:canonicalStore "neo4j" ;
+    dct:description "The ISO 4217 code (three upper-case letters) a currency target is expressed in. Required when the target's Metric has unit currency and is read from deal amounts (pipeline_created, revenue_won); amounts in other currencies are converted before they are compared, and the conversion is a derivation. Absent on any other target." .
+
+xeo:objectiveReading a owl:ObjectProperty ;
+    rdfs:label "objective reading" ;
+    rdfs:domain xeo:Objective ; rdfs:range xeo:MetricReading ;
+    xeo:epistemicLayer "derivation" ;
+    xeo:canonicalStore "neo4j" ;
+    xeo:termStatus "extension" ;
+    dct:description "The reading an Objective is judged on, one per target: the target's Metric over the deduplicated union of the campaign's coversUrl and coversTerm, across the results window, computed from the column store. Which target a reading belongs to is read from readingOf. The objective-level result is this reading against the target's baselineReading. It is never the sum of the campaign's Outcomes: overlapping scopes would be counted twice, and a non-additive metric cannot be summed at all." .
+
+xeo:direction owl:deprecated true ;
+    rdfs:seeAlso xeo:betterDirection .
+
+xeo:baseline rdfs:seeAlso xeo:baselineReading .
+
+xeo:isPrimary skos:altLabel "KPI" ;
+    skos:scopeNote "What practitioners call the KPI. XEO has no KPI class: no system surveyed models one as a type, and the role is this flag on a target." .
