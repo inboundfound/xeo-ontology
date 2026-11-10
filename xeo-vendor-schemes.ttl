@@ -1,0 +1,757 @@
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dct:  <http://purl.org/dc/terms/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xeo:  <https://xeoontology.org/xeo#> .
+@prefix xeos: <https://xeoontology.org/schemes#> .
+
+# XEO Vendor Schemes — where a vendor's field meets an XEO slot.
+#
+# XEO holds slots. A vendor's field names, enums and value sets never become
+# XEO terms: they go here, one SKOS scheme per vendor, each field a concept
+# that says which slot it fills and how closely. xeo-schemes.ttl holds the
+# reference FILLINGS of slots (the values a slot may take); this file holds
+# CROSSWALKS (which field of whose API carries a slot). They are kept apart
+# because they are used differently: a filling is something a graph stores, a
+# crosswalk is something a loader or a classifier reads.
+#
+# Every concept carries:
+#   skos:notation          the exact string the vendor stores or sends
+#   skos:definition        what the vendor says the field is, paraphrased
+#   xeo:fillsSlot          the XEO property the field's value goes into
+#   one SKOS match         exactMatch, closeMatch, narrowMatch, broadMatch or
+#                          relatedMatch, to the slot or, for a metric field, to
+#                          the Metric in xeos:metric it is a reading of
+#   skos:scopeNote         the vendor's firing condition, formula or trap
+#   dct:source             the page the mapping was read from, and the date
+#   xeo:mappingConfidence  how the mapping is known
+#
+# NOTHING HERE IS VERIFIED. Both research reports read documentation and ran
+# no API call. mappingConfidence is therefore "documented" or "inferred" and
+# never "verified":
+#   documented   the vendor's own documentation states the field and its
+#                meaning, and the report read it there
+#   inferred     the meaning is documented, but the field's internal name was
+#                confirmed only from a secondary source (a community thread, a
+#                third-party connector), or the role given to the field is the
+#                report's reading and not the vendor's statement
+# Check every mapping against live API output before a classifier is trained
+# on it. The first one that is checked should add "verified" to this list.
+#
+# WHAT IS TRANSCRIBED. Five schemes, chosen because the owner's stack uses them
+# or because the report shows them in conflict:
+#   xeos:hubspotCrm   HubSpot CRM deal and contact properties
+#   xeos:gsc          Google Search Console Search Analytics API
+#   xeos:ga4          Google Analytics 4 Data API
+#   xeos:peec         Peec AI Customer API (brands report)
+#   xeos:profound     Profound External API (visibility and citations reports)
+# Only rows the reports mark documented are transcribed. Rows they mark
+# inferred or unverified are left out and named below, so their absence is a
+# statement and not an oversight.
+#
+# LEFT OUT, from the transcribed vendors:
+#   HubSpot   hs_analytics_source_data_1 (-> referringPlatform; inferred),
+#             hs_lead_status, deal_currency_code, hs_is_closed, and the deal
+#             probability, forecast category, ARR and closed-lost-reason
+#             properties (internal names unverified); the pipelines API stage
+#             metadata (probability, isClosed), which the report inventories
+#             and does not map; every traffic-source value except
+#             AI_REFERRALS, whose neutral channel the report does not state;
+#             the Analytics v2 and Campaigns reporting fields (visits,
+#             contacts, sessionToContactRate, influencedContacts, ...).
+#   GSC       dataState (secondary source).
+#   Peec      win_rate ("win" is not defined in the documentation read); the
+#             Data Studio connector's field of the same name as the API's
+#             visibility, which is a count (noted on the API concept).
+#   Profound  average_position (the population it averages over is
+#             undocumented; inferred); count in the citations report;
+#             dimensions, date_interval and category_id, which fill no one slot.
+#
+# NOT YET TRANSCRIBED, whole vendors. The reports carry draft mappings for:
+#   CRM       Salesforce, Pipedrive, Dynamics 365, Zoho CRM, Close, Attio
+#             (CRM report, Appendix B). Freshsales, Copper and monday CRM were
+#             not read at all.
+#   Metrics   dbt MetricFlow, Cube, LookML, Malloy, OSI / Apache Ossie (the
+#             definition side: these map to the Metric's own properties),
+#             Matomo, HubSpot analytics (metrics report, Appendix C).
+#
+# SOURCES. The reports give an exact page for some fields and a page group for
+# the rest. Where only the group is known, dct:source says so in words and
+# invents no URL.
+#
+# Naming: a concept is xeos:<scheme>-<field>. Where the field name is not a
+# legal local name (metrics[].expression) the IRI uses a readable slug and
+# skos:notation still holds the exact string. A vendor may use one field name
+# for two things in two reports (Profound's share_of_voice); those are two
+# concepts with the same notation, told apart by their IRIs and scope notes.
+
+xeo:vendor-schemes-module a owl:Ontology ;
+    dct:title "XEO Vendor Schemes (crosswalks)" ;
+    dct:description "Per-vendor SKOS schemes mapping a vendor's exact field names to the XEO slots and Metrics they fill, each with a match strength, a scope note, a source and a confidence. Crosswalks for loaders and classifiers, not values a graph stores. Transcribed from documentation and not verified against live API output." ;
+    dct:creator "Inbound Found" ;
+    owl:versionInfo "0.6.0" .
+
+xeo:mappingConfidence a owl:AnnotationProperty ;
+    rdfs:comment "How a vendor-field mapping is known: 'documented' (the vendor's own documentation states the field and its meaning), 'inferred' (the meaning is documented but the field name or its role rests on a secondary source or on the mapper's reading), or 'verified' (checked against live API output). Carried by every concept in a vendor scheme. No mapping published so far is verified." .
+
+# --- HubSpot CRM ------------------------------------------------------------
+
+xeos:hubspotCrm a skos:ConceptScheme ;
+    skos:prefLabel "HubSpot CRM properties"@en ;
+    dct:source "XEO CRM pipeline research report, 2026-11-10, Appendix B · HubSpot Knowledge Base and developer documentation as cited on each concept" ;
+    dct:description "HubSpot's deal and contact properties, by internal name, mapped to the XEO pipeline slots. Stage and pipeline ids are not here and cannot be: they are configured per portal, so the same stage has a different id in every account, and they are mapped per tenant through stageClass. Check the internal names marked inferred against GET /crm/properties/2026-09/deals and /contacts on a live portal before relying on them." .
+
+xeos:hubspotCrm-amount a skos:Concept ;
+    skos:inScheme xeos:hubspotCrm ;
+    skos:notation "amount" ;
+    skos:prefLabel "Amount"@en ;
+    skos:definition "The total value of the deal, in the deal's currency"@en ;
+    xeo:fillsSlot xeo:dealAmount ;
+    skos:exactMatch xeo:dealAmount ;
+    skos:scopeNote "The deal's own currency. Not amount_in_home_currency, which is converted, and not hs_forecast_amount, which is weighted."@en ;
+    dct:source "https://knowledge.hubspot.com/properties/hubspots-default-deal-properties (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:hubspotCrm-amount_in_home_currency a skos:Concept ;
+    skos:inScheme xeos:hubspotCrm ;
+    skos:notation "amount_in_home_currency" ;
+    skos:prefLabel "Amount in company currency"@en ;
+    skos:definition "The deal amount converted to the account's company currency"@en ;
+    xeo:fillsSlot xeo:amountInReportingCurrency ;
+    skos:closeMatch xeo:amountInReportingCurrency ;
+    skos:scopeNote "Converted at the latest account rate while the deal is open, and at the rate in effect on the close date once it is closed. The definition is documented; the internal name was confirmed only from HubSpot Community API responses."@en ;
+    dct:source "https://knowledge.hubspot.com/properties/hubspots-default-deal-properties (read 2026-11-10)" ;
+    xeo:mappingConfidence "inferred" .
+
+xeos:hubspotCrm-dealstage a skos:Concept ;
+    skos:inScheme xeos:hubspotCrm ;
+    skos:notation "dealstage" ;
+    skos:prefLabel "Deal stage"@en ;
+    skos:definition "The stage the deal is in, as the portal's internal stage id"@en ;
+    xeo:fillsSlot xeo:stageRef ;
+    skos:exactMatch xeo:stageRef ;
+    skos:scopeNote "The value is a per-portal id ('closedwon' in one account, '258551227' in another). What the stage means is read from the pipelines API's stage metadata, per tenant, and goes in stageClass."@en ;
+    dct:source "https://knowledge.hubspot.com/properties/hubspots-default-deal-properties (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:hubspotCrm-pipeline a skos:Concept ;
+    skos:inScheme xeos:hubspotCrm ;
+    skos:notation "pipeline" ;
+    skos:prefLabel "Pipeline"@en ;
+    skos:definition "The pipeline the deal is in, as the portal's internal pipeline id"@en ;
+    xeo:fillsSlot xeo:pipelineRef ;
+    skos:exactMatch xeo:pipelineRef ;
+    skos:scopeNote "A per-portal id; the report's example value is 'default'."@en ;
+    dct:source "https://knowledge.hubspot.com/properties/hubspots-default-deal-properties (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:hubspotCrm-hs_is_closed_won a skos:Concept ;
+    skos:inScheme xeos:hubspotCrm ;
+    skos:notation "hs_is_closed_won" ;
+    skos:prefLabel "Is closed won"@en ;
+    skos:definition "True when the deal is in a closed-won stage"@en ;
+    xeo:fillsSlot xeo:dealOutcome ;
+    skos:narrowMatch xeo:dealOutcome ;
+    skos:scopeNote "Answers won or not won, and nothing about lost. Lost is derived from the stage's closed flag in the pipelines metadata, with method tenant-stage-map."@en ;
+    dct:source "https://knowledge.hubspot.com/properties/hubspots-default-deal-properties (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:hubspotCrm-closedate a skos:Concept ;
+    skos:inScheme xeos:hubspotCrm ;
+    skos:notation "closedate" ;
+    skos:prefLabel "Close date"@en ;
+    skos:definition "The day the deal is expected to close, or was closed"@en ;
+    xeo:fillsSlot xeo:expectedCloseDate , xeo:dealClosedAt ;
+    skos:relatedMatch xeo:expectedCloseDate , xeo:dealClosedAt ;
+    skos:scopeNote "One field, two meanings: route by outcome. While the deal is open it is the owner's forecast (expectedCloseDate); once closed it is when it closed (dealClosedAt). HubSpot sets it to today when a deal moves into a closed stage, but not when only the stage property is updated through the API, so a closed deal can carry a stale forecast date."@en ;
+    dct:source "https://knowledge.hubspot.com/properties/hubspots-default-deal-properties (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:hubspotCrm-createdate a skos:Concept ;
+    skos:inScheme xeos:hubspotCrm ;
+    skos:notation "createdate" ;
+    skos:prefLabel "Create date"@en ;
+    skos:definition "When the deal was created"@en ;
+    xeo:fillsSlot xeo:recordCreatedAt ;
+    skos:exactMatch xeo:recordCreatedAt ;
+    skos:scopeNote "Users can edit a deal's create date by hand, so it is the CRM's record of creation and not proof of it."@en ;
+    dct:source "https://knowledge.hubspot.com/properties/hubspots-default-deal-properties (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:hubspotCrm-hubspot_owner_id a skos:Concept ;
+    skos:inScheme xeos:hubspotCrm ;
+    skos:notation "hubspot_owner_id" ;
+    skos:prefLabel "Deal owner"@en ;
+    skos:definition "The user the deal is assigned to"@en ;
+    xeo:fillsSlot xeo:ownerRef ;
+    skos:exactMatch xeo:ownerRef ;
+    skos:scopeNote "An owner id. Not the user who created the record."@en ;
+    dct:source "https://knowledge.hubspot.com/properties/hubspots-default-deal-properties (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:hubspotCrm-hs_forecast_amount a skos:Concept ;
+    skos:inScheme xeos:hubspotCrm ;
+    skos:notation "hs_forecast_amount" ;
+    skos:prefLabel "Forecast amount"@en ;
+    skos:definition "The deal amount multiplied by its forecast probability"@en ;
+    xeo:fillsSlot xeo:weightedAmount ;
+    skos:narrowMatch xeo:weightedAmount ;
+    skos:scopeNote "Weighted by the forecast probability, which is not the deal probability; HubSpot's 'Weighted amount' uses the latter and is the one it recommends. Method must name which."@en ;
+    dct:source "https://knowledge.hubspot.com/properties/hubspots-default-deal-properties (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:hubspotCrm-lifecyclestage a skos:Concept ;
+    skos:inScheme xeos:hubspotCrm ;
+    skos:notation "lifecyclestage" ;
+    skos:prefLabel "Lifecycle stage"@en ;
+    skos:definition "Where the contact or company is in the marketing and sales funnel"@en ;
+    xeo:fillsSlot xeo:lifecycleStage ;
+    skos:exactMatch xeo:lifecycleStage ;
+    skos:scopeNote "Default values subscriber, lead, marketingqualifiedlead, salesqualifiedlead, opportunity, customer, evangelist; a portal can customize the ladder, and the one the report saw had. The API moves a record forward only. What qualifies a lead for each stage is the portal's own rule."@en ;
+    dct:source "HubSpot Knowledge Base, default contact properties (knowledge.hubspot.com; the report records the page and not its URL) (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:hubspotCrm-hs_v2_date_entered a skos:Concept ;
+    skos:inScheme xeos:hubspotCrm ;
+    skos:notation "hs_v2_date_entered_" ;
+    skos:prefLabel "Date entered stage (v2)"@en ;
+    skos:definition "When the deal most recently entered a given stage; one property per stage, named by appending the stage id"@en ;
+    xeo:fillsSlot xeo:enteredAt ;
+    skos:closeMatch xeo:enteredAt ;
+    skos:scopeNote "The notation is a prefix: the property is hs_v2_date_entered_<stage id>. Holds the latest entry only, so it yields one StageTransition per stage and not the full history. Never use the legacy hs_date_entered_ properties: they cleared when a deal moved backwards and filled when it skipped a stage, and stopped being returned on 2024-11-20."@en ;
+    dct:source "HubSpot Developer Changelog, sunset of the legacy stage properties (developers.hubspot.com; the report records the page and not its URL) (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:hubspotCrm-hs_analytics_source a skos:Concept ;
+    skos:inScheme xeos:hubspotCrm ;
+    skos:notation "hs_analytics_source" ;
+    skos:prefLabel "Original traffic source"@en ;
+    skos:definition "The channel of the contact's earliest known session, as HubSpot's classifier assigned it"@en ;
+    xeo:fillsSlot xeo:firstTouchChannel ;
+    skos:exactMatch xeo:firstTouchChannel ;
+    skos:scopeNote "A vendor classifier's output: method vendor-classifier:hubspot. Values ORGANIC_SEARCH, PAID_SEARCH, EMAIL_MARKETING, SOCIAL_MEDIA, REFERRALS, OTHER_CAMPAIGNS, DIRECT_TRAFFIC, OFFLINE, PAID_SOCIAL, AI_REFERRALS; only the last is mapped to a neutral channel so far. A deal inherits it from the associated contact with the earliest activity. The definition is documented; the internal name was confirmed only from HubSpot Community API responses."@en ;
+    dct:source "HubSpot Knowledge Base, traffic source properties (knowledge.hubspot.com; the report records the page and not its URL) (read 2026-11-10)" ;
+    xeo:mappingConfidence "inferred" .
+
+xeos:hubspotCrm-hs_analytics_latest_source a skos:Concept ;
+    skos:inScheme xeos:hubspotCrm ;
+    skos:notation "hs_analytics_latest_source" ;
+    skos:prefLabel "Latest traffic source"@en ;
+    skos:definition "The channel of the contact's most recent session, as HubSpot's classifier assigned it"@en ;
+    xeo:fillsSlot xeo:latestTouchChannel ;
+    skos:exactMatch xeo:latestTouchChannel ;
+    skos:scopeNote "Same values and classifier as the original source. The definition is documented; the internal name was confirmed only from HubSpot Community API responses."@en ;
+    dct:source "HubSpot Knowledge Base, traffic source properties (knowledge.hubspot.com; the report records the page and not its URL) (read 2026-11-10)" ;
+    xeo:mappingConfidence "inferred" .
+
+xeos:hubspotCrm-value-AI_REFERRALS a skos:Concept ;
+    skos:inScheme xeos:hubspotCrm ;
+    skos:notation "AI_REFERRALS" ;
+    skos:prefLabel "AI Referrals (traffic source value)"@en ;
+    skos:definition "A visit HubSpot classified as referred by an AI platform"@en ;
+    xeo:fillsSlot xeo:firstTouchChannel , xeo:latestTouchChannel ;
+    skos:closeMatch xeos:acquisitionChannel-ai_assistant ;
+    skos:scopeNote "A value of the original and latest traffic source properties, not a property. A visit qualifies when the referring domain, or a UTM parameter, is one of the AI platform domains HubSpot recognises (chatgpt.com, claude.ai, perplexity.ai, copilot.microsoft.com, gemini.google.com, meta.ai, mistral.ai, poe.com, grok.com); HubSpot states that only AI-specific domains like gemini.google.com are categorised this way. History is not reclassified. closeMatch because another tool's list of assistants differs. A community report shows a UTM can send such a visit to OTHER_CAMPAIGNS instead."@en ;
+    dct:source "HubSpot Knowledge Base, traffic source properties (knowledge.hubspot.com; the report records the page and not its URL) (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+# --- Google Search Console --------------------------------------------------
+
+xeos:gsc a skos:ConceptScheme ;
+    skos:prefLabel "Google Search Console Search Analytics API"@en ;
+    dct:source "XEO metrics and KPIs research report, 2026-11-10, Appendix C · https://developers.google.com/webmaster-tools/v1/how-tos/all-your-data (read from a search extract of the page, not the full page)" ;
+    dct:description "The request and response fields of searchAnalytics.query, mapped to the Metrics they are readings of and to the reading's own slots. The four response metrics are the ground truth core's ranksFor rollup is built from." .
+
+xeos:gsc-clicks a skos:Concept ;
+    skos:inScheme xeos:gsc ;
+    skos:notation "clicks" ;
+    skos:prefLabel "Clicks"@en ;
+    skos:definition "Clicks on the site's results for the row"@en ;
+    xeo:fillsSlot xeo:value ;
+    skos:exactMatch xeos:metric-clicks ;
+    skos:scopeNote "A double. The count differs by aggregationType: by page and by property are two different numbers under this one field."@en ;
+    dct:source "https://developers.google.com/webmaster-tools/v1/how-tos/all-your-data (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:gsc-impressions a skos:Concept ;
+    skos:inScheme xeos:gsc ;
+    skos:notation "impressions" ;
+    skos:prefLabel "Impressions"@en ;
+    skos:definition "Times the site's results were shown for the row"@en ;
+    xeo:fillsSlot xeo:value ;
+    skos:exactMatch xeos:metric-impressions ;
+    skos:scopeNote "A double. Differs by aggregationType, like clicks."@en ;
+    dct:source "https://developers.google.com/webmaster-tools/v1/how-tos/all-your-data (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:gsc-ctr a skos:Concept ;
+    skos:inScheme xeos:gsc ;
+    skos:notation "ctr" ;
+    skos:prefLabel "CTR"@en ;
+    skos:definition "Clicks divided by impressions for the row"@en ;
+    xeo:fillsSlot xeo:value ;
+    skos:exactMatch xeos:metric-ctr ;
+    skos:scopeNote "Returned as a 0 to 1 quotient (0.1078), not a percentage. clicks and impressions of the same row are its numeratorValue and denominatorValue."@en ;
+    dct:source "https://developers.google.com/webmaster-tools/v1/how-tos/all-your-data (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:gsc-position a skos:Concept ;
+    skos:inScheme xeos:gsc ;
+    skos:notation "position" ;
+    skos:prefLabel "Position"@en ;
+    skos:definition "The average position of the site's results for the row"@en ;
+    xeo:fillsSlot xeo:value ;
+    skos:exactMatch xeos:metric-position ;
+    skos:scopeNote "1-based, an average over impressions, and computed differently when results are grouped by page than by property. Never summed."@en ;
+    dct:source "https://developers.google.com/webmaster-tools/v1/how-tos/all-your-data (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:gsc-aggregationType a skos:Concept ;
+    skos:inScheme xeos:gsc ;
+    skos:notation "aggregationType" ;
+    skos:prefLabel "Aggregation type"@en ;
+    skos:definition "How results were deduplicated: auto, byPage or byProperty"@en ;
+    xeo:fillsSlot xeo:aggregationBasis ;
+    skos:exactMatch xeo:aggregationBasis ;
+    skos:scopeNote "auto -> auto, byPage -> by_page, byProperty -> by_property."@en ;
+    dct:source "https://developers.google.com/webmaster-tools/v1/how-tos/all-your-data (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:gsc-startDate a skos:Concept ;
+    skos:inScheme xeos:gsc ;
+    skos:notation "startDate" ;
+    skos:prefLabel "Start date"@en ;
+    skos:definition "The first day of the requested range"@en ;
+    xeo:fillsSlot xeo:periodStart ;
+    skos:closeMatch xeo:periodStart ;
+    skos:scopeNote "Request field."@en ;
+    dct:source "https://developers.google.com/webmaster-tools/v1/how-tos/all-your-data (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:gsc-endDate a skos:Concept ;
+    skos:inScheme xeos:gsc ;
+    skos:notation "endDate" ;
+    skos:prefLabel "End date"@en ;
+    skos:definition "The last day of the requested range"@en ;
+    xeo:fillsSlot xeo:periodEnd ;
+    skos:closeMatch xeo:periodEnd ;
+    skos:scopeNote "Request field."@en ;
+    dct:source "https://developers.google.com/webmaster-tools/v1/how-tos/all-your-data (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:gsc-dimensionFilterGroups a skos:Concept ;
+    skos:inScheme xeos:gsc ;
+    skos:notation "dimensionFilterGroups" ;
+    skos:prefLabel "Dimension filter groups"@en ;
+    skos:definition "Filters on page, query, country, device or search appearance applied to the request"@en ;
+    xeo:fillsSlot xeo:scope ;
+    skos:closeMatch xeo:scope ;
+    skos:scopeNote "Restricts every metric in the row alike, which makes it scope and not a metricFilter."@en ;
+    dct:source "https://developers.google.com/webmaster-tools/v1/how-tos/all-your-data (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+# --- Google Analytics 4 -----------------------------------------------------
+
+xeos:ga4 a skos:ConceptScheme ;
+    skos:prefLabel "Google Analytics 4 Data API"@en ;
+    dct:source "XEO metrics and KPIs research report, 2026-11-10, Appendix C · https://developers.google.com/analytics/devguides/reporting/data/v1 · https://docs.cloud.google.com/bigquery/docs/google-analytics-4-transformation (the api-schema page returned navigation only; metric definitions come from adjacent official pages)" ;
+    dct:description "The request and response fields of runReport, and the predefined metrics a site's readings are most often taken from, mapped to the Metrics in xeos:metric. GA4 has no native AI-assistant metric the report could confirm in Google's own documentation, so ai_assistant_sessions has no concept here." .
+
+xeos:ga4-metrics-expression a skos:Concept ;
+    skos:inScheme xeos:ga4 ;
+    skos:notation "metrics[].expression" ;
+    skos:prefLabel "Metric expression"@en ;
+    skos:definition "A mathematical expression over other metrics, defining a derived metric in the request"@en ;
+    xeo:fillsSlot xeo:expression ;
+    skos:exactMatch xeo:expression ;
+    skos:scopeNote "Request field. Its presence makes the requested metric a derived one."@en ;
+    dct:source "https://developers.google.com/analytics/devguides/reporting/data/v1 (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:ga4-dateRanges a skos:Concept ;
+    skos:inScheme xeos:ga4 ;
+    skos:notation "dateRanges" ;
+    skos:prefLabel "Date ranges"@en ;
+    skos:definition "The windows the report is run over, each with a startDate and an endDate"@en ;
+    xeo:fillsSlot xeo:periodStart , xeo:periodEnd ;
+    skos:closeMatch xeo:periodStart , xeo:periodEnd ;
+    skos:scopeNote "Request field. Two ranges in one request is how GA4 does a period-over-period comparison: the second is the baseline window."@en ;
+    dct:source "https://developers.google.com/analytics/devguides/reporting/data/v1 (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:ga4-metricHeaders-type a skos:Concept ;
+    skos:inScheme xeos:ga4 ;
+    skos:notation "metricHeaders[].type" ;
+    skos:prefLabel "Metric type"@en ;
+    skos:definition "The value type of a returned metric: TYPE_INTEGER, TYPE_FLOAT, TYPE_SECONDS, TYPE_CURRENCY and others"@en ;
+    xeo:fillsSlot xeo:unit ;
+    skos:closeMatch xeo:unit ;
+    skos:scopeNote "Response field. A value type, coarser than a unit: TYPE_FLOAT covers ratios and averages alike."@en ;
+    dct:source "https://developers.google.com/analytics/devguides/reporting/data/v1 (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:ga4-rows-metricValues-value a skos:Concept ;
+    skos:inScheme xeos:ga4 ;
+    skos:notation "rows[].metricValues[].value" ;
+    skos:prefLabel "Metric value"@en ;
+    skos:definition "The value of one metric in one row, as a string"@en ;
+    xeo:fillsSlot xeo:value ;
+    skos:exactMatch xeo:value ;
+    skos:scopeNote "Response field. A string, to be parsed as a number."@en ;
+    dct:source "https://developers.google.com/analytics/devguides/reporting/data/v1 (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:ga4-sessions a skos:Concept ;
+    skos:inScheme xeos:ga4 ;
+    skos:notation "sessions" ;
+    skos:prefLabel "Sessions"@en ;
+    skos:definition "The number of sessions that began on the site"@en ;
+    xeo:fillsSlot xeo:value ;
+    skos:closeMatch xeos:metric-sessions ;
+    skos:scopeNote "A session starts with a session_start event. closeMatch: other tools end a session by a different rule, so counts are near and not equal."@en ;
+    dct:source "https://developers.google.com/analytics/devguides/reporting/data/v1 and the adjacent official pages the report lists; the api-schema page itself returned navigation only (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:ga4-engagedSessions a skos:Concept ;
+    skos:inScheme xeos:ga4 ;
+    skos:notation "engagedSessions" ;
+    skos:prefLabel "Engaged sessions"@en ;
+    skos:definition "Sessions that lasted longer than 10 seconds, or had a key event, or had 2 or more views"@en ;
+    xeo:fillsSlot xeo:value ;
+    skos:exactMatch xeos:metric-engaged_sessions ;
+    skos:scopeNote "The engagement rule is GA4's; it is the rule the neutral metric defers to for a GA4 reading."@en ;
+    dct:source "https://developers.google.com/analytics/devguides/reporting/data/v1 and the adjacent official pages the report lists; the api-schema page itself returned navigation only (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:ga4-engagementRate a skos:Concept ;
+    skos:inScheme xeos:ga4 ;
+    skos:notation "engagementRate" ;
+    skos:prefLabel "Engagement rate"@en ;
+    skos:definition "Engaged sessions divided by sessions"@en ;
+    xeo:fillsSlot xeo:value ;
+    skos:exactMatch xeos:metric-engagement_rate ;
+    skos:scopeNote "Returned as a fraction, 0 to 1."@en ;
+    dct:source "https://docs.cloud.google.com/bigquery/docs/google-analytics-4-transformation (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:ga4-bounceRate a skos:Concept ;
+    skos:inScheme xeos:ga4 ;
+    skos:notation "bounceRate" ;
+    skos:prefLabel "Bounce rate"@en ;
+    skos:definition "Sessions that were not engaged, divided by sessions"@en ;
+    xeo:fillsSlot xeo:value ;
+    skos:relatedMatch xeos:metric-engagement_rate ;
+    skos:scopeNote "One minus engagementRate. Related, not a match: it runs the other way, and it is not what other tools call a bounce (a single-pageview visit)."@en ;
+    dct:source "https://developers.google.com/analytics/devguides/reporting/data/v1 and the adjacent official pages the report lists; the api-schema page itself returned navigation only (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:ga4-keyEvents a skos:Concept ;
+    skos:inScheme xeos:ga4 ;
+    skos:notation "keyEvents" ;
+    skos:prefLabel "Key events"@en ;
+    skos:definition "The count of events marked as key events"@en ;
+    xeo:fillsSlot xeo:value ;
+    skos:exactMatch xeos:metric-key_events ;
+    skos:scopeNote "Formerly 'conversions'; the rename is reported by a secondary source. A per-event variant is written keyEvents:<event name>."@en ;
+    dct:source "https://developers.google.com/analytics/devguides/reporting/data/v1 and the adjacent official pages the report lists; the api-schema page itself returned navigation only (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:ga4-sessionKeyEventRate a skos:Concept ;
+    skos:inScheme xeos:ga4 ;
+    skos:notation "sessionKeyEventRate" ;
+    skos:prefLabel "Session key event rate"@en ;
+    skos:definition "The share of sessions in which a key event happened"@en ;
+    xeo:fillsSlot xeo:value ;
+    skos:exactMatch xeos:metric-session_conversion_rate ;
+    skos:scopeNote "A fraction, 0 to 1."@en ;
+    dct:source "https://developers.google.com/analytics/devguides/reporting/data/v1 and the adjacent official pages the report lists; the api-schema page itself returned navigation only (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:ga4-organicGoogleSearchClicks a skos:Concept ;
+    skos:inScheme xeos:ga4 ;
+    skos:notation "organicGoogleSearchClicks" ;
+    skos:prefLabel "Organic Google Search clicks"@en ;
+    skos:definition "Search Console clicks, reported inside GA4"@en ;
+    xeo:fillsSlot xeo:value ;
+    skos:closeMatch xeos:metric-clicks ;
+    skos:scopeNote "Search Console's number seen through GA4, not a second measurement."@en ;
+    dct:source "https://developers.google.com/analytics/devguides/reporting/data/v1 and the adjacent official pages the report lists; the api-schema page itself returned navigation only (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+# --- Peec AI ----------------------------------------------------------------
+
+xeos:peec a skos:ConceptScheme ;
+    skos:prefLabel "Peec AI Customer API (brands report)"@en ;
+    dct:source "XEO metrics and KPIs research report, 2026-11-10, Appendix C and section 6 · https://docs.peec.ai/api-reference/reports/get-brands-report" ;
+    dct:description "The fields of Peec's brands report, mapped to the AI visibility Metrics. Peec publishes its aggregation formulas and the components behind each rate, which is why most of these are exact. Compare with xeos:profound: the two vendors use 'visibility' for ratios with different denominators." .
+
+xeos:peec-visibility a skos:Concept ;
+    skos:inScheme xeos:peec ;
+    skos:notation "visibility" ;
+    skos:prefLabel "Visibility"@en ;
+    skos:definition "The share of chats in which the brand was mentioned"@en ;
+    xeo:fillsSlot xeo:value ;
+    skos:exactMatch xeos:metric-mention_rate ;
+    skos:scopeNote "sum(visibility_count) / sum(visibility_total), over all chats; 0 to 1. Peec's Data Studio connector has a field of the same name defined as a count of chats; that one is not this."@en ;
+    dct:source "https://docs.peec.ai/api-reference/reports/get-brands-report (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:peec-visibility_count a skos:Concept ;
+    skos:inScheme xeos:peec ;
+    skos:notation "visibility_count" ;
+    skos:prefLabel "Visibility count"@en ;
+    skos:definition "The number of chats in which the brand was mentioned"@en ;
+    xeo:fillsSlot xeo:numeratorValue ;
+    skos:exactMatch xeo:numeratorValue ;
+    skos:scopeNote "The numerator of visibility; as a count in its own right it is a reading of ai_answers_mentioning."@en ;
+    dct:source "https://docs.peec.ai/api-reference/reports/get-brands-report (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:peec-visibility_total a skos:Concept ;
+    skos:inScheme xeos:peec ;
+    skos:notation "visibility_total" ;
+    skos:prefLabel "Visibility total"@en ;
+    skos:definition "The number of chats the rate was computed over"@en ;
+    xeo:fillsSlot xeo:denominatorValue ;
+    skos:exactMatch xeo:denominatorValue ;
+    skos:scopeNote "The denominator of visibility, and of win_rate; as a count in its own right it is a reading of ai_answers_sampled."@en ;
+    dct:source "https://docs.peec.ai/api-reference/reports/get-brands-report (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:peec-share_of_voice a skos:Concept ;
+    skos:inScheme xeos:peec ;
+    skos:notation "share_of_voice" ;
+    skos:prefLabel "Share of voice"@en ;
+    skos:definition "The brand's mentions as a share of all tracked brands' mentions"@en ;
+    xeo:fillsSlot xeo:value ;
+    skos:exactMatch xeos:metric-ai_share_of_voice ;
+    skos:scopeNote "0 to 1. A pre-aggregation filter on one brand shrinks numerator and denominator together and collapses this to 1.0; filter with 'having' instead."@en ;
+    dct:source "https://docs.peec.ai/api-reference/reports/get-brands-report (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:peec-mention_count a skos:Concept ;
+    skos:inScheme xeos:peec ;
+    skos:notation "mention_count" ;
+    skos:prefLabel "Mention count"@en ;
+    skos:definition "The number of mentions of the brand"@en ;
+    xeo:fillsSlot xeo:numeratorValue ;
+    skos:closeMatch xeo:numeratorValue ;
+    skos:scopeNote "Taken as the numerator of share_of_voice. The report lists it among the rollup components and quotes no formula that uses it, so the role is a reading."@en ;
+    dct:source "https://docs.peec.ai/api-reference/reports/get-brands-report (read 2026-11-10)" ;
+    xeo:mappingConfidence "inferred" .
+
+xeos:peec-position a skos:Concept ;
+    skos:inScheme xeos:peec ;
+    skos:notation "position" ;
+    skos:prefLabel "Position"@en ;
+    skos:definition "The brand's average rank among the brands a chat names, over chats where it appears"@en ;
+    xeo:fillsSlot xeo:value ;
+    skos:exactMatch xeos:metric-ai_average_position ;
+    skos:scopeNote "sum(position_sum) / sum(position_count). Averaged only over chats where the brand appears. 1 is best."@en ;
+    dct:source "https://docs.peec.ai/api-reference/reports/get-brands-report (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:peec-position_sum a skos:Concept ;
+    skos:inScheme xeos:peec ;
+    skos:notation "position_sum" ;
+    skos:prefLabel "Position sum"@en ;
+    skos:definition "The sum of the brand's positions over the chats where it appears"@en ;
+    xeo:fillsSlot xeo:numeratorValue ;
+    skos:exactMatch xeo:numeratorValue ;
+    skos:scopeNote "The numerator of position."@en ;
+    dct:source "https://docs.peec.ai/api-reference/reports/get-brands-report (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:peec-position_count a skos:Concept ;
+    skos:inScheme xeos:peec ;
+    skos:notation "position_count" ;
+    skos:prefLabel "Position count"@en ;
+    skos:definition "The number of chats in which the brand appears with a position"@en ;
+    xeo:fillsSlot xeo:denominatorValue ;
+    skos:exactMatch xeo:denominatorValue ;
+    skos:scopeNote "The denominator of position; compare it with the Metric's minDenominator."@en ;
+    dct:source "https://docs.peec.ai/api-reference/reports/get-brands-report (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:peec-sentiment a skos:Concept ;
+    skos:inScheme xeos:peec ;
+    skos:notation "sentiment" ;
+    skos:prefLabel "Sentiment"@en ;
+    skos:definition "A model's score of the tone of the brand's mentions, 0 to 100"@en ;
+    xeo:fillsSlot xeo:value ;
+    skos:exactMatch xeos:metric-ai_sentiment ;
+    skos:scopeNote "A vendor model's output: a derivation with Peec as its method. Not xeo:sentiment, which is a four-way code on one mention."@en ;
+    dct:source "https://docs.peec.ai/api-reference/reports/get-brands-report (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:peec-start_date a skos:Concept ;
+    skos:inScheme xeos:peec ;
+    skos:notation "start_date" ;
+    skos:prefLabel "Start date"@en ;
+    skos:definition "The first day of the requested window"@en ;
+    xeo:fillsSlot xeo:periodStart ;
+    skos:closeMatch xeo:periodStart ;
+    skos:scopeNote "Request field."@en ;
+    dct:source "https://docs.peec.ai/api-reference/reports/get-brands-report (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:peec-end_date a skos:Concept ;
+    skos:inScheme xeos:peec ;
+    skos:notation "end_date" ;
+    skos:prefLabel "End date"@en ;
+    skos:definition "The last day of the requested window"@en ;
+    xeo:fillsSlot xeo:periodEnd ;
+    skos:closeMatch xeo:periodEnd ;
+    skos:scopeNote "Request field."@en ;
+    dct:source "https://docs.peec.ai/api-reference/reports/get-brands-report (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:peec-previous_start_date a skos:Concept ;
+    skos:inScheme xeos:peec ;
+    skos:notation "previous_start_date" ;
+    skos:prefLabel "Previous start date"@en ;
+    skos:definition "The first day of the comparison window"@en ;
+    xeo:fillsSlot xeo:baselineReading ;
+    skos:closeMatch xeo:baselineReading ;
+    skos:scopeNote "With previous_end_date, the window of the baseline reading. Left out, Peec uses the window of equal length immediately before start_date."@en ;
+    dct:source "https://docs.peec.ai/api-reference/reports/get-brands-report (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:peec-previous_end_date a skos:Concept ;
+    skos:inScheme xeos:peec ;
+    skos:notation "previous_end_date" ;
+    skos:prefLabel "Previous end date"@en ;
+    skos:definition "The last day of the comparison window"@en ;
+    xeo:fillsSlot xeo:baselineReading ;
+    skos:closeMatch xeo:baselineReading ;
+    skos:scopeNote "See previous_start_date."@en ;
+    dct:source "https://docs.peec.ai/api-reference/reports/get-brands-report (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:peec-filters a skos:Concept ;
+    skos:inScheme xeos:peec ;
+    skos:notation "filters" ;
+    skos:prefLabel "Filters"@en ;
+    skos:definition "Conditions applied before aggregation"@en ;
+    xeo:fillsSlot xeo:scope ;
+    skos:closeMatch xeo:scope ;
+    skos:scopeNote "Shrinks numerator and denominator alike, which is scope. The sibling request field 'having' filters after aggregation and is neither scope nor a metricFilter."@en ;
+    dct:source "https://docs.peec.ai/api-reference/reports/get-brands-report (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+# --- Profound ---------------------------------------------------------------
+
+xeos:profound a skos:ConceptScheme ;
+    skos:prefLabel "Profound External API (visibility and citations reports)"@en ;
+    dct:source "XEO metrics and KPIs research report, 2026-11-10, Appendix C and section 6 · https://docs.tryprofound.com/api-reference/reports/query-visibility · https://docs.tryprofound.com/api-reference/reports/query-citations (OpenAPI v0.60.2) · https://help.tryprofound.com/articles/3443229936-answer-engine-insights-overview" ;
+    dct:description "The fields of Profound's visibility and citations reports, mapped to the AI visibility Metrics. Two warnings a classifier needs. Profound's own pages disagree on the denominator of visibility_score. And share_of_voice is one field name with two meanings, depending on the report it is returned by." .
+
+xeos:profound-visibility_score a skos:Concept ;
+    skos:inScheme xeos:profound ;
+    skos:notation "visibility_score" ;
+    skos:prefLabel "Visibility score"@en ;
+    skos:definition "The share of responses that include the brand"@en ;
+    xeo:fillsSlot xeo:value ;
+    skos:closeMatch xeos:metric-mention_rate ;
+    skos:scopeNote "A raw decimal, 0 to 1; multiply by 100 to display. The denominator conflicts between Profound's own pages: the help center divides by responses that name at least one brand, the glossary example by all tracked responses. On the first reading it runs higher than mention_rate whenever few answers name any brand. closeMatch until live output settles which."@en ;
+    dct:source "https://help.tryprofound.com/articles/3443229936-answer-engine-insights-overview (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:profound-share_of_voice a skos:Concept ;
+    skos:inScheme xeos:profound ;
+    skos:notation "share_of_voice" ;
+    skos:prefLabel "Share of voice (visibility report)"@en ;
+    skos:definition "The brand's mentions as a share of all mentions"@en ;
+    xeo:fillsSlot xeo:value ;
+    skos:exactMatch xeos:metric-ai_share_of_voice ;
+    skos:scopeNote "In the visibility report only. The citations report returns a field of the same name that means something else."@en ;
+    dct:source "https://docs.tryprofound.com/api-reference/reports/query-visibility (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:profound-mentions_count a skos:Concept ;
+    skos:inScheme xeos:profound ;
+    skos:notation "mentions_count" ;
+    skos:prefLabel "Mentions count"@en ;
+    skos:definition "The number of mentions analysed"@en ;
+    xeo:fillsSlot xeo:numeratorValue ;
+    skos:closeMatch xeo:numeratorValue ;
+    skos:scopeNote "A numerator behind the visibility report's rates. The report does not say of which rate."@en ;
+    dct:source "https://docs.tryprofound.com/api-reference/reports/query-visibility (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:profound-executions a skos:Concept ;
+    skos:inScheme xeos:profound ;
+    skos:notation "executions" ;
+    skos:prefLabel "Executions"@en ;
+    skos:definition "The number of prompt runs analysed"@en ;
+    xeo:fillsSlot xeo:value ;
+    skos:closeMatch xeos:metric-ai_answers_sampled ;
+    skos:scopeNote "The sample size behind the visibility report's rates."@en ;
+    dct:source "https://docs.tryprofound.com/api-reference/reports/query-visibility (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:profound-citation_share a skos:Concept ;
+    skos:inScheme xeos:profound ;
+    skos:notation "citation_share" ;
+    skos:prefLabel "Citation share"@en ;
+    skos:definition "Citations of an item as a share of all citations"@en ;
+    xeo:fillsSlot xeo:value ;
+    skos:exactMatch xeos:metric-ai_citation_share ;
+    skos:scopeNote "In the citations report. Replaces that report's share_of_voice."@en ;
+    dct:source "https://docs.tryprofound.com/api-reference/reports/query-citations (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:profound-citations-share_of_voice a skos:Concept ;
+    skos:inScheme xeos:profound ;
+    skos:notation "share_of_voice" ;
+    skos:prefLabel "Share of voice (citations report, deprecated)"@en ;
+    skos:definition "Citations of an item as a share of all citations"@en ;
+    xeo:fillsSlot xeo:value ;
+    skos:exactMatch xeos:metric-ai_citation_share ;
+    skos:scopeNote "In the citations report, where Profound has deprecated it in favour of citation_share. Citation-based, and so not the mention-based share_of_voice of the visibility report."@en ;
+    dct:source "https://docs.tryprofound.com/api-reference/reports/query-citations (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:profound-metrics a skos:Concept ;
+    skos:inScheme xeos:profound ;
+    skos:notation "metrics" ;
+    skos:prefLabel "Metrics"@en ;
+    skos:definition "The metrics the report is asked to return"@en ;
+    xeo:fillsSlot xeo:readingOf ;
+    skos:closeMatch xeo:readingOf ;
+    skos:scopeNote "Request field: each name selects one Metric."@en ;
+    dct:source "https://docs.tryprofound.com/api-reference/reports/query-visibility (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:profound-filters a skos:Concept ;
+    skos:inScheme xeos:profound ;
+    skos:notation "filters" ;
+    skos:prefLabel "Filters"@en ;
+    skos:definition "Conditions that restrict the report"@en ;
+    xeo:fillsSlot xeo:scope ;
+    skos:closeMatch xeo:scope ;
+    skos:scopeNote "Request field."@en ;
+    dct:source "https://docs.tryprofound.com/api-reference/reports/query-visibility (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:profound-start_date a skos:Concept ;
+    skos:inScheme xeos:profound ;
+    skos:notation "start_date" ;
+    skos:prefLabel "Start date"@en ;
+    skos:definition "The first day of the requested window"@en ;
+    xeo:fillsSlot xeo:periodStart ;
+    skos:closeMatch xeo:periodStart ;
+    skos:scopeNote "Request field. Profound returns no comparison window; a change is computed by the client from two requests."@en ;
+    dct:source "https://docs.tryprofound.com/api-reference/reports/query-visibility (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:profound-end_date a skos:Concept ;
+    skos:inScheme xeos:profound ;
+    skos:notation "end_date" ;
+    skos:prefLabel "End date"@en ;
+    skos:definition "The last day of the requested window"@en ;
+    xeo:fillsSlot xeo:periodEnd ;
+    skos:closeMatch xeo:periodEnd ;
+    skos:scopeNote "Request field."@en ;
+    dct:source "https://docs.tryprofound.com/api-reference/reports/query-visibility (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
