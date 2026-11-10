@@ -28,7 +28,7 @@ xeo:SearchIntent a owl:Class ;
     rdfs:label "Search Intent" ;
     xeo:epistemicLayer "entity" ;
     xeo:groundedIn "Broder (2002), 'A taxonomy of web search', as extended in common practice" ;
-    dct:description "Why the person is asking. Modeled as named individuals, not free strings." .
+    dct:description "Why the person is asking. Modeled as named individuals, not free strings. Since 0.6.0 the same four values are also published as concepts in xeos:searchIntent, each a SearchIntent, which is the form to write." .
 
 xeo:Informational a xeo:SearchIntent , owl:NamedIndividual ; rdfs:label "Informational" .
 xeo:Navigational  a xeo:SearchIntent , owl:NamedIndividual ; rdfs:label "Navigational" .
@@ -45,7 +45,7 @@ xeo:targetsIntent a owl:ObjectProperty ;
 xeo:ConversionPoint a owl:Class ;
     rdfs:label "Conversion Point" ;
     xeo:epistemicLayer "entity" ;
-    dct:description "A durable on-page mechanism that turns attention into a pipeline event." .
+    dct:description "A durable on-page mechanism that turns attention into a pipeline event. Identified by the URL it sits on and its form id or selector. Its kind is conversionPointType." .
 
 xeo:CallToAction a owl:Class ; rdfs:subClassOf xeo:ConversionPoint ;
     rdfs:label "Call To Action" .
@@ -67,7 +67,7 @@ xeo:hasConversionPoint a owl:ObjectProperty ;
 xeo:ConversionEvent a owl:Class ;
     rdfs:label "Conversion Event" ;
     xeo:epistemicLayer "episode" ;
-    dct:description "A submission/click/unlock that happened at a time. Immutable once recorded." .
+    dct:description "A submission/click/unlock that happened at a time: a visitor's action on a ConversionPoint, recorded by the capturing system. Immutable once recorded. Identified by the capturing system and its submission id; one per submission. Not the creation of a CRM record, which may follow, be merged into an existing record, or never happen: events are not leads." .
 
 xeo:capturedBy a owl:ObjectProperty ;
     rdfs:domain xeo:ConversionEvent ; rdfs:range xeo:ConversionPoint ;
@@ -81,14 +81,14 @@ xeo:crmRecordRef a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
     xeo:epistemicLayer "entity" ;
     xeo:canonicalStore "crm" ;
-    dct:description "Identity-key pointer to the CRM object (form id, contact id, deal id) in whatever system runs the pipeline. The join contract to the post-click world — the graph never mirrors the CRM's schema." .
+    dct:description "Identity key of one record in the CRM that runs a website's pipeline, written crmSystem:crmTenantId:crmObjectType:recordId (hubspot:12345:deal:987). Two refs are the same record when all four parts match. Points at a person, organization, lead or deal record only; a form's identifier belongs to its ConversionPoint. The join contract to the post-click world — the graph never mirrors the CRM's schema. A value written before 0.6.0 as a bare id is still a valid string and should be completed." .
 
 # --- Pre-click attribution (an interpretation, and labeled as one) --------------
 
 xeo:attributedResponse a owl:ObjectProperty ;
     rdfs:domain xeo:ConversionEvent ; rdfs:range xeo:LLMResponse ;
     xeo:epistemicLayer "interpretation" ;
-    dct:description "The claim that this conversion traces to engine visibility captured in this response episode. Multi-engine attribution is inherently inferential: this edge MUST carry method and confidence, and honest implementations will leave it sparse." .
+    dct:description "The claim that this conversion traces to engine visibility captured in this response episode. Multi-engine attribution is inherently inferential: this edge MUST carry method and confidence, and honest implementations will leave it sparse. Assert it only when the event's session, or the linked record's first or latest touch, has channel ai_assistant (or a declared assisted-path method applies), and the response cites a URL of the same website within a declared lookback window. Method is referral-match, citation-window or model." .
 
 # --- v0.6.0 (kit sync) ---------------------------------------------------------
 # Appended at the foot. No new terms in this module. occurredAt lost
@@ -107,7 +107,7 @@ xeo:GatedAsset xeo:epistemicLayer "entity" .
 
 xeo:capturedBy dct:description "The conversion point this event happened at." .
 
-xeo:occurredAt dct:description "When an event happened: a ConversionEvent, an ExternalEvent. Domain left open so any dated event can carry it." .
+xeo:occurredAt dct:description "When an event happened: a ConversionEvent, an ExternalEvent. Domain left open so any dated event can carry it. In UTC, as recorded by the system that captured the event." .
 
 # Labels for the properties declared above, which carried none.
 
@@ -117,3 +117,380 @@ xeo:capturedBy rdfs:label "captured by" .
 xeo:occurredAt rdfs:label "occurred at" .
 xeo:crmRecordRef rdfs:label "CRM record reference" .
 xeo:attributedResponse rdfs:label "attributed response" .
+
+# --- v0.6.0 (CRM pipeline, 2026-11-10) ---------------------------------------------
+# Appended at the foot, so no line above moves. From the CRM pipeline research
+# report (seven CRMs read; none verified against live API output).
+#
+# THE RULE HOLDS, AND NEEDS A FEW NEUTRAL TERMS TO BE USEFUL. The graph never
+# mirrors the CRM, and crmRecordRef stays the join. But "pipeline created" and
+# "revenue won" cannot be computed from a pointer alone. All seven CRMs read
+# expose a deal with an owner, a stage, an amount and a creation time, and six
+# an open/won/lost outcome. Those few slots are declared here, once, neutrally.
+# Everything else about a contact, a company or a deal stays behind the pointer.
+#
+# WHAT CARRIES THEM. A pointer node: whatever the graph uses to stand for one
+# CRM record, identified by crmRecordRef. No class is minted for it here. The
+# slots below are domain-free, so an Organization, a ConversionEvent's lead, or
+# a bare pointer node can carry them without being typed as anything else.
+#
+# STAGES ARE THE TENANT'S, THEIR CLASS IS NEUTRAL. A stage id is configuration:
+# one account's "closedwon" is another's "258551227". stageRef and pipelineRef
+# hold the tenant's identifiers as they are, and stageClass says what a stage
+# means (open, won, lost) by a standing per-tenant mapping. Not to be confused
+# with xeo:Stage, which is a step in a Framework.
+#
+# SOURCE IS NOT AN OBSERVATION. "Original source" is the CRM's classifier
+# speaking, or a salesperson's picklist choice. firstTouchChannel is a
+# derivation and carries method.
+#
+# A CRM MARKETING CAMPAIGN IS NOT AN xeo:Campaign. xeo:Campaign is a body of
+# delivery work against a Topic. A CRM campaign is a marketing programme a
+# record is attributed to. It is reached by marketingCampaignRef, a pointer.
+#
+# CONTROLLED STRINGS, NOT CONCEPT RANGES. This module takes no SKOS dependency
+# (see the header), so each closed list below is a string code with a published
+# scheme in xeo-schemes.ttl, the choice core makes for resultType.
+#
+# DEPRECATED (advisory). The three ConversionPoint subclasses and the four
+# SearchIntent individuals model values as terms, against "classes, never
+# values". conversionPointType and the xeos:searchIntent scheme say the same
+# with a code. Every one stays declared, typed and valid.
+#
+# TIGHTENED (in place, above). The descriptions of crmRecordRef, SearchIntent,
+# ConversionPoint, ConversionEvent, attributedResponse and occurredAt, one line
+# each.
+
+# --- The pointer, typed ---------------------------------------------------------------
+
+xeo:crmSystem a owl:DatatypeProperty ;
+    rdfs:label "CRM system" ;
+    rdfs:range xsd:string ;
+    xeo:epistemicLayer "entity" ;
+    xeo:canonicalStore "crm" ;
+    dct:description "Which CRM product holds the record a crmRecordRef points at, as a code from a slotted-in scheme (hubspot, salesforce, pipedrive, ... — xeos:crmSystem is a published reference filling). The first part of the pointer, also stated on its own so records can be filtered by system. One per pointer." .
+
+xeo:crmObjectType a owl:DatatypeProperty ;
+    rdfs:label "CRM object type" ;
+    rdfs:range xsd:string ;
+    xeo:epistemicLayer "entity" ;
+    xeo:canonicalStore "crm" ;
+    dct:description "The neutral kind of the record a crmRecordRef points at, as a code from a slotted-in scheme (person, organization, lead, deal — xeos:crmObjectType is a published reference filling). Assigned from what the record is, not from what its vendor calls it: one CRM's 'lead' is a company, and another's is a deal stage. One per pointer." .
+
+xeo:ownerRef a owl:DatatypeProperty ;
+    rdfs:label "owner reference" ;
+    rdfs:range xsd:string ;
+    xeo:epistemicLayer "entity" ;
+    xeo:canonicalStore "crm" ;
+    dct:description "Identity-key pointer to the CRM user who owns the record. The user is not modelled; this is the key to look them up by. Not the user who created the record or last changed it." .
+
+xeo:pipelineRef a owl:DatatypeProperty ;
+    rdfs:label "pipeline reference" ;
+    rdfs:range xsd:string ;
+    xeo:epistemicLayer "entity" ;
+    xeo:canonicalStore "crm" ;
+    dct:description "The tenant's identifier of the pipeline a deal is in, as the CRM stores it. Tenant configuration, never a value in a published scheme. 'default' where the CRM has no pipeline field." .
+
+xeo:stageRef a owl:DatatypeProperty ;
+    rdfs:label "stage reference" ;
+    rdfs:range xsd:string ;
+    xeo:epistemicLayer "entity" ;
+    xeo:canonicalStore "crm" ;
+    dct:description "The tenant's identifier of the stage a record is in, as the CRM stores it. Tenant configuration, never a value in a published scheme: the same stage has a different id in every account. What the stage means is said by stageClass. Not xeo:Stage, which is a step in a Framework." .
+
+xeo:stageClass a owl:DatatypeProperty ;
+    rdfs:label "stage class" ;
+    rdfs:range xsd:string ;
+    xeo:epistemicLayer "norm" ;
+    xeo:canonicalStore "neo4j" ;
+    dct:description "The neutral class of a tenant's stage, as a code from a slotted-in scheme: open, won or lost for a deal stage (xeos:dealStageClass), and a funnel position for a lifecycle stage (xeos:lifecycleStageClass). A standing per-tenant mapping from stageRef, which records who mapped it and when. Usually read from the CRM's own stage configuration, where a stage is flagged closed or won, rather than judged." .
+
+# --- What a deal carries -----------------------------------------------------------------
+
+xeo:dealAmount a owl:DatatypeProperty ;
+    rdfs:label "deal amount" ;
+    rdfs:range xsd:decimal ;
+    xeo:epistemicLayer "observation" ;
+    xeo:groundedIn "The vendor's deal object API contract" ;
+    xeo:canonicalStore "crm" ;
+    dct:description "The monetary value the CRM records for a deal, in the deal's own currency, zero or more. Always travels with currencyCode. Never a weighted, converted, forecast or recurring-normalized figure: those are weightedAmount, amountInReportingCurrency and recurringValue. One per deal per snapshot; a snapshot carries datasetUri and when it was read." .
+
+xeo:currencyCode a owl:DatatypeProperty ;
+    rdfs:label "currency code" ;
+    rdfs:range xsd:string ;
+    xeo:epistemicLayer "observation" ;
+    xeo:groundedIn "ISO 4217 · the vendor's deal object API contract" ;
+    xeo:canonicalStore "crm" ;
+    dct:description "The ISO 4217 code (three upper-case letters) of the amount it travels with: a dealAmount, or the value of a currency MetricReading. Where a CRM runs in one currency and has no field for it, the account's currency is stated here. A vendor's internal currency id is not a code and is resolved to one first." .
+
+xeo:dealOutcome a owl:DatatypeProperty ;
+    rdfs:label "deal outcome" ;
+    rdfs:range xsd:string ;
+    xeo:epistemicLayer "observation" ;
+    xeo:groundedIn "The vendor's deal object API contract (won and closed flags, status, state code)" ;
+    xeo:canonicalStore "crm" ;
+    dct:description "Whether a deal is open, won or lost, as a code from a slotted-in scheme (xeos:dealOutcome is a published reference filling). An observation where the CRM states it as a field. Where the CRM states only a stage, the outcome is read through the tenant's stageClass mapping, and the assertion is then a derivation with method tenant-stage-map. A deleted deal has no outcome and is left out. Not the stage itself." .
+
+xeo:recordCreatedAt a owl:DatatypeProperty ;
+    rdfs:label "record created at" ;
+    rdfs:range xsd:dateTime ;
+    xeo:epistemicLayer "observation" ;
+    xeo:groundedIn "The vendor's record API contract (the record's creation timestamp)" ;
+    xeo:canonicalStore "crm" ;
+    dct:description "When the CRM recorded the record as created, in UTC. The time anchor for leads and pipeline created. It is the CRM's field, and some CRMs let a user edit it; it is not the time of the form submission that led to the record, which is a ConversionEvent's occurredAt." .
+
+xeo:expectedCloseDate a owl:DatatypeProperty ;
+    rdfs:label "expected close date" ;
+    rdfs:range xsd:date ;
+    xeo:epistemicLayer "interpretation" ;
+    xeo:canonicalStore "crm" ;
+    dct:description "The date the owner forecasts an open deal will close. A person's forecast, not a measurement. Filled only while dealOutcome is open. Several CRMs keep the forecast and the actual close in one field; which this is depends on the deal's outcome, and the same field read after the deal closed fills dealClosedAt instead." .
+
+xeo:dealClosedAt a owl:DatatypeProperty ;
+    rdfs:label "deal closed at" ;
+    rdfs:range xsd:dateTime ;
+    xeo:epistemicLayer "observation" ;
+    xeo:groundedIn "The vendor's deal object API contract (the won, lost or close timestamp of a closed deal)" ;
+    xeo:canonicalStore "crm" ;
+    dct:description "When a deal's outcome became won or lost. The time anchor for deals and revenue won. Filled only on a closed deal. A source that records the date alone stays at day precision, written as midnight UTC of that day." .
+
+# --- Stage history (an episode) ------------------------------------------------------------
+
+xeo:StageTransition a owl:Class ;
+    rdfs:label "Stage Transition" ;
+    xeo:epistemicLayer "episode" ;
+    xeo:canonicalStore "bigquery" ;
+    dct:description "A CRM record entering a stage: happened at a time, immutable once recorded. Identified by crmRecordRef, stageSlot, toStageRef and enteredAt. One row per entry, and a record that returns to a stage enters it again as a new row. Carries fromStageRef where the previous stage is known, exitedAt once it has left, amountAtTransition, datasetUri, and method saying how the row was obtained: vendor-history (the CRM's own history rows), vendor-calculated-property (a per-stage entry timestamp the CRM maintains), or snapshot-diff (two reads compared). High-cardinality, so it lives in the column store and the graph holds rollups. A calculated property that is cleared when a record moves backwards, or filled when it skips a stage, is not a record of what happened and never fills this." .
+
+xeo:stageSlot a owl:DatatypeProperty ;
+    rdfs:label "stage slot" ;
+    rdfs:domain xeo:StageTransition ; rdfs:range xsd:string ;
+    xeo:epistemicLayer "episode" ;
+    xeo:canonicalStore "bigquery" ;
+    dct:description "Which of a record's staged properties moved, as a code from a slotted-in scheme (deal_stage, lifecycle, lead_status — xeos:stageSlot is a published reference filling). One per transition. A record can sit in a deal stage and a lifecycle stage at once; this says which history the row belongs to." .
+
+xeo:fromStageRef a owl:DatatypeProperty ;
+    rdfs:label "from stage reference" ;
+    rdfs:domain xeo:StageTransition ; rdfs:range xsd:string ;
+    xeo:epistemicLayer "episode" ;
+    xeo:canonicalStore "bigquery" ;
+    dct:description "The tenant's identifier of the stage the record left. Absent on the first entry, and where the source reports entries without what came before." .
+
+xeo:toStageRef a owl:DatatypeProperty ;
+    rdfs:label "to stage reference" ;
+    rdfs:domain xeo:StageTransition ; rdfs:range xsd:string ;
+    xeo:epistemicLayer "episode" ;
+    xeo:canonicalStore "bigquery" ;
+    dct:description "The tenant's identifier of the stage the record entered. Exactly one per transition." .
+
+xeo:enteredAt a owl:DatatypeProperty ;
+    rdfs:label "entered at" ;
+    rdfs:domain xeo:StageTransition ; rdfs:range xsd:dateTime ;
+    xeo:epistemicLayer "episode" ;
+    xeo:canonicalStore "bigquery" ;
+    dct:description "When the record entered the stage, in UTC. Exactly one per transition." .
+
+xeo:exitedAt a owl:DatatypeProperty ;
+    rdfs:label "exited at" ;
+    rdfs:domain xeo:StageTransition ; rdfs:range xsd:dateTime ;
+    xeo:epistemicLayer "episode" ;
+    xeo:canonicalStore "bigquery" ;
+    dct:description "When the record left the stage, in UTC. Absent while it is still there." .
+
+xeo:amountAtTransition a owl:DatatypeProperty ;
+    rdfs:label "amount at transition" ;
+    rdfs:domain xeo:StageTransition ; rdfs:range xsd:decimal ;
+    xeo:epistemicLayer "episode" ;
+    xeo:canonicalStore "bigquery" ;
+    dct:description "The deal's dealAmount at the moment it entered the stage, in the deal's currency, where the source records it. What lets pipeline value be read as it stood at each stage and not as the deal reads today." .
+
+# --- Source and attribution (derivations) -----------------------------------------------------
+
+xeo:firstTouchChannel a owl:DatatypeProperty ;
+    rdfs:label "first-touch channel" ;
+    rdfs:range xsd:string ;
+    xeo:epistemicLayer "derivation" ;
+    xeo:canonicalStore "crm" ;
+    dct:description "The acquisition channel of the earliest known interaction the CRM attributes to a record, as a code from a slotted-in scheme (organic_search, referral, ai_assistant, ... — xeos:acquisitionChannel is a published reference filling). A derivation, never an observation: a classifier or a person decided it, so it carries method, either vendor-classifier:<vendor> or manual-entry. One per record. A deal usually inherits it from a contact, by a rule that is the vendor's." .
+
+xeo:referringPlatform a owl:DatatypeProperty ;
+    rdfs:label "referring platform" ;
+    rdfs:range xsd:string ;
+    xeo:epistemicLayer "derivation" ;
+    xeo:canonicalStore "crm" ;
+    dct:description "The host of the platform behind a touch, in lower case (chatgpt.com, perplexity.ai). Says which assistant or site, where the channel says only what kind. A derivation by the same classifier that set the channel. Read beside firstTouchChannel or latestTouchChannel." .
+
+xeo:conversionPointType a owl:DatatypeProperty ;
+    rdfs:label "conversion point type" ;
+    rdfs:domain xeo:ConversionPoint ; rdfs:range xsd:string ;
+    xeo:epistemicLayer "entity" ;
+    dct:description "The kind of mechanism a ConversionPoint is, as a code from a slotted-in scheme (cta, lead_form, gated_asset, meeting_booker, chat — xeos:conversionPointType is a published reference filling). One per ConversionPoint. Says with a value what the CallToAction, LeadCaptureForm and GatedAsset subclasses said with a class, so a new kind of mechanism is a new code and not a new term." .
+
+# --- A pipeline number over a window -----------------------------------------------------------
+
+xeo:PipelineRollup a owl:Class ;
+    rdfs:subClassOf xeo:MetricReading ;
+    rdfs:label "Pipeline Rollup" ;
+    xeo:epistemicLayer "derivation" ;
+    xeo:canonicalStore "neo4j" ;
+    dct:description "A MetricReading of a pipeline Metric (leads_created, pipeline_created, deals_won, revenue_won, ...) for one website over one window, computed from CRM records. Always a derivation: the records are observed, the windowed number is XEO's computation over them, so it carries method. Requires what any reading does (readingOf, value, periodStart, periodEnd) with datasetUri pointing at the authoritative table, and currencyCode when its Metric's unit is currency. The graph keeps this rollup; the rows it was computed from stay in the column store." .
+
+# --- Extension set -----------------------------------------------------------------------------
+# Declared and usable; not something a consumer is expected to implement. Each
+# is supported by one to four of the seven CRMs read.
+
+xeo:latestTouchChannel a owl:DatatypeProperty ;
+    rdfs:label "latest-touch channel" ;
+    rdfs:range xsd:string ;
+    xeo:epistemicLayer "derivation" ;
+    xeo:canonicalStore "crm" ;
+    xeo:termStatus "extension" ;
+    dct:description "The acquisition channel of the most recent known interaction the CRM attributes to a record, as a code from xeos:acquisitionChannel. A derivation carrying method, like firstTouchChannel. One CRM of the seven read keeps it." .
+
+xeo:lifecycleStage a owl:DatatypeProperty ;
+    rdfs:label "lifecycle stage" ;
+    rdfs:range xsd:string ;
+    xeo:epistemicLayer "interpretation" ;
+    xeo:canonicalStore "crm" ;
+    xeo:termStatus "extension" ;
+    dct:description "The funnel position of a person or organization, as a code from a slotted-in scheme (subscriber, lead, mql, sql, opportunity, customer, evangelist, other — xeos:lifecycleStageClass is a published reference filling). An interpretation: what qualifies a lead as marketing- or sales-qualified is each tenant's own rule, so counts by stage are not comparable between tenants. An extension because one CRM of the seven read carries it natively; the others express the idea through a separate lead record and its status." .
+
+xeo:leadStatus a owl:DatatypeProperty ;
+    rdfs:label "lead status" ;
+    rdfs:range xsd:string ;
+    xeo:epistemicLayer "interpretation" ;
+    xeo:canonicalStore "crm" ;
+    xeo:termStatus "extension" ;
+    dct:description "The sales working state of a lead (new, attempting contact, qualified, ...), as the tenant's own value. Tenant configuration with no neutral scheme. Distinct from lifecycleStage: status says where the salesperson is with the lead, the lifecycle stage says where the lead is in the funnel." .
+
+xeo:stageDefaultProbability a owl:DatatypeProperty ;
+    rdfs:label "stage default probability" ;
+    rdfs:range xsd:decimal ;
+    xeo:epistemicLayer "norm" ;
+    xeo:canonicalStore "crm" ;
+    xeo:termStatus "extension" ;
+    dct:description "The win probability a tenant has configured for a stage, from 0 to 1. A standing setting on the stage, not a judgment about any deal. CRMs store it on different scales; it is normalized to 0 to 1 here." .
+
+xeo:dealProbability a owl:DatatypeProperty ;
+    rdfs:label "deal probability" ;
+    rdfs:range xsd:decimal ;
+    xeo:epistemicLayer "interpretation" ;
+    xeo:canonicalStore "crm" ;
+    xeo:termStatus "extension" ;
+    dct:description "The likelihood that one deal will close won, from 0 to 1, as the CRM holds it: inherited from the stage or set by the owner. An interpretation. CRMs store it as a fraction or as a percentage; it is normalized to 0 to 1 here." .
+
+xeo:weightedAmount a owl:DatatypeProperty ;
+    rdfs:label "weighted amount" ;
+    rdfs:range xsd:decimal ;
+    xeo:epistemicLayer "derivation" ;
+    xeo:canonicalStore "crm" ;
+    xeo:termStatus "extension" ;
+    dct:description "dealAmount multiplied by a named probability, in the deal's currency. A derivation: method names which probability (the deal's, the stage's default, a forecast category's), because the same deal has a different weighted amount under each. Never a substitute for dealAmount." .
+
+xeo:amountInReportingCurrency a owl:DatatypeProperty ;
+    rdfs:label "amount in reporting currency" ;
+    rdfs:range xsd:decimal ;
+    xeo:epistemicLayer "derivation" ;
+    xeo:canonicalStore "crm" ;
+    xeo:termStatus "extension" ;
+    dct:description "A dealAmount converted into the account's reporting currency. A derivation: the result depends on the rate, the date the rate was taken on and where it came from, and method states all three. CRMs differ on which rate they use for an open deal and a closed one, so totals for the same deals differ between systems." .
+
+xeo:forecastCategory a owl:DatatypeProperty ;
+    rdfs:label "forecast category" ;
+    rdfs:range xsd:string ;
+    xeo:epistemicLayer "interpretation" ;
+    xeo:canonicalStore "crm" ;
+    xeo:termStatus "extension" ;
+    dct:description "The forecast bucket a deal is placed in, as a code from a slotted-in scheme (omitted, pipeline, best_case, commit, closed — xeos:forecastCategory is a published reference filling). An interpretation by the owner or by the stage's configuration." .
+
+xeo:recurringValue a owl:DatatypeProperty ;
+    rdfs:label "recurring value" ;
+    rdfs:range xsd:decimal ;
+    xeo:epistemicLayer "observation" ;
+    xeo:groundedIn "The vendor's deal object API contract (recurring revenue fields)" ;
+    xeo:canonicalStore "crm" ;
+    xeo:termStatus "extension" ;
+    dct:description "The recurring revenue a CRM records for a deal, per valuePeriod, in the deal's currency. Distinct from dealAmount and never added to it. Always travels with valuePeriod." .
+
+xeo:valuePeriod a owl:DatatypeProperty ;
+    rdfs:label "value period" ;
+    rdfs:range xsd:string ;
+    xeo:epistemicLayer "observation" ;
+    xeo:groundedIn "The vendor's deal object API contract (recurring revenue fields)" ;
+    xeo:canonicalStore "crm" ;
+    xeo:termStatus "extension" ;
+    dct:description "The period a recurringValue recurs over, as a code from a slotted-in scheme (one_time, monthly, annual — xeos:valuePeriod is a published reference filling)." .
+
+xeo:lostReason a owl:DatatypeProperty ;
+    rdfs:label "lost reason" ;
+    rdfs:range xsd:string ;
+    xeo:epistemicLayer "interpretation" ;
+    xeo:canonicalStore "crm" ;
+    xeo:termStatus "extension" ;
+    dct:description "The reason a deal was lost, as the salesperson stated it: free text or the tenant's own picklist value. An interpretation, with no neutral scheme." .
+
+xeo:recordOrigin a owl:DatatypeProperty ;
+    rdfs:label "record origin" ;
+    rdfs:range xsd:string ;
+    xeo:epistemicLayer "observation" ;
+    xeo:groundedIn "The vendor's record API contract (system-set creation method)" ;
+    xeo:canonicalStore "crm" ;
+    xeo:termStatus "extension" ;
+    dct:description "How the record came to exist in the CRM, as a code from a slotted-in scheme (manual, import, api, form, integration — xeos:recordOrigin is a published reference filling). Set by the system and not editable, which is what separates it from firstTouchChannel: origin says how the row was made, the channel says where the person came from." .
+
+xeo:convertedTo a owl:DatatypeProperty ;
+    rdfs:label "converted to" ;
+    rdfs:range xsd:string ;
+    xeo:epistemicLayer "episode" ;
+    xeo:canonicalStore "crm" ;
+    xeo:termStatus "extension" ;
+    dct:description "On a lead record that was converted: the crmRecordRef of the deal (or person) it became. With convertedAt it records a lead conversion, an event that happened once. Absent on an unconverted lead, and in CRMs that have no separate lead record." .
+
+xeo:convertedAt a owl:DatatypeProperty ;
+    rdfs:label "converted at" ;
+    rdfs:range xsd:dateTime ;
+    xeo:epistemicLayer "episode" ;
+    xeo:canonicalStore "crm" ;
+    xeo:termStatus "extension" ;
+    dct:description "When a lead record was converted, in UTC. A source that records the date alone stays at day precision." .
+
+xeo:marketingCampaignRef a owl:DatatypeProperty ;
+    rdfs:label "marketing campaign reference" ;
+    rdfs:range xsd:string ;
+    xeo:epistemicLayer "entity" ;
+    xeo:canonicalStore "crm" ;
+    xeo:termStatus "extension" ;
+    dct:description "Identity-key pointer to a marketing campaign in the CRM that a record is attributed to. A pointer and nothing more. Never an xeo:Campaign: that is a body of delivery work against a Topic inside a Project, and a CRM campaign is a marketing programme. The two share a word and must not be joined on it." .
+
+xeo:campaignInfluenceShare a owl:DatatypeProperty ;
+    rdfs:label "campaign influence share" ;
+    rdfs:range xsd:decimal ;
+    xeo:epistemicLayer "derivation" ;
+    xeo:canonicalStore "crm" ;
+    xeo:termStatus "extension" ;
+    dct:description "The share of a deal's amount a CRM credits to one marketing campaign, from 0 to 1, under a named attribution model. A derivation: method names the model, and the shares for one deal under one model sum to 1. One CRM of the seven read computes it." .
+
+xeo:OwnerChange a owl:Class ;
+    rdfs:label "Owner Change" ;
+    xeo:epistemicLayer "episode" ;
+    xeo:canonicalStore "bigquery" ;
+    xeo:termStatus "extension" ;
+    dct:description "A CRM record being reassigned from one owner to another: happened at a time, immutable once recorded. Carries crmRecordRef, ownerRef (the owner it was assigned to), occurredAt, and method saying how the row was obtained, as on a StageTransition. One row per reassignment. Read from the CRM's history, so every CRM can fill it and none states it as a field." .
+
+# --- v0.6.0 advisory deprecations and added grounding ------------------------------------------
+# Extra triples about terms declared above. Nothing is removed or retyped.
+
+xeo:CallToAction owl:deprecated true ; rdfs:seeAlso xeo:conversionPointType .
+xeo:LeadCaptureForm owl:deprecated true ; rdfs:seeAlso xeo:conversionPointType .
+xeo:GatedAsset owl:deprecated true ; rdfs:seeAlso xeo:conversionPointType .
+
+xeo:Informational owl:deprecated true ; rdfs:seeAlso <https://xeoontology.org/schemes#searchIntent-informational> .
+xeo:Navigational owl:deprecated true ; rdfs:seeAlso <https://xeoontology.org/schemes#searchIntent-navigational> .
+xeo:CommercialInvestigation owl:deprecated true ; rdfs:seeAlso <https://xeoontology.org/schemes#searchIntent-commercial_investigation> .
+xeo:Transactional owl:deprecated true ; rdfs:seeAlso <https://xeoontology.org/schemes#searchIntent-transactional> .
+
+xeo:crmRecordRef rdfs:seeAlso xeo:crmSystem , xeo:crmObjectType .
+
+xeo:capturedBy xeo:groundedIn "The capturing system's submission payload (per-vendor form or event API contract)" .
+
+xeo:hasConversionPoint xeo:groundedIn "The page's markup as one crawl fetched it (WHATWG HTML: the form, a and button elements)" .
