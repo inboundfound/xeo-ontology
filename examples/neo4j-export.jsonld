@@ -35,6 +35,24 @@
       "gapType": "position_climb",
       "magnitude": "5", "magnitudeUnit": "positions",
       "EVIDENCED_BY": "ex:url-guide"
+    },
+    {
+      "id": "ex:metric-clicks-branded", "type": "Metric", "layer": "norm",
+      "metricType": "simple", "aggregation": "sum", "READS_SLOT": "xeo:clicks",
+      "metricFilter": "the term names the brand",
+      "unit": "count", "betterDirection": "up", "additivity": "additive"
+    },
+    {
+      "id": "ex:reading-1", "type": "MetricReading", "layer": "observation",
+      "READING_OF": "xeos:metric-clicks", "SCOPE": "ex:url-guide",
+      "periodStart": "2026-05-01", "periodEnd": "2026-05-31",
+      "value": "310", "source": "gsc", "aggregationBasis": "by_page",
+      "websiteId": "example-com"
+    },
+    {
+      "id": "ex:target-1", "type": "MetricTarget", "layer": "interpretation",
+      "metric": "clicks", "targetKind": "absolute", "targetValue": "400",
+      "BASELINE_READING": "ex:reading-1"
     }
   ]
 }

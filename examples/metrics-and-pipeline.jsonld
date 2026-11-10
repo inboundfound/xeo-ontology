@@ -1,0 +1,143 @@
+{
+  "@context": [
+    "../context.jsonld",
+    {
+      "ex": "https://example.com/graph/",
+      "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+      "Edge": "rdf:Statement",
+      "start": { "@id": "rdf:subject", "@type": "@id" },
+      "edge": { "@id": "rdf:predicate", "@type": "@vocab" },
+      "end": { "@id": "rdf:object", "@type": "@id" },
+      "notation": "skos:notation",
+      "prefLabel": "skos:prefLabel",
+      "definition": "skos:definition"
+    }
+  ],
+  "@graph": [
+    {
+      "id": "ex:site", "type": "Website",
+      "origin": "https://www.example.com", "websiteId": "example-com"
+    },
+    {
+      "id": "ex:url-guide", "type": "URL",
+      "address": "https://www.example.com/guides/torque-wrench-calibration",
+      "websiteId": "example-com", "partOf": "ex:site",
+      "targetsIntent": "xeos:searchIntent-informational",
+      "hasConversionPoint": "ex:cp-booker"
+    },
+    {
+      "id": "ex:cp-booker", "type": "ConversionPoint",
+      "conversionPointType": "meeting_booker"
+    },
+
+    {
+      "id": "ex:metric-ai-referred-pipeline", "type": "Metric",
+      "notation": "ai_referred_pipeline",
+      "prefLabel": "AI-referred pipeline",
+      "definition": "The summed amount of deals created in the window whose first-touch channel is an AI assistant. A tenant's own Metric, defined beside the published ones.",
+      "metricType": "xeos:metricType-simple",
+      "aggregation": "xeos:aggregation-sum",
+      "readsSlot": "xeo:dealAmount",
+      "timeAnchor": "xeo:recordCreatedAt",
+      "metricFilter": "crmObjectType = 'deal' and firstTouchChannel = 'ai_assistant'",
+      "unit": "xeos:metricUnit-currency",
+      "betterDirection": "xeos:betterDirection-up",
+      "additivity": "xeos:additivity-additive"
+    },
+
+    {
+      "id": "ex:objective-2", "type": "Objective",
+      "statement": "Lift the calibration guide's clickthrough rate, and show the pipeline it brings.",
+      "resultsWindowDays": 28, "resultsWindowStart": "2026-07-01",
+      "hasTarget": ["ex:target-ctr", "ex:target-revenue"]
+    },
+    {
+      "id": "ex:target-ctr", "type": "MetricTarget",
+      "metric": "ctr", "targetKind": "absolute_change", "targetValue": "0.01",
+      "baseline": "0.034", "baselineCapturedAt": "2026-07-01T06:00:00Z",
+      "baselineReading": "ex:reading-ctr-before", "isPrimary": true
+    },
+    {
+      "id": "ex:target-revenue", "type": "MetricTarget",
+      "metric": "revenue_won", "targetKind": "absolute", "targetValue": "40000",
+      "targetCurrency": "GBP", "isPrimary": false
+    },
+
+    {
+      "id": "ex:reading-ctr-before", "type": "MetricReading",
+      "readingOf": "xeos:metric-ctr", "scope": "ex:url-guide",
+      "periodStart": "2026-06-03", "periodEnd": "2026-06-30",
+      "value": "0.034", "numeratorValue": "310", "denominatorValue": "9118",
+      "source": "gsc", "aggregationBasis": "xeos:aggregationBasis-by_page",
+      "websiteId": "example-com",
+      "datasetUri": "bigquery://example-project.search.performance_daily"
+    },
+    {
+      "id": "ex:reading-ctr-after", "type": "MetricReading",
+      "readingOf": "xeos:metric-ctr", "scope": "ex:url-guide",
+      "periodStart": "2026-07-01", "periodEnd": "2026-07-28",
+      "value": "0.045", "numeratorValue": "432", "denominatorValue": "9600",
+      "source": "gsc", "aggregationBasis": "xeos:aggregationBasis-by_page",
+      "websiteId": "example-com",
+      "datasetUri": "bigquery://example-project.search.performance_daily"
+    },
+
+    {
+      "id": "ex:exp-2", "type": "Experiment", "websiteId": "example-com",
+      "status": "concluded",
+      "startedAt": "2026-07-01T00:00:00Z", "concludedAt": "2026-07-29T00:00:00Z",
+      "treats": "ex:url-guide",
+      "measures": "ex:target-ctr",
+      "producedOutcome": "ex:outcome-2"
+    },
+    {
+      "id": "ex:outcome-2", "type": "Outcome",
+      "result": "significant",
+      "baselineReading": "ex:reading-ctr-before",
+      "resultReading": "ex:reading-ctr-after",
+      "absoluteChange": "0.011", "relativeChange": "0.3235"
+    },
+
+    {
+      "id": "ex:deal-987",
+      "crmRecordRef": "hubspot:12345:deal:987",
+      "crmSystem": "hubspot", "crmObjectType": "deal",
+      "websiteId": "example-com",
+      "dealAmount": "42000", "currencyCode": "GBP",
+      "dealOutcome": "won",
+      "pipelineRef": "default", "stageRef": "closedwon",
+      "ownerRef": "hubspot:12345:owner:55",
+      "recordCreatedAt": "2026-07-06T10:12:00Z",
+      "dealClosedAt": "2026-07-24T15:40:00Z",
+      "firstTouchChannel": "ai_assistant", "referringPlatform": "chatgpt.com",
+      "method": "vendor-classifier:hubspot"
+    },
+    {
+      "id": "ex:stage-map-closedwon",
+      "websiteId": "example-com",
+      "crmSystem": "hubspot", "pipelineRef": "default",
+      "stageRef": "closedwon", "stageClass": "won",
+      "method": "the CRM's own stage configuration, read 2026-07-01"
+    },
+    {
+      "id": "ex:transition-1", "type": "StageTransition",
+      "crmRecordRef": "hubspot:12345:deal:987",
+      "stageSlot": "deal_stage",
+      "fromStageRef": "contractsent", "toStageRef": "closedwon",
+      "enteredAt": "2026-07-24T15:40:00Z",
+      "amountAtTransition": "42000",
+      "method": "vendor-calculated-property",
+      "datasetUri": "bigquery://example-project.crm.stage_transitions"
+    },
+    {
+      "id": "ex:rollup-revenue", "type": "PipelineRollup",
+      "readingOf": "xeos:metric-revenue_won", "scope": "ex:site",
+      "periodStart": "2026-07-01", "periodEnd": "2026-07-28",
+      "value": "42000", "currencyCode": "GBP",
+      "source": "hubspot", "method": "sum of dealAmount over won deals closed in the window",
+      "confidence": "1.0",
+      "websiteId": "example-com",
+      "datasetUri": "bigquery://example-project.crm.deals_snapshot"
+    }
+  ]
+}

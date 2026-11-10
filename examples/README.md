@@ -8,7 +8,8 @@ must conform to `shapes/xeo-shapes.ttl`.
 | File | What it is |
 |---|---|
 | `learn-graph.jsonld` | One site, end to end, written against the camelCase `context.jsonld`. Covers the whole chain the `xeo-graph-kit` courses teach. |
-| `neo4j-export.jsonld` | A few of the same nodes written the way Neo4j names things (UPPER_SNAKE relationship types, concept slots stored as codes), lifted by `context.neo4j.jsonld`. |
+| `metrics-and-pipeline.jsonld` | What 0.6.0 adds for measurement: a tenant's own `Metric`, two `MetricReading`s, an `Outcome` computed from them, and a CRM deal pointer with its stage history. |
+| `neo4j-export.jsonld` | A few of the same nodes written the way Neo4j names things (UPPER_SNAKE relationship types, concept slots stored as codes), lifted by `context.neo4j.jsonld`. Includes a `Metric`, a `MetricReading` and a `MetricTarget`. |
 | `invalid/broken-rules.jsonld` | One deliberately wrong node or edge per SHACL shape, each tagged with the shape it must break. The validator fails if a shape stops firing. |
 
 ## What `learn-graph.jsonld` walks through
@@ -37,6 +38,27 @@ must conform to `shapes/xeo-shapes.ttl`.
    treated page and a control. An earlier experiment is its `precedentFor`, and that
    one's `Outcome` was `confoundedBy` an `ExternalEvent`. The new outcome is what a
    `Practice` is `learnedFrom`.
+
+## What `metrics-and-pipeline.jsonld` walks through
+
+1. **A Metric of the tenant's own.** `ai_referred_pipeline` is not in `xeos:metric`. It is
+   defined the same way the published ones are: a `metricType`, an `aggregation`, the slot it
+   reads (`dealAmount`), a `timeAnchor`, a `metricFilter`, a `unit`, a `betterDirection` and an
+   `additivity`.
+2. **Targets that name a Metric by its code.** `"metric": "ctr"` is the notation of
+   `xeos:metric-ctr`. The target carries no `direction`: the Metric states it. The currency
+   target states `targetCurrency`.
+3. **Two readings and the Outcome between them.** Both are readings of the same Metric over the
+   same `scope`, on the same `aggregationBasis`, across 28-day windows, and each carries the
+   clicks and impressions behind the rate. The `Outcome` points at both and records
+   `absoluteChange` (0.011, which is 1.1 points) and `relativeChange` (0.3235).
+4. **A deal, by pointer.** One node identified by `crmRecordRef`, carrying only the neutral
+   slots: amount and currency, outcome, the tenant's own stage and pipeline ids, owner, created
+   and closed times, and a first touch of `ai_assistant` from `chatgpt.com` with the
+   classifier named in `method`. It has no XEO class, on purpose. A second node is one row of
+   the tenant's stage map (`closedwon` means `won`).
+5. **Stage history and a rollup.** A `StageTransition` for the deal entering its closing stage,
+   and a `PipelineRollup`: a reading of `revenue_won` for the window, with its currency.
 
 ## Two conventions the files rely on
 

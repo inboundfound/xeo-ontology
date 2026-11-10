@@ -34,6 +34,48 @@
     {
       "id": "ex:bad-edge-3", "type": "Edge", "start": "ex:p", "edge": "visibilityFor", "end": "ex:br",
       "mentionRate": "35", "citationRate": "-0.1", "expect": ["MentionRateRange", "CitationRateRange"]
-    }
+    },
+
+    { "id": "ex:bad-metric", "type": "Metric", "expect": "MetricShape" },
+    {
+      "id": "ex:bad-simple-metric", "type": "Metric",
+      "metricType": "xeos:metricType-simple", "aggregation": "xeos:aggregation-sum",
+      "unit": "xeos:metricUnit-count", "betterDirection": "xeos:betterDirection-up",
+      "additivity": "xeos:additivity-additive", "expect": "SimpleMetricShape"
+    },
+    {
+      "id": "ex:bad-ratio-metric", "type": "Metric",
+      "metricType": "xeos:metricType-ratio",
+      "numerator": "xeos:metric-clicks", "denominator": "xeos:metric-impressions",
+      "unit": "xeos:metricUnit-count", "betterDirection": "xeos:betterDirection-up",
+      "additivity": "xeos:additivity-non_additive", "expect": "RatioMetricShape"
+    },
+    {
+      "id": "ex:bad-derived-metric", "type": "Metric",
+      "metricType": "xeos:metricType-derived", "expression": "revenue_won / deals_won",
+      "unit": "xeos:metricUnit-currency", "betterDirection": "xeos:betterDirection-up",
+      "additivity": "xeos:additivity-non_additive", "expect": "DerivedMetricShape"
+    },
+    {
+      "id": "ex:bad-reading", "type": "MetricReading",
+      "readingOf": "xeos:metric-clicks", "value": "310", "periodStart": "2026-06-03",
+      "expect": "MetricReadingShape"
+    },
+    {
+      "id": "ex:bad-currency-reading", "type": "MetricReading",
+      "readingOf": "xeos:metric-revenue_won", "value": "42000",
+      "periodStart": "2026-07-01", "periodEnd": "2026-07-28",
+      "expect": "CurrencyReadingNeedsCurrency"
+    },
+    {
+      "id": "ex:bad-currency-target", "type": "MetricTarget",
+      "metric": "revenue_won", "targetValue": "40000", "expect": "CurrencyTargetNeedsCurrency"
+    },
+    { "id": "ex:bad-deal", "crmRecordRef": "hubspot:12345:deal:1", "dealAmount": "42000", "expect": "DealAmountNeedsCurrency" },
+    {
+      "id": "ex:bad-deal-2", "crmRecordRef": "hubspot:12345:deal:2",
+      "dealAmount": "42000", "currencyCode": "gbp", "expect": "CurrencyCodeFormat"
+    },
+    { "id": "ex:bad-transition", "type": "StageTransition", "toStageRef": "closedwon", "expect": "StageTransitionShape" }
   ]
 }
