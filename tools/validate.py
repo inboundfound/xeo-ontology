@@ -12,6 +12,14 @@ projected from it disagree:
                   modules carry the same owl:versionInfo.
   3. SCHEMES      every concept has a notation, label and definition; codes are
                   unique within a scheme; every scheme fills a declared slot.
+                  In a vendor scheme (xeo-vendor-schemes.ttl) every concept
+                  instead names the slot it fills, one SKOS match, a scope
+                  note, a dated source and a mapping confidence.
+  3b. STATUS      xeo:termStatus is 'core' or 'extension'; a deprecated term
+                  names its replacement in rdfs:seeAlso and is still declared;
+                  every earlier objectiveMetric code has its Metric in
+                  xeos:metric under the same code; every Metric in the
+                  reference schemes conforms to the shapes.
   4. CONTEXT      context.jsonld maps every class, property and individual, and
                   maps nothing that is not declared.
   5. GENERATED    neo4j-profile.json, context.neo4j.jsonld, docs/neo4j-profile.md,
@@ -53,6 +61,10 @@ XEOSH = Namespace("https://xeoontology.org/shapes#")
 SH = Namespace("http://www.w3.org/ns/shacl#")
 LAYERS = set(gen_profile.LAYERS)
 SHAPES = os.path.join("shapes", "xeo-shapes.ttl")
+VENDOR_SCHEMES = "xeo-vendor-schemes.ttl"
+MATCHES = (SKOS.exactMatch, SKOS.closeMatch, SKOS.narrowMatch, SKOS.broadMatch, SKOS.relatedMatch)
+CONFIDENCES = {"documented", "inferred", "verified"}
+STATUSES = {"core", "extension"}
 TERM_KINDS = (OWL.Class, OWL.ObjectProperty, OWL.DatatypeProperty)
 POINTERS = (RDFS.domain, RDFS.range, RDFS.subClassOf, RDFS.subPropertyOf,
             XEO.domainIncludes, XEO.rangeIncludes, XEO.fillsSlot)
@@ -171,19 +183,59 @@ def check_terms(report: Report, g: Graph, per_module: dict[str, Graph]) -> dict:
 
 # --- 3. schemes --------------------------------------------------------------
 
-def check_schemes(report: Report, g: Graph, terms: dict) -> set[URIRef]:
+def check_vendor_concept(g: Graph, terms: dict, concepts: set, scheme, c) -> list[str]:
+    """A crosswalk concept: the vendor's exact field, the slot it fills, and how that is known."""
+    problems = []
+    if g.value(c, SKOS.notation) is None:
+        problems.append(f"{c} has no skos:notation")
+    if not local(c).startswith(local(scheme) + "-"):
+        problems.append(f"{c} is not named <scheme>-<field>")
+    slots = list(g.objects(c, XEO.fillsSlot))
+    if not slots:
+        problems.append(f"{c} has no xeo:fillsSlot")
+    for slot in slots:
+        if slot not in terms:
+            problems.append(f"{c} fills undeclared slot {slot}")
+    kinds = [p for p in MATCHES if g.value(c, p) is not None]
+    if len(kinds) != 1:
+        problems.append(f"{c} needs exactly one kind of SKOS match, has {len(kinds)}")
+    for p in kinds:
+        for target in g.objects(c, p):
+            if target not in terms and target not in concepts:
+                problems.append(f"{c} matches undeclared {target}")
+    if g.value(c, SKOS.scopeNote) is None:
+        problems.append(f"{c} has no skos:scopeNote")
+    source = g.value(c, DCTERMS.source)
+    if source is None or "(read " not in str(source):
+        problems.append(f"{c} has no dct:source with a read date")
+    confidence = {str(o) for o in g.objects(c, XEO.mappingConfidence)}
+    if len(confidence) != 1 or not confidence <= CONFIDENCES:
+        problems.append(f"{c} needs one xeo:mappingConfidence from {sorted(CONFIDENCES)}")
+    return problems
+
+
+def check_schemes(report: Report, g: Graph, terms: dict, per_module: dict) -> set[URIRef]:
     problems = []
     concepts = set(g.subjects(RDF.type, SKOS.Concept))
     schemes = set(g.subjects(RDF.type, SKOS.ConceptScheme))
+    vendor_graph = per_module.get(VENDOR_SCHEMES, Graph())
+    vendor = set(vendor_graph.subjects(RDF.type, SKOS.ConceptScheme))
     for scheme in sorted(schemes, key=str):
+        for p in (SKOS.prefLabel, DCTERMS.description, DCTERMS.source):
+            if g.value(scheme, p) is None:
+                problems.append(f"{scheme} has no {p}")
+        if scheme in vendor:
+            # A crosswalk: the concept fills a slot, not the scheme, and a vendor
+            # may reuse one field name in two reports, so codes may repeat.
+            for c in sorted(g.subjects(SKOS.inScheme, scheme), key=str):
+                if c in concepts:
+                    problems += check_vendor_concept(g, terms, concepts, scheme, c)
+            continue
         slot = g.value(scheme, XEO.fillsSlot)
         if slot is None:
             problems.append(f"{scheme} has no xeo:fillsSlot")
         elif slot not in terms:
             problems.append(f"{scheme} fills undeclared slot {slot}")
-        for p in (SKOS.prefLabel, DCTERMS.description, DCTERMS.source):
-            if g.value(scheme, p) is None:
-                problems.append(f"{scheme} has no {p}")
         seen = {}
         for c in g.subjects(SKOS.inScheme, scheme):
             if c not in concepts:
@@ -197,14 +249,75 @@ def check_schemes(report: Report, g: Graph, terms: dict) -> set[URIRef]:
                 seen[str(code)] = c
             if code is not None and local(c) != f"{local(scheme)}-{code}":
                 problems.append(f"{c} is not named <scheme>-<notation>")
+            if g.value(c, XEO.mappingConfidence) is not None:
+                problems.append(f"{c} carries a mapping confidence outside {VENDOR_SCHEMES}")
     for c in sorted(concepts, key=str):
         if g.value(c, SKOS.inScheme) is None:
             problems.append(f"{c} is in no scheme")
         for p in (SKOS.prefLabel, SKOS.definition):
             if g.value(c, p) is None:
                 problems.append(f"{c} has no {p}")
-    report.section("schemes", problems, f"{len(schemes)} schemes, {len(concepts)} concepts")
+    n_vendor = sum(1 for c in concepts if g.value(c, SKOS.inScheme) in vendor)
+    report.section(
+        "schemes", problems,
+        f"{len(schemes) - len(vendor)} reference schemes, {len(concepts) - n_vendor} concepts; "
+        f"{len(vendor)} vendor schemes, {n_vendor} mapped fields")
     return concepts
+
+
+# --- 3b. status, deprecation, metrics ----------------------------------------
+
+def check_status(report: Report, g: Graph, per_module: dict, terms: dict, concepts: set) -> None:
+    from pyshacl import validate as shacl_validate
+
+    problems = []
+    extension = 0
+    for s, o in g.subject_objects(XEO.termStatus):
+        if str(o) not in STATUSES:
+            problems.append(f"{s} has xeo:termStatus '{o}'; expected one of {sorted(STATUSES)}")
+        extension += str(o) == "extension" and s in terms
+    deprecated = sorted(s for s in g.subjects(OWL.deprecated, None)
+                        if str(g.value(s, OWL.deprecated)).lower() == "true")
+    for s in deprecated:
+        if s not in terms:
+            problems.append(f"{s} is deprecated but no longer declared; deprecation never removes a term")
+        targets = list(g.objects(s, RDFS.seeAlso))
+        if not targets:
+            problems.append(f"{s} is deprecated and names no replacement in rdfs:seeAlso")
+        for t in targets:
+            if (in_xeo(t) and t not in terms) or (str(t).startswith(str(XEOS)) and t not in concepts):
+                problems.append(f"{s} is replaced by undeclared {t}")
+            if (t, OWL.deprecated, None) in g:
+                problems.append(f"{s} is replaced by {t}, which is itself deprecated")
+    # The codes consumers already store must resolve to a Metric under the same code.
+    metrics = {str(g.value(c, SKOS.notation)): c for c in g.subjects(SKOS.inScheme, XEOS.metric)
+               if (c, RDF.type, XEO.Metric) in g}
+    for c in sorted(g.subjects(SKOS.inScheme, XEOS.objectiveMetric), key=str):
+        code = str(g.value(c, SKOS.notation))
+        twin = metrics.get(code)
+        if twin is None:
+            problems.append(f"{c}: code '{code}' has no xeo:Metric in xeos:metric")
+        elif (c, SKOS.exactMatch, twin) not in g:
+            problems.append(f"{c} is not skos:exactMatch {twin}")
+    for c in sorted(g.subjects(SKOS.inScheme, XEOS.metric), key=str):
+        if (c, RDF.type, SKOS.Concept) in g and (c, RDF.type, XEO.Metric) not in g:
+            problems.append(f"{c} is in xeos:metric and is not an xeo:Metric")
+    # Every published Metric obeys the rules the shapes state.
+    shapes = per_module.get(SHAPES)
+    published = Graph()
+    for name in ("xeo-schemes.ttl", VENDOR_SCHEMES):
+        published += per_module.get(name, Graph())
+    if shapes is not None:
+        conforms, results, _ = shacl_validate(published, shacl_graph=shapes, ont_graph=g,
+                                              inference="none", advanced=False)
+        if not conforms:
+            for r in results.subjects(RDF.type, SH.ValidationResult):
+                problems.append(f"{results.value(r, SH.focusNode)} — {results.value(r, SH.resultMessage)}")
+    report.section(
+        "status", problems,
+        f"{extension} extension terms, {len(deprecated)} advisory deprecations each with a replacement; "
+        f"{len(metrics)} Metrics conform, and all {len(list(g.subjects(SKOS.inScheme, XEOS.objectiveMetric)))} "
+        f"earlier metric codes resolve")
 
 
 # --- 4. context --------------------------------------------------------------
@@ -303,6 +416,11 @@ def check_examples(report: Report, g: Graph, per_module: dict, terms: dict, conc
         report.section("examples", ["shapes did not parse; examples not checked"], "")
         return
     problems = []
+    # An example points at published concepts (xeos:metric-ctr) without restating
+    # them. A rule that reads through such a pointer, like "a reading of a
+    # currency metric names its currency", needs the concept's own triples in the
+    # graph being validated, so the reference schemes are validated with it.
+    reference = per_module.get("xeo-schemes.ttl", Graph())
     valid = sorted(glob.glob(os.path.join(HERE, "examples", "*.jsonld")))
     invalid = sorted(glob.glob(os.path.join(HERE, "examples", "invalid", "*.jsonld")))
     if not valid:
@@ -319,7 +437,7 @@ def check_examples(report: Report, g: Graph, per_module: dict, terms: dict, conc
         if not len(data):
             problems.append(f"{rel}: parsed to no triples")
         problems += [f"{rel} {m}" for m in undeclared_in(data, terms, concepts)]
-        conforms, results, _ = shacl_validate(data, shacl_graph=shapes, ont_graph=g,
+        conforms, results, _ = shacl_validate(data + reference, shacl_graph=shapes, ont_graph=g,
                                               inference="none", advanced=False)
         if not conforms:
             for r in results.subjects(RDF.type, SH.ValidationResult):
@@ -331,7 +449,7 @@ def check_examples(report: Report, g: Graph, per_module: dict, terms: dict, conc
         data = load_jsonld(path)
         expected = {(s, str(o)) for s, o in data.subject_objects(XEOSH.expectedViolation)}
         data.remove((None, XEOSH.expectedViolation, None))
-        _, results, _ = shacl_validate(data, shacl_graph=shapes, ont_graph=g,
+        _, results, _ = shacl_validate(data + reference, shacl_graph=shapes, ont_graph=g,
                                        inference="none", advanced=False)
         fired = set()
         for r in results.subjects(RDF.type, SH.ValidationResult):
@@ -360,7 +478,8 @@ def main() -> int:
     report = Report()
     g, per_module = parse_all(report)
     terms = check_terms(report, g, per_module)
-    concepts = check_schemes(report, g, terms)
+    concepts = check_schemes(report, g, terms, per_module)
+    check_status(report, g, per_module, terms, concepts)
     check_context(report, g, terms)
     check_generated(report)
     check_examples(report, g, per_module, terms, concepts)

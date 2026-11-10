@@ -1,9 +1,232 @@
 {
-  "$comment": "Generated from xeo-schemes.ttl by tools/gen_schemes.py — do not edit by hand.",
+  "$comment": "Generated from xeo-schemes.ttl and xeo-vendor-schemes.ttl by tools/gen_schemes.py — do not edit by hand.",
   "namespace": "https://xeoontology.org/schemes#",
   "ontology": "https://xeoontology.org/xeo#",
   "version": "0.6.0",
   "schemes": {
+    "acquisitionChannel": {
+      "iri": "https://xeoontology.org/schemes#acquisitionChannel",
+      "label": "Acquisition channels",
+      "fillsSlot": "xeo:firstTouchChannel",
+      "description": "Where a person came from, as a classifier or a person recorded it. Fills firstTouchChannel and latestTouchChannel, and is the set a session-grain channel should reuse. Deliberately coarse. ai_assistant is the value the set exists for: a visit referred by an AI assistant's own domain. A search engine's AI overview is not one, and stays organic_search. Every vendor draws these lines its own way, so a mapped value is a derivation and says whose rule made it.",
+      "source": "XEO CRM pipeline research report, 2026-11-10 · ai_assistant is evidenced by two vendors' classifiers (one CRM's traffic-source value, one analytics tool's default channel). The other values are a neutral set inferred for XEO from the channel lists those classifiers publish; no vendor's list is adopted",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "ai_assistant",
+          "iri": "https://xeoontology.org/schemes#acquisitionChannel-ai_assistant",
+          "label": "AI assistant",
+          "definition": "Arrived from an AI assistant's own domain or app: a chat or answer product, not a search engine's results page",
+          "note": null
+        },
+        {
+          "code": "direct",
+          "iri": "https://xeoontology.org/schemes#acquisitionChannel-direct",
+          "label": "Direct",
+          "definition": "Arrived with no referrer: typed, bookmarked, or stripped",
+          "note": null
+        },
+        {
+          "code": "email",
+          "iri": "https://xeoontology.org/schemes#acquisitionChannel-email",
+          "label": "Email",
+          "definition": "Arrived from a link in an email",
+          "note": null
+        },
+        {
+          "code": "offline",
+          "iri": "https://xeoontology.org/schemes#acquisitionChannel-offline",
+          "label": "Offline",
+          "definition": "Entered other than by a tracked visit: an import, an event, a call, manual entry",
+          "note": null
+        },
+        {
+          "code": "organic_search",
+          "iri": "https://xeoontology.org/schemes#acquisitionChannel-organic_search",
+          "label": "Organic search",
+          "definition": "Arrived from an unpaid search result",
+          "note": null
+        },
+        {
+          "code": "organic_social",
+          "iri": "https://xeoontology.org/schemes#acquisitionChannel-organic_social",
+          "label": "Organic social",
+          "definition": "Arrived from an unpaid social post or profile",
+          "note": null
+        },
+        {
+          "code": "other",
+          "iri": "https://xeoontology.org/schemes#acquisitionChannel-other",
+          "label": "Other",
+          "definition": "Tracked, and matching none of the above: an untyped campaign",
+          "note": null
+        },
+        {
+          "code": "paid_search",
+          "iri": "https://xeoontology.org/schemes#acquisitionChannel-paid_search",
+          "label": "Paid search",
+          "definition": "Arrived from a search advertisement",
+          "note": null
+        },
+        {
+          "code": "paid_social",
+          "iri": "https://xeoontology.org/schemes#acquisitionChannel-paid_social",
+          "label": "Paid social",
+          "definition": "Arrived from a social advertisement",
+          "note": null
+        },
+        {
+          "code": "referral",
+          "iri": "https://xeoontology.org/schemes#acquisitionChannel-referral",
+          "label": "Referral",
+          "definition": "Arrived from a link on another site that is not search, social or an AI assistant",
+          "note": null
+        }
+      ]
+    },
+    "additivity": {
+      "iri": "https://xeoontology.org/schemes#additivity",
+      "label": "Additivity",
+      "fillsSlot": "xeo:additivity",
+      "description": "Whether readings of a Metric may be added together across windows, pages or terms. The rule that keeps an Objective from being read as the sum of its Outcomes.",
+      "source": "XEO metrics and KPIs research report, 2026-11-10 · dbt (non_additive_dimension), Cube (count_distinct_approx), LookML (sum_distinct), Matomo (sum_daily_nb_uniq_visitors), GSC (aggregationType)",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "additive",
+          "iri": "https://xeoontology.org/schemes#additivity-additive",
+          "label": "Additive",
+          "definition": "Readings may be summed across any dimension, provided they share an aggregationBasis",
+          "note": null
+        },
+        {
+          "code": "non_additive",
+          "iri": "https://xeoontology.org/schemes#additivity-non_additive",
+          "label": "Non-additive",
+          "definition": "Readings are never summed. A ratio, an average, a rank or a distinct count over a union is recomputed from its parts",
+          "note": null
+        },
+        {
+          "code": "semi_additive",
+          "iri": "https://xeoontology.org/schemes#additivity-semi_additive",
+          "label": "Semi-additive",
+          "definition": "Readings may be summed across some dimensions and not others; typically not across time",
+          "note": null
+        }
+      ]
+    },
+    "aggregation": {
+      "iri": "https://xeoontology.org/schemes#aggregation",
+      "label": "Aggregations",
+      "fillsSlot": "xeo:aggregation",
+      "description": "How a simple Metric reduces the values of the slot it reads to one number over a window. Named for the operation, never for a library's function.",
+      "source": "XEO metrics and KPIs research report, 2026-11-10 · the aggregation types common to dbt (agg), Cube and LookML (type) and Malloy",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "count",
+          "iri": "https://xeoontology.org/schemes#aggregation-count",
+          "label": "Count",
+          "definition": "The number of records",
+          "note": null
+        },
+        {
+          "code": "count_distinct",
+          "iri": "https://xeoontology.org/schemes#aggregation-count_distinct",
+          "label": "Distinct count",
+          "definition": "The number of different values. Not additive across windows: a visitor seen on two days is one visitor",
+          "note": null
+        },
+        {
+          "code": "last",
+          "iri": "https://xeoontology.org/schemes#aggregation-last",
+          "label": "Last",
+          "definition": "The most recent value in the window, as for a rank read from the latest snapshot",
+          "note": null
+        },
+        {
+          "code": "max",
+          "iri": "https://xeoontology.org/schemes#aggregation-max",
+          "label": "Maximum",
+          "definition": "The largest value",
+          "note": null
+        },
+        {
+          "code": "mean",
+          "iri": "https://xeoontology.org/schemes#aggregation-mean",
+          "label": "Mean",
+          "definition": "The arithmetic mean of the values",
+          "note": null
+        },
+        {
+          "code": "median",
+          "iri": "https://xeoontology.org/schemes#aggregation-median",
+          "label": "Median",
+          "definition": "The middle value",
+          "note": null
+        },
+        {
+          "code": "min",
+          "iri": "https://xeoontology.org/schemes#aggregation-min",
+          "label": "Minimum",
+          "definition": "The smallest value",
+          "note": null
+        },
+        {
+          "code": "percentile",
+          "iri": "https://xeoontology.org/schemes#aggregation-percentile",
+          "label": "Percentile",
+          "definition": "The value below which a stated share of the values fall; the share is percentileValue",
+          "note": null
+        },
+        {
+          "code": "sum",
+          "iri": "https://xeoontology.org/schemes#aggregation-sum",
+          "label": "Sum",
+          "definition": "The values added together",
+          "note": null
+        },
+        {
+          "code": "weighted_mean",
+          "iri": "https://xeoontology.org/schemes#aggregation-weighted_mean",
+          "label": "Weighted mean",
+          "definition": "The mean of the values, each weighted by a stated quantity (an average position weighted by impressions)",
+          "note": null
+        }
+      ]
+    },
+    "aggregationBasis": {
+      "iri": "https://xeoontology.org/schemes#aggregationBasis",
+      "label": "Aggregation bases",
+      "fillsSlot": "xeo:aggregationBasis",
+      "description": "How a source deduplicated before it returned a value. One source documents the choice, and there the same field gives two different counts under the two bases.",
+      "source": "XEO metrics and KPIs research report, 2026-11-10 · Google Search Console Search Analytics API (aggregationType: auto, byPage, byProperty), neutral spelling",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "auto",
+          "iri": "https://xeoontology.org/schemes#aggregationBasis-auto",
+          "label": "Source's choice",
+          "definition": "The source chose the basis from the request. Record which it chose where it says",
+          "note": null
+        },
+        {
+          "code": "by_page",
+          "iri": "https://xeoontology.org/schemes#aggregationBasis-by_page",
+          "label": "By page",
+          "definition": "Counted once per page: each of the site's pages in a result counts",
+          "note": null
+        },
+        {
+          "code": "by_property",
+          "iri": "https://xeoontology.org/schemes#aggregationBasis-by_property",
+          "label": "By property",
+          "definition": "Counted once per site: several of the site's pages in one result count as one impression",
+          "note": null
+        }
+      ],
+      "status": "extension"
+    },
     "algorithm": {
       "iri": "https://xeoontology.org/schemes#algorithm",
       "label": "Algorithms",
@@ -91,6 +314,37 @@
         }
       ]
     },
+    "betterDirection": {
+      "iri": "https://xeoontology.org/schemes#betterDirection",
+      "label": "Better directions",
+      "fillsSlot": "xeo:betterDirection",
+      "description": "Which way a change in a Metric counts as improvement. Stated once, on the Metric. 'up' and 'down' are the two values xeo:direction took on a target; 'none' is new, for a quantity that is neither good nor bad to have more of.",
+      "source": "XEO metrics and KPIs research report, 2026-11-10 · if-control-center packages/contracts/src/objective-metric.ts (METRIC_DIRECTIONS), which this generalises",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "down",
+          "iri": "https://xeoontology.org/schemes#betterDirection-down",
+          "label": "Lower is better",
+          "definition": "A decrease is an improvement, as for a position or a rank, where 1 is best",
+          "note": null
+        },
+        {
+          "code": "none",
+          "iri": "https://xeoontology.org/schemes#betterDirection-none",
+          "label": "Neither",
+          "definition": "More is not better or worse: a sample size, a count of answers collected",
+          "note": null
+        },
+        {
+          "code": "up",
+          "iri": "https://xeoontology.org/schemes#betterDirection-up",
+          "label": "Higher is better",
+          "definition": "An increase is an improvement",
+          "note": null
+        }
+      ]
+    },
     "cadence": {
       "iri": "https://xeoontology.org/schemes#cadence",
       "label": "Retainer cadences",
@@ -111,6 +365,250 @@
           "iri": "https://xeoontology.org/schemes#cadence-quarterly",
           "label": "Quarterly",
           "definition": "Quota resets each quarter",
+          "note": null
+        }
+      ]
+    },
+    "conversionPointType": {
+      "iri": "https://xeoontology.org/schemes#conversionPointType",
+      "label": "Conversion point types",
+      "fillsSlot": "xeo:conversionPointType",
+      "description": "The kind of mechanism a ConversionPoint is. The first three say with a code what the CallToAction, LeadCaptureForm and GatedAsset subclasses say with a class; the list was growing, and a growing list is a scheme.",
+      "source": "XEO CRM pipeline research report, 2026-11-10 · the three ConversionPoint subclasses of xeo-engagement, as codes, with two kinds the report adds",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "chat",
+          "iri": "https://xeoontology.org/schemes#conversionPointType-chat",
+          "label": "Chat",
+          "definition": "A live chat or chatbot that can capture a contact",
+          "note": null
+        },
+        {
+          "code": "cta",
+          "iri": "https://xeoontology.org/schemes#conversionPointType-cta",
+          "label": "Call to action",
+          "definition": "A button or link that asks the visitor to take the next step",
+          "note": null,
+          "matches": {
+            "exactMatch": [
+              "xeo:CallToAction"
+            ]
+          }
+        },
+        {
+          "code": "gated_asset",
+          "iri": "https://xeoontology.org/schemes#conversionPointType-gated_asset",
+          "label": "Gated asset",
+          "definition": "Content exchanged for contact information",
+          "note": null,
+          "matches": {
+            "exactMatch": [
+              "xeo:GatedAsset"
+            ]
+          }
+        },
+        {
+          "code": "lead_form",
+          "iri": "https://xeoontology.org/schemes#conversionPointType-lead_form",
+          "label": "Lead capture form",
+          "definition": "A form that exchanges contact details for a response, a quote or a booking",
+          "note": null,
+          "matches": {
+            "exactMatch": [
+              "xeo:LeadCaptureForm"
+            ]
+          }
+        },
+        {
+          "code": "meeting_booker",
+          "iri": "https://xeoontology.org/schemes#conversionPointType-meeting_booker",
+          "label": "Meeting booker",
+          "definition": "An embedded scheduler that books a meeting",
+          "note": null
+        }
+      ]
+    },
+    "crmObjectType": {
+      "iri": "https://xeoontology.org/schemes#crmObjectType",
+      "label": "CRM object types",
+      "fillsSlot": "xeo:crmObjectType",
+      "description": "The neutral kind of record a crmRecordRef points at. Assigned from the record's structure, not from the vendor's word for it: 'lead' is a prospect record in one CRM, a company in another and a deal stage in a third.",
+      "source": "XEO CRM pipeline research report, 2026-11-10 (crosswalk: all seven CRMs expose a person, an organization and a deal; five a pre-qualification lead)",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "deal",
+          "iri": "https://xeoontology.org/schemes#crmObjectType-deal",
+          "label": "Deal",
+          "definition": "A record of one potential sale, with a stage and an amount: a deal or an opportunity",
+          "note": null
+        },
+        {
+          "code": "lead",
+          "iri": "https://xeoontology.org/schemes#crmObjectType-lead",
+          "label": "Lead",
+          "definition": "A record of an unqualified prospect, kept apart from persons and deals until it is converted or dropped",
+          "note": null
+        },
+        {
+          "code": "organization",
+          "iri": "https://xeoontology.org/schemes#crmObjectType-organization",
+          "label": "Organization",
+          "definition": "A record of a company or account",
+          "note": null
+        },
+        {
+          "code": "person",
+          "iri": "https://xeoontology.org/schemes#crmObjectType-person",
+          "label": "Person",
+          "definition": "A record of one human: a contact",
+          "note": null
+        }
+      ]
+    },
+    "crmSystem": {
+      "iri": "https://xeoontology.org/schemes#crmSystem",
+      "label": "CRM systems",
+      "fillsSlot": "xeo:crmSystem",
+      "description": "Which CRM product holds a record: the first part of a crmRecordRef. The seven the report read. A code names the product, never a field of it. Another CRM is another code; three more (Freshsales, Copper, monday CRM) were named and not read.",
+      "source": "XEO CRM pipeline research report, 2026-11-10 (the seven CRMs read)",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "attio",
+          "iri": "https://xeoontology.org/schemes#crmSystem-attio",
+          "label": "Attio",
+          "definition": "Attio",
+          "note": null
+        },
+        {
+          "code": "close",
+          "iri": "https://xeoontology.org/schemes#crmSystem-close",
+          "label": "Close",
+          "definition": "Close",
+          "note": null
+        },
+        {
+          "code": "dynamics365",
+          "iri": "https://xeoontology.org/schemes#crmSystem-dynamics365",
+          "label": "Dynamics 365",
+          "definition": "Microsoft Dynamics 365 Sales",
+          "note": null
+        },
+        {
+          "code": "hubspot",
+          "iri": "https://xeoontology.org/schemes#crmSystem-hubspot",
+          "label": "HubSpot",
+          "definition": "HubSpot Smart CRM",
+          "note": null
+        },
+        {
+          "code": "pipedrive",
+          "iri": "https://xeoontology.org/schemes#crmSystem-pipedrive",
+          "label": "Pipedrive",
+          "definition": "Pipedrive",
+          "note": null
+        },
+        {
+          "code": "salesforce",
+          "iri": "https://xeoontology.org/schemes#crmSystem-salesforce",
+          "label": "Salesforce",
+          "definition": "Salesforce Sales Cloud",
+          "note": null
+        },
+        {
+          "code": "zoho",
+          "iri": "https://xeoontology.org/schemes#crmSystem-zoho",
+          "label": "Zoho CRM",
+          "definition": "Zoho CRM",
+          "note": null
+        }
+      ]
+    },
+    "dataState": {
+      "iri": "https://xeoontology.org/schemes#dataState",
+      "label": "Data states",
+      "fillsSlot": "xeo:dataState",
+      "description": "Whether the source considered a reading's window complete when it answered.",
+      "source": "XEO metrics and KPIs research report, 2026-11-10 · Google Search Console Search Analytics API (dataState), reported by a secondary source and not read in the vendor's own documentation",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "final",
+          "iri": "https://xeoontology.org/schemes#dataState-final",
+          "label": "Final",
+          "definition": "The source considers the window complete; the value is not expected to change",
+          "note": null
+        },
+        {
+          "code": "partial",
+          "iri": "https://xeoontology.org/schemes#dataState-partial",
+          "label": "Partial",
+          "definition": "The window includes data the source is still processing; the value is expected to change",
+          "note": null
+        }
+      ],
+      "status": "extension"
+    },
+    "dealOutcome": {
+      "iri": "https://xeoontology.org/schemes#dealOutcome",
+      "label": "Deal outcomes",
+      "fillsSlot": "xeo:dealOutcome",
+      "description": "Whether a deal is still in play, and if not, how it ended. Three values, and no fourth for deleted: a deleted deal has no outcome and is left out of every count.",
+      "source": "XEO CRM pipeline research report, 2026-11-10 (five of seven CRMs state it as a field; in the other two it follows from the stage)",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "lost",
+          "iri": "https://xeoontology.org/schemes#dealOutcome-lost",
+          "label": "Lost",
+          "definition": "The deal closed and was lost",
+          "note": null
+        },
+        {
+          "code": "open",
+          "iri": "https://xeoontology.org/schemes#dealOutcome-open",
+          "label": "Open",
+          "definition": "The deal has not closed",
+          "note": null
+        },
+        {
+          "code": "won",
+          "iri": "https://xeoontology.org/schemes#dealOutcome-won",
+          "label": "Won",
+          "definition": "The deal closed and was won",
+          "note": null
+        }
+      ]
+    },
+    "dealStageClass": {
+      "iri": "https://xeoontology.org/schemes#dealStageClass",
+      "label": "Deal stage classes",
+      "fillsSlot": "xeo:stageClass",
+      "description": "What a tenant's deal stage means, whatever it is called. The class a per-tenant mapping assigns to each stageRef, and what dealOutcome is read through where the CRM states no outcome of its own.",
+      "source": "XEO CRM pipeline research report, 2026-11-10 (the closed and won flags CRMs keep on a stage's configuration)",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "lost",
+          "iri": "https://xeoontology.org/schemes#dealStageClass-lost",
+          "label": "Lost",
+          "definition": "A stage that closes a deal as lost",
+          "note": null
+        },
+        {
+          "code": "open",
+          "iri": "https://xeoontology.org/schemes#dealStageClass-open",
+          "label": "Open",
+          "definition": "A stage a deal is still being worked in",
+          "note": null
+        },
+        {
+          "code": "won",
+          "iri": "https://xeoontology.org/schemes#dealStageClass-won",
+          "label": "Won",
+          "definition": "A stage that closes a deal as won",
           "note": null
         }
       ]
@@ -352,6 +850,52 @@
           "note": null
         }
       ]
+    },
+    "forecastCategory": {
+      "iri": "https://xeoontology.org/schemes#forecastCategory",
+      "label": "Forecast categories",
+      "fillsSlot": "xeo:forecastCategory",
+      "description": "The forecast bucket a deal is placed in.",
+      "source": "XEO CRM pipeline research report, 2026-11-10 (two of seven CRMs; neutral spelling)",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "best_case",
+          "iri": "https://xeoontology.org/schemes#forecastCategory-best_case",
+          "label": "Best case",
+          "definition": "Could close in the period if things go well",
+          "note": null
+        },
+        {
+          "code": "closed",
+          "iri": "https://xeoontology.org/schemes#forecastCategory-closed",
+          "label": "Closed",
+          "definition": "Already closed won",
+          "note": null
+        },
+        {
+          "code": "commit",
+          "iri": "https://xeoontology.org/schemes#forecastCategory-commit",
+          "label": "Commit",
+          "definition": "The owner commits to closing it in the period",
+          "note": null
+        },
+        {
+          "code": "omitted",
+          "iri": "https://xeoontology.org/schemes#forecastCategory-omitted",
+          "label": "Omitted",
+          "definition": "Left out of the forecast",
+          "note": null
+        },
+        {
+          "code": "pipeline",
+          "iri": "https://xeoontology.org/schemes#forecastCategory-pipeline",
+          "label": "Pipeline",
+          "definition": "In the pipeline, with no commitment",
+          "note": null
+        }
+      ],
+      "status": "extension"
     },
     "frameworkKind": {
       "iri": "https://xeoontology.org/schemes#frameworkKind",
@@ -610,6 +1154,73 @@
         }
       ]
     },
+    "lifecycleStageClass": {
+      "iri": "https://xeoontology.org/schemes#lifecycleStageClass",
+      "label": "Lifecycle stage classes",
+      "fillsSlot": "xeo:lifecycleStage",
+      "description": "The funnel position of a person or organization. Fills lifecycleStage, and is what stageClass takes on a lifecycle StageTransition. An extension: the stages are one vendor's default ladder, and what qualifies a lead for each is every tenant's own rule. 'other' is where a tenant's custom stage goes.",
+      "source": "XEO CRM pipeline research report, 2026-11-10 (one CRM's default lifecycle, neutral spelling; the only CRM of the seven that carries a lifecycle stage natively)",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "customer",
+          "iri": "https://xeoontology.org/schemes#lifecycleStageClass-customer",
+          "label": "Customer",
+          "definition": "Has at least one deal won",
+          "note": null
+        },
+        {
+          "code": "evangelist",
+          "iri": "https://xeoontology.org/schemes#lifecycleStageClass-evangelist",
+          "label": "Evangelist",
+          "definition": "A customer who advocates for the business",
+          "note": null
+        },
+        {
+          "code": "lead",
+          "iri": "https://xeoontology.org/schemes#lifecycleStageClass-lead",
+          "label": "Lead",
+          "definition": "Has shown interest beyond subscribing",
+          "note": null
+        },
+        {
+          "code": "mql",
+          "iri": "https://xeoontology.org/schemes#lifecycleStageClass-mql",
+          "label": "Marketing-qualified lead",
+          "definition": "Marketing judges the lead ready to hand to sales, by the tenant's own criteria",
+          "note": null
+        },
+        {
+          "code": "opportunity",
+          "iri": "https://xeoontology.org/schemes#lifecycleStageClass-opportunity",
+          "label": "Opportunity",
+          "definition": "Associated with an open deal",
+          "note": null
+        },
+        {
+          "code": "other",
+          "iri": "https://xeoontology.org/schemes#lifecycleStageClass-other",
+          "label": "Other",
+          "definition": "A tenant-specific stage with no neutral class",
+          "note": null
+        },
+        {
+          "code": "sql",
+          "iri": "https://xeoontology.org/schemes#lifecycleStageClass-sql",
+          "label": "Sales-qualified lead",
+          "definition": "Sales has accepted the lead as worth pursuing, by the tenant's own criteria",
+          "note": null
+        },
+        {
+          "code": "subscriber",
+          "iri": "https://xeoontology.org/schemes#lifecycleStageClass-subscriber",
+          "label": "Subscriber",
+          "definition": "Has opted in to hear from the business and nothing more",
+          "note": null
+        }
+      ],
+      "status": "extension"
+    },
     "linkPosition": {
       "iri": "https://xeoontology.org/schemes#linkPosition",
       "label": "Link positions",
@@ -728,11 +1339,728 @@
         }
       ]
     },
+    "metric": {
+      "iri": "https://xeoontology.org/schemes#metric",
+      "label": "Metrics",
+      "fillsSlot": "xeo:metric",
+      "description": "The reference scheme of XEO Metrics: each a definition with a type, a unit, a better direction and an additivity, and what it is computed from. Covers search, AI visibility, website analytics and CRM pipeline, so an Objective can target any of them and a reading means the same thing wherever it is computed. The code a MetricTarget stores in xeo:metric is the skos:notation of a concept here. The eight codes published earlier in xeos:objectiveMetric are kept exactly, each with an exactMatch from its old concept. Definitions are neutral: where vendors use one name for different ratios, the definition here states the denominator, and each vendor's field is mapped to it in xeo-vendor-schemes.ttl. Every minDenominator is a stated default inferred for XEO, not a vendor fact. A consumer adds its own Metrics as instances of xeo:Metric in a scheme of its own.",
+      "source": "XEO metrics and KPIs research report, 2026-11-10 (starter reference scheme) · XEO CRM pipeline research report, 2026-11-10 (pipeline metrics) · the codes of xeos:objectiveMetric, kept unchanged",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "ai_answers_citing_owned",
+          "iri": "https://xeoontology.org/schemes#metric-ai_answers_citing_owned",
+          "label": "AI answers citing an owned URL",
+          "definition": "The number of sampled answers that cite at least one URL of a Website the brand owns",
+          "note": "reading: a derivation. Whether an answer mentions or cites a brand is extracted from sampled answers, and the sample is a vendor's or a tracker's choice",
+          "editorialNote": "A component metric, in neither report's table: added so the ratio that divides by or into it can be computed and rolled up.",
+          "metric": {
+            "metricType": "simple",
+            "aggregation": "count_distinct",
+            "readsSlot": "xeo:cites",
+            "metricFilter": "the cited URL is partOf a Website the brand hasWebsite",
+            "timeAnchor": "xeo:capturedAt",
+            "unit": "count",
+            "betterDirection": "up",
+            "additivity": "additive"
+          }
+        },
+        {
+          "code": "ai_answers_mentioning",
+          "iri": "https://xeoontology.org/schemes#metric-ai_answers_mentioning",
+          "label": "AI answers mentioning the brand",
+          "definition": "The number of sampled answers that mention the brand at least once",
+          "note": "reading: a derivation. Whether an answer mentions or cites a brand is extracted from sampled answers, and the sample is a vendor's or a tracker's choice",
+          "editorialNote": "A component metric, in neither report's table: added so the ratio that divides by or into it can be computed and rolled up.",
+          "metric": {
+            "metricType": "simple",
+            "aggregation": "count_distinct",
+            "readsSlot": "xeo:mentions",
+            "timeAnchor": "xeo:capturedAt",
+            "unit": "count",
+            "betterDirection": "up",
+            "additivity": "additive"
+          }
+        },
+        {
+          "code": "ai_answers_sampled",
+          "iri": "https://xeoontology.org/schemes#metric-ai_answers_sampled",
+          "label": "AI answers sampled",
+          "definition": "The number of AI answers collected for the tracked prompts over the window. The denominator behind the AI visibility rates",
+          "note": "reading: an observation, from the tracker's own run log",
+          "metric": {
+            "metricType": "simple",
+            "aggregation": "sum",
+            "readsSlot": "xeo:responses",
+            "timeAnchor": "xeo:capturedAt",
+            "unit": "count",
+            "betterDirection": "none",
+            "additivity": "additive"
+          }
+        },
+        {
+          "code": "ai_assistant_sessions",
+          "iri": "https://xeoontology.org/schemes#metric-ai_assistant_sessions",
+          "label": "AI-assistant sessions",
+          "definition": "Sessions referred by AI assistants",
+          "note": "reading: an observation where the tool classifies the channel natively; a derivation where a custom channel rule had to be built",
+          "metric": {
+            "metricType": "simple",
+            "aggregation": "sum",
+            "readsSlot": "xeo:value",
+            "metricFilter": "channel = 'ai_assistant'",
+            "unit": "count",
+            "betterDirection": "up",
+            "additivity": "additive"
+          }
+        },
+        {
+          "code": "ai_average_position",
+          "iri": "https://xeoontology.org/schemes#metric-ai_average_position",
+          "label": "AI average position",
+          "definition": "The average order in which the brand is first mentioned among the brands an answer names, over the answers that mention it. 1-based, 1 best",
+          "note": "reading: a derivation. Whether an answer mentions or cites a brand is extracted from sampled answers, and the sample is a vendor's or a tracker's choice",
+          "editorialNote": "Averaged only over answers that mention the brand, so it says nothing about how often that is. Not comparable with a search position, which averages over impressions. minDenominator 10 is an inferred default, not a vendor fact.",
+          "metric": {
+            "metricType": "simple",
+            "aggregation": "mean",
+            "readsSlot": "xeo:mentionRank",
+            "timeAnchor": "xeo:capturedAt",
+            "unit": "rank",
+            "betterDirection": "down",
+            "additivity": "non_additive",
+            "minDenominator": 10
+          }
+        },
+        {
+          "code": "ai_brand_mentions",
+          "iri": "https://xeoontology.org/schemes#metric-ai_brand_mentions",
+          "label": "Brand mentions in AI answers",
+          "definition": "The number of mentions of the brand across the sampled answers",
+          "note": "reading: a derivation. Whether an answer mentions or cites a brand is extracted from sampled answers, and the sample is a vendor's or a tracker's choice",
+          "editorialNote": "A component metric, in neither report's table: added so the ratio that divides by or into it can be computed and rolled up.",
+          "metric": {
+            "metricType": "simple",
+            "aggregation": "count",
+            "readsSlot": "xeo:mentions",
+            "timeAnchor": "xeo:capturedAt",
+            "unit": "count",
+            "betterDirection": "up",
+            "additivity": "additive"
+          }
+        },
+        {
+          "code": "ai_citation_share",
+          "iri": "https://xeoontology.org/schemes#metric-ai_citation_share",
+          "label": "AI citation share",
+          "definition": "The share of all citations in the sampled answers that point at the brand's owned domains: citations of owned domains divided by all citations",
+          "note": "reading: a derivation. Whether an answer mentions or cites a brand is extracted from sampled answers, and the sample is a vendor's or a tracker's choice",
+          "editorialNote": "minDenominator 30 is an inferred default, not a vendor fact.",
+          "metric": {
+            "metricType": "ratio",
+            "numerator": "ai_owned_citations",
+            "denominator": "ai_citations",
+            "unit": "ratio",
+            "betterDirection": "up",
+            "additivity": "non_additive",
+            "minDenominator": 30
+          }
+        },
+        {
+          "code": "ai_citations",
+          "iri": "https://xeoontology.org/schemes#metric-ai_citations",
+          "label": "Citations in AI answers",
+          "definition": "The number of citations of any URL across the sampled answers",
+          "note": "reading: an observation where the engine annotates its own citations and the tracker counts them",
+          "editorialNote": "A component metric, in neither report's table: added so the ratio that divides by or into it can be computed and rolled up.",
+          "metric": {
+            "metricType": "simple",
+            "aggregation": "count",
+            "readsSlot": "xeo:cites",
+            "timeAnchor": "xeo:capturedAt",
+            "unit": "count",
+            "betterDirection": "none",
+            "additivity": "additive"
+          }
+        },
+        {
+          "code": "ai_owned_citations",
+          "iri": "https://xeoontology.org/schemes#metric-ai_owned_citations",
+          "label": "Citations of owned domains",
+          "definition": "The number of citations in the sampled answers that point at the brand's owned domains",
+          "note": "reading: a derivation. Whether an answer mentions or cites a brand is extracted from sampled answers, and the sample is a vendor's or a tracker's choice",
+          "editorialNote": "A component metric, in neither report's table: added so the ratio that divides by or into it can be computed and rolled up.",
+          "metric": {
+            "metricType": "simple",
+            "aggregation": "count",
+            "readsSlot": "xeo:cites",
+            "metricFilter": "the cited URL is partOf a Website the brand hasWebsite",
+            "timeAnchor": "xeo:capturedAt",
+            "unit": "count",
+            "betterDirection": "up",
+            "additivity": "additive"
+          }
+        },
+        {
+          "code": "ai_referred_leads",
+          "iri": "https://xeoontology.org/schemes#metric-ai_referred_leads",
+          "label": "AI-referred leads",
+          "definition": "Leads created in the window whose first-touch channel is an AI assistant",
+          "note": "reading: a derivation. The records are observed in the CRM; the windowed number is computed over them",
+          "editorialNote": "From the CRM report only.",
+          "metric": {
+            "metricType": "simple",
+            "aggregation": "count",
+            "readsSlot": "xeo:crmRecordRef",
+            "metricFilter": "crmObjectType in ('lead', 'person') and firstTouchChannel = 'ai_assistant'",
+            "timeAnchor": "xeo:recordCreatedAt",
+            "unit": "count",
+            "betterDirection": "up",
+            "additivity": "additive"
+          }
+        },
+        {
+          "code": "ai_sentiment",
+          "iri": "https://xeoontology.org/schemes#metric-ai_sentiment",
+          "label": "AI sentiment score",
+          "definition": "A model's score of the tone in which the sampled answers speak of the brand, averaged over the answers that mention it, from 0 to 100",
+          "note": "reading: always a derivation, with the scoring model as its method. Not xeo:sentiment, which is a four-way code on one mention",
+          "status": "extension",
+          "editorialNote": "minDenominator 10 is an inferred default, not a vendor fact.",
+          "metric": {
+            "metricType": "simple",
+            "aggregation": "mean",
+            "readsSlot": "xeo:value",
+            "unit": "score_0_100",
+            "betterDirection": "up",
+            "additivity": "non_additive",
+            "minDenominator": 10
+          }
+        },
+        {
+          "code": "ai_share_of_voice",
+          "iri": "https://xeoontology.org/schemes#metric-ai_share_of_voice",
+          "label": "AI share of voice",
+          "definition": "The brand's share of all tracked-brand mentions in the sampled answers: mentions of the brand divided by mentions of every tracked brand",
+          "note": "reading: a derivation. Whether an answer mentions or cites a brand is extracted from sampled answers, and the sample is a vendor's or a tracker's choice",
+          "editorialNote": "minDenominator 30 is an inferred default, not a vendor fact.",
+          "metric": {
+            "metricType": "ratio",
+            "numerator": "ai_brand_mentions",
+            "denominator": "ai_tracked_brand_mentions",
+            "unit": "ratio",
+            "betterDirection": "up",
+            "additivity": "non_additive",
+            "minDenominator": 30
+          }
+        },
+        {
+          "code": "ai_tracked_brand_mentions",
+          "iri": "https://xeoontology.org/schemes#metric-ai_tracked_brand_mentions",
+          "label": "Tracked-brand mentions in AI answers",
+          "definition": "The number of mentions of any tracked brand, the brand and its named competitors together, across the sampled answers",
+          "note": "reading: a derivation. Whether an answer mentions or cites a brand is extracted from sampled answers, and the sample is a vendor's or a tracker's choice",
+          "editorialNote": "A component metric, in neither report's table: added so the ratio that divides by or into it can be computed and rolled up. Depends on which brands are tracked: adding a competitor to the set lowers every share computed over it.",
+          "metric": {
+            "metricType": "simple",
+            "aggregation": "count",
+            "readsSlot": "xeo:mentions",
+            "metricFilter": "the mentioned Brand is the brand or one it competesWith",
+            "timeAnchor": "xeo:capturedAt",
+            "unit": "count",
+            "betterDirection": "none",
+            "additivity": "additive"
+          }
+        },
+        {
+          "code": "citation_rate",
+          "iri": "https://xeoontology.org/schemes#metric-citation_rate",
+          "label": "Citation rate",
+          "definition": "The share of sampled answers that cite at least one of the brand's owned URLs: answers citing an owned URL divided by all answers sampled",
+          "note": "reading: a derivation. Whether an answer mentions or cites a brand is extracted from sampled answers, and the sample is a vendor's or a tracker's choice",
+          "altLabels": [
+            "ai_owned_source_rate"
+          ],
+          "editorialNote": "The report names this ai_owned_source_rate. The code citation_rate was already published in xeos:objectiveMetric, so it is kept, with the report's name as an altLabel. Not ai_citation_share, which divides by citations and not by answers. minDenominator 30 is an inferred default, not a vendor fact.",
+          "metric": {
+            "metricType": "ratio",
+            "numerator": "ai_answers_citing_owned",
+            "denominator": "ai_answers_sampled",
+            "unit": "ratio",
+            "betterDirection": "up",
+            "additivity": "non_additive",
+            "minDenominator": 30
+          }
+        },
+        {
+          "code": "clicks",
+          "iri": "https://xeoontology.org/schemes#metric-clicks",
+          "label": "Clicks",
+          "definition": "Search result clicks to the site over the window",
+          "note": "reading: an observation where Search Console returned it for exactly this window and scope; a derivation when rolled up or recomputed",
+          "editorialNote": "Additive only within one aggregationBasis: clicks counted by page and by property are different counts.",
+          "metric": {
+            "metricType": "simple",
+            "aggregation": "sum",
+            "readsSlot": "xeo:clicks",
+            "unit": "count",
+            "betterDirection": "up",
+            "additivity": "additive"
+          }
+        },
+        {
+          "code": "converting_sessions",
+          "iri": "https://xeoontology.org/schemes#metric-converting_sessions",
+          "label": "Converting sessions",
+          "definition": "Sessions in which at least one key event happened",
+          "note": "reading: an observation where the analytics tool returned it for exactly this window and scope; a derivation when rolled up, or when the tool's own channel rule had to be rebuilt",
+          "editorialNote": "A component metric, in neither report's table: added so the ratio that divides by or into it can be computed and rolled up.",
+          "metric": {
+            "metricType": "simple",
+            "aggregation": "sum",
+            "readsSlot": "xeo:value",
+            "metricFilter": "the session has at least one key event",
+            "unit": "count",
+            "betterDirection": "up",
+            "additivity": "additive"
+          }
+        },
+        {
+          "code": "ctr",
+          "iri": "https://xeoontology.org/schemes#metric-ctr",
+          "label": "Clickthrough rate",
+          "definition": "The share of impressions that were clicked: clicks divided by impressions, as a 0 to 1 quotient",
+          "note": "reading: an observation where Search Console returned it for exactly this window and scope; a derivation when rolled up or recomputed",
+          "editorialNote": "The unit is ratio. xeos:objectiveMetric-ctr, its earlier form, notes the unit as percent; Search Console returns a quotient (0.1078), and so does every other source read. minDenominator 100 is an inferred default, not a vendor fact.",
+          "metric": {
+            "metricType": "ratio",
+            "numerator": "clicks",
+            "denominator": "impressions",
+            "unit": "ratio",
+            "betterDirection": "up",
+            "additivity": "non_additive",
+            "minDenominator": 100
+          }
+        },
+        {
+          "code": "deals_closed",
+          "iri": "https://xeoontology.org/schemes#metric-deals_closed",
+          "label": "Deals closed",
+          "definition": "Deals whose outcome is won or lost and which closed in the window",
+          "note": "reading: a derivation. The records are observed in the CRM; the windowed number is computed over them",
+          "editorialNote": "A component metric, in neither report's table: added so the ratio that divides by or into it can be computed and rolled up.",
+          "metric": {
+            "metricType": "simple",
+            "aggregation": "count",
+            "readsSlot": "xeo:crmRecordRef",
+            "metricFilter": "dealOutcome in ('won', 'lost')",
+            "timeAnchor": "xeo:dealClosedAt",
+            "unit": "count",
+            "betterDirection": "none",
+            "additivity": "additive"
+          }
+        },
+        {
+          "code": "deals_created",
+          "iri": "https://xeoontology.org/schemes#metric-deals_created",
+          "label": "Deals created",
+          "definition": "Deals the CRM recorded as created in the window",
+          "note": "reading: a derivation. The records are observed in the CRM; the windowed number is computed over them",
+          "editorialNote": "From the CRM report only.",
+          "metric": {
+            "metricType": "simple",
+            "aggregation": "count",
+            "readsSlot": "xeo:crmRecordRef",
+            "metricFilter": "crmObjectType = 'deal'",
+            "timeAnchor": "xeo:recordCreatedAt",
+            "unit": "count",
+            "betterDirection": "up",
+            "additivity": "additive"
+          }
+        },
+        {
+          "code": "deals_won",
+          "iri": "https://xeoontology.org/schemes#metric-deals_won",
+          "label": "Deals won",
+          "definition": "Deals whose outcome is won and which closed in the window",
+          "note": "reading: a derivation. The records are observed in the CRM; the windowed number is computed over them",
+          "editorialNote": "The metrics report gives the reading layer as observation; the CRM report says every pipeline number is a derivation over observed records. The second is followed: a count XEO computes over a window is a derivation.",
+          "metric": {
+            "metricType": "simple",
+            "aggregation": "count",
+            "readsSlot": "xeo:crmRecordRef",
+            "metricFilter": "dealOutcome = 'won'",
+            "timeAnchor": "xeo:dealClosedAt",
+            "unit": "count",
+            "betterDirection": "up",
+            "additivity": "additive"
+          }
+        },
+        {
+          "code": "engaged_sessions",
+          "iri": "https://xeoontology.org/schemes#metric-engaged_sessions",
+          "label": "Engaged sessions",
+          "definition": "Sessions that met the analytics tool's engagement rule",
+          "note": "reading: an observation where the analytics tool returned it for exactly this window and scope; a derivation when rolled up, or when the tool's own channel rule had to be rebuilt",
+          "metric": {
+            "metricType": "simple",
+            "aggregation": "sum",
+            "readsSlot": "xeo:value",
+            "metricFilter": "the session meets the tool's engagement rule",
+            "unit": "count",
+            "betterDirection": "up",
+            "additivity": "additive"
+          }
+        },
+        {
+          "code": "engagement_rate",
+          "iri": "https://xeoontology.org/schemes#metric-engagement_rate",
+          "label": "Engagement rate",
+          "definition": "The share of sessions that were engaged: engaged sessions divided by sessions",
+          "note": "reading: an observation where the analytics tool returned it for exactly this window and scope; a derivation when rolled up, or when the tool's own channel rule had to be rebuilt",
+          "editorialNote": "Not one minus a bounce rate: one tool's bounce is a single-pageview visit, another's is a session that was not engaged. minDenominator 50 is an inferred default, not a vendor fact.",
+          "metric": {
+            "metricType": "ratio",
+            "numerator": "engaged_sessions",
+            "denominator": "sessions",
+            "unit": "ratio",
+            "betterDirection": "up",
+            "additivity": "non_additive",
+            "minDenominator": 50
+          }
+        },
+        {
+          "code": "etv",
+          "iri": "https://xeoontology.org/schemes#metric-etv",
+          "label": "Estimated traffic value",
+          "definition": "A vendor's modelled value of the site's search traffic over the window",
+          "note": "reading: always a derivation, with the vendor's model as its method. It is a model's output, not a measurement",
+          "editorialNote": "Layer corrected in 0.6.0: the earlier concept gave it a source and no layer, and it read as a measurement. The currency is the vendor's; a target on it need not state targetCurrency.",
+          "metric": {
+            "metricType": "simple",
+            "aggregation": "sum",
+            "readsSlot": "xeo:value",
+            "unit": "currency",
+            "betterDirection": "up",
+            "additivity": "additive"
+          }
+        },
+        {
+          "code": "impressions",
+          "iri": "https://xeoontology.org/schemes#metric-impressions",
+          "label": "Impressions",
+          "definition": "Times a result from the site was shown in search over the window",
+          "note": "reading: an observation where Search Console returned it for exactly this window and scope; a derivation when rolled up or recomputed",
+          "editorialNote": "Additive only within one aggregationBasis.",
+          "metric": {
+            "metricType": "simple",
+            "aggregation": "sum",
+            "readsSlot": "xeo:impressions",
+            "unit": "count",
+            "betterDirection": "up",
+            "additivity": "additive"
+          }
+        },
+        {
+          "code": "key_events",
+          "iri": "https://xeoontology.org/schemes#metric-key_events",
+          "label": "Key events",
+          "definition": "Events the site has marked as conversions, counted over the window",
+          "note": "reading: an observation where the analytics tool returned it for exactly this window and scope; a derivation when rolled up, or when the tool's own channel rule had to be rebuilt",
+          "metric": {
+            "metricType": "simple",
+            "aggregation": "sum",
+            "readsSlot": "xeo:value",
+            "unit": "count",
+            "betterDirection": "up",
+            "additivity": "additive"
+          }
+        },
+        {
+          "code": "leads_created",
+          "iri": "https://xeoontology.org/schemes#metric-leads_created",
+          "label": "Leads created",
+          "definition": "Lead or person records the CRM recorded as created in the window",
+          "note": "reading: a derivation. The records are observed in the CRM; the windowed number is computed over them",
+          "editorialNote": "The metrics report gives the reading layer as observation; the CRM report says every pipeline number is a derivation over observed records. The second is followed: a count XEO computes over a window is a derivation.",
+          "metric": {
+            "metricType": "simple",
+            "aggregation": "count",
+            "readsSlot": "xeo:crmRecordRef",
+            "metricFilter": "crmObjectType in ('lead', 'person')",
+            "timeAnchor": "xeo:recordCreatedAt",
+            "unit": "count",
+            "betterDirection": "up",
+            "additivity": "additive"
+          }
+        },
+        {
+          "code": "mention_rate",
+          "iri": "https://xeoontology.org/schemes#metric-mention_rate",
+          "label": "Mention rate",
+          "definition": "The share of sampled answers that mention the brand: answers mentioning the brand divided by all answers sampled. Every sampled answer is in the denominator, whether or not it names any brand",
+          "note": "reading: a derivation. Whether an answer mentions or cites a brand is extracted from sampled answers, and the sample is a vendor's or a tracker's choice",
+          "altLabels": [
+            "ai_mention_rate"
+          ],
+          "editorialNote": "The report names this ai_mention_rate. The code mention_rate was already published in xeos:objectiveMetric and stored by consumers, so it is kept, with the report's name as an altLabel. What vendors call 'visibility' or 'visibility score' maps here, and not always exactly: see xeo-vendor-schemes.ttl. minDenominator 30 is an inferred default, not a vendor fact.",
+          "metric": {
+            "metricType": "ratio",
+            "numerator": "ai_answers_mentioning",
+            "denominator": "ai_answers_sampled",
+            "unit": "ratio",
+            "betterDirection": "up",
+            "additivity": "non_additive",
+            "minDenominator": 30
+          }
+        },
+        {
+          "code": "pipeline_created",
+          "iri": "https://xeoontology.org/schemes#metric-pipeline_created",
+          "label": "Pipeline created",
+          "definition": "The summed amount of deals created in the window, in one stated currency",
+          "note": "reading: a derivation. The records are observed in the CRM; the windowed number is computed over them",
+          "editorialNote": "The metrics report gives the reading layer as observation; the CRM report says every pipeline number is a derivation over observed records. The second is followed: a count XEO computes over a window is a derivation. A target on it states targetCurrency.",
+          "metric": {
+            "metricType": "simple",
+            "aggregation": "sum",
+            "readsSlot": "xeo:dealAmount",
+            "metricFilter": "crmObjectType = 'deal'",
+            "timeAnchor": "xeo:recordCreatedAt",
+            "unit": "currency",
+            "betterDirection": "up",
+            "additivity": "additive"
+          }
+        },
+        {
+          "code": "position",
+          "iri": "https://xeoontology.org/schemes#metric-position",
+          "label": "Average position",
+          "definition": "The average position of the site's results in search over the window, weighted by impressions. 1-based, 1 best",
+          "note": "reading: an observation where Search Console returned it for exactly this window and scope; a derivation when rolled up or recomputed",
+          "editorialNote": "Depends on aggregationBasis: the source computes it differently by page and by property. minDenominator 1 is an inferred default, not a vendor fact.",
+          "metric": {
+            "metricType": "simple",
+            "aggregation": "weighted_mean",
+            "readsSlot": "xeo:avgPosition",
+            "unit": "rank",
+            "betterDirection": "down",
+            "additivity": "non_additive",
+            "minDenominator": 1
+          }
+        },
+        {
+          "code": "rank_absolute",
+          "iri": "https://xeoontology.org/schemes#metric-rank_absolute",
+          "label": "Rank",
+          "definition": "The rank of the site's result in a third-party results-page snapshot, read from the latest snapshot in the window. 1-based, 1 best",
+          "note": "reading: an observation, from a rank tracker's snapshot",
+          "metric": {
+            "metricType": "simple",
+            "aggregation": "last",
+            "readsSlot": "xeo:position",
+            "unit": "rank",
+            "betterDirection": "down",
+            "additivity": "non_additive"
+          }
+        },
+        {
+          "code": "revenue_won",
+          "iri": "https://xeoontology.org/schemes#metric-revenue_won",
+          "label": "Revenue won",
+          "definition": "The summed amount of deals won that closed in the window, in one stated currency",
+          "note": "reading: a derivation. The records are observed in the CRM; the windowed number is computed over them",
+          "editorialNote": "The metrics report gives the reading layer as observation; the CRM report says every pipeline number is a derivation over observed records. The second is followed: a count XEO computes over a window is a derivation. A target on it states targetCurrency.",
+          "metric": {
+            "metricType": "simple",
+            "aggregation": "sum",
+            "readsSlot": "xeo:dealAmount",
+            "metricFilter": "dealOutcome = 'won'",
+            "timeAnchor": "xeo:dealClosedAt",
+            "unit": "currency",
+            "betterDirection": "up",
+            "additivity": "additive"
+          }
+        },
+        {
+          "code": "sales_cycle_days",
+          "iri": "https://xeoontology.org/schemes#metric-sales_cycle_days",
+          "label": "Sales cycle",
+          "definition": "The median number of days from a deal's creation to its close, over deals won that closed in the window",
+          "note": "reading: a derivation. The records are observed in the CRM; the windowed number is computed over them",
+          "editorialNote": "From the CRM report only.",
+          "metric": {
+            "metricType": "simple",
+            "aggregation": "median",
+            "readsSlot": "xeo:dealClosedAt",
+            "expression": "days from recordCreatedAt to dealClosedAt",
+            "metricFilter": "dealOutcome = 'won'",
+            "timeAnchor": "xeo:dealClosedAt",
+            "unit": "days",
+            "betterDirection": "down",
+            "additivity": "non_additive"
+          }
+        },
+        {
+          "code": "session_conversion_rate",
+          "iri": "https://xeoontology.org/schemes#metric-session_conversion_rate",
+          "label": "Session conversion rate",
+          "definition": "The share of sessions in which at least one key event happened: converting sessions divided by sessions",
+          "note": "reading: an observation where the analytics tool returned it for exactly this window and scope; a derivation when rolled up, or when the tool's own channel rule had to be rebuilt",
+          "editorialNote": "minDenominator 100 is an inferred default, not a vendor fact.",
+          "metric": {
+            "metricType": "ratio",
+            "numerator": "converting_sessions",
+            "denominator": "sessions",
+            "unit": "ratio",
+            "betterDirection": "up",
+            "additivity": "non_additive",
+            "minDenominator": 100
+          }
+        },
+        {
+          "code": "sessions",
+          "iri": "https://xeoontology.org/schemes#metric-sessions",
+          "label": "Sessions",
+          "definition": "Visits to the site over the window, by the analytics tool's own session rule",
+          "note": "reading: an observation where the analytics tool returned it for exactly this window and scope; a derivation when rolled up, or when the tool's own channel rule had to be rebuilt",
+          "editorialNote": "Tools differ on what ends a session, so sessions from two tools are close and not equal.",
+          "metric": {
+            "metricType": "simple",
+            "aggregation": "sum",
+            "readsSlot": "xeo:value",
+            "unit": "count",
+            "betterDirection": "up",
+            "additivity": "additive"
+          }
+        },
+        {
+          "code": "win_rate",
+          "iri": "https://xeoontology.org/schemes#metric-win_rate",
+          "label": "Win rate",
+          "definition": "The share of deals closed in the window that were won: deals won divided by deals won or lost",
+          "note": "reading: a derivation. The records are observed in the CRM; the windowed number is computed over them",
+          "editorialNote": "From the CRM report only, which gives its unit as percent. Stored as a 0 to 1 quotient like every other ratio. Neither report gives a minimum denominator, so none is stated.",
+          "metric": {
+            "metricType": "ratio",
+            "numerator": "deals_won",
+            "denominator": "deals_closed",
+            "unit": "ratio",
+            "betterDirection": "up",
+            "additivity": "non_additive"
+          }
+        }
+      ]
+    },
+    "metricType": {
+      "iri": "https://xeoontology.org/schemes#metricType",
+      "label": "Metric types",
+      "fillsSlot": "xeo:metricType",
+      "description": "How a Metric is computed. The type decides what else the definition must carry: a simple metric names one slot and how to aggregate it; a ratio names a numerator and a denominator; a derived metric names its inputs and the arithmetic over them. cumulative and conversion are here so the typing is complete; the properties they need are in the extension set.",
+      "source": "XEO metrics and KPIs research report, 2026-11-10 · the five metric types of dbt MetricFlow, which Cube and LookML express through measure types",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "conversion",
+          "iri": "https://xeoontology.org/schemes#metricType-conversion",
+          "label": "Conversion",
+          "definition": "The share of an entity's base events that were followed by a conversion event within a window",
+          "note": null
+        },
+        {
+          "code": "cumulative",
+          "iri": "https://xeoontology.org/schemes#metricType-cumulative",
+          "label": "Cumulative",
+          "definition": "A metric accumulated over a trailing window, or from the start of a grain to date",
+          "note": null
+        },
+        {
+          "code": "derived",
+          "iri": "https://xeoontology.org/schemes#metricType-derived",
+          "label": "Derived",
+          "definition": "Arithmetic over one or more other metrics, stated in expression",
+          "note": null
+        },
+        {
+          "code": "ratio",
+          "iri": "https://xeoontology.org/schemes#metricType-ratio",
+          "label": "Ratio",
+          "definition": "One metric divided by another. Rolled up as the sum of numerators over the sum of denominators, never as a mean of ratios",
+          "note": null
+        },
+        {
+          "code": "simple",
+          "iri": "https://xeoontology.org/schemes#metricType-simple",
+          "label": "Simple",
+          "definition": "One slot, aggregated over the window: a sum, a count, a mean",
+          "note": null
+        }
+      ]
+    },
+    "metricUnit": {
+      "iri": "https://xeoontology.org/schemes#metricUnit",
+      "label": "Metric units",
+      "fillsSlot": "xeo:unit",
+      "description": "What a reading of a Metric is a number of. Deliberately few. A rate is a ratio and is stored as a 0 to 1 quotient: every source read returns rates that way, and a percentage is a display format. Distinct from xeos:magnitudeUnit, which names the unit of a Gap's size and includes things that are metrics rather than units.",
+      "source": "XEO metrics and KPIs research report, 2026-11-10 · the value types of the GA4 Data API (MetricType) and Matomo (metricTypes) · 'days' from the CRM pipeline research report",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "count",
+          "iri": "https://xeoontology.org/schemes#metricUnit-count",
+          "label": "Count",
+          "definition": "A whole number of things: clicks, sessions, deals",
+          "note": null
+        },
+        {
+          "code": "currency",
+          "iri": "https://xeoontology.org/schemes#metricUnit-currency",
+          "label": "Currency",
+          "definition": "An amount of money. The reading or target states which, as an ISO 4217 code",
+          "note": null
+        },
+        {
+          "code": "days",
+          "iri": "https://xeoontology.org/schemes#metricUnit-days",
+          "label": "Days",
+          "definition": "A duration in days, as for the length of a sales cycle",
+          "note": null
+        },
+        {
+          "code": "rank",
+          "iri": "https://xeoontology.org/schemes#metricUnit-rank",
+          "label": "Rank",
+          "definition": "A 1-based position, 1 best. An average of ranks is still a rank and may be fractional",
+          "note": null
+        },
+        {
+          "code": "ratio",
+          "iri": "https://xeoontology.org/schemes#metricUnit-ratio",
+          "label": "Ratio",
+          "definition": "A quotient from 0 to 1. Never a percentage: 0.05, not 5",
+          "note": null
+        },
+        {
+          "code": "score_0_100",
+          "iri": "https://xeoontology.org/schemes#metricUnit-score_0_100",
+          "label": "Score, 0 to 100",
+          "definition": "A model's score on a 0 to 100 scale. Always a derivation, with the model as its method",
+          "note": null
+        },
+        {
+          "code": "seconds",
+          "iri": "https://xeoontology.org/schemes#metricUnit-seconds",
+          "label": "Seconds",
+          "definition": "A duration in seconds",
+          "note": null
+        }
+      ]
+    },
     "objectiveMetric": {
       "iri": "https://xeoontology.org/schemes#objectiveMetric",
       "label": "Objective metrics",
       "fillsSlot": "xeo:metric",
-      "description": "The metrics a MetricTarget can be set on. Half the vocabulary is lower-is-better — position and rank_absolute are 1-based ranks — so a target's direction is DERIVED from the metric, never client input; a shared +20% across metrics would silently ask for a rank 20% worse. The note on each concept records direction and unit.",
+      "description": "The metrics a MetricTarget can be set on. Half the vocabulary is lower-is-better — position and rank_absolute are 1-based ranks — so a target's direction is DERIVED from the metric, never client input; a shared +20% across metrics would silently ask for a rank 20% worse. The note on each concept records direction and unit. Since 0.6.0 this is the compatibility list: the eight codes published before xeo:Metric existed, each an exactMatch of its Metric in xeos:metric, which is the full reference scheme and where a target's code resolves.",
       "source": "if-control-center packages/contracts/src/objective-metric.ts (OBJECTIVE_METRICS, METRIC_DIRECTIONS, METRIC_UNIT_OF) · launch-guardian LG_OBJECTIVE_METRICS",
       "ordered": false,
       "concepts": [
@@ -741,56 +2069,98 @@
           "iri": "https://xeoontology.org/schemes#objectiveMetric-citation_rate",
           "label": "Citation rate",
           "definition": "Share of captured responses in the window that cite the brand's owned URLs",
-          "note": "direction up · unit rate · source visibilityFor rollup (xeo:citationRate)"
+          "note": "direction up · unit rate · source visibilityFor rollup (xeo:citationRate)",
+          "matches": {
+            "exactMatch": [
+              "xeos:metric-citation_rate"
+            ]
+          }
         },
         {
           "code": "clicks",
           "iri": "https://xeoontology.org/schemes#objectiveMetric-clicks",
           "label": "Clicks",
           "definition": "Search clicks over the window",
-          "note": "direction up · unit count · source GSC"
+          "note": "direction up · unit count · source GSC",
+          "matches": {
+            "exactMatch": [
+              "xeos:metric-clicks"
+            ]
+          }
         },
         {
           "code": "ctr",
           "iri": "https://xeoontology.org/schemes#objectiveMetric-ctr",
           "label": "CTR",
           "definition": "Clickthrough rate over the window",
-          "note": "direction up · unit percent · source GSC"
+          "note": "direction up · unit percent · source GSC",
+          "matches": {
+            "exactMatch": [
+              "xeos:metric-ctr"
+            ]
+          },
+          "editorialNote": "The note above gives the unit as percent. The sources return a 0 to 1 quotient, and xeos:metric-ctr states the unit as ratio. The note is left as published, because a consumer may have built on it; whether stored ctr targets and baselines hold 5 or 0.05 needs checking before it is corrected."
         },
         {
           "code": "etv",
           "iri": "https://xeoontology.org/schemes#objectiveMetric-etv",
           "label": "Est. traffic value",
           "definition": "Estimated traffic value",
-          "note": "direction up · unit currency · source DataForSEO"
+          "note": "direction up · unit currency · source DataForSEO",
+          "matches": {
+            "exactMatch": [
+              "xeos:metric-etv"
+            ]
+          },
+          "editorialNote": "A vendor's model output, so every reading of it is a derivation. xeos:metric-etv says so; this concept's note names only the source."
         },
         {
           "code": "impressions",
           "iri": "https://xeoontology.org/schemes#objectiveMetric-impressions",
           "label": "Impressions",
           "definition": "Search impressions over the window",
-          "note": "direction up · unit count · source GSC"
+          "note": "direction up · unit count · source GSC",
+          "matches": {
+            "exactMatch": [
+              "xeos:metric-impressions"
+            ]
+          }
         },
         {
           "code": "mention_rate",
           "iri": "https://xeoontology.org/schemes#objectiveMetric-mention_rate",
           "label": "Mention rate",
           "definition": "Share of captured responses in the window that mention the brand",
-          "note": "direction up · unit rate · source visibilityFor rollup (xeo:mentionRate)"
+          "note": "direction up · unit rate · source visibilityFor rollup (xeo:mentionRate)",
+          "matches": {
+            "exactMatch": [
+              "xeos:metric-mention_rate"
+            ]
+          }
         },
         {
           "code": "position",
           "iri": "https://xeoontology.org/schemes#objectiveMetric-position",
           "label": "Avg position",
           "definition": "Average SERP position over the window",
-          "note": "direction down · unit rank · source GSC"
+          "note": "direction down · unit rank · source GSC",
+          "matches": {
+            "exactMatch": [
+              "xeos:metric-position"
+            ]
+          }
         },
         {
           "code": "rank_absolute",
           "iri": "https://xeoontology.org/schemes#objectiveMetric-rank_absolute",
           "label": "Rank",
           "definition": "Absolute rank from a rank tracker",
-          "note": "direction down · unit rank · source DataForSEO"
+          "note": "direction down · unit rank · source DataForSEO",
+          "matches": {
+            "exactMatch": [
+              "xeos:metric-rank_absolute"
+            ]
+          }
         }
       ]
     },
@@ -875,7 +2245,7 @@
           "code": "below_volume_floor",
           "iri": "https://xeoontology.org/schemes#outcomeResultReason-below_volume_floor",
           "label": "Not enough traffic to judge",
-          "definition": "The page has data, and not yet enough for a percentage to mean anything",
+          "definition": "There is data, and not yet enough for a rate to mean anything: a reading's denominatorValue is below its Metric's minDenominator",
           "note": null
         },
         {
@@ -1115,6 +2485,110 @@
         }
       ]
     },
+    "recordOrigin": {
+      "iri": "https://xeoontology.org/schemes#recordOrigin",
+      "label": "Record origins",
+      "fillsSlot": "xeo:recordOrigin",
+      "description": "How a record came to exist in the CRM, as the system recorded it.",
+      "source": "XEO CRM pipeline research report, 2026-11-10 (two of seven CRMs keep a system-set origin; the five values are the report's neutral set)",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "api",
+          "iri": "https://xeoontology.org/schemes#recordOrigin-api",
+          "label": "API",
+          "definition": "Created through the CRM's API",
+          "note": null
+        },
+        {
+          "code": "form",
+          "iri": "https://xeoontology.org/schemes#recordOrigin-form",
+          "label": "Form",
+          "definition": "Created by a form submission",
+          "note": null
+        },
+        {
+          "code": "import",
+          "iri": "https://xeoontology.org/schemes#recordOrigin-import",
+          "label": "Import",
+          "definition": "Created by a file import",
+          "note": null
+        },
+        {
+          "code": "integration",
+          "iri": "https://xeoontology.org/schemes#recordOrigin-integration",
+          "label": "Integration",
+          "definition": "Created by a connected product",
+          "note": null
+        },
+        {
+          "code": "manual",
+          "iri": "https://xeoontology.org/schemes#recordOrigin-manual",
+          "label": "Manual",
+          "definition": "Created by a person in the CRM",
+          "note": null
+        }
+      ],
+      "status": "extension"
+    },
+    "searchIntent": {
+      "iri": "https://xeoontology.org/schemes#searchIntent",
+      "label": "Search intents",
+      "fillsSlot": "xeo:targetsIntent",
+      "description": "Why the person is asking. The same four values xeo-engagement declares as named individuals, published as concepts so that a value is a code and not a term. Each concept is also an xeo:SearchIntent, so targetsIntent may point at it without any change to that property.",
+      "source": "Broder (2002), 'A taxonomy of web search', as extended in common practice · the four SearchIntent individuals of xeo-engagement, as concepts",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "commercial_investigation",
+          "iri": "https://xeoontology.org/schemes#searchIntent-commercial_investigation",
+          "label": "Commercial investigation",
+          "definition": "The person is comparing options before a purchase",
+          "note": null,
+          "matches": {
+            "exactMatch": [
+              "xeo:CommercialInvestigation"
+            ]
+          }
+        },
+        {
+          "code": "informational",
+          "iri": "https://xeoontology.org/schemes#searchIntent-informational",
+          "label": "Informational",
+          "definition": "The person wants to learn something",
+          "note": null,
+          "matches": {
+            "exactMatch": [
+              "xeo:Informational"
+            ]
+          }
+        },
+        {
+          "code": "navigational",
+          "iri": "https://xeoontology.org/schemes#searchIntent-navigational",
+          "label": "Navigational",
+          "definition": "The person wants to reach a particular site or page",
+          "note": null,
+          "matches": {
+            "exactMatch": [
+              "xeo:Navigational"
+            ]
+          }
+        },
+        {
+          "code": "transactional",
+          "iri": "https://xeoontology.org/schemes#searchIntent-transactional",
+          "label": "Transactional",
+          "definition": "The person wants to do something now: buy, book, sign up",
+          "note": null,
+          "matches": {
+            "exactMatch": [
+              "xeo:Transactional"
+            ]
+          }
+        }
+      ]
+    },
     "sentiment": {
       "iri": "https://xeoontology.org/schemes#sentiment",
       "label": "Mention sentiment",
@@ -1292,11 +2766,42 @@
         }
       ]
     },
+    "stageSlot": {
+      "iri": "https://xeoontology.org/schemes#stageSlot",
+      "label": "Stage slots",
+      "fillsSlot": "xeo:stageSlot",
+      "description": "Which of a record's staged properties a StageTransition records a move in.",
+      "source": "XEO CRM pipeline research report, 2026-11-10 (StageTransition term card; codes in snake_case to match every other XEO code)",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "deal_stage",
+          "iri": "https://xeoontology.org/schemes#stageSlot-deal_stage",
+          "label": "Deal stage",
+          "definition": "The stage of a deal in its pipeline",
+          "note": null
+        },
+        {
+          "code": "lead_status",
+          "iri": "https://xeoontology.org/schemes#stageSlot-lead_status",
+          "label": "Lead status",
+          "definition": "The sales working state of a lead",
+          "note": null
+        },
+        {
+          "code": "lifecycle",
+          "iri": "https://xeoontology.org/schemes#stageSlot-lifecycle",
+          "label": "Lifecycle stage",
+          "definition": "The funnel position of a person or organization",
+          "note": null
+        }
+      ]
+    },
     "targetKind": {
       "iri": "https://xeoontology.org/schemes#targetKind",
       "label": "Target kinds",
       "fillsSlot": "xeo:targetKind",
-      "description": "How a MetricTarget's targetValue is read: as an absolute value of the metric, or as a percent change from the captured baseline.",
+      "description": "How a MetricTarget's targetValue is read: as an absolute value of the metric, or as a percent change from the captured baseline. Since 0.6.0 also as a relative change written as a quotient, or as an absolute change from baseline in the metric's unit.",
       "source": "if-control-center packages/contracts/src/objective-metric.ts (OBJECTIVE_TARGET_KINDS) · launch-guardian LG_OBJECTIVE_TARGET_KINDS",
       "ordered": false,
       "concepts": [
@@ -1308,11 +2813,1187 @@
           "note": null
         },
         {
+          "code": "absolute_change",
+          "iri": "https://xeoontology.org/schemes#targetKind-absolute_change",
+          "label": "Absolute change",
+          "definition": "targetValue is a change from baseline in the metric's own unit, in its better direction. For a ratio this is points: 0.02 on a clickthrough rate is two points",
+          "note": null
+        },
+        {
           "code": "percent",
           "iri": "https://xeoontology.org/schemes#targetKind-percent",
           "label": "Percent lift",
           "definition": "targetValue is a relative change from baseline, in the metric's better direction",
           "note": null
+        },
+        {
+          "code": "relative",
+          "iri": "https://xeoontology.org/schemes#targetKind-relative",
+          "label": "Relative change",
+          "definition": "targetValue is a relative change from baseline in the metric's better direction, written as a quotient: 0.2 is a fifth more than baseline",
+          "note": null,
+          "matches": {
+            "closeMatch": [
+              "xeos:targetKind-percent"
+            ]
+          },
+          "editorialNote": "closeMatch, not exactMatch, to percent: whether a stored percent target holds 20 or 0.2 for a fifth is each consumer's convention, and the ontology never said."
+        }
+      ]
+    },
+    "timeGrain": {
+      "iri": "https://xeoontology.org/schemes#timeGrain",
+      "label": "Time grains",
+      "fillsSlot": "xeo:grainToDate",
+      "description": "The calendar grains a cumulative Metric can reset at.",
+      "source": "XEO metrics and KPIs research report, 2026-11-10 · dbt (grain_to_date, time_granularity), Cube (granularity)",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "day",
+          "iri": "https://xeoontology.org/schemes#timeGrain-day",
+          "label": "Day",
+          "definition": "Resets each day",
+          "note": null
+        },
+        {
+          "code": "month",
+          "iri": "https://xeoontology.org/schemes#timeGrain-month",
+          "label": "Month",
+          "definition": "Resets each month: a month-to-date total",
+          "note": null
+        },
+        {
+          "code": "quarter",
+          "iri": "https://xeoontology.org/schemes#timeGrain-quarter",
+          "label": "Quarter",
+          "definition": "Resets each quarter",
+          "note": null
+        },
+        {
+          "code": "week",
+          "iri": "https://xeoontology.org/schemes#timeGrain-week",
+          "label": "Week",
+          "definition": "Resets each week",
+          "note": null
+        },
+        {
+          "code": "year",
+          "iri": "https://xeoontology.org/schemes#timeGrain-year",
+          "label": "Year",
+          "definition": "Resets each year",
+          "note": null
+        }
+      ],
+      "status": "extension"
+    },
+    "valuePeriod": {
+      "iri": "https://xeoontology.org/schemes#valuePeriod",
+      "label": "Value periods",
+      "fillsSlot": "xeo:valuePeriod",
+      "description": "The period a recurringValue recurs over.",
+      "source": "XEO CRM pipeline research report, 2026-11-10 (three of seven CRMs record a recurring value). The three codes are inferred for XEO from the fields those CRMs expose (a one-time value, a monthly and an annual recurring value); no vendor's list is adopted",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "annual",
+          "iri": "https://xeoontology.org/schemes#valuePeriod-annual",
+          "label": "Annual",
+          "definition": "Recurs each year",
+          "note": null
+        },
+        {
+          "code": "monthly",
+          "iri": "https://xeoontology.org/schemes#valuePeriod-monthly",
+          "label": "Monthly",
+          "definition": "Recurs each month",
+          "note": null
+        },
+        {
+          "code": "one_time",
+          "iri": "https://xeoontology.org/schemes#valuePeriod-one_time",
+          "label": "One-time",
+          "definition": "Not recurring",
+          "note": null
+        }
+      ],
+      "status": "extension"
+    }
+  },
+  "vendorSchemes": {
+    "ga4": {
+      "iri": "https://xeoontology.org/schemes#ga4",
+      "label": "Google Analytics 4 Data API",
+      "description": "The request and response fields of runReport, and the predefined metrics a site's readings are most often taken from, mapped to the Metrics in xeos:metric. GA4 has no native AI-assistant metric the report could confirm in Google's own documentation, so ai_assistant_sessions has no concept here.",
+      "source": "XEO metrics and KPIs research report, 2026-11-10, Appendix C · https://developers.google.com/analytics/devguides/reporting/data/v1 · https://docs.cloud.google.com/bigquery/docs/google-analytics-4-transformation (the api-schema page returned navigation only; metric definitions come from adjacent official pages)",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "bounceRate",
+          "iri": "https://xeoontology.org/schemes#ga4-bounceRate",
+          "label": "Bounce rate",
+          "definition": "Sessions that were not engaged, divided by sessions",
+          "note": null,
+          "fillsSlot": [
+            "xeo:value"
+          ],
+          "scopeNote": "One minus engagementRate. Related, not a match: it runs the other way, and it is not what other tools call a bounce (a single-pageview visit).",
+          "source": "https://developers.google.com/analytics/devguides/reporting/data/v1 and the adjacent official pages the report lists; the api-schema page itself returned navigation only (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "relatedMatch": [
+              "xeos:metric-engagement_rate"
+            ]
+          }
+        },
+        {
+          "code": "dateRanges",
+          "iri": "https://xeoontology.org/schemes#ga4-dateRanges",
+          "label": "Date ranges",
+          "definition": "The windows the report is run over, each with a startDate and an endDate",
+          "note": null,
+          "fillsSlot": [
+            "xeo:periodEnd",
+            "xeo:periodStart"
+          ],
+          "scopeNote": "Request field. Two ranges in one request is how GA4 does a period-over-period comparison: the second is the baseline window.",
+          "source": "https://developers.google.com/analytics/devguides/reporting/data/v1 (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "closeMatch": [
+              "xeo:periodEnd",
+              "xeo:periodStart"
+            ]
+          }
+        },
+        {
+          "code": "engagedSessions",
+          "iri": "https://xeoontology.org/schemes#ga4-engagedSessions",
+          "label": "Engaged sessions",
+          "definition": "Sessions that lasted longer than 10 seconds, or had a key event, or had 2 or more views",
+          "note": null,
+          "fillsSlot": [
+            "xeo:value"
+          ],
+          "scopeNote": "The engagement rule is GA4's; it is the rule the neutral metric defers to for a GA4 reading.",
+          "source": "https://developers.google.com/analytics/devguides/reporting/data/v1 and the adjacent official pages the report lists; the api-schema page itself returned navigation only (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "exactMatch": [
+              "xeos:metric-engaged_sessions"
+            ]
+          }
+        },
+        {
+          "code": "engagementRate",
+          "iri": "https://xeoontology.org/schemes#ga4-engagementRate",
+          "label": "Engagement rate",
+          "definition": "Engaged sessions divided by sessions",
+          "note": null,
+          "fillsSlot": [
+            "xeo:value"
+          ],
+          "scopeNote": "Returned as a fraction, 0 to 1.",
+          "source": "https://docs.cloud.google.com/bigquery/docs/google-analytics-4-transformation (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "exactMatch": [
+              "xeos:metric-engagement_rate"
+            ]
+          }
+        },
+        {
+          "code": "keyEvents",
+          "iri": "https://xeoontology.org/schemes#ga4-keyEvents",
+          "label": "Key events",
+          "definition": "The count of events marked as key events",
+          "note": null,
+          "fillsSlot": [
+            "xeo:value"
+          ],
+          "scopeNote": "Formerly 'conversions'; the rename is reported by a secondary source. A per-event variant is written keyEvents:<event name>.",
+          "source": "https://developers.google.com/analytics/devguides/reporting/data/v1 and the adjacent official pages the report lists; the api-schema page itself returned navigation only (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "exactMatch": [
+              "xeos:metric-key_events"
+            ]
+          }
+        },
+        {
+          "code": "metricHeaders[].type",
+          "iri": "https://xeoontology.org/schemes#ga4-metricHeaders-type",
+          "label": "Metric type",
+          "definition": "The value type of a returned metric: TYPE_INTEGER, TYPE_FLOAT, TYPE_SECONDS, TYPE_CURRENCY and others",
+          "note": null,
+          "fillsSlot": [
+            "xeo:unit"
+          ],
+          "scopeNote": "Response field. A value type, coarser than a unit: TYPE_FLOAT covers ratios and averages alike.",
+          "source": "https://developers.google.com/analytics/devguides/reporting/data/v1 (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "closeMatch": [
+              "xeo:unit"
+            ]
+          }
+        },
+        {
+          "code": "metrics[].expression",
+          "iri": "https://xeoontology.org/schemes#ga4-metrics-expression",
+          "label": "Metric expression",
+          "definition": "A mathematical expression over other metrics, defining a derived metric in the request",
+          "note": null,
+          "fillsSlot": [
+            "xeo:expression"
+          ],
+          "scopeNote": "Request field. Its presence makes the requested metric a derived one.",
+          "source": "https://developers.google.com/analytics/devguides/reporting/data/v1 (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "exactMatch": [
+              "xeo:expression"
+            ]
+          }
+        },
+        {
+          "code": "organicGoogleSearchClicks",
+          "iri": "https://xeoontology.org/schemes#ga4-organicGoogleSearchClicks",
+          "label": "Organic Google Search clicks",
+          "definition": "Search Console clicks, reported inside GA4",
+          "note": null,
+          "fillsSlot": [
+            "xeo:value"
+          ],
+          "scopeNote": "Search Console's number seen through GA4, not a second measurement.",
+          "source": "https://developers.google.com/analytics/devguides/reporting/data/v1 and the adjacent official pages the report lists; the api-schema page itself returned navigation only (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "closeMatch": [
+              "xeos:metric-clicks"
+            ]
+          }
+        },
+        {
+          "code": "rows[].metricValues[].value",
+          "iri": "https://xeoontology.org/schemes#ga4-rows-metricValues-value",
+          "label": "Metric value",
+          "definition": "The value of one metric in one row, as a string",
+          "note": null,
+          "fillsSlot": [
+            "xeo:value"
+          ],
+          "scopeNote": "Response field. A string, to be parsed as a number.",
+          "source": "https://developers.google.com/analytics/devguides/reporting/data/v1 (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "exactMatch": [
+              "xeo:value"
+            ]
+          }
+        },
+        {
+          "code": "sessionKeyEventRate",
+          "iri": "https://xeoontology.org/schemes#ga4-sessionKeyEventRate",
+          "label": "Session key event rate",
+          "definition": "The share of sessions in which a key event happened",
+          "note": null,
+          "fillsSlot": [
+            "xeo:value"
+          ],
+          "scopeNote": "A fraction, 0 to 1.",
+          "source": "https://developers.google.com/analytics/devguides/reporting/data/v1 and the adjacent official pages the report lists; the api-schema page itself returned navigation only (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "exactMatch": [
+              "xeos:metric-session_conversion_rate"
+            ]
+          }
+        },
+        {
+          "code": "sessions",
+          "iri": "https://xeoontology.org/schemes#ga4-sessions",
+          "label": "Sessions",
+          "definition": "The number of sessions that began on the site",
+          "note": null,
+          "fillsSlot": [
+            "xeo:value"
+          ],
+          "scopeNote": "A session starts with a session_start event. closeMatch: other tools end a session by a different rule, so counts are near and not equal.",
+          "source": "https://developers.google.com/analytics/devguides/reporting/data/v1 and the adjacent official pages the report lists; the api-schema page itself returned navigation only (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "closeMatch": [
+              "xeos:metric-sessions"
+            ]
+          }
+        }
+      ]
+    },
+    "gsc": {
+      "iri": "https://xeoontology.org/schemes#gsc",
+      "label": "Google Search Console Search Analytics API",
+      "description": "The request and response fields of searchAnalytics.query, mapped to the Metrics they are readings of and to the reading's own slots. The four response metrics are the ground truth core's ranksFor rollup is built from.",
+      "source": "XEO metrics and KPIs research report, 2026-11-10, Appendix C · https://developers.google.com/webmaster-tools/v1/how-tos/all-your-data (read from a search extract of the page, not the full page)",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "aggregationType",
+          "iri": "https://xeoontology.org/schemes#gsc-aggregationType",
+          "label": "Aggregation type",
+          "definition": "How results were deduplicated: auto, byPage or byProperty",
+          "note": null,
+          "fillsSlot": [
+            "xeo:aggregationBasis"
+          ],
+          "scopeNote": "auto -> auto, byPage -> by_page, byProperty -> by_property.",
+          "source": "https://developers.google.com/webmaster-tools/v1/how-tos/all-your-data (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "exactMatch": [
+              "xeo:aggregationBasis"
+            ]
+          }
+        },
+        {
+          "code": "clicks",
+          "iri": "https://xeoontology.org/schemes#gsc-clicks",
+          "label": "Clicks",
+          "definition": "Clicks on the site's results for the row",
+          "note": null,
+          "fillsSlot": [
+            "xeo:value"
+          ],
+          "scopeNote": "A double. The count differs by aggregationType: by page and by property are two different numbers under this one field.",
+          "source": "https://developers.google.com/webmaster-tools/v1/how-tos/all-your-data (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "exactMatch": [
+              "xeos:metric-clicks"
+            ]
+          }
+        },
+        {
+          "code": "ctr",
+          "iri": "https://xeoontology.org/schemes#gsc-ctr",
+          "label": "CTR",
+          "definition": "Clicks divided by impressions for the row",
+          "note": null,
+          "fillsSlot": [
+            "xeo:value"
+          ],
+          "scopeNote": "Returned as a 0 to 1 quotient (0.1078), not a percentage. clicks and impressions of the same row are its numeratorValue and denominatorValue.",
+          "source": "https://developers.google.com/webmaster-tools/v1/how-tos/all-your-data (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "exactMatch": [
+              "xeos:metric-ctr"
+            ]
+          }
+        },
+        {
+          "code": "dimensionFilterGroups",
+          "iri": "https://xeoontology.org/schemes#gsc-dimensionFilterGroups",
+          "label": "Dimension filter groups",
+          "definition": "Filters on page, query, country, device or search appearance applied to the request",
+          "note": null,
+          "fillsSlot": [
+            "xeo:scope"
+          ],
+          "scopeNote": "Restricts every metric in the row alike, which makes it scope and not a metricFilter.",
+          "source": "https://developers.google.com/webmaster-tools/v1/how-tos/all-your-data (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "closeMatch": [
+              "xeo:scope"
+            ]
+          }
+        },
+        {
+          "code": "endDate",
+          "iri": "https://xeoontology.org/schemes#gsc-endDate",
+          "label": "End date",
+          "definition": "The last day of the requested range",
+          "note": null,
+          "fillsSlot": [
+            "xeo:periodEnd"
+          ],
+          "scopeNote": "Request field.",
+          "source": "https://developers.google.com/webmaster-tools/v1/how-tos/all-your-data (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "closeMatch": [
+              "xeo:periodEnd"
+            ]
+          }
+        },
+        {
+          "code": "impressions",
+          "iri": "https://xeoontology.org/schemes#gsc-impressions",
+          "label": "Impressions",
+          "definition": "Times the site's results were shown for the row",
+          "note": null,
+          "fillsSlot": [
+            "xeo:value"
+          ],
+          "scopeNote": "A double. Differs by aggregationType, like clicks.",
+          "source": "https://developers.google.com/webmaster-tools/v1/how-tos/all-your-data (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "exactMatch": [
+              "xeos:metric-impressions"
+            ]
+          }
+        },
+        {
+          "code": "position",
+          "iri": "https://xeoontology.org/schemes#gsc-position",
+          "label": "Position",
+          "definition": "The average position of the site's results for the row",
+          "note": null,
+          "fillsSlot": [
+            "xeo:value"
+          ],
+          "scopeNote": "1-based, an average over impressions, and computed differently when results are grouped by page than by property. Never summed.",
+          "source": "https://developers.google.com/webmaster-tools/v1/how-tos/all-your-data (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "exactMatch": [
+              "xeos:metric-position"
+            ]
+          }
+        },
+        {
+          "code": "startDate",
+          "iri": "https://xeoontology.org/schemes#gsc-startDate",
+          "label": "Start date",
+          "definition": "The first day of the requested range",
+          "note": null,
+          "fillsSlot": [
+            "xeo:periodStart"
+          ],
+          "scopeNote": "Request field.",
+          "source": "https://developers.google.com/webmaster-tools/v1/how-tos/all-your-data (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "closeMatch": [
+              "xeo:periodStart"
+            ]
+          }
+        }
+      ]
+    },
+    "hubspotCrm": {
+      "iri": "https://xeoontology.org/schemes#hubspotCrm",
+      "label": "HubSpot CRM properties",
+      "description": "HubSpot's deal and contact properties, by internal name, mapped to the XEO pipeline slots. Stage and pipeline ids are not here and cannot be: they are configured per portal, so the same stage has a different id in every account, and they are mapped per tenant through stageClass. Check the internal names marked inferred against GET /crm/properties/2026-09/deals and /contacts on a live portal before relying on them.",
+      "source": "XEO CRM pipeline research report, 2026-11-10, Appendix B · HubSpot Knowledge Base and developer documentation as cited on each concept",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "AI_REFERRALS",
+          "iri": "https://xeoontology.org/schemes#hubspotCrm-value-AI_REFERRALS",
+          "label": "AI Referrals (traffic source value)",
+          "definition": "A visit HubSpot classified as referred by an AI platform",
+          "note": null,
+          "fillsSlot": [
+            "xeo:firstTouchChannel",
+            "xeo:latestTouchChannel"
+          ],
+          "scopeNote": "A value of the original and latest traffic source properties, not a property. A visit qualifies when the referring domain, or a UTM parameter, is one of the AI platform domains HubSpot recognises (chatgpt.com, claude.ai, perplexity.ai, copilot.microsoft.com, gemini.google.com, meta.ai, mistral.ai, poe.com, grok.com); HubSpot states that only AI-specific domains like gemini.google.com are categorised this way. History is not reclassified. closeMatch because another tool's list of assistants differs. A community report shows a UTM can send such a visit to OTHER_CAMPAIGNS instead.",
+          "source": "HubSpot Knowledge Base, traffic source properties (knowledge.hubspot.com; the report records the page and not its URL) (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "closeMatch": [
+              "xeos:acquisitionChannel-ai_assistant"
+            ]
+          }
+        },
+        {
+          "code": "amount",
+          "iri": "https://xeoontology.org/schemes#hubspotCrm-amount",
+          "label": "Amount",
+          "definition": "The total value of the deal, in the deal's currency",
+          "note": null,
+          "fillsSlot": [
+            "xeo:dealAmount"
+          ],
+          "scopeNote": "The deal's own currency. Not amount_in_home_currency, which is converted, and not hs_forecast_amount, which is weighted.",
+          "source": "https://knowledge.hubspot.com/properties/hubspots-default-deal-properties (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "exactMatch": [
+              "xeo:dealAmount"
+            ]
+          }
+        },
+        {
+          "code": "amount_in_home_currency",
+          "iri": "https://xeoontology.org/schemes#hubspotCrm-amount_in_home_currency",
+          "label": "Amount in company currency",
+          "definition": "The deal amount converted to the account's company currency",
+          "note": null,
+          "fillsSlot": [
+            "xeo:amountInReportingCurrency"
+          ],
+          "scopeNote": "Converted at the latest account rate while the deal is open, and at the rate in effect on the close date once it is closed. The definition is documented; the internal name was confirmed only from HubSpot Community API responses.",
+          "source": "https://knowledge.hubspot.com/properties/hubspots-default-deal-properties (read 2026-11-10)",
+          "mappingConfidence": "inferred",
+          "matches": {
+            "closeMatch": [
+              "xeo:amountInReportingCurrency"
+            ]
+          }
+        },
+        {
+          "code": "closedate",
+          "iri": "https://xeoontology.org/schemes#hubspotCrm-closedate",
+          "label": "Close date",
+          "definition": "The day the deal is expected to close, or was closed",
+          "note": null,
+          "fillsSlot": [
+            "xeo:dealClosedAt",
+            "xeo:expectedCloseDate"
+          ],
+          "scopeNote": "One field, two meanings: route by outcome. While the deal is open it is the owner's forecast (expectedCloseDate); once closed it is when it closed (dealClosedAt). HubSpot sets it to today when a deal moves into a closed stage, but not when only the stage property is updated through the API, so a closed deal can carry a stale forecast date.",
+          "source": "https://knowledge.hubspot.com/properties/hubspots-default-deal-properties (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "relatedMatch": [
+              "xeo:dealClosedAt",
+              "xeo:expectedCloseDate"
+            ]
+          }
+        },
+        {
+          "code": "createdate",
+          "iri": "https://xeoontology.org/schemes#hubspotCrm-createdate",
+          "label": "Create date",
+          "definition": "When the deal was created",
+          "note": null,
+          "fillsSlot": [
+            "xeo:recordCreatedAt"
+          ],
+          "scopeNote": "Users can edit a deal's create date by hand, so it is the CRM's record of creation and not proof of it.",
+          "source": "https://knowledge.hubspot.com/properties/hubspots-default-deal-properties (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "exactMatch": [
+              "xeo:recordCreatedAt"
+            ]
+          }
+        },
+        {
+          "code": "dealstage",
+          "iri": "https://xeoontology.org/schemes#hubspotCrm-dealstage",
+          "label": "Deal stage",
+          "definition": "The stage the deal is in, as the portal's internal stage id",
+          "note": null,
+          "fillsSlot": [
+            "xeo:stageRef"
+          ],
+          "scopeNote": "The value is a per-portal id ('closedwon' in one account, '258551227' in another). What the stage means is read from the pipelines API's stage metadata, per tenant, and goes in stageClass.",
+          "source": "https://knowledge.hubspot.com/properties/hubspots-default-deal-properties (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "exactMatch": [
+              "xeo:stageRef"
+            ]
+          }
+        },
+        {
+          "code": "hs_analytics_latest_source",
+          "iri": "https://xeoontology.org/schemes#hubspotCrm-hs_analytics_latest_source",
+          "label": "Latest traffic source",
+          "definition": "The channel of the contact's most recent session, as HubSpot's classifier assigned it",
+          "note": null,
+          "fillsSlot": [
+            "xeo:latestTouchChannel"
+          ],
+          "scopeNote": "Same values and classifier as the original source. The definition is documented; the internal name was confirmed only from HubSpot Community API responses.",
+          "source": "HubSpot Knowledge Base, traffic source properties (knowledge.hubspot.com; the report records the page and not its URL) (read 2026-11-10)",
+          "mappingConfidence": "inferred",
+          "matches": {
+            "exactMatch": [
+              "xeo:latestTouchChannel"
+            ]
+          }
+        },
+        {
+          "code": "hs_analytics_source",
+          "iri": "https://xeoontology.org/schemes#hubspotCrm-hs_analytics_source",
+          "label": "Original traffic source",
+          "definition": "The channel of the contact's earliest known session, as HubSpot's classifier assigned it",
+          "note": null,
+          "fillsSlot": [
+            "xeo:firstTouchChannel"
+          ],
+          "scopeNote": "A vendor classifier's output: method vendor-classifier:hubspot. Values ORGANIC_SEARCH, PAID_SEARCH, EMAIL_MARKETING, SOCIAL_MEDIA, REFERRALS, OTHER_CAMPAIGNS, DIRECT_TRAFFIC, OFFLINE, PAID_SOCIAL, AI_REFERRALS; only the last is mapped to a neutral channel so far. A deal inherits it from the associated contact with the earliest activity. The definition is documented; the internal name was confirmed only from HubSpot Community API responses.",
+          "source": "HubSpot Knowledge Base, traffic source properties (knowledge.hubspot.com; the report records the page and not its URL) (read 2026-11-10)",
+          "mappingConfidence": "inferred",
+          "matches": {
+            "exactMatch": [
+              "xeo:firstTouchChannel"
+            ]
+          }
+        },
+        {
+          "code": "hs_forecast_amount",
+          "iri": "https://xeoontology.org/schemes#hubspotCrm-hs_forecast_amount",
+          "label": "Forecast amount",
+          "definition": "The deal amount multiplied by its forecast probability",
+          "note": null,
+          "fillsSlot": [
+            "xeo:weightedAmount"
+          ],
+          "scopeNote": "Weighted by the forecast probability, which is not the deal probability; HubSpot's 'Weighted amount' uses the latter and is the one it recommends. Method must name which.",
+          "source": "https://knowledge.hubspot.com/properties/hubspots-default-deal-properties (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "narrowMatch": [
+              "xeo:weightedAmount"
+            ]
+          }
+        },
+        {
+          "code": "hs_is_closed_won",
+          "iri": "https://xeoontology.org/schemes#hubspotCrm-hs_is_closed_won",
+          "label": "Is closed won",
+          "definition": "True when the deal is in a closed-won stage",
+          "note": null,
+          "fillsSlot": [
+            "xeo:dealOutcome"
+          ],
+          "scopeNote": "Answers won or not won, and nothing about lost. Lost is derived from the stage's closed flag in the pipelines metadata, with method tenant-stage-map.",
+          "source": "https://knowledge.hubspot.com/properties/hubspots-default-deal-properties (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "narrowMatch": [
+              "xeo:dealOutcome"
+            ]
+          }
+        },
+        {
+          "code": "hs_v2_date_entered_",
+          "iri": "https://xeoontology.org/schemes#hubspotCrm-hs_v2_date_entered",
+          "label": "Date entered stage (v2)",
+          "definition": "When the deal most recently entered a given stage; one property per stage, named by appending the stage id",
+          "note": null,
+          "fillsSlot": [
+            "xeo:enteredAt"
+          ],
+          "scopeNote": "The notation is a prefix: the property is hs_v2_date_entered_<stage id>. Holds the latest entry only, so it yields one StageTransition per stage and not the full history. Never use the legacy hs_date_entered_ properties: they cleared when a deal moved backwards and filled when it skipped a stage, and stopped being returned on 2024-11-20.",
+          "source": "HubSpot Developer Changelog, sunset of the legacy stage properties (developers.hubspot.com; the report records the page and not its URL) (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "closeMatch": [
+              "xeo:enteredAt"
+            ]
+          }
+        },
+        {
+          "code": "hubspot_owner_id",
+          "iri": "https://xeoontology.org/schemes#hubspotCrm-hubspot_owner_id",
+          "label": "Deal owner",
+          "definition": "The user the deal is assigned to",
+          "note": null,
+          "fillsSlot": [
+            "xeo:ownerRef"
+          ],
+          "scopeNote": "An owner id. Not the user who created the record.",
+          "source": "https://knowledge.hubspot.com/properties/hubspots-default-deal-properties (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "exactMatch": [
+              "xeo:ownerRef"
+            ]
+          }
+        },
+        {
+          "code": "lifecyclestage",
+          "iri": "https://xeoontology.org/schemes#hubspotCrm-lifecyclestage",
+          "label": "Lifecycle stage",
+          "definition": "Where the contact or company is in the marketing and sales funnel",
+          "note": null,
+          "fillsSlot": [
+            "xeo:lifecycleStage"
+          ],
+          "scopeNote": "Default values subscriber, lead, marketingqualifiedlead, salesqualifiedlead, opportunity, customer, evangelist; a portal can customize the ladder, and the one the report saw had. The API moves a record forward only. What qualifies a lead for each stage is the portal's own rule.",
+          "source": "HubSpot Knowledge Base, default contact properties (knowledge.hubspot.com; the report records the page and not its URL) (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "exactMatch": [
+              "xeo:lifecycleStage"
+            ]
+          }
+        },
+        {
+          "code": "pipeline",
+          "iri": "https://xeoontology.org/schemes#hubspotCrm-pipeline",
+          "label": "Pipeline",
+          "definition": "The pipeline the deal is in, as the portal's internal pipeline id",
+          "note": null,
+          "fillsSlot": [
+            "xeo:pipelineRef"
+          ],
+          "scopeNote": "A per-portal id; the report's example value is 'default'.",
+          "source": "https://knowledge.hubspot.com/properties/hubspots-default-deal-properties (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "exactMatch": [
+              "xeo:pipelineRef"
+            ]
+          }
+        }
+      ]
+    },
+    "peec": {
+      "iri": "https://xeoontology.org/schemes#peec",
+      "label": "Peec AI Customer API (brands report)",
+      "description": "The fields of Peec's brands report, mapped to the AI visibility Metrics. Peec publishes its aggregation formulas and the components behind each rate, which is why most of these are exact. Compare with xeos:profound: the two vendors use 'visibility' for ratios with different denominators.",
+      "source": "XEO metrics and KPIs research report, 2026-11-10, Appendix C and section 6 · https://docs.peec.ai/api-reference/reports/get-brands-report",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "end_date",
+          "iri": "https://xeoontology.org/schemes#peec-end_date",
+          "label": "End date",
+          "definition": "The last day of the requested window",
+          "note": null,
+          "fillsSlot": [
+            "xeo:periodEnd"
+          ],
+          "scopeNote": "Request field.",
+          "source": "https://docs.peec.ai/api-reference/reports/get-brands-report (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "closeMatch": [
+              "xeo:periodEnd"
+            ]
+          }
+        },
+        {
+          "code": "filters",
+          "iri": "https://xeoontology.org/schemes#peec-filters",
+          "label": "Filters",
+          "definition": "Conditions applied before aggregation",
+          "note": null,
+          "fillsSlot": [
+            "xeo:scope"
+          ],
+          "scopeNote": "Shrinks numerator and denominator alike, which is scope. The sibling request field 'having' filters after aggregation and is neither scope nor a metricFilter.",
+          "source": "https://docs.peec.ai/api-reference/reports/get-brands-report (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "closeMatch": [
+              "xeo:scope"
+            ]
+          }
+        },
+        {
+          "code": "mention_count",
+          "iri": "https://xeoontology.org/schemes#peec-mention_count",
+          "label": "Mention count",
+          "definition": "The number of mentions of the brand",
+          "note": null,
+          "fillsSlot": [
+            "xeo:numeratorValue"
+          ],
+          "scopeNote": "Taken as the numerator of share_of_voice. The report lists it among the rollup components and quotes no formula that uses it, so the role is a reading.",
+          "source": "https://docs.peec.ai/api-reference/reports/get-brands-report (read 2026-11-10)",
+          "mappingConfidence": "inferred",
+          "matches": {
+            "closeMatch": [
+              "xeo:numeratorValue"
+            ]
+          }
+        },
+        {
+          "code": "position",
+          "iri": "https://xeoontology.org/schemes#peec-position",
+          "label": "Position",
+          "definition": "The brand's average rank among the brands a chat names, over chats where it appears",
+          "note": null,
+          "fillsSlot": [
+            "xeo:value"
+          ],
+          "scopeNote": "sum(position_sum) / sum(position_count). Averaged only over chats where the brand appears. 1 is best.",
+          "source": "https://docs.peec.ai/api-reference/reports/get-brands-report (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "exactMatch": [
+              "xeos:metric-ai_average_position"
+            ]
+          }
+        },
+        {
+          "code": "position_count",
+          "iri": "https://xeoontology.org/schemes#peec-position_count",
+          "label": "Position count",
+          "definition": "The number of chats in which the brand appears with a position",
+          "note": null,
+          "fillsSlot": [
+            "xeo:denominatorValue"
+          ],
+          "scopeNote": "The denominator of position; compare it with the Metric's minDenominator.",
+          "source": "https://docs.peec.ai/api-reference/reports/get-brands-report (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "exactMatch": [
+              "xeo:denominatorValue"
+            ]
+          }
+        },
+        {
+          "code": "position_sum",
+          "iri": "https://xeoontology.org/schemes#peec-position_sum",
+          "label": "Position sum",
+          "definition": "The sum of the brand's positions over the chats where it appears",
+          "note": null,
+          "fillsSlot": [
+            "xeo:numeratorValue"
+          ],
+          "scopeNote": "The numerator of position.",
+          "source": "https://docs.peec.ai/api-reference/reports/get-brands-report (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "exactMatch": [
+              "xeo:numeratorValue"
+            ]
+          }
+        },
+        {
+          "code": "previous_end_date",
+          "iri": "https://xeoontology.org/schemes#peec-previous_end_date",
+          "label": "Previous end date",
+          "definition": "The last day of the comparison window",
+          "note": null,
+          "fillsSlot": [
+            "xeo:baselineReading"
+          ],
+          "scopeNote": "See previous_start_date.",
+          "source": "https://docs.peec.ai/api-reference/reports/get-brands-report (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "closeMatch": [
+              "xeo:baselineReading"
+            ]
+          }
+        },
+        {
+          "code": "previous_start_date",
+          "iri": "https://xeoontology.org/schemes#peec-previous_start_date",
+          "label": "Previous start date",
+          "definition": "The first day of the comparison window",
+          "note": null,
+          "fillsSlot": [
+            "xeo:baselineReading"
+          ],
+          "scopeNote": "With previous_end_date, the window of the baseline reading. Left out, Peec uses the window of equal length immediately before start_date.",
+          "source": "https://docs.peec.ai/api-reference/reports/get-brands-report (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "closeMatch": [
+              "xeo:baselineReading"
+            ]
+          }
+        },
+        {
+          "code": "sentiment",
+          "iri": "https://xeoontology.org/schemes#peec-sentiment",
+          "label": "Sentiment",
+          "definition": "A model's score of the tone of the brand's mentions, 0 to 100",
+          "note": null,
+          "fillsSlot": [
+            "xeo:value"
+          ],
+          "scopeNote": "A vendor model's output: a derivation with Peec as its method. Not xeo:sentiment, which is a four-way code on one mention.",
+          "source": "https://docs.peec.ai/api-reference/reports/get-brands-report (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "exactMatch": [
+              "xeos:metric-ai_sentiment"
+            ]
+          }
+        },
+        {
+          "code": "share_of_voice",
+          "iri": "https://xeoontology.org/schemes#peec-share_of_voice",
+          "label": "Share of voice",
+          "definition": "The brand's mentions as a share of all tracked brands' mentions",
+          "note": null,
+          "fillsSlot": [
+            "xeo:value"
+          ],
+          "scopeNote": "0 to 1. A pre-aggregation filter on one brand shrinks numerator and denominator together and collapses this to 1.0; filter with 'having' instead.",
+          "source": "https://docs.peec.ai/api-reference/reports/get-brands-report (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "exactMatch": [
+              "xeos:metric-ai_share_of_voice"
+            ]
+          }
+        },
+        {
+          "code": "start_date",
+          "iri": "https://xeoontology.org/schemes#peec-start_date",
+          "label": "Start date",
+          "definition": "The first day of the requested window",
+          "note": null,
+          "fillsSlot": [
+            "xeo:periodStart"
+          ],
+          "scopeNote": "Request field.",
+          "source": "https://docs.peec.ai/api-reference/reports/get-brands-report (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "closeMatch": [
+              "xeo:periodStart"
+            ]
+          }
+        },
+        {
+          "code": "visibility",
+          "iri": "https://xeoontology.org/schemes#peec-visibility",
+          "label": "Visibility",
+          "definition": "The share of chats in which the brand was mentioned",
+          "note": null,
+          "fillsSlot": [
+            "xeo:value"
+          ],
+          "scopeNote": "sum(visibility_count) / sum(visibility_total), over all chats; 0 to 1. Peec's Data Studio connector has a field of the same name defined as a count of chats; that one is not this.",
+          "source": "https://docs.peec.ai/api-reference/reports/get-brands-report (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "exactMatch": [
+              "xeos:metric-mention_rate"
+            ]
+          }
+        },
+        {
+          "code": "visibility_count",
+          "iri": "https://xeoontology.org/schemes#peec-visibility_count",
+          "label": "Visibility count",
+          "definition": "The number of chats in which the brand was mentioned",
+          "note": null,
+          "fillsSlot": [
+            "xeo:numeratorValue"
+          ],
+          "scopeNote": "The numerator of visibility; as a count in its own right it is a reading of ai_answers_mentioning.",
+          "source": "https://docs.peec.ai/api-reference/reports/get-brands-report (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "exactMatch": [
+              "xeo:numeratorValue"
+            ]
+          }
+        },
+        {
+          "code": "visibility_total",
+          "iri": "https://xeoontology.org/schemes#peec-visibility_total",
+          "label": "Visibility total",
+          "definition": "The number of chats the rate was computed over",
+          "note": null,
+          "fillsSlot": [
+            "xeo:denominatorValue"
+          ],
+          "scopeNote": "The denominator of visibility, and of win_rate; as a count in its own right it is a reading of ai_answers_sampled.",
+          "source": "https://docs.peec.ai/api-reference/reports/get-brands-report (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "exactMatch": [
+              "xeo:denominatorValue"
+            ]
+          }
+        }
+      ]
+    },
+    "profound": {
+      "iri": "https://xeoontology.org/schemes#profound",
+      "label": "Profound External API (visibility and citations reports)",
+      "description": "The fields of Profound's visibility and citations reports, mapped to the AI visibility Metrics. Two warnings a classifier needs. Profound's own pages disagree on the denominator of visibility_score. And share_of_voice is one field name with two meanings, depending on the report it is returned by.",
+      "source": "XEO metrics and KPIs research report, 2026-11-10, Appendix C and section 6 · https://docs.tryprofound.com/api-reference/reports/query-visibility · https://docs.tryprofound.com/api-reference/reports/query-citations (OpenAPI v0.60.2) · https://help.tryprofound.com/articles/3443229936-answer-engine-insights-overview",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "citation_share",
+          "iri": "https://xeoontology.org/schemes#profound-citation_share",
+          "label": "Citation share",
+          "definition": "Citations of an item as a share of all citations",
+          "note": null,
+          "fillsSlot": [
+            "xeo:value"
+          ],
+          "scopeNote": "In the citations report. Replaces that report's share_of_voice.",
+          "source": "https://docs.tryprofound.com/api-reference/reports/query-citations (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "exactMatch": [
+              "xeos:metric-ai_citation_share"
+            ]
+          }
+        },
+        {
+          "code": "end_date",
+          "iri": "https://xeoontology.org/schemes#profound-end_date",
+          "label": "End date",
+          "definition": "The last day of the requested window",
+          "note": null,
+          "fillsSlot": [
+            "xeo:periodEnd"
+          ],
+          "scopeNote": "Request field.",
+          "source": "https://docs.tryprofound.com/api-reference/reports/query-visibility (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "closeMatch": [
+              "xeo:periodEnd"
+            ]
+          }
+        },
+        {
+          "code": "executions",
+          "iri": "https://xeoontology.org/schemes#profound-executions",
+          "label": "Executions",
+          "definition": "The number of prompt runs analysed",
+          "note": null,
+          "fillsSlot": [
+            "xeo:value"
+          ],
+          "scopeNote": "The sample size behind the visibility report's rates.",
+          "source": "https://docs.tryprofound.com/api-reference/reports/query-visibility (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "closeMatch": [
+              "xeos:metric-ai_answers_sampled"
+            ]
+          }
+        },
+        {
+          "code": "filters",
+          "iri": "https://xeoontology.org/schemes#profound-filters",
+          "label": "Filters",
+          "definition": "Conditions that restrict the report",
+          "note": null,
+          "fillsSlot": [
+            "xeo:scope"
+          ],
+          "scopeNote": "Request field.",
+          "source": "https://docs.tryprofound.com/api-reference/reports/query-visibility (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "closeMatch": [
+              "xeo:scope"
+            ]
+          }
+        },
+        {
+          "code": "mentions_count",
+          "iri": "https://xeoontology.org/schemes#profound-mentions_count",
+          "label": "Mentions count",
+          "definition": "The number of mentions analysed",
+          "note": null,
+          "fillsSlot": [
+            "xeo:numeratorValue"
+          ],
+          "scopeNote": "A numerator behind the visibility report's rates. The report does not say of which rate.",
+          "source": "https://docs.tryprofound.com/api-reference/reports/query-visibility (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "closeMatch": [
+              "xeo:numeratorValue"
+            ]
+          }
+        },
+        {
+          "code": "metrics",
+          "iri": "https://xeoontology.org/schemes#profound-metrics",
+          "label": "Metrics",
+          "definition": "The metrics the report is asked to return",
+          "note": null,
+          "fillsSlot": [
+            "xeo:readingOf"
+          ],
+          "scopeNote": "Request field: each name selects one Metric.",
+          "source": "https://docs.tryprofound.com/api-reference/reports/query-visibility (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "closeMatch": [
+              "xeo:readingOf"
+            ]
+          }
+        },
+        {
+          "code": "share_of_voice",
+          "iri": "https://xeoontology.org/schemes#profound-citations-share_of_voice",
+          "label": "Share of voice (citations report, deprecated)",
+          "definition": "Citations of an item as a share of all citations",
+          "note": null,
+          "fillsSlot": [
+            "xeo:value"
+          ],
+          "scopeNote": "In the citations report, where Profound has deprecated it in favour of citation_share. Citation-based, and so not the mention-based share_of_voice of the visibility report.",
+          "source": "https://docs.tryprofound.com/api-reference/reports/query-citations (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "exactMatch": [
+              "xeos:metric-ai_citation_share"
+            ]
+          }
+        },
+        {
+          "code": "share_of_voice",
+          "iri": "https://xeoontology.org/schemes#profound-share_of_voice",
+          "label": "Share of voice (visibility report)",
+          "definition": "The brand's mentions as a share of all mentions",
+          "note": null,
+          "fillsSlot": [
+            "xeo:value"
+          ],
+          "scopeNote": "In the visibility report only. The citations report returns a field of the same name that means something else.",
+          "source": "https://docs.tryprofound.com/api-reference/reports/query-visibility (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "exactMatch": [
+              "xeos:metric-ai_share_of_voice"
+            ]
+          }
+        },
+        {
+          "code": "start_date",
+          "iri": "https://xeoontology.org/schemes#profound-start_date",
+          "label": "Start date",
+          "definition": "The first day of the requested window",
+          "note": null,
+          "fillsSlot": [
+            "xeo:periodStart"
+          ],
+          "scopeNote": "Request field. Profound returns no comparison window; a change is computed by the client from two requests.",
+          "source": "https://docs.tryprofound.com/api-reference/reports/query-visibility (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "closeMatch": [
+              "xeo:periodStart"
+            ]
+          }
+        },
+        {
+          "code": "visibility_score",
+          "iri": "https://xeoontology.org/schemes#profound-visibility_score",
+          "label": "Visibility score",
+          "definition": "The share of responses that include the brand",
+          "note": null,
+          "fillsSlot": [
+            "xeo:value"
+          ],
+          "scopeNote": "A raw decimal, 0 to 1; multiply by 100 to display. The denominator conflicts between Profound's own pages: the help center divides by responses that name at least one brand, the glossary example by all tracked responses. On the first reading it runs higher than mention_rate whenever few answers name any brand. closeMatch until live output settles which.",
+          "source": "https://help.tryprofound.com/articles/3443229936-answer-engine-insights-overview (read 2026-11-10)",
+          "mappingConfidence": "documented",
+          "matches": {
+            "closeMatch": [
+              "xeos:metric-mention_rate"
+            ]
+          }
         }
       ]
     }

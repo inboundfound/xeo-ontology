@@ -24,6 +24,21 @@ on purpose: as a relationship type, for a graph that keeps concepts as nodes,
 and as a property key, for a graph that stores the concept's code on the node
 or edge. Both are conformant.
 
+A controlled string (a datatype property with a published scheme: sentiment,
+device, metric, dealOutcome) is a property key that lists its schemes. The code
+it stores is the skos:notation of a concept in one of them, which is how
+MetricTarget.metric names an xeo:Metric without being an object property.
+
+Two optional markers, present only where the Turtle states them, so an entry
+without them is a current core term:
+    "status": "extension"     the term carries xeo:termStatus "extension"
+    "deprecated": true        the term carries owl:deprecated true; advisory,
+                              with "replacedBy" naming what rdfs:seeAlso points at
+
+Vendor crosswalks (xeo-vendor-schemes.ttl) are not in the profile: they map a
+vendor's field names to slots and are not values a graph stores. schemes.json
+carries them under "vendorSchemes".
+
 Output is deterministic (sorted keys, no timestamps), so tools/validate.py can
 regenerate in memory and fail the build when a checked-in file is stale.
 
@@ -50,7 +65,7 @@ XEOS = Namespace("https://xeoontology.org/schemes#")
 TERM_MODULES = [
     "xeo-core.ttl", "xeo-visibility.ttl", "xeo-engagement.ttl",
     "xeo-decision.ttl", "xeo-strategy.ttl", "xeo-delivery.ttl",
-    "xeo-analysis.ttl",
+    "xeo-analysis.ttl", "xeo-metrics.ttl",
 ]
 SCHEMES_MODULE = "xeo-schemes.ttl"
 LAYERS = ["entity", "episode", "observation", "derivation", "interpretation", "norm"]
@@ -148,6 +163,19 @@ def build():
         return sorted((s for s in set(g.subjects(RDF.type, kind))
                        if str(s).startswith(str(XEO))), key=local)
 
+    def mark(entry, s):
+        """Add the optional status / deprecation markers to a profile entry."""
+        status = text(s, XEO.termStatus)
+        if status and status != "core":
+            entry["status"] = status
+        if str(g.value(s, OWL.deprecated)).lower() == "true":
+            entry["deprecated"] = True
+            entry["replacedBy"] = sorted(
+                short(o) if str(o).startswith(str(XEO)) else
+                ("xeos:" + local(o) if str(o).startswith(str(XEOS)) else str(o))
+                for o in g.objects(s, RDFS.seeAlso))
+        return entry
+
     labels = {}
     for c in terms(OWL.Class):
         entry = {
@@ -160,7 +188,7 @@ def build():
                          if str(p).startswith(str(XEO)))
         if parents:
             entry["subClassOf"] = parents
-        labels[local(c)] = entry
+        labels[local(c)] = mark(entry, c)
 
     relationship_types = {}
     properties = {}
@@ -183,20 +211,20 @@ def build():
         if set(g.objects(p, RDFS.range)) == {SKOS.Concept}:
             entry["conceptSlot"] = True
             entry["schemes"] = slot_schemes.get(name, [])
-            properties[name] = {
+            properties[name] = mark({
                 "iri": str(p),
                 "layer": entry["layer"],
                 "module": entry["module"],
                 "datatype": "xsd:string",
                 "conceptSlot": True,
                 "schemes": slot_schemes.get(name, []),
-            }
+            }, p)
         elif name in slot_schemes:
             entry["schemes"] = slot_schemes[name]
         key = upper_snake(name)
         if key in relationship_types:
             raise SystemExit(f"relationship type collision: {key}")
-        relationship_types[key] = entry
+        relationship_types[key] = mark(entry, p)
 
     for p in terms(OWL.DatatypeProperty):
         name = local(p)
@@ -214,7 +242,7 @@ def build():
             entry["schemes"] = slot_schemes[name]
         if name in properties:
             raise SystemExit(f"property key collision: {name}")
-        properties[name] = entry
+        properties[name] = mark(entry, p)
 
     version = text(URIRef(str(XEO)), OWL.versionInfo)
     profile = {
@@ -291,13 +319,18 @@ def mapping_tables(profile) -> str:
     def cell(values):
         return " · ".join(f"`{v}`" for v in values) if values else "open"
 
+    def tag(e):
+        """' (extension)' / ' (deprecated)' after a name, where the Turtle says so."""
+        marks = ([e["status"]] if e.get("status") else []) + (["deprecated"] if e.get("deprecated") else [])
+        return f" ({', '.join(marks)})" if marks else ""
+
     out = [BEGIN, "",
            f"Generated from XEO {profile['version']}. Do not edit between the markers; "
            "run `tools/gen_profile.py`.", ""]
     out += [f"### Node labels ({len(profile['labels'])})", "",
             "| Label | XEO class | Layer | Module |", "|---|---|---|---|"]
     for name, e in profile["labels"].items():
-        out.append(f"| `{name}` | `xeo:{name}` | {e['layer']} | {e['module']} |")
+        out.append(f"| `{name}`{tag(e)} | `xeo:{name}` | {e['layer']} | {e['module']} |")
     out += ["", f"### Relationship types ({len(profile['relationshipTypes'])})", "",
             "`open` means the ontology leaves that side unconstrained. A concept slot may "
             "also be stored as a property key holding the concept's code.", "",
@@ -307,13 +340,13 @@ def mapping_tables(profile) -> str:
         to = cell(e["range"])
         if e.get("conceptSlot"):
             to += " (concept slot)"
-        out.append(f"| `{key}` | `xeo:{e['term']}` | {cell(e['domain'])} | {to} | "
+        out.append(f"| `{key}`{tag(e)} | `xeo:{e['term']}` | {cell(e['domain'])} | {to} | "
                    f"{e['layer']} | {e['module']} |")
     out += ["", f"### Property keys ({len(profile['properties'])})", "",
             "| Property key | Datatype | Values from | Layer | Module |", "|---|---|---|---|---|"]
     for name, e in profile["properties"].items():
         dt = "concept code" if e.get("conceptSlot") else f"`{e['datatype']}`"
-        out.append(f"| `{name}` | {dt} | {cell(e.get('schemes', [])) if e.get('schemes') else ''} | "
+        out.append(f"| `{name}`{tag(e)} | {dt} | {cell(e.get('schemes', [])) if e.get('schemes') else ''} | "
                    f"{e['layer']} | {e['module']} |")
     out += ["", f"### Reference schemes ({len(profile['schemes'])})", "",
             "| Scheme | Codes |", "|---|---|"]
