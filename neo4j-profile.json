@@ -1,0 +1,2564 @@
+{
+  "$comment": "Generated from the xeo-*.ttl modules by tools/gen_profile.py — do not edit by hand.",
+  "conventions": {
+    "label": "the class local name, PascalCase",
+    "layerKey": "layer",
+    "layers": [
+      "entity",
+      "episode",
+      "observation",
+      "derivation",
+      "interpretation",
+      "norm"
+    ],
+    "propertyKey": "the datatype property local name, camelCase",
+    "relationshipType": "UPPER_SNAKE of the object property local name",
+    "tenancyKey": "websiteId"
+  },
+  "generatedFrom": [
+    "xeo-core.ttl",
+    "xeo-visibility.ttl",
+    "xeo-engagement.ttl",
+    "xeo-decision.ttl",
+    "xeo-strategy.ttl",
+    "xeo-delivery.ttl",
+    "xeo-analysis.ttl",
+    "xeo-schemes.ttl"
+  ],
+  "labels": {
+    "AlgorithmRun": {
+      "definition": "One execution of one algorithm over one projection of the graph at a time: immutable once finished. Carries algorithm (which method), parameters (as run), projection (what it ran on) and ranAt. The provenance record for every score and derived edge it wrote: outputs point back with computedBy, or name the run in their method. Re-running with a different projection or parameters is a new run, never an update to an old one.",
+      "iri": "https://xeoontology.org/xeo#AlgorithmRun",
+      "layer": "episode",
+      "module": "analysis"
+    },
+    "AnswerEngine": {
+      "definition": "Assistants that answer with web search and citations (the AEO surface).",
+      "iri": "https://xeoontology.org/xeo#AnswerEngine",
+      "layer": "entity",
+      "module": "visibility",
+      "subClassOf": [
+        "Engine"
+      ]
+    },
+    "Brand": {
+      "definition": "A named market identity that engines may mention, cite, or recommend. Distinct from Website: a brand can be visible on the whole web, not only its own origin.",
+      "iri": "https://xeoontology.org/xeo#Brand",
+      "layer": "entity",
+      "module": "visibility"
+    },
+    "CallToAction": {
+      "definition": "A button or link that asks the visitor to take the next step.",
+      "iri": "https://xeoontology.org/xeo#CallToAction",
+      "layer": "entity",
+      "module": "engagement",
+      "subClassOf": [
+        "ConversionPoint"
+      ]
+    },
+    "Campaign": {
+      "definition": "A body of work inside a Project against one Topic: the URLs and Terms it covers, and the single Objective it is measured by. Recommendations are issuedFor a campaign, and it is the unit an operator plans a cycle around. Soft-deleted like its Project.",
+      "iri": "https://xeoontology.org/xeo#Campaign",
+      "layer": "entity",
+      "module": "delivery"
+    },
+    "Capability": {
+      "definition": "A lever or strength a party can bring to bear (content, technical, PR, brand, ...). The unit of the scope gate: a Tactic is in reach only when every Capability it requires is approved. Specific capabilities are instances, not subclasses.",
+      "iri": "https://xeoontology.org/xeo#Capability",
+      "layer": "entity",
+      "module": "decision"
+    },
+    "ConversationalAgent": {
+      "definition": "Multi-turn agents and voice surfaces acting on a user's behalf.",
+      "iri": "https://xeoontology.org/xeo#ConversationalAgent",
+      "layer": "entity",
+      "module": "visibility",
+      "subClassOf": [
+        "Engine"
+      ]
+    },
+    "ConversionEvent": {
+      "definition": "A submission/click/unlock that happened at a time. Immutable once recorded.",
+      "iri": "https://xeoontology.org/xeo#ConversionEvent",
+      "layer": "episode",
+      "module": "engagement"
+    },
+    "ConversionPoint": {
+      "definition": "A durable on-page mechanism that turns attention into a pipeline event.",
+      "iri": "https://xeoontology.org/xeo#ConversionPoint",
+      "layer": "entity",
+      "module": "engagement"
+    },
+    "Crawl": {
+      "definition": "One crawl run over one Website: time-bounded, agent-attributed, immutable once finished.",
+      "iri": "https://xeoontology.org/xeo#Crawl",
+      "layer": "episode",
+      "module": "core"
+    },
+    "Diagnostic": {
+      "definition": "A named, reusable check or framework that reads observations and reveals gaps (e.g. a waterfall-position assessment). The framework is durable; each finding it produces is a Gap.",
+      "iri": "https://xeoontology.org/xeo#Diagnostic",
+      "layer": "entity",
+      "module": "decision"
+    },
+    "DiagnosticRun": {
+      "definition": "One execution of a Diagnostic against one scope at a time: immutable once finished, method-attributed. The Diagnostic is the durable check; the run is the occasion it was applied, and each Gap it found is revealedIn that run. Carries ranAt and websiteId. A later run supersedes an earlier one without deleting it, so a finding can always be traced to the data it was read from.",
+      "iri": "https://xeoontology.org/xeo#DiagnosticRun",
+      "layer": "episode",
+      "module": "decision"
+    },
+    "Domain": {
+      "definition": "A registrable domain (the public suffix plus one label, e.g. example.co.uk), identified by its name in lower case. The publisher-level identity a URL sits on, whether or not the site is under observation: a competitor's result has no partOf edge to a tracked Website, it has onDomain. Not tenant-scoped: one node per domain, shared by every tenant that sees it, and it carries no websiteId.",
+      "iri": "https://xeoontology.org/xeo#Domain",
+      "layer": "entity",
+      "module": "core"
+    },
+    "Engine": {
+      "definition": "A system that mediates between a person's question and web content. The taxonomy below is operational, not doctrinal — subclass as engines evolve.",
+      "iri": "https://xeoontology.org/xeo#Engine",
+      "layer": "entity",
+      "module": "visibility"
+    },
+    "Entity": {
+      "definition": "A real-world thing or concept that content is about — a product, a place, a person, a material, a method — identified by a reference into a public knowledge base (entityRef) where one exists, otherwise by name. Distinct from Topic, which is a site-scoped grouping somebody derived, and from Brand, which is a market identity engines mention: an Entity is the thing itself, shared across sites. Not tenant-scoped. Named for the knowledge-graph sense of the word; not to be confused with the epistemic layer 'entity', which Website, URL and Term also occupy.",
+      "iri": "https://xeoontology.org/xeo#Entity",
+      "layer": "entity",
+      "module": "core"
+    },
+    "Experiment": {
+      "definition": "A test of a tactic that ran over a time window: immutable once concluded, method-attributed. The precedent record the decision layer learns from.",
+      "iri": "https://xeoontology.org/xeo#Experiment",
+      "layer": "episode",
+      "module": "decision"
+    },
+    "ExternalEvent": {
+      "definition": "Something outside the work that happened at a time and could move the metrics an experiment reads: an engine's ranking update, a site migration, an outage, a seasonal peak, a competitor's launch. Carries name and occurredAt. An episode, recorded once and shared: whether it actually affected a given result is a separate claim, carried on confoundedBy.",
+      "iri": "https://xeoontology.org/xeo#ExternalEvent",
+      "layer": "episode",
+      "module": "decision"
+    },
+    "Feedback": {
+      "definition": "An operator's judgment of a machine's claim, hung off whatever it judges (feedbackOn): a diagnosed Gap, or the Recommendation issued to close one. Carries a verdict (a slotted-in concept), a statement in the operator's words, and who gave it and when. Not a TacticAssessment, which is a scored estimate of an approach on one dimension: Feedback is a person agreeing or disagreeing with a claim about one case. Never deleted: a rejected finding and the reason it was rejected are what a learned Practice is later drawn from.",
+      "iri": "https://xeoontology.org/xeo#Feedback",
+      "layer": "interpretation",
+      "module": "decision"
+    },
+    "Framework": {
+      "definition": "A named method: a set of Stages, ordered or not, with the Diagnostics, Tactics and Practices hung on them. An optimization waterfall (ordered stages, each with a test, a subject placed at the first stage it fails), a tactic matrix, a launch checklist and a discipline playbook are all Frameworks, told apart by frameworkKind and never by subclass. A norm: it says how the work should be approached, it is authored and revisable, and it is identified by name within its author's scope. Distinct from Playbook, which is the unordered bundle a discipline reuses; a Framework adds the structure, and may include what a Playbook includes. The method is the instance you author. XEO ships the frame and none of the stages.",
+      "iri": "https://xeoontology.org/xeo#Framework",
+      "layer": "norm",
+      "module": "strategy"
+    },
+    "Gap": {
+      "definition": "A diagnosed deficit between current and desired visibility. First-order, but a claim: asserted by a Diagnostic from evidence, never observed directly. Its kind (gapType) is a slotted-in skos:Concept — e.g. a Citation-Waterfall stage — not a subclass baked into the ontology.",
+      "iri": "https://xeoontology.org/xeo#Gap",
+      "layer": "interpretation",
+      "module": "decision"
+    },
+    "GatedAsset": {
+      "definition": "Content exchanged for contact information.",
+      "iri": "https://xeoontology.org/xeo#GatedAsset",
+      "layer": "entity",
+      "module": "engagement",
+      "subClassOf": [
+        "ConversionPoint"
+      ]
+    },
+    "GenerativeEngine": {
+      "definition": "Search-integrated generated answers — AI overviews and AI modes (the GEO surface).",
+      "iri": "https://xeoontology.org/xeo#GenerativeEngine",
+      "layer": "entity",
+      "module": "visibility",
+      "subClassOf": [
+        "Engine"
+      ]
+    },
+    "Intervention": {
+      "definition": "A category of tactic in a controlled vocabulary you bring. A skos:Concept, so a whole intervention taxonomy slots in without touching the ontology.",
+      "iri": "https://xeoontology.org/xeo#Intervention",
+      "layer": "entity",
+      "module": "decision"
+    },
+    "LLMResponse": {
+      "definition": "One captured response from one engine/model for one Prompt at a moment: time-bounded, source-attributed, immutable once captured. The visibility sibling of SerpSnapshot.",
+      "iri": "https://xeoontology.org/xeo#LLMResponse",
+      "layer": "episode",
+      "module": "visibility"
+    },
+    "LeadCaptureForm": {
+      "definition": "A form that exchanges contact details for a response, a quote or a booking.",
+      "iri": "https://xeoontology.org/xeo#LeadCaptureForm",
+      "layer": "entity",
+      "module": "engagement",
+      "subClassOf": [
+        "ConversionPoint"
+      ]
+    },
+    "MetricTarget": {
+      "definition": "One measurable target of an Objective: metric X should reach targetValue, read as absolute or as a percent lift from a captured baseline. Named a target and never a key result: xeo:Outcome is 'the measured result an experiment produced', an observation, and a goal must not share a name with a reading. Each target is its own node so the experiment loop can hang observations off it; a target dropped on edit is stamped deletedAt, never destroyed, because its id is what measured history is anchored to.",
+      "iri": "https://xeoontology.org/xeo#MetricTarget",
+      "layer": "interpretation",
+      "module": "delivery"
+    },
+    "Objective": {
+      "definition": "What a Campaign intends to move: an operator-written statement in prose (carried verbatim — the recommendation agent reads it as the goal), a resultsWindowDays every target is measured over, and one or more MetricTargets of which exactly one isPrimary. An intent set at creation. A campaign has one reporting horizon, distinct from the Project's work window: a two-month engagement can carry a six-month results window.",
+      "iri": "https://xeoontology.org/xeo#Objective",
+      "layer": "interpretation",
+      "module": "delivery"
+    },
+    "Organization": {
+      "definition": "A party that does optimization work or has it done: an agency, a brand's company, an in-house team. Identified by name. The owner of Websites and Brands (owns), the holder of Capabilities (holdsCapability), and a tenancy node that activates Frameworks and Playbooks. Not a CRM account: it carries no pipeline fields, and joins to the CRM record by crmRecordRef where one exists. Its kind is a slotted-in concept (organizationKind), never a subclass.",
+      "iri": "https://xeoontology.org/xeo#Organization",
+      "layer": "entity",
+      "module": "delivery"
+    },
+    "Outcome": {
+      "definition": "The measured result an experiment produced (lift, delta, significance). The measurement is an observation; any claim that the tactic CAUSED it is an interpretation, carried on the Recommendation, not asserted here.",
+      "iri": "https://xeoontology.org/xeo#Outcome",
+      "layer": "observation",
+      "module": "decision"
+    },
+    "Playbook": {
+      "definition": "A reusable, discipline-scoped bundle of Diagnostics, Tactics, and Practices — an 'SEO playbook', an 'AEO playbook', a 'local playbook'. Durable and named, like a Diagnostic. Its scope is the DISCIPLINE, not the account: a Playbook is authored once (by the community or an agency) and reused across every client. What varies per client or campaign is which Playbooks a tenancy activates and which Practices it overrides — never the Playbook itself.",
+      "iri": "https://xeoontology.org/xeo#Playbook",
+      "layer": "entity",
+      "module": "strategy"
+    },
+    "Practice": {
+      "definition": "A standing rule that governs how recommendations are made under stated conditions. Best-practices, SOPs, and lessons-learned are all Practices, distinguished by source, not by class. A Practice does one of three things (practiceKind): veto a candidate (guardrail), reorder it (preference), or attach a caveat (guidance). Revisable and versioned (supersedes); scoped to the concepts it appliesToConcept; audited on the recommendations it fired on (appliedPractice).",
+      "iri": "https://xeoontology.org/xeo#Practice",
+      "layer": "norm",
+      "module": "strategy"
+    },
+    "Project": {
+      "definition": "The contractual container for a body of work on one Website. Declares its engagementType (retainer or one-off), an interventionQuota (a scope of work with no ceiling is not a scope), a cadence the quota resets over (retainer) or a durationDays it runs for (one-off), and the Interventions and Tactics inScope under the contract. Never destroyed: its campaigns, objectives and targets are the substrate the end-of-campaign report and the experiment loop read, so it is stamped deletedAt and filtered, not deleted.",
+      "iri": "https://xeoontology.org/xeo#Project",
+      "layer": "entity",
+      "module": "delivery"
+    },
+    "Prompt": {
+      "definition": "A tracked natural-language question posed to engines. Distinct from Term: a prompt is what a person asks; the engine's retrieval fans out into Terms.",
+      "iri": "https://xeoontology.org/xeo#Prompt",
+      "layer": "entity",
+      "module": "visibility"
+    },
+    "Recommendation": {
+      "definition": "The labeled claim the whole chain exists to produce: deploy this Tactic to close this Gap, supported by these Experiments, at a given priority. An interpretation — carries method, confidence, and who/what issued it.",
+      "iri": "https://xeoontology.org/xeo#Recommendation",
+      "layer": "interpretation",
+      "module": "decision"
+    },
+    "SearchEngine": {
+      "definition": "Classic ranked-results retrieval (the SEO surface).",
+      "iri": "https://xeoontology.org/xeo#SearchEngine",
+      "layer": "entity",
+      "module": "visibility",
+      "subClassOf": [
+        "Engine"
+      ]
+    },
+    "SearchIntent": {
+      "definition": "Why the person is asking. Modeled as named individuals, not free strings.",
+      "iri": "https://xeoontology.org/xeo#SearchIntent",
+      "layer": "entity",
+      "module": "engagement"
+    },
+    "SearchPerformanceFact": {
+      "definition": "The atomic ground-truth metric row for one (websiteId, address, term, date [, device, country]) tuple. Never instantiated as graph relationships; the graph carries windowed ranksFor rollups whose datasetUri points back to the authoritative table.",
+      "iri": "https://xeoontology.org/xeo#SearchPerformanceFact",
+      "layer": "observation",
+      "module": "core"
+    },
+    "SerpSnapshot": {
+      "definition": "One observation of a search results page for a Term at a moment, for a stated engine, locale, and device.",
+      "iri": "https://xeoontology.org/xeo#SerpSnapshot",
+      "layer": "episode",
+      "module": "core"
+    },
+    "Stage": {
+      "definition": "One step or cell of a Framework: a named position that Diagnostics, Tactics and Gaps are placed at (atStage). Carries name, an optional stageOrder, and an optional test — the question a subject must pass to move on. Belongs to exactly one Framework (hasStage) and is identified by name within it. In an ordered Framework, nextStage links each stage to the one after.",
+      "iri": "https://xeoontology.org/xeo#Stage",
+      "layer": "norm",
+      "module": "strategy"
+    },
+    "Tactic": {
+      "definition": "A durable, named approach that can address gaps. Categorized by a slotted-in intervention taxonomy (inIntervention), scored on slotted-in dimensions (assessedAs -> TacticAssessment), and gated by the Capabilities it requires.",
+      "iri": "https://xeoontology.org/xeo#Tactic",
+      "layer": "entity",
+      "module": "decision"
+    },
+    "TacticAssessment": {
+      "definition": "A scored estimate of a tactic on ONE dimension (onDimension), carrying score, method, and confidence. The dimension set (impact / risk / time-to-value, or ICE, or your own) and how dimensions are weighted are a strategy-layer concern; this class only records that an assessment was made, on what dimension, and by what method.",
+      "iri": "https://xeoontology.org/xeo#TacticAssessment",
+      "layer": "interpretation",
+      "module": "decision"
+    },
+    "Term": {
+      "definition": "A search query string, unique by name. Data sources are attributed on observations that mention the term, never as subtypes of the term.",
+      "iri": "https://xeoontology.org/xeo#Term",
+      "layer": "entity",
+      "module": "core"
+    },
+    "Topic": {
+      "definition": "A named grouping of Terms and/or URLs produced by a clustering or labeling process. Site-scoped. Assignments (inTopic for a Term, about for a URL or Prompt) carry method, model, and confidence.",
+      "iri": "https://xeoontology.org/xeo#Topic",
+      "layer": "derivation",
+      "module": "core"
+    },
+    "URL": {
+      "definition": "A resource address within a Website. Durable identity; the state of the resource at a time is recorded by Fetch observations.",
+      "iri": "https://xeoontology.org/xeo#URL",
+      "layer": "entity",
+      "module": "core"
+    },
+    "Website": {
+      "definition": "A site under observation, identified by its origin. The tenancy scope for URLs, crawls, and topics.",
+      "iri": "https://xeoontology.org/xeo#Website",
+      "layer": "entity",
+      "module": "core"
+    }
+  },
+  "namespace": "https://xeoontology.org/xeo#",
+  "properties": {
+    "address": {
+      "datatype": "xsd:string",
+      "domain": [
+        "URL"
+      ],
+      "iri": "https://xeoontology.org/xeo#address",
+      "layer": "entity",
+      "module": "core"
+    },
+    "algorithm": {
+      "conceptSlot": true,
+      "datatype": "xsd:string",
+      "iri": "https://xeoontology.org/xeo#algorithm",
+      "layer": "episode",
+      "module": "analysis",
+      "schemes": [
+        "algorithm"
+      ]
+    },
+    "anchorText": {
+      "datatype": "xsd:string",
+      "iri": "https://xeoontology.org/xeo#anchorText",
+      "layer": "observation",
+      "module": "core"
+    },
+    "appliesAtScope": {
+      "conceptSlot": true,
+      "datatype": "xsd:string",
+      "iri": "https://xeoontology.org/xeo#appliesAtScope",
+      "layer": "norm",
+      "module": "strategy",
+      "schemes": []
+    },
+    "appliesToConcept": {
+      "conceptSlot": true,
+      "datatype": "xsd:string",
+      "iri": "https://xeoontology.org/xeo#appliesToConcept",
+      "layer": "norm",
+      "module": "strategy",
+      "schemes": []
+    },
+    "approved": {
+      "datatype": "xsd:boolean",
+      "domain": [
+        "Capability"
+      ],
+      "iri": "https://xeoontology.org/xeo#approved",
+      "layer": "interpretation",
+      "module": "decision"
+    },
+    "assignedAt": {
+      "datatype": "xsd:dateTime",
+      "iri": "https://xeoontology.org/xeo#assignedAt",
+      "layer": "derivation",
+      "module": "core"
+    },
+    "atPriority": {
+      "conceptSlot": true,
+      "datatype": "xsd:string",
+      "iri": "https://xeoontology.org/xeo#atPriority",
+      "layer": "interpretation",
+      "module": "decision",
+      "schemes": [
+        "priority"
+      ]
+    },
+    "avgPosition": {
+      "datatype": "xsd:decimal",
+      "iri": "https://xeoontology.org/xeo#avgPosition",
+      "layer": "observation",
+      "module": "core"
+    },
+    "baseline": {
+      "datatype": "xsd:decimal",
+      "domain": [
+        "MetricTarget"
+      ],
+      "iri": "https://xeoontology.org/xeo#baseline",
+      "layer": "observation",
+      "module": "delivery"
+    },
+    "baselineCapturedAt": {
+      "datatype": "xsd:dateTime",
+      "domain": [
+        "MetricTarget"
+      ],
+      "iri": "https://xeoontology.org/xeo#baselineCapturedAt",
+      "layer": "observation",
+      "module": "delivery"
+    },
+    "basis": {
+      "conceptSlot": true,
+      "datatype": "xsd:string",
+      "iri": "https://xeoontology.org/xeo#basis",
+      "layer": "derivation",
+      "module": "analysis",
+      "schemes": [
+        "similarityBasis"
+      ]
+    },
+    "betweenness": {
+      "datatype": "xsd:decimal",
+      "iri": "https://xeoontology.org/xeo#betweenness",
+      "layer": "derivation",
+      "module": "analysis"
+    },
+    "cadence": {
+      "datatype": "xsd:string",
+      "domain": [
+        "Project"
+      ],
+      "iri": "https://xeoontology.org/xeo#cadence",
+      "layer": "entity",
+      "module": "delivery",
+      "schemes": [
+        "cadence"
+      ]
+    },
+    "capturedAt": {
+      "datatype": "xsd:dateTime",
+      "iri": "https://xeoontology.org/xeo#capturedAt",
+      "layer": "episode",
+      "module": "visibility"
+    },
+    "citationRank": {
+      "datatype": "xsd:integer",
+      "iri": "https://xeoontology.org/xeo#citationRank",
+      "layer": "observation",
+      "module": "visibility"
+    },
+    "citationRate": {
+      "datatype": "xsd:decimal",
+      "iri": "https://xeoontology.org/xeo#citationRate",
+      "layer": "observation",
+      "module": "visibility"
+    },
+    "clicks": {
+      "datatype": "xsd:integer",
+      "iri": "https://xeoontology.org/xeo#clicks",
+      "layer": "observation",
+      "module": "core"
+    },
+    "communityId": {
+      "datatype": "xsd:integer",
+      "iri": "https://xeoontology.org/xeo#communityId",
+      "layer": "derivation",
+      "module": "analysis"
+    },
+    "concludedAt": {
+      "datatype": "xsd:dateTime",
+      "domain": [
+        "Experiment"
+      ],
+      "iri": "https://xeoontology.org/xeo#concludedAt",
+      "layer": "episode",
+      "module": "decision"
+    },
+    "confidence": {
+      "datatype": "xsd:decimal",
+      "iri": "https://xeoontology.org/xeo#confidence",
+      "layer": "derivation",
+      "module": "core"
+    },
+    "contentHash": {
+      "datatype": "xsd:string",
+      "iri": "https://xeoontology.org/xeo#contentHash",
+      "layer": "derivation",
+      "module": "core"
+    },
+    "contentType": {
+      "datatype": "xsd:string",
+      "iri": "https://xeoontology.org/xeo#contentType",
+      "layer": "observation",
+      "module": "core"
+    },
+    "crawlDepth": {
+      "datatype": "xsd:integer",
+      "iri": "https://xeoontology.org/xeo#crawlDepth",
+      "layer": "derivation",
+      "module": "core"
+    },
+    "crawler": {
+      "datatype": "xsd:string",
+      "iri": "https://xeoontology.org/xeo#crawler",
+      "layer": "episode",
+      "module": "core"
+    },
+    "crmRecordRef": {
+      "datatype": "xsd:string",
+      "iri": "https://xeoontology.org/xeo#crmRecordRef",
+      "layer": "entity",
+      "module": "engagement"
+    },
+    "ctr": {
+      "datatype": "xsd:decimal",
+      "iri": "https://xeoontology.org/xeo#ctr",
+      "layer": "observation",
+      "module": "core"
+    },
+    "datasetUri": {
+      "datatype": "xsd:string",
+      "iri": "https://xeoontology.org/xeo#datasetUri",
+      "layer": "derivation",
+      "module": "core"
+    },
+    "degree": {
+      "datatype": "xsd:integer",
+      "iri": "https://xeoontology.org/xeo#degree",
+      "layer": "derivation",
+      "module": "analysis"
+    },
+    "deletedAt": {
+      "datatype": "xsd:dateTime",
+      "iri": "https://xeoontology.org/xeo#deletedAt",
+      "layer": "entity",
+      "module": "delivery"
+    },
+    "device": {
+      "datatype": "xsd:string",
+      "iri": "https://xeoontology.org/xeo#device",
+      "layer": "episode",
+      "module": "core",
+      "schemes": [
+        "device"
+      ]
+    },
+    "direction": {
+      "datatype": "xsd:string",
+      "domain": [
+        "MetricTarget"
+      ],
+      "iri": "https://xeoontology.org/xeo#direction",
+      "layer": "interpretation",
+      "module": "delivery"
+    },
+    "durationDays": {
+      "datatype": "xsd:integer",
+      "domain": [
+        "Project"
+      ],
+      "iri": "https://xeoontology.org/xeo#durationDays",
+      "layer": "entity",
+      "module": "delivery"
+    },
+    "effortEstimate": {
+      "conceptSlot": true,
+      "datatype": "xsd:string",
+      "iri": "https://xeoontology.org/xeo#effortEstimate",
+      "layer": "interpretation",
+      "module": "delivery",
+      "schemes": [
+        "effort"
+      ]
+    },
+    "embeddedAt": {
+      "datatype": "xsd:dateTime",
+      "iri": "https://xeoontology.org/xeo#embeddedAt",
+      "layer": "derivation",
+      "module": "core"
+    },
+    "embeddingDim": {
+      "datatype": "xsd:integer",
+      "iri": "https://xeoontology.org/xeo#embeddingDim",
+      "layer": "derivation",
+      "module": "core"
+    },
+    "embeddingModel": {
+      "datatype": "xsd:string",
+      "iri": "https://xeoontology.org/xeo#embeddingModel",
+      "layer": "derivation",
+      "module": "core"
+    },
+    "embeddingRef": {
+      "datatype": "xsd:string",
+      "iri": "https://xeoontology.org/xeo#embeddingRef",
+      "layer": "derivation",
+      "module": "core"
+    },
+    "endedAt": {
+      "datatype": "xsd:dateTime",
+      "iri": "https://xeoontology.org/xeo#endedAt",
+      "layer": "episode",
+      "module": "core"
+    },
+    "engagementType": {
+      "datatype": "xsd:string",
+      "domain": [
+        "Project"
+      ],
+      "iri": "https://xeoontology.org/xeo#engagementType",
+      "layer": "entity",
+      "module": "delivery",
+      "schemes": [
+        "engagementType"
+      ]
+    },
+    "entityRef": {
+      "datatype": "xsd:string",
+      "iri": "https://xeoontology.org/xeo#entityRef",
+      "layer": "entity",
+      "module": "core"
+    },
+    "execution": {
+      "conceptSlot": true,
+      "datatype": "xsd:string",
+      "iri": "https://xeoontology.org/xeo#execution",
+      "layer": "interpretation",
+      "module": "delivery",
+      "schemes": [
+        "execution"
+      ]
+    },
+    "fetchedAt": {
+      "datatype": "xsd:dateTime",
+      "iri": "https://xeoontology.org/xeo#fetchedAt",
+      "layer": "observation",
+      "module": "core"
+    },
+    "fired": {
+      "datatype": "xsd:boolean",
+      "iri": "https://xeoontology.org/xeo#fired",
+      "layer": "derivation",
+      "module": "strategy"
+    },
+    "firstSeenAt": {
+      "datatype": "xsd:dateTime",
+      "iri": "https://xeoontology.org/xeo#firstSeenAt",
+      "layer": "observation",
+      "module": "core"
+    },
+    "frameworkKind": {
+      "conceptSlot": true,
+      "datatype": "xsd:string",
+      "iri": "https://xeoontology.org/xeo#frameworkKind",
+      "layer": "norm",
+      "module": "strategy",
+      "schemes": [
+        "frameworkKind"
+      ]
+    },
+    "gapType": {
+      "conceptSlot": true,
+      "datatype": "xsd:string",
+      "iri": "https://xeoontology.org/xeo#gapType",
+      "layer": "derivation",
+      "module": "decision",
+      "schemes": [
+        "gapType"
+      ]
+    },
+    "h1": {
+      "datatype": "xsd:string",
+      "iri": "https://xeoontology.org/xeo#h1",
+      "layer": "observation",
+      "module": "core"
+    },
+    "halfLife": {
+      "datatype": "xsd:duration",
+      "domain": [
+        "Practice"
+      ],
+      "iri": "https://xeoontology.org/xeo#halfLife",
+      "layer": "norm",
+      "module": "strategy"
+    },
+    "hasRole": {
+      "conceptSlot": true,
+      "datatype": "xsd:string",
+      "iri": "https://xeoontology.org/xeo#hasRole",
+      "layer": "derivation",
+      "module": "strategy",
+      "schemes": []
+    },
+    "impressions": {
+      "datatype": "xsd:integer",
+      "iri": "https://xeoontology.org/xeo#impressions",
+      "layer": "observation",
+      "module": "core"
+    },
+    "indexable": {
+      "datatype": "xsd:boolean",
+      "iri": "https://xeoontology.org/xeo#indexable",
+      "layer": "derivation",
+      "module": "core"
+    },
+    "interventionQuota": {
+      "datatype": "xsd:integer",
+      "domain": [
+        "Project"
+      ],
+      "iri": "https://xeoontology.org/xeo#interventionQuota",
+      "layer": "entity",
+      "module": "delivery"
+    },
+    "isPrimary": {
+      "datatype": "xsd:boolean",
+      "domain": [
+        "MetricTarget"
+      ],
+      "iri": "https://xeoontology.org/xeo#isPrimary",
+      "layer": "interpretation",
+      "module": "delivery"
+    },
+    "lastSeenAt": {
+      "datatype": "xsd:dateTime",
+      "iri": "https://xeoontology.org/xeo#lastSeenAt",
+      "layer": "observation",
+      "module": "core"
+    },
+    "lastSeenCrawlId": {
+      "datatype": "xsd:string",
+      "iri": "https://xeoontology.org/xeo#lastSeenCrawlId",
+      "layer": "observation",
+      "module": "core"
+    },
+    "lift": {
+      "datatype": "xsd:decimal",
+      "domain": [
+        "Outcome"
+      ],
+      "iri": "https://xeoontology.org/xeo#lift",
+      "layer": "observation",
+      "module": "decision"
+    },
+    "linkPosition": {
+      "datatype": "xsd:string",
+      "iri": "https://xeoontology.org/xeo#linkPosition",
+      "layer": "derivation",
+      "module": "core",
+      "schemes": [
+        "linkPosition"
+      ]
+    },
+    "locale": {
+      "datatype": "xsd:string",
+      "iri": "https://xeoontology.org/xeo#locale",
+      "layer": "episode",
+      "module": "core"
+    },
+    "magnitude": {
+      "datatype": "xsd:decimal",
+      "domain": [
+        "Gap"
+      ],
+      "iri": "https://xeoontology.org/xeo#magnitude",
+      "layer": "derivation",
+      "module": "decision"
+    },
+    "magnitudeUnit": {
+      "conceptSlot": true,
+      "datatype": "xsd:string",
+      "iri": "https://xeoontology.org/xeo#magnitudeUnit",
+      "layer": "derivation",
+      "module": "decision",
+      "schemes": [
+        "magnitudeUnit"
+      ]
+    },
+    "mentionRank": {
+      "datatype": "xsd:integer",
+      "iri": "https://xeoontology.org/xeo#mentionRank",
+      "layer": "observation",
+      "module": "visibility"
+    },
+    "mentionRate": {
+      "datatype": "xsd:decimal",
+      "iri": "https://xeoontology.org/xeo#mentionRate",
+      "layer": "observation",
+      "module": "visibility"
+    },
+    "metaDescription": {
+      "datatype": "xsd:string",
+      "iri": "https://xeoontology.org/xeo#metaDescription",
+      "layer": "observation",
+      "module": "core"
+    },
+    "method": {
+      "datatype": "xsd:string",
+      "iri": "https://xeoontology.org/xeo#method",
+      "layer": "interpretation",
+      "module": "decision"
+    },
+    "metric": {
+      "datatype": "xsd:string",
+      "domain": [
+        "MetricTarget"
+      ],
+      "iri": "https://xeoontology.org/xeo#metric",
+      "layer": "interpretation",
+      "module": "delivery",
+      "schemes": [
+        "objectiveMetric"
+      ]
+    },
+    "model": {
+      "datatype": "xsd:string",
+      "iri": "https://xeoontology.org/xeo#model",
+      "layer": "episode",
+      "module": "visibility"
+    },
+    "modelVersion": {
+      "datatype": "xsd:string",
+      "iri": "https://xeoontology.org/xeo#modelVersion",
+      "layer": "episode",
+      "module": "visibility"
+    },
+    "name": {
+      "datatype": "xsd:string",
+      "iri": "https://xeoontology.org/xeo#name",
+      "layer": "entity",
+      "module": "core"
+    },
+    "occurredAt": {
+      "datatype": "xsd:dateTime",
+      "iri": "https://xeoontology.org/xeo#occurredAt",
+      "layer": "episode",
+      "module": "engagement"
+    },
+    "onDimension": {
+      "conceptSlot": true,
+      "datatype": "xsd:string",
+      "iri": "https://xeoontology.org/xeo#onDimension",
+      "layer": "interpretation",
+      "module": "decision",
+      "schemes": []
+    },
+    "organizationKind": {
+      "conceptSlot": true,
+      "datatype": "xsd:string",
+      "iri": "https://xeoontology.org/xeo#organizationKind",
+      "layer": "entity",
+      "module": "delivery",
+      "schemes": [
+        "organizationKind"
+      ]
+    },
+    "origin": {
+      "datatype": "xsd:string",
+      "domain": [
+        "Website"
+      ],
+      "iri": "https://xeoontology.org/xeo#origin",
+      "layer": "entity",
+      "module": "core"
+    },
+    "pageRank": {
+      "datatype": "xsd:decimal",
+      "iri": "https://xeoontology.org/xeo#pageRank",
+      "layer": "derivation",
+      "module": "analysis"
+    },
+    "parameters": {
+      "datatype": "xsd:string",
+      "domain": [
+        "AlgorithmRun"
+      ],
+      "iri": "https://xeoontology.org/xeo#parameters",
+      "layer": "episode",
+      "module": "analysis"
+    },
+    "periodEnd": {
+      "datatype": "xsd:date",
+      "iri": "https://xeoontology.org/xeo#periodEnd",
+      "layer": "derivation",
+      "module": "core"
+    },
+    "periodStart": {
+      "datatype": "xsd:date",
+      "iri": "https://xeoontology.org/xeo#periodStart",
+      "layer": "derivation",
+      "module": "core"
+    },
+    "position": {
+      "datatype": "xsd:integer",
+      "iri": "https://xeoontology.org/xeo#position",
+      "layer": "observation",
+      "module": "core"
+    },
+    "practiceKind": {
+      "datatype": "xsd:string",
+      "domain": [
+        "Practice"
+      ],
+      "iri": "https://xeoontology.org/xeo#practiceKind",
+      "layer": "norm",
+      "module": "strategy",
+      "schemes": [
+        "practiceKind"
+      ]
+    },
+    "practiceOutcome": {
+      "datatype": "xsd:string",
+      "iri": "https://xeoontology.org/xeo#practiceOutcome",
+      "layer": "derivation",
+      "module": "strategy",
+      "schemes": [
+        "practiceOutcome"
+      ]
+    },
+    "projection": {
+      "datatype": "xsd:string",
+      "domain": [
+        "AlgorithmRun"
+      ],
+      "iri": "https://xeoontology.org/xeo#projection",
+      "layer": "episode",
+      "module": "analysis"
+    },
+    "ranAt": {
+      "datatype": "xsd:dateTime",
+      "iri": "https://xeoontology.org/xeo#ranAt",
+      "layer": "episode",
+      "module": "analysis"
+    },
+    "rationale": {
+      "datatype": "xsd:string",
+      "domain": [
+        "Practice"
+      ],
+      "iri": "https://xeoontology.org/xeo#rationale",
+      "layer": "norm",
+      "module": "strategy"
+    },
+    "rel": {
+      "datatype": "xsd:string",
+      "iri": "https://xeoontology.org/xeo#rel",
+      "layer": "observation",
+      "module": "core"
+    },
+    "responses": {
+      "datatype": "xsd:integer",
+      "iri": "https://xeoontology.org/xeo#responses",
+      "layer": "observation",
+      "module": "visibility"
+    },
+    "result": {
+      "datatype": "xsd:string",
+      "domain": [
+        "Outcome"
+      ],
+      "iri": "https://xeoontology.org/xeo#result",
+      "layer": "observation",
+      "module": "decision",
+      "schemes": [
+        "outcomeResult"
+      ]
+    },
+    "resultReason": {
+      "datatype": "xsd:string",
+      "domain": [
+        "Outcome"
+      ],
+      "iri": "https://xeoontology.org/xeo#resultReason",
+      "layer": "observation",
+      "module": "decision",
+      "schemes": [
+        "outcomeResultReason"
+      ]
+    },
+    "resultType": {
+      "datatype": "xsd:string",
+      "iri": "https://xeoontology.org/xeo#resultType",
+      "layer": "observation",
+      "module": "core",
+      "schemes": [
+        "serpResultType"
+      ]
+    },
+    "resultsWindowDays": {
+      "datatype": "xsd:integer",
+      "domain": [
+        "Objective"
+      ],
+      "iri": "https://xeoontology.org/xeo#resultsWindowDays",
+      "layer": "interpretation",
+      "module": "delivery"
+    },
+    "robotsMeta": {
+      "datatype": "xsd:string",
+      "iri": "https://xeoontology.org/xeo#robotsMeta",
+      "layer": "observation",
+      "module": "core"
+    },
+    "score": {
+      "datatype": "xsd:decimal",
+      "domain": [
+        "TacticAssessment"
+      ],
+      "iri": "https://xeoontology.org/xeo#score",
+      "layer": "interpretation",
+      "module": "decision"
+    },
+    "sentiment": {
+      "datatype": "xsd:string",
+      "iri": "https://xeoontology.org/xeo#sentiment",
+      "layer": "derivation",
+      "module": "visibility",
+      "schemes": [
+        "sentiment"
+      ]
+    },
+    "similarity": {
+      "datatype": "xsd:decimal",
+      "iri": "https://xeoontology.org/xeo#similarity",
+      "layer": "derivation",
+      "module": "analysis"
+    },
+    "source": {
+      "datatype": "xsd:string",
+      "iri": "https://xeoontology.org/xeo#source",
+      "layer": "norm",
+      "module": "strategy",
+      "schemes": [
+        "practiceSource"
+      ]
+    },
+    "stageOrder": {
+      "datatype": "xsd:integer",
+      "domain": [
+        "Stage"
+      ],
+      "iri": "https://xeoontology.org/xeo#stageOrder",
+      "layer": "norm",
+      "module": "strategy"
+    },
+    "startedAt": {
+      "datatype": "xsd:dateTime",
+      "iri": "https://xeoontology.org/xeo#startedAt",
+      "layer": "episode",
+      "module": "core"
+    },
+    "statement": {
+      "datatype": "xsd:string",
+      "domain": [
+        "Feedback",
+        "Gap",
+        "Objective",
+        "Practice",
+        "Recommendation"
+      ],
+      "iri": "https://xeoontology.org/xeo#statement",
+      "layer": "norm",
+      "module": "strategy"
+    },
+    "status": {
+      "datatype": "xsd:string",
+      "iri": "https://xeoontology.org/xeo#status",
+      "layer": "norm",
+      "module": "strategy",
+      "schemes": [
+        "experimentStatus",
+        "practiceStatus",
+        "recommendationStatus"
+      ]
+    },
+    "statusCode": {
+      "datatype": "xsd:integer",
+      "iri": "https://xeoontology.org/xeo#statusCode",
+      "layer": "observation",
+      "module": "core"
+    },
+    "syncedAt": {
+      "datatype": "xsd:dateTime",
+      "iri": "https://xeoontology.org/xeo#syncedAt",
+      "layer": "derivation",
+      "module": "core"
+    },
+    "targetKind": {
+      "datatype": "xsd:string",
+      "domain": [
+        "MetricTarget"
+      ],
+      "iri": "https://xeoontology.org/xeo#targetKind",
+      "layer": "interpretation",
+      "module": "delivery",
+      "schemes": [
+        "targetKind"
+      ]
+    },
+    "targetValue": {
+      "datatype": "xsd:decimal",
+      "domain": [
+        "MetricTarget"
+      ],
+      "iri": "https://xeoontology.org/xeo#targetValue",
+      "layer": "interpretation",
+      "module": "delivery"
+    },
+    "test": {
+      "datatype": "xsd:string",
+      "domain": [
+        "Stage"
+      ],
+      "iri": "https://xeoontology.org/xeo#test",
+      "layer": "norm",
+      "module": "strategy"
+    },
+    "text": {
+      "datatype": "xsd:string",
+      "iri": "https://xeoontology.org/xeo#text",
+      "layer": "entity",
+      "module": "visibility"
+    },
+    "title": {
+      "datatype": "xsd:string",
+      "iri": "https://xeoontology.org/xeo#title",
+      "layer": "observation",
+      "module": "core"
+    },
+    "verdict": {
+      "conceptSlot": true,
+      "datatype": "xsd:string",
+      "iri": "https://xeoontology.org/xeo#verdict",
+      "layer": "interpretation",
+      "module": "decision",
+      "schemes": [
+        "feedbackVerdict",
+        "gapVerdict"
+      ]
+    },
+    "webSearchEnabled": {
+      "datatype": "xsd:boolean",
+      "domain": [
+        "LLMResponse"
+      ],
+      "iri": "https://xeoontology.org/xeo#webSearchEnabled",
+      "layer": "episode",
+      "module": "visibility"
+    },
+    "websiteId": {
+      "datatype": "xsd:string",
+      "iri": "https://xeoontology.org/xeo#websiteId",
+      "layer": "entity",
+      "module": "core"
+    },
+    "wordCount": {
+      "datatype": "xsd:integer",
+      "iri": "https://xeoontology.org/xeo#wordCount",
+      "layer": "derivation",
+      "module": "core"
+    }
+  },
+  "relationshipTypes": {
+    "ABOUT": {
+      "domain": [
+        "Prompt",
+        "Term",
+        "URL"
+      ],
+      "iri": "https://xeoontology.org/xeo#about",
+      "layer": "derivation",
+      "module": "core",
+      "range": [
+        "Entity",
+        "Topic"
+      ],
+      "term": "about"
+    },
+    "ABOUT_TOPIC": {
+      "domain": [
+        "Campaign"
+      ],
+      "iri": "https://xeoontology.org/xeo#aboutTopic",
+      "layer": "entity",
+      "module": "delivery",
+      "range": [
+        "Topic"
+      ],
+      "term": "aboutTopic"
+    },
+    "ACTIVATES": {
+      "domain": [
+        "Campaign",
+        "Organization",
+        "Project"
+      ],
+      "iri": "https://xeoontology.org/xeo#activates",
+      "layer": "norm",
+      "module": "strategy",
+      "range": [
+        "Framework",
+        "Playbook"
+      ],
+      "term": "activates"
+    },
+    "ADDRESSABLE_BY": {
+      "domain": [
+        "Gap"
+      ],
+      "iri": "https://xeoontology.org/xeo#addressableBy",
+      "layer": "interpretation",
+      "module": "decision",
+      "range": [
+        "Tactic"
+      ],
+      "term": "addressableBy"
+    },
+    "ALGORITHM": {
+      "conceptSlot": true,
+      "domain": [
+        "AlgorithmRun"
+      ],
+      "iri": "https://xeoontology.org/xeo#algorithm",
+      "layer": "episode",
+      "module": "analysis",
+      "range": [
+        "skos:Concept"
+      ],
+      "schemes": [
+        "algorithm"
+      ],
+      "term": "algorithm"
+    },
+    "APPLIED_PRACTICE": {
+      "domain": [
+        "Recommendation"
+      ],
+      "iri": "https://xeoontology.org/xeo#appliedPractice",
+      "layer": "derivation",
+      "module": "strategy",
+      "range": [
+        "Practice"
+      ],
+      "subPropertyOf": [
+        "evaluatedPractice"
+      ],
+      "term": "appliedPractice"
+    },
+    "APPLIES_AT_SCOPE": {
+      "conceptSlot": true,
+      "domain": [],
+      "iri": "https://xeoontology.org/xeo#appliesAtScope",
+      "layer": "norm",
+      "module": "strategy",
+      "range": [
+        "skos:Concept"
+      ],
+      "schemes": [],
+      "term": "appliesAtScope"
+    },
+    "APPLIES_TO": {
+      "domain": [
+        "Practice"
+      ],
+      "iri": "https://xeoontology.org/xeo#appliesTo",
+      "layer": "norm",
+      "module": "strategy",
+      "range": [
+        "Intervention",
+        "Tactic",
+        "URL",
+        "skos:Concept"
+      ],
+      "term": "appliesTo"
+    },
+    "APPLIES_TO_CONCEPT": {
+      "conceptSlot": true,
+      "domain": [
+        "Practice"
+      ],
+      "iri": "https://xeoontology.org/xeo#appliesToConcept",
+      "layer": "norm",
+      "module": "strategy",
+      "range": [
+        "skos:Concept"
+      ],
+      "schemes": [],
+      "subPropertyOf": [
+        "appliesTo"
+      ],
+      "term": "appliesToConcept"
+    },
+    "ASSESSED_AS": {
+      "domain": [
+        "Recommendation",
+        "Tactic"
+      ],
+      "iri": "https://xeoontology.org/xeo#assessedAs",
+      "layer": "interpretation",
+      "module": "decision",
+      "range": [
+        "TacticAssessment"
+      ],
+      "term": "assessedAs"
+    },
+    "ATTRIBUTED_RESPONSE": {
+      "domain": [
+        "ConversionEvent"
+      ],
+      "iri": "https://xeoontology.org/xeo#attributedResponse",
+      "layer": "interpretation",
+      "module": "engagement",
+      "range": [
+        "LLMResponse"
+      ],
+      "term": "attributedResponse"
+    },
+    "AT_PRIORITY": {
+      "conceptSlot": true,
+      "domain": [
+        "Recommendation"
+      ],
+      "iri": "https://xeoontology.org/xeo#atPriority",
+      "layer": "interpretation",
+      "module": "decision",
+      "range": [
+        "skos:Concept"
+      ],
+      "schemes": [
+        "priority"
+      ],
+      "term": "atPriority"
+    },
+    "AT_STAGE": {
+      "domain": [
+        "Diagnostic",
+        "Gap",
+        "Tactic"
+      ],
+      "iri": "https://xeoontology.org/xeo#atStage",
+      "layer": "norm",
+      "module": "strategy",
+      "range": [
+        "Stage"
+      ],
+      "term": "atStage"
+    },
+    "AUTHORED_BY": {
+      "domain": [
+        "Practice"
+      ],
+      "iri": "https://xeoontology.org/xeo#authoredBy",
+      "layer": "norm",
+      "module": "strategy",
+      "range": [],
+      "term": "authoredBy"
+    },
+    "BASIS": {
+      "conceptSlot": true,
+      "domain": [],
+      "iri": "https://xeoontology.org/xeo#basis",
+      "layer": "derivation",
+      "module": "analysis",
+      "range": [
+        "skos:Concept"
+      ],
+      "schemes": [
+        "similarityBasis"
+      ],
+      "term": "basis"
+    },
+    "CAPTURED_BY": {
+      "domain": [
+        "ConversionEvent"
+      ],
+      "iri": "https://xeoontology.org/xeo#capturedBy",
+      "layer": "observation",
+      "module": "engagement",
+      "range": [
+        "ConversionPoint"
+      ],
+      "term": "capturedBy"
+    },
+    "CHILD_OF": {
+      "domain": [
+        "Topic"
+      ],
+      "iri": "https://xeoontology.org/xeo#childOf",
+      "layer": "derivation",
+      "module": "core",
+      "range": [
+        "Topic"
+      ],
+      "term": "childOf"
+    },
+    "CITES": {
+      "domain": [
+        "LLMResponse"
+      ],
+      "iri": "https://xeoontology.org/xeo#cites",
+      "layer": "observation",
+      "module": "visibility",
+      "range": [
+        "URL"
+      ],
+      "term": "cites"
+    },
+    "CLIENT_OF": {
+      "domain": [
+        "Organization"
+      ],
+      "iri": "https://xeoontology.org/xeo#clientOf",
+      "layer": "entity",
+      "module": "delivery",
+      "range": [
+        "Organization"
+      ],
+      "term": "clientOf"
+    },
+    "CLOSES_GAP": {
+      "domain": [
+        "Recommendation"
+      ],
+      "iri": "https://xeoontology.org/xeo#closesGap",
+      "layer": "interpretation",
+      "module": "decision",
+      "range": [
+        "Gap"
+      ],
+      "term": "closesGap"
+    },
+    "COMPETES_WITH": {
+      "domain": [
+        "Brand",
+        "Domain",
+        "Website"
+      ],
+      "iri": "https://xeoontology.org/xeo#competesWith",
+      "layer": "interpretation",
+      "module": "visibility",
+      "range": [
+        "Brand",
+        "Domain",
+        "Website"
+      ],
+      "term": "competesWith"
+    },
+    "COMPUTED_BY": {
+      "domain": [
+        "Experiment",
+        "Prompt",
+        "Term",
+        "Topic",
+        "URL"
+      ],
+      "iri": "https://xeoontology.org/xeo#computedBy",
+      "layer": "derivation",
+      "module": "analysis",
+      "range": [
+        "AlgorithmRun"
+      ],
+      "term": "computedBy"
+    },
+    "CONFOUNDED_BY": {
+      "domain": [
+        "Experiment",
+        "Outcome"
+      ],
+      "iri": "https://xeoontology.org/xeo#confoundedBy",
+      "layer": "interpretation",
+      "module": "decision",
+      "range": [
+        "ExternalEvent"
+      ],
+      "term": "confoundedBy"
+    },
+    "CONSTRAINS": {
+      "domain": [
+        "Practice"
+      ],
+      "iri": "https://xeoontology.org/xeo#constrains",
+      "layer": "norm",
+      "module": "strategy",
+      "range": [
+        "Recommendation"
+      ],
+      "term": "constrains"
+    },
+    "COVERS_TERM": {
+      "domain": [
+        "Campaign"
+      ],
+      "iri": "https://xeoontology.org/xeo#coversTerm",
+      "layer": "entity",
+      "module": "delivery",
+      "range": [
+        "Term"
+      ],
+      "term": "coversTerm"
+    },
+    "COVERS_URL": {
+      "domain": [
+        "Campaign"
+      ],
+      "iri": "https://xeoontology.org/xeo#coversUrl",
+      "layer": "entity",
+      "module": "delivery",
+      "range": [
+        "URL"
+      ],
+      "term": "coversUrl"
+    },
+    "EFFORT_ESTIMATE": {
+      "conceptSlot": true,
+      "domain": [
+        "Recommendation"
+      ],
+      "iri": "https://xeoontology.org/xeo#effortEstimate",
+      "layer": "interpretation",
+      "module": "delivery",
+      "range": [
+        "skos:Concept"
+      ],
+      "schemes": [
+        "effort"
+      ],
+      "term": "effortEstimate"
+    },
+    "EVALUATED_PRACTICE": {
+      "domain": [
+        "Recommendation"
+      ],
+      "iri": "https://xeoontology.org/xeo#evaluatedPractice",
+      "layer": "derivation",
+      "module": "strategy",
+      "range": [
+        "Practice"
+      ],
+      "term": "evaluatedPractice"
+    },
+    "EVIDENCED_BY": {
+      "domain": [
+        "Gap"
+      ],
+      "iri": "https://xeoontology.org/xeo#evidencedBy",
+      "layer": "derivation",
+      "module": "decision",
+      "range": [
+        "LLMResponse",
+        "Prompt",
+        "SerpSnapshot",
+        "Term",
+        "URL"
+      ],
+      "term": "evidencedBy"
+    },
+    "EXECUTION": {
+      "conceptSlot": true,
+      "domain": [
+        "Recommendation"
+      ],
+      "iri": "https://xeoontology.org/xeo#execution",
+      "layer": "interpretation",
+      "module": "delivery",
+      "range": [
+        "skos:Concept"
+      ],
+      "schemes": [
+        "execution"
+      ],
+      "term": "execution"
+    },
+    "FANS_OUT_TO": {
+      "domain": [
+        "Prompt"
+      ],
+      "iri": "https://xeoontology.org/xeo#fansOutTo",
+      "layer": "observation",
+      "module": "visibility",
+      "range": [
+        "Term"
+      ],
+      "term": "fansOutTo"
+    },
+    "FEEDBACK_ON": {
+      "domain": [
+        "Feedback"
+      ],
+      "iri": "https://xeoontology.org/xeo#feedbackOn",
+      "layer": "interpretation",
+      "module": "decision",
+      "range": [
+        "Gap",
+        "Recommendation"
+      ],
+      "term": "feedbackOn"
+    },
+    "FETCHED": {
+      "domain": [
+        "Crawl"
+      ],
+      "iri": "https://xeoontology.org/xeo#fetched",
+      "layer": "observation",
+      "module": "core",
+      "range": [
+        "URL"
+      ],
+      "term": "fetched"
+    },
+    "FRAMEWORK_KIND": {
+      "conceptSlot": true,
+      "domain": [
+        "Framework"
+      ],
+      "iri": "https://xeoontology.org/xeo#frameworkKind",
+      "layer": "norm",
+      "module": "strategy",
+      "range": [
+        "skos:Concept"
+      ],
+      "schemes": [
+        "frameworkKind"
+      ],
+      "term": "frameworkKind"
+    },
+    "GAP_TYPE": {
+      "conceptSlot": true,
+      "domain": [
+        "Gap"
+      ],
+      "iri": "https://xeoontology.org/xeo#gapType",
+      "layer": "derivation",
+      "module": "decision",
+      "range": [
+        "skos:Concept"
+      ],
+      "schemes": [
+        "gapType"
+      ],
+      "term": "gapType"
+    },
+    "HAS_CAMPAIGN": {
+      "domain": [
+        "Project"
+      ],
+      "iri": "https://xeoontology.org/xeo#hasCampaign",
+      "layer": "entity",
+      "module": "delivery",
+      "range": [
+        "Campaign"
+      ],
+      "term": "hasCampaign"
+    },
+    "HAS_CANONICAL": {
+      "domain": [
+        "URL"
+      ],
+      "iri": "https://xeoontology.org/xeo#hasCanonical",
+      "layer": "observation",
+      "module": "core",
+      "range": [
+        "URL"
+      ],
+      "term": "hasCanonical"
+    },
+    "HAS_CONTROL": {
+      "domain": [
+        "Experiment"
+      ],
+      "iri": "https://xeoontology.org/xeo#hasControl",
+      "layer": "episode",
+      "module": "decision",
+      "range": [
+        "Term",
+        "URL"
+      ],
+      "term": "hasControl"
+    },
+    "HAS_CONVERSION_POINT": {
+      "domain": [
+        "URL"
+      ],
+      "iri": "https://xeoontology.org/xeo#hasConversionPoint",
+      "layer": "observation",
+      "module": "engagement",
+      "range": [
+        "ConversionPoint"
+      ],
+      "term": "hasConversionPoint"
+    },
+    "HAS_CRAWL": {
+      "domain": [
+        "Website"
+      ],
+      "iri": "https://xeoontology.org/xeo#hasCrawl",
+      "layer": "episode",
+      "module": "core",
+      "range": [
+        "Crawl"
+      ],
+      "term": "hasCrawl"
+    },
+    "HAS_OBJECTIVE": {
+      "domain": [
+        "Campaign"
+      ],
+      "iri": "https://xeoontology.org/xeo#hasObjective",
+      "layer": "interpretation",
+      "module": "delivery",
+      "range": [
+        "Objective"
+      ],
+      "term": "hasObjective"
+    },
+    "HAS_PROJECT": {
+      "domain": [
+        "Website"
+      ],
+      "iri": "https://xeoontology.org/xeo#hasProject",
+      "layer": "entity",
+      "module": "delivery",
+      "range": [
+        "Project"
+      ],
+      "term": "hasProject"
+    },
+    "HAS_RESPONSE": {
+      "domain": [
+        "Prompt"
+      ],
+      "iri": "https://xeoontology.org/xeo#hasResponse",
+      "layer": "episode",
+      "module": "visibility",
+      "range": [
+        "LLMResponse"
+      ],
+      "term": "hasResponse"
+    },
+    "HAS_RESULT": {
+      "domain": [
+        "SerpSnapshot"
+      ],
+      "iri": "https://xeoontology.org/xeo#hasResult",
+      "layer": "observation",
+      "module": "core",
+      "range": [
+        "URL"
+      ],
+      "term": "hasResult"
+    },
+    "HAS_ROLE": {
+      "conceptSlot": true,
+      "domain": [
+        "URL"
+      ],
+      "iri": "https://xeoontology.org/xeo#hasRole",
+      "layer": "derivation",
+      "module": "strategy",
+      "range": [
+        "skos:Concept"
+      ],
+      "schemes": [],
+      "term": "hasRole"
+    },
+    "HAS_SNAPSHOT": {
+      "domain": [
+        "Term"
+      ],
+      "iri": "https://xeoontology.org/xeo#hasSnapshot",
+      "layer": "episode",
+      "module": "core",
+      "range": [
+        "SerpSnapshot"
+      ],
+      "term": "hasSnapshot"
+    },
+    "HAS_STAGE": {
+      "domain": [
+        "Framework"
+      ],
+      "iri": "https://xeoontology.org/xeo#hasStage",
+      "layer": "norm",
+      "module": "strategy",
+      "range": [
+        "Stage"
+      ],
+      "term": "hasStage"
+    },
+    "HAS_TARGET": {
+      "domain": [
+        "Objective"
+      ],
+      "iri": "https://xeoontology.org/xeo#hasTarget",
+      "layer": "interpretation",
+      "module": "delivery",
+      "range": [
+        "MetricTarget"
+      ],
+      "term": "hasTarget"
+    },
+    "HAS_WEBSITE": {
+      "domain": [
+        "Brand"
+      ],
+      "iri": "https://xeoontology.org/xeo#hasWebsite",
+      "layer": "entity",
+      "module": "visibility",
+      "range": [
+        "Website"
+      ],
+      "term": "hasWebsite"
+    },
+    "HOLDS_CAPABILITY": {
+      "domain": [
+        "Organization"
+      ],
+      "iri": "https://xeoontology.org/xeo#holdsCapability",
+      "layer": "entity",
+      "module": "delivery",
+      "range": [
+        "Capability"
+      ],
+      "term": "holdsCapability"
+    },
+    "IMPLEMENTED_AS": {
+      "domain": [
+        "Recommendation"
+      ],
+      "iri": "https://xeoontology.org/xeo#implementedAs",
+      "layer": "episode",
+      "module": "decision",
+      "range": [
+        "Experiment"
+      ],
+      "term": "implementedAs"
+    },
+    "INCLUDES": {
+      "domain": [
+        "Framework",
+        "Playbook"
+      ],
+      "iri": "https://xeoontology.org/xeo#includes",
+      "layer": "entity",
+      "module": "strategy",
+      "range": [
+        "Diagnostic",
+        "Practice",
+        "Tactic"
+      ],
+      "term": "includes"
+    },
+    "IN_CONTEXT": {
+      "domain": [
+        "Experiment"
+      ],
+      "iri": "https://xeoontology.org/xeo#inContext",
+      "layer": "observation",
+      "module": "decision",
+      "range": [
+        "Gap"
+      ],
+      "term": "inContext"
+    },
+    "IN_INTERVENTION": {
+      "domain": [
+        "Tactic"
+      ],
+      "iri": "https://xeoontology.org/xeo#inIntervention",
+      "layer": "derivation",
+      "module": "decision",
+      "range": [
+        "Intervention"
+      ],
+      "schemes": [
+        "intervention"
+      ],
+      "term": "inIntervention"
+    },
+    "IN_SCOPE": {
+      "domain": [
+        "Project"
+      ],
+      "iri": "https://xeoontology.org/xeo#inScope",
+      "layer": "entity",
+      "module": "delivery",
+      "range": [
+        "Intervention",
+        "Tactic"
+      ],
+      "term": "inScope"
+    },
+    "IN_TOPIC": {
+      "domain": [
+        "Term"
+      ],
+      "iri": "https://xeoontology.org/xeo#inTopic",
+      "layer": "derivation",
+      "module": "core",
+      "range": [
+        "Topic"
+      ],
+      "term": "inTopic"
+    },
+    "ISSUED_FOR": {
+      "domain": [
+        "Recommendation"
+      ],
+      "iri": "https://xeoontology.org/xeo#issuedFor",
+      "layer": "interpretation",
+      "module": "delivery",
+      "range": [
+        "Campaign"
+      ],
+      "term": "issuedFor"
+    },
+    "LEARNED_FROM": {
+      "domain": [
+        "Practice"
+      ],
+      "iri": "https://xeoontology.org/xeo#learnedFrom",
+      "layer": "derivation",
+      "module": "strategy",
+      "range": [
+        "Experiment",
+        "Outcome"
+      ],
+      "term": "learnedFrom"
+    },
+    "LINKS_TO": {
+      "domain": [
+        "URL"
+      ],
+      "iri": "https://xeoontology.org/xeo#linksTo",
+      "layer": "observation",
+      "module": "core",
+      "range": [
+        "URL"
+      ],
+      "term": "linksTo"
+    },
+    "MAGNITUDE_UNIT": {
+      "conceptSlot": true,
+      "domain": [
+        "Gap"
+      ],
+      "iri": "https://xeoontology.org/xeo#magnitudeUnit",
+      "layer": "derivation",
+      "module": "decision",
+      "range": [
+        "skos:Concept"
+      ],
+      "schemes": [
+        "magnitudeUnit"
+      ],
+      "term": "magnitudeUnit"
+    },
+    "MEASURES": {
+      "domain": [
+        "Experiment"
+      ],
+      "iri": "https://xeoontology.org/xeo#measures",
+      "layer": "observation",
+      "module": "delivery",
+      "range": [
+        "MetricTarget"
+      ],
+      "term": "measures"
+    },
+    "MENTIONS": {
+      "domain": [
+        "LLMResponse"
+      ],
+      "iri": "https://xeoontology.org/xeo#mentions",
+      "layer": "observation",
+      "module": "visibility",
+      "range": [
+        "Brand"
+      ],
+      "term": "mentions"
+    },
+    "NEXT_STAGE": {
+      "domain": [
+        "Stage"
+      ],
+      "iri": "https://xeoontology.org/xeo#nextStage",
+      "layer": "norm",
+      "module": "strategy",
+      "range": [
+        "Stage"
+      ],
+      "term": "nextStage"
+    },
+    "ON_DIMENSION": {
+      "conceptSlot": true,
+      "domain": [
+        "TacticAssessment"
+      ],
+      "iri": "https://xeoontology.org/xeo#onDimension",
+      "layer": "interpretation",
+      "module": "decision",
+      "range": [
+        "skos:Concept"
+      ],
+      "schemes": [],
+      "term": "onDimension"
+    },
+    "ON_DOMAIN": {
+      "domain": [
+        "URL"
+      ],
+      "iri": "https://xeoontology.org/xeo#onDomain",
+      "layer": "entity",
+      "module": "core",
+      "range": [
+        "Domain"
+      ],
+      "term": "onDomain"
+    },
+    "ON_ENGINE": {
+      "domain": [],
+      "iri": "https://xeoontology.org/xeo#onEngine",
+      "layer": "episode",
+      "module": "visibility",
+      "range": [
+        "Engine"
+      ],
+      "term": "onEngine"
+    },
+    "ORGANIZATION_KIND": {
+      "conceptSlot": true,
+      "domain": [
+        "Organization"
+      ],
+      "iri": "https://xeoontology.org/xeo#organizationKind",
+      "layer": "entity",
+      "module": "delivery",
+      "range": [
+        "skos:Concept"
+      ],
+      "schemes": [
+        "organizationKind"
+      ],
+      "term": "organizationKind"
+    },
+    "OWNS": {
+      "domain": [
+        "Organization"
+      ],
+      "iri": "https://xeoontology.org/xeo#owns",
+      "layer": "entity",
+      "module": "delivery",
+      "range": [
+        "Brand",
+        "Website"
+      ],
+      "term": "owns"
+    },
+    "PART_OF": {
+      "domain": [
+        "URL"
+      ],
+      "iri": "https://xeoontology.org/xeo#partOf",
+      "layer": "entity",
+      "module": "core",
+      "range": [
+        "Website"
+      ],
+      "term": "partOf"
+    },
+    "PRECEDENT_FOR": {
+      "domain": [
+        "Experiment"
+      ],
+      "iri": "https://xeoontology.org/xeo#precedentFor",
+      "layer": "derivation",
+      "module": "analysis",
+      "range": [
+        "Experiment"
+      ],
+      "subPropertyOf": [
+        "similarTo"
+      ],
+      "term": "precedentFor"
+    },
+    "PRODUCED_OUTCOME": {
+      "domain": [
+        "Experiment"
+      ],
+      "iri": "https://xeoontology.org/xeo#producedOutcome",
+      "layer": "observation",
+      "module": "decision",
+      "range": [
+        "Outcome"
+      ],
+      "term": "producedOutcome"
+    },
+    "RANKS_FOR": {
+      "domain": [
+        "URL"
+      ],
+      "iri": "https://xeoontology.org/xeo#ranksFor",
+      "layer": "observation",
+      "module": "core",
+      "range": [
+        "Term"
+      ],
+      "term": "ranksFor"
+    },
+    "RECOMMENDS": {
+      "domain": [
+        "Recommendation"
+      ],
+      "iri": "https://xeoontology.org/xeo#recommends",
+      "layer": "interpretation",
+      "module": "decision",
+      "range": [
+        "Tactic"
+      ],
+      "term": "recommends"
+    },
+    "REDIRECTS_TO": {
+      "domain": [
+        "URL"
+      ],
+      "iri": "https://xeoontology.org/xeo#redirectsTo",
+      "layer": "observation",
+      "module": "core",
+      "range": [
+        "URL"
+      ],
+      "term": "redirectsTo"
+    },
+    "RELATED_TERM": {
+      "domain": [
+        "SerpSnapshot"
+      ],
+      "iri": "https://xeoontology.org/xeo#relatedTerm",
+      "layer": "observation",
+      "module": "core",
+      "range": [
+        "Term"
+      ],
+      "term": "relatedTerm"
+    },
+    "RELATIVE_TO": {
+      "domain": [
+        "Gap"
+      ],
+      "iri": "https://xeoontology.org/xeo#relativeTo",
+      "layer": "interpretation",
+      "module": "decision",
+      "range": [
+        "Brand",
+        "Domain",
+        "URL"
+      ],
+      "term": "relativeTo"
+    },
+    "REQUIRES_CAPABILITY": {
+      "domain": [
+        "Tactic"
+      ],
+      "iri": "https://xeoontology.org/xeo#requiresCapability",
+      "layer": "entity",
+      "module": "decision",
+      "range": [
+        "Capability"
+      ],
+      "term": "requiresCapability"
+    },
+    "REVEALED_IN": {
+      "domain": [
+        "Gap"
+      ],
+      "iri": "https://xeoontology.org/xeo#revealedIn",
+      "layer": "episode",
+      "module": "decision",
+      "range": [
+        "DiagnosticRun"
+      ],
+      "term": "revealedIn"
+    },
+    "REVEALS": {
+      "domain": [
+        "Diagnostic"
+      ],
+      "iri": "https://xeoontology.org/xeo#reveals",
+      "layer": "interpretation",
+      "module": "decision",
+      "range": [
+        "Gap"
+      ],
+      "term": "reveals"
+    },
+    "RUN_OF": {
+      "domain": [
+        "DiagnosticRun"
+      ],
+      "iri": "https://xeoontology.org/xeo#runOf",
+      "layer": "episode",
+      "module": "decision",
+      "range": [
+        "Diagnostic"
+      ],
+      "term": "runOf"
+    },
+    "SCOPED_TO": {
+      "domain": [
+        "Topic"
+      ],
+      "iri": "https://xeoontology.org/xeo#scopedTo",
+      "layer": "entity",
+      "module": "core",
+      "range": [
+        "Website"
+      ],
+      "term": "scopedTo"
+    },
+    "SIMILAR_TO": {
+      "domain": [
+        "Experiment",
+        "Prompt",
+        "Term",
+        "Topic",
+        "URL"
+      ],
+      "iri": "https://xeoontology.org/xeo#similarTo",
+      "layer": "derivation",
+      "module": "analysis",
+      "range": [
+        "Experiment",
+        "Prompt",
+        "Term",
+        "Topic",
+        "URL"
+      ],
+      "term": "similarTo"
+    },
+    "SUGGESTS": {
+      "domain": [
+        "Diagnostic"
+      ],
+      "iri": "https://xeoontology.org/xeo#suggests",
+      "layer": "norm",
+      "module": "decision",
+      "range": [
+        "Intervention",
+        "Tactic"
+      ],
+      "term": "suggests"
+    },
+    "SUPERSEDES": {
+      "domain": [
+        "Practice"
+      ],
+      "iri": "https://xeoontology.org/xeo#supersedes",
+      "layer": "norm",
+      "module": "strategy",
+      "range": [
+        "Practice"
+      ],
+      "term": "supersedes"
+    },
+    "SUPPORTED_BY": {
+      "domain": [
+        "Recommendation"
+      ],
+      "iri": "https://xeoontology.org/xeo#supportedBy",
+      "layer": "interpretation",
+      "module": "decision",
+      "range": [
+        "Experiment"
+      ],
+      "term": "supportedBy"
+    },
+    "TARGETS_INTENT": {
+      "domain": [],
+      "iri": "https://xeoontology.org/xeo#targetsIntent",
+      "layer": "interpretation",
+      "module": "engagement",
+      "range": [
+        "SearchIntent"
+      ],
+      "term": "targetsIntent"
+    },
+    "TESTS": {
+      "domain": [
+        "Experiment"
+      ],
+      "iri": "https://xeoontology.org/xeo#tests",
+      "layer": "episode",
+      "module": "decision",
+      "range": [
+        "Tactic"
+      ],
+      "term": "tests"
+    },
+    "TRACKS_PROMPT": {
+      "domain": [
+        "Website"
+      ],
+      "iri": "https://xeoontology.org/xeo#tracksPrompt",
+      "layer": "entity",
+      "module": "visibility",
+      "range": [
+        "Prompt"
+      ],
+      "term": "tracksPrompt"
+    },
+    "TREATS": {
+      "domain": [
+        "Experiment"
+      ],
+      "iri": "https://xeoontology.org/xeo#treats",
+      "layer": "episode",
+      "module": "decision",
+      "range": [
+        "Term",
+        "URL"
+      ],
+      "term": "treats"
+    },
+    "VERDICT": {
+      "conceptSlot": true,
+      "domain": [
+        "Feedback",
+        "Gap"
+      ],
+      "iri": "https://xeoontology.org/xeo#verdict",
+      "layer": "interpretation",
+      "module": "decision",
+      "range": [
+        "skos:Concept"
+      ],
+      "schemes": [
+        "feedbackVerdict",
+        "gapVerdict"
+      ],
+      "term": "verdict"
+    },
+    "VISIBILITY_FOR": {
+      "domain": [
+        "Prompt"
+      ],
+      "iri": "https://xeoontology.org/xeo#visibilityFor",
+      "layer": "observation",
+      "module": "visibility",
+      "range": [
+        "Brand"
+      ],
+      "term": "visibilityFor"
+    }
+  },
+  "schemes": {
+    "algorithm": [
+      "betweenness",
+      "cosine",
+      "degree",
+      "fastrp",
+      "knn",
+      "label_propagation",
+      "leiden",
+      "louvain",
+      "node_similarity",
+      "pagerank",
+      "shortest_path"
+    ],
+    "cadence": [
+      "monthly",
+      "quarterly"
+    ],
+    "device": [
+      "desktop",
+      "mobile",
+      "tablet"
+    ],
+    "effort": [
+      "hours",
+      "days",
+      "weeks",
+      "quarter"
+    ],
+    "engagementType": [
+      "oneoff",
+      "retainer"
+    ],
+    "epistemicLayer": [
+      "entity",
+      "episode",
+      "observation",
+      "derivation",
+      "interpretation",
+      "norm"
+    ],
+    "execution": [
+      "advised",
+      "ours"
+    ],
+    "experimentStatus": [
+      "measuring",
+      "concluded",
+      "cancelled",
+      "unmeasurable"
+    ],
+    "feedbackVerdict": [
+      "accepted",
+      "needs_work",
+      "rejected"
+    ],
+    "frameworkKind": [
+      "checklist",
+      "diagnostic",
+      "playbook",
+      "tactic_matrix"
+    ],
+    "gapType": [
+      "missing_page",
+      "orphaned",
+      "buried",
+      "thin_content",
+      "split",
+      "content_subtopic",
+      "content_format_asset",
+      "content_proof",
+      "content_intent_fit",
+      "visibility_deficit",
+      "position_climb",
+      "zero_click",
+      "project_footprint",
+      "domain_authority_deficit"
+    ],
+    "gapVerdict": [
+      "attack",
+      "defend",
+      "fix_first",
+      "hold",
+      "ignore"
+    ],
+    "intervention": [
+      "brand-entity-ops",
+      "community-mobilization",
+      "content-optimization",
+      "editorial-placement",
+      "local-placement",
+      "onsite-content-advisory",
+      "owned-content-creation",
+      "technical-onsite"
+    ],
+    "linkPosition": [
+      "content",
+      "footer",
+      "header",
+      "navigation",
+      "other",
+      "sidebar"
+    ],
+    "magnitudeUnit": [
+      "clicks",
+      "impressions",
+      "inlinks",
+      "keywords",
+      "positions",
+      "referring_domains",
+      "sessions_estimated",
+      "words"
+    ],
+    "objectiveMetric": [
+      "citation_rate",
+      "clicks",
+      "ctr",
+      "etv",
+      "impressions",
+      "mention_rate",
+      "position",
+      "rank_absolute"
+    ],
+    "organizationKind": [
+      "agency",
+      "brand",
+      "in_house"
+    ],
+    "outcomeResult": [
+      "inconclusive",
+      "no_change",
+      "significant"
+    ],
+    "outcomeResultReason": [
+      "baseline_unavailable",
+      "below_volume_floor",
+      "co_intervention",
+      "confounded_external",
+      "no_page_data",
+      "no_qualifying_snapshot",
+      "window_incomplete"
+    ],
+    "practiceKind": [
+      "guardrail",
+      "guidance",
+      "preference"
+    ],
+    "practiceOutcome": [
+      "caveated",
+      "reranked",
+      "vetoed"
+    ],
+    "practiceSource": [
+      "authored",
+      "claimed",
+      "learned"
+    ],
+    "practiceStatus": [
+      "proposed",
+      "active",
+      "deprecated"
+    ],
+    "priority": [
+      "P0",
+      "P1",
+      "P2"
+    ],
+    "recommendationStatus": [
+      "pending",
+      "in_progress",
+      "blocked",
+      "cancelled",
+      "completed"
+    ],
+    "sentiment": [
+      "mixed",
+      "negative",
+      "neutral",
+      "positive"
+    ],
+    "serpResultType": [
+      "ai_overview",
+      "featured_snippet",
+      "image",
+      "knowledge_panel",
+      "local_pack",
+      "organic",
+      "paid",
+      "people_also_ask",
+      "related_search",
+      "shopping",
+      "top_stories",
+      "video"
+    ],
+    "similarityBasis": [
+      "lexical",
+      "links",
+      "shared_terms",
+      "structural_embedding",
+      "text_embedding"
+    ],
+    "targetKind": [
+      "absolute",
+      "percent"
+    ]
+  },
+  "schemesNamespace": "https://xeoontology.org/schemes#",
+  "version": "0.6.0"
+}
