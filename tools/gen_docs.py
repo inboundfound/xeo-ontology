@@ -18,11 +18,14 @@ HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 NS = "https://xeoontology.org/xeo#"
 MODULES = [
     "xeo-core.ttl", "xeo-visibility.ttl", "xeo-engagement.ttl",
-    "xeo-decision.ttl", "xeo-strategy.ttl", "xeo-delivery.ttl", "xeo-align.ttl",
+    "xeo-decision.ttl", "xeo-strategy.ttl", "xeo-delivery.ttl", "xeo-analysis.ttl",
+    "xeo-align.ttl",
 ]
 EPI = URIRef(NS + "epistemicLayer")
 GROUNDED = URIRef(NS + "groundedIn")
 STORE = URIRef(NS + "canonicalStore")
+DOMAIN_INCLUDES = URIRef(NS + "domainIncludes")
+RANGE_INCLUDES = URIRef(NS + "rangeIncludes")
 
 PREFIXES = {
     NS: "xeo:",
@@ -59,7 +62,8 @@ def link(uri):
     return f'<a href="{html.escape(s)}" class="ext">{html.escape(qname(uri))}</a>'
 
 
-def main():
+def render():
+    """xeo/index.html as a string (tools/validate.py diffs against this)."""
     g = Graph()
     origin = {}
     for m in MODULES:
@@ -85,10 +89,14 @@ def main():
         sp = list(g.objects(term, RDFS.subPropertyOf))
         cm = list(g.objects(term, URIRef("http://www.w3.org/2004/02/skos/core#closeMatch")))
         sa = list(g.objects(term, RDFS.seeAlso))
+        di = list(g.objects(term, DOMAIN_INCLUDES))
+        ri = list(g.objects(term, RANGE_INCLUDES))
         gr = val(term, GROUNDED)
         st = val(term, STORE)
         if dom: rows.append(("domain", " · ".join(link(x) for x in dom)))
+        if di:  rows.append(("expected on", " · ".join(link(x) for x in sorted(di, key=str))))
         if rng: rows.append(("range", " · ".join(link(x) for x in rng)))
+        if ri:  rows.append(("expected to point at", " · ".join(link(x) for x in sorted(ri, key=str))))
         if sc:  rows.append(("subclass of", " · ".join(link(x) for x in sc)))
         if sp:  rows.append(("subproperty of", " · ".join(link(x) for x in sp)))
         if cm:  rows.append(("closeMatch", " · ".join(link(x) for x in cm)))
@@ -129,6 +137,8 @@ def main():
         body = "\n".join(render(t) for t in inds)
         individuals = f'<h2 id="individuals">Individuals <span class="n">{len(inds)}</span></h2>\n{body}'
 
+    version = val(URIRef(NS), OWL.versionInfo) or ""
+
     legend = "".join(
         f'<span class="layer" style="--h:{LAYER_HUE[l]}">{l}</span>' for l in LAYERS)
 
@@ -138,7 +148,7 @@ def main():
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>XEO — the xEO family ontology (terms)</title>
-<meta name="description" content="Term reference for the XEO ontology: classes, properties, and individuals across the core, visibility, engagement, decision, and strategy modules.">
+<meta name="description" content="Term reference for the XEO ontology: classes, properties, and individuals across the core, visibility, engagement, decision, strategy, delivery, and analysis modules.">
 <link rel="alternate" type="text/turtle" href="xeo-core.ttl">
 <style>
 :root {{ color-scheme: light dark; --bg:#f7f5ef; --surface:#fffdf8; --text:#17181c;
@@ -182,7 +192,7 @@ code {{ font-family:ui-monospace,SFMono-Regular,Menlo,monospace; }}
 <body>
 <div class="wrap">
 <h1>XEO — the ontology for the xEO family</h1>
-<p class="tag">Namespace <code>{NS}</code> · prefix <code>xeo:</code> · v0.2 ·
+<p class="tag">Namespace <code>{NS}</code> · prefix <code>xeo:</code> · v{version} ·
 <a href="https://github.com/inboundfound/xeo-ontology">repo</a> · CC BY 4.0</p>
 <p class="lead">One standards-grounded vocabulary for how engines — search,
 generative, answer, conversational — see, cite, and serve content. Every term is
@@ -192,11 +202,17 @@ interpretive surface:</p>
 <div class="modnote">Modules: <code>xeo-core</code> (substrate) ·
 <code>xeo-visibility</code> (xEO) · <code>xeo-engagement</code> (draft) ·
 <code>xeo-decision</code> (interpretation tier) · <code>xeo-strategy</code> (norms tier) ·
+<code>xeo-delivery</code> (projects, campaigns, objectives) ·
+<code>xeo-analysis</code> (derived structure) ·
 <code>xeo-align</code> (schema.org / PROV-O / SKOS bridges). Machine-readable Turtle:
 <a href="xeo-core.ttl">core</a>, <a href="xeo-visibility.ttl">visibility</a>,
 <a href="xeo-engagement.ttl">engagement</a>, <a href="xeo-decision.ttl">decision</a>,
-<a href="xeo-strategy.ttl">strategy</a>, <a href="xeo-align.ttl">align</a>;
-JSON-LD <a href="context.jsonld">context</a>.</div>
+<a href="xeo-strategy.ttl">strategy</a>, <a href="xeo-delivery.ttl">delivery</a>,
+<a href="xeo-analysis.ttl">analysis</a>, <a href="xeo-align.ttl">align</a>;
+reference values <a href="xeo-schemes.ttl">schemes</a> (<a href="schemes.json">JSON</a>);
+JSON-LD <a href="context.jsonld">context</a>; Neo4j
+<a href="neo4j-profile.json">profile</a> and <a href="context.neo4j.jsonld">context</a>;
+SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 {classes}
 {objprops}
 {dataprops}
@@ -206,6 +222,11 @@ JSON-LD <a href="context.jsonld">context</a>.</div>
 </body>
 </html>
 '''
+    return out
+
+
+def main():
+    out = render()
     os.makedirs(os.path.join(HERE, "xeo"), exist_ok=True)
     dest = os.path.join(HERE, "xeo", "index.html")
     with open(dest, "w", encoding="utf-8") as fh:

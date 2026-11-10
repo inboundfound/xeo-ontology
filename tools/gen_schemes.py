@@ -48,7 +48,8 @@ def text(g: Graph, s: URIRef, p: URIRef) -> str | None:
     return str(v) if v is not None else None
 
 
-def main() -> int:
+def build() -> dict:
+    """The schemes.json document, as a dict."""
     g = Graph()
     g.parse(SRC, format="turtle")
 
@@ -98,17 +99,25 @@ def main() -> int:
             "concepts": concepts,
         }
 
-    out = {
+    return {
         "$comment": "Generated from xeo-schemes.ttl by tools/gen_schemes.py — do not edit by hand.",
         "namespace": str(XEOS),
         "ontology": str(XEO),
         "version": version,
         "schemes": schemes,
     }
-    with open(DEST, "w", encoding="utf-8") as fh:
-        json.dump(out, fh, indent=2, ensure_ascii=False)
-        fh.write("\n")
 
+
+def render() -> str:
+    """schemes.json exactly as written to disk (tools/validate.py diffs against this)."""
+    return json.dumps(build(), indent=2, ensure_ascii=False) + "\n"
+
+
+def main() -> int:
+    with open(DEST, "w", encoding="utf-8") as fh:
+        fh.write(render())
+
+    schemes = build()["schemes"]
     n = sum(len(s["concepts"]) for s in schemes.values())
     print(f"wrote {DEST}  ({len(schemes)} schemes, {n} concepts)")
     return 0
