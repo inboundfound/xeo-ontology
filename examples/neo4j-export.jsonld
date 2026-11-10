@@ -1,0 +1,40 @@
+{
+  "@context": [
+    "../context.neo4j.jsonld",
+    { "ex": "https://example.com/graph/" }
+  ],
+  "@graph": [
+    {
+      "id": "ex:site", "type": "Website",
+      "origin": "https://www.example.com", "websiteId": "example-com", "layer": "entity"
+    },
+    { "id": "ex:domain-example-com", "type": "Domain", "name": "example.com", "layer": "entity" },
+    {
+      "id": "ex:url-guide", "type": "URL",
+      "address": "https://www.example.com/guides/torque-wrench-calibration",
+      "websiteId": "example-com", "layer": "entity",
+      "PART_OF": "ex:site", "ON_DOMAIN": "ex:domain-example-com",
+      "RANKS_FOR": "ex:term-calibration"
+    },
+    { "id": "ex:term-calibration", "type": "Term", "name": "torque wrench calibration", "layer": "entity" },
+    {
+      "type": "Edge", "start": "ex:url-guide", "edge": "RANKS_FOR", "end": "ex:term-calibration",
+      "clicks": 310, "impressions": 9200, "avgPosition": "6.4",
+      "periodStart": "2026-05-01", "periodEnd": "2026-05-31",
+      "source": "gsc", "websiteId": "example-com", "layer": "observation"
+    },
+    {
+      "id": "ex:run-pagerank", "type": "AlgorithmRun",
+      "algorithm": "pagerank",
+      "projection": "URL nodes of websiteId example-com; LINKS_TO edges, natural orientation; from crawl-1",
+      "ranAt": "2026-06-01T03:00:00Z", "layer": "episode"
+    },
+    {
+      "id": "ex:gap-1", "type": "Gap", "websiteId": "example-com", "layer": "interpretation",
+      "statement": "A competitor holds the featured snippet; our guide sits at position 6.",
+      "gapType": "position_climb",
+      "magnitude": "5", "magnitudeUnit": "positions",
+      "EVIDENCED_BY": "ex:url-guide"
+    }
+  ]
+}

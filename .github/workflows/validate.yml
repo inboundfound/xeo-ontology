@@ -1,0 +1,21 @@
+name: validate
+
+# Fails the build when the ontology and the files projected from it disagree:
+# a term without a label, description or layer; a stale generated file; an
+# example that breaks a shape. See tools/validate.py.
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - name: Validate ontology, generated files, shapes and examples
+        run: uv run --no-project --python 3.12 --with rdflib --with pyshacl python tools/validate.py

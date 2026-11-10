@@ -1,0 +1,390 @@
+{
+  "@context": [
+    "../context.jsonld",
+    {
+      "ex": "https://example.com/graph/",
+      "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+      "Edge": "rdf:Statement",
+      "start": { "@id": "rdf:subject", "@type": "@id" },
+      "edge": { "@id": "rdf:predicate", "@type": "@vocab" },
+      "end": { "@id": "rdf:object", "@type": "@id" }
+    }
+  ],
+  "@graph": [
+    {
+      "id": "ex:org-agency", "type": "Organization",
+      "name": "Northwind Search (fictional agency)",
+      "organizationKind": "xeos:organizationKind-agency",
+      "holdsCapability": "ex:cap-content",
+      "activates": "ex:fw-waterfall"
+    },
+    {
+      "id": "ex:org-client", "type": "Organization",
+      "name": "Example Tools Ltd",
+      "organizationKind": "xeos:organizationKind-brand",
+      "clientOf": "ex:org-agency",
+      "owns": ["ex:site", "ex:brand-example"]
+    },
+
+    {
+      "id": "ex:site", "type": "Website",
+      "origin": "https://www.example.com", "websiteId": "example-com",
+      "hasCrawl": "ex:crawl-1",
+      "tracksPrompt": "ex:prompt-1",
+      "hasProject": "ex:project-1"
+    },
+    { "id": "ex:domain-example-com", "type": "Domain", "name": "example.com" },
+    { "id": "ex:domain-example-org", "type": "Domain", "name": "example.org" },
+
+    {
+      "id": "ex:url-home", "type": "URL",
+      "address": "https://www.example.com/", "websiteId": "example-com",
+      "partOf": "ex:site", "onDomain": "ex:domain-example-com",
+      "linksTo": ["ex:url-guide", "ex:url-product"],
+      "pageRank": "0.41", "degree": 2, "communityId": 1,
+      "computedBy": "ex:run-pagerank"
+    },
+    {
+      "id": "ex:url-guide", "type": "URL",
+      "address": "https://www.example.com/guides/torque-wrench-calibration", "websiteId": "example-com",
+      "partOf": "ex:site", "onDomain": "ex:domain-example-com",
+      "linksTo": "ex:url-product",
+      "ranksFor": "ex:term-calibration",
+      "about": ["ex:topic-calibration", "ex:entity-torque-wrench"],
+      "similarTo": "ex:url-product",
+      "pageRank": "0.33", "degree": 3, "communityId": 1,
+      "computedBy": "ex:run-pagerank"
+    },
+    {
+      "id": "ex:url-product", "type": "URL",
+      "address": "https://www.example.com/products/torque-wrench-pro", "websiteId": "example-com",
+      "partOf": "ex:site", "onDomain": "ex:domain-example-com",
+      "pageRank": "0.26", "degree": 2, "communityId": 1,
+      "computedBy": "ex:run-pagerank"
+    },
+    {
+      "id": "ex:url-competitor", "type": "URL",
+      "address": "https://www.example.org/how-to-calibrate-a-torque-wrench",
+      "onDomain": "ex:domain-example-org"
+    },
+
+    {
+      "id": "ex:crawl-1", "type": "Crawl", "websiteId": "example-com",
+      "startedAt": "2026-06-01T02:00:00Z", "endedAt": "2026-06-01T02:14:00Z",
+      "crawler": "ExampleCrawler/2.1",
+      "fetched": ["ex:url-home", "ex:url-guide", "ex:url-product"]
+    },
+    {
+      "type": "Edge", "start": "ex:crawl-1", "edge": "fetched", "end": "ex:url-guide",
+      "statusCode": 200, "contentType": "text/html",
+      "title": "How to calibrate a torque wrench", "h1": "Torque wrench calibration",
+      "wordCount": 640, "crawlDepth": 1, "indexable": true,
+      "contentHash": "sha256:9f2c1e-example",
+      "fetchedAt": "2026-06-01T02:03:10Z"
+    },
+    {
+      "type": "Edge", "start": "ex:url-home", "edge": "linksTo", "end": "ex:url-guide",
+      "anchorText": "Guides", "linkPosition": "navigation",
+      "firstSeenAt": "2026-05-01T02:01:00Z", "lastSeenAt": "2026-06-01T02:01:00Z",
+      "lastSeenCrawlId": "crawl-1"
+    },
+    {
+      "type": "Edge", "start": "ex:url-guide", "edge": "linksTo", "end": "ex:url-product",
+      "anchorText": "the Torque Wrench Pro", "linkPosition": "content",
+      "firstSeenAt": "2026-06-01T02:03:10Z", "lastSeenAt": "2026-06-01T02:03:10Z",
+      "lastSeenCrawlId": "crawl-1"
+    },
+
+    {
+      "id": "ex:term-calibration", "type": "Term", "name": "torque wrench calibration",
+      "hasSnapshot": "ex:serp-1",
+      "inTopic": "ex:topic-calibration"
+    },
+    { "id": "ex:term-how-often", "type": "Term", "name": "how often should a torque wrench be calibrated" },
+    {
+      "type": "Edge", "start": "ex:url-guide", "edge": "ranksFor", "end": "ex:term-calibration",
+      "clicks": 310, "impressions": 9200, "ctr": "0.0337", "avgPosition": "6.4",
+      "periodStart": "2026-05-01", "periodEnd": "2026-05-31",
+      "source": "gsc", "datasetUri": "bq://example-project.search.performance_daily",
+      "syncedAt": "2026-06-02T06:00:00Z", "websiteId": "example-com"
+    },
+
+    { "id": "ex:engine-search", "type": "SearchEngine", "name": "Example Search" },
+    { "id": "ex:engine-assistant", "type": "AnswerEngine", "name": "Example Assistant" },
+    {
+      "id": "ex:serp-1", "type": "SerpSnapshot",
+      "capturedAt": "2026-06-03T09:00:00Z", "locale": "en-GB", "device": "mobile",
+      "onEngine": "ex:engine-search",
+      "hasResult": ["ex:url-competitor", "ex:url-guide"],
+      "relatedTerm": "ex:term-how-often"
+    },
+    {
+      "type": "Edge", "start": "ex:serp-1", "edge": "hasResult", "end": "ex:url-competitor",
+      "position": 1, "resultType": "featured_snippet"
+    },
+    {
+      "type": "Edge", "start": "ex:serp-1", "edge": "hasResult", "end": "ex:url-guide",
+      "position": 6, "resultType": "organic"
+    },
+    {
+      "type": "Edge", "start": "ex:serp-1", "edge": "relatedTerm", "end": "ex:term-how-often",
+      "resultType": "people_also_ask", "position": 1
+    },
+
+    {
+      "id": "ex:brand-example", "type": "Brand", "name": "Example Tools", "websiteId": "example-com",
+      "hasWebsite": "ex:site",
+      "competesWith": "ex:brand-sample"
+    },
+    { "id": "ex:brand-sample", "type": "Brand", "name": "Sample Torque Co", "websiteId": "example-com" },
+    {
+      "type": "Edge", "start": "ex:brand-example", "edge": "competesWith", "end": "ex:brand-sample",
+      "method": "named by the client at onboarding", "websiteId": "example-com"
+    },
+    {
+      "id": "ex:prompt-1", "type": "Prompt",
+      "text": "How do I calibrate a torque wrench at home?", "websiteId": "example-com",
+      "hasResponse": "ex:response-1",
+      "fansOutTo": "ex:term-calibration",
+      "visibilityFor": "ex:brand-example",
+      "about": "ex:entity-torque-wrench"
+    },
+    {
+      "id": "ex:response-1", "type": "LLMResponse",
+      "capturedAt": "2026-06-03T09:05:00Z", "model": "example-assistant-2026-04",
+      "webSearchEnabled": true,
+      "onEngine": "ex:engine-assistant",
+      "cites": ["ex:url-competitor", "ex:url-guide"],
+      "mentions": "ex:brand-sample"
+    },
+    {
+      "type": "Edge", "start": "ex:response-1", "edge": "cites", "end": "ex:url-guide",
+      "citationRank": 2
+    },
+    {
+      "type": "Edge", "start": "ex:response-1", "edge": "mentions", "end": "ex:brand-sample",
+      "mentionRank": 1, "sentiment": "positive",
+      "method": "llm-extraction:example-extractor-v3", "confidence": "0.88"
+    },
+    {
+      "type": "Edge", "start": "ex:prompt-1", "edge": "visibilityFor", "end": "ex:brand-example",
+      "mentionRate": "0.10", "citationRate": "0.20", "responses": 20,
+      "periodStart": "2026-05-01", "periodEnd": "2026-05-31",
+      "source": "response-capture", "datasetUri": "s3://example-archive/responses/2026-05/",
+      "websiteId": "example-com"
+    },
+
+    {
+      "id": "ex:topic-calibration", "type": "Topic", "name": "Torque wrench calibration",
+      "websiteId": "example-com", "scopedTo": "ex:site"
+    },
+    {
+      "id": "ex:entity-torque-wrench", "type": "Entity",
+      "name": "Torque wrench", "entityRef": "kb:EXAMPLE-0001"
+    },
+    {
+      "type": "Edge", "start": "ex:term-calibration", "edge": "inTopic", "end": "ex:topic-calibration",
+      "method": "embedding-cluster", "model": "example-embed-v2", "confidence": "0.93",
+      "assignedAt": "2026-06-02T07:00:00Z"
+    },
+    {
+      "type": "Edge", "start": "ex:url-guide", "edge": "about", "end": "ex:entity-torque-wrench",
+      "method": "entity-linking:example-linker-v1", "confidence": "0.81"
+    },
+    {
+      "type": "Edge", "start": "ex:url-guide", "edge": "similarTo", "end": "ex:url-product",
+      "similarity": "0.71", "basis": "xeos:similarityBasis-shared_terms",
+      "method": "node-similarity over ranksFor", "computedBy": "ex:run-similarity"
+    },
+
+    {
+      "id": "ex:run-pagerank", "type": "AlgorithmRun",
+      "algorithm": "xeos:algorithm-pagerank",
+      "parameters": "{\"dampingFactor\": 0.85, \"maxIterations\": 20, \"library\": \"example-graph-lib 2.6\"}",
+      "projection": "URL nodes of websiteId example-com; linksTo edges, natural orientation, linkPosition = content or navigation; from crawl-1",
+      "ranAt": "2026-06-01T03:00:00Z"
+    },
+    {
+      "id": "ex:run-similarity", "type": "AlgorithmRun",
+      "algorithm": "xeos:algorithm-node_similarity",
+      "parameters": "{\"metric\": \"jaccard\", \"topK\": 5, \"similarityCutoff\": 0.5}",
+      "projection": "URL and Term nodes of websiteId example-com; ranksFor edges with avgPosition <= 20; window 2026-05-01 to 2026-05-31",
+      "ranAt": "2026-06-02T07:30:00Z"
+    },
+
+    {
+      "id": "ex:fw-waterfall", "type": "Framework",
+      "name": "Visibility waterfall (example)",
+      "frameworkKind": "xeos:frameworkKind-diagnostic",
+      "hasStage": ["ex:stage-indexed", "ex:stage-ranked", "ex:stage-cited"],
+      "includes": ["ex:diag-snippet", "ex:tactic-answer-block", "ex:practice-1"]
+    },
+    {
+      "id": "ex:stage-indexed", "type": "Stage", "name": "Indexed", "stageOrder": 1,
+      "test": "Is the page indexable and in the index?",
+      "nextStage": "ex:stage-ranked"
+    },
+    {
+      "id": "ex:stage-ranked", "type": "Stage", "name": "Ranked", "stageOrder": 2,
+      "test": "Does the page rank on page one for its terms?",
+      "nextStage": "ex:stage-cited"
+    },
+    {
+      "id": "ex:stage-cited", "type": "Stage", "name": "Cited", "stageOrder": 3,
+      "test": "Do answer engines cite the page?"
+    },
+    {
+      "id": "ex:diag-snippet", "type": "Diagnostic", "name": "Outranked by a direct answer",
+      "atStage": "ex:stage-ranked",
+      "suggests": "xeos:intervention-content-optimization",
+      "reveals": "ex:gap-1"
+    },
+    {
+      "id": "ex:tactic-answer-block", "type": "Tactic", "name": "Add a direct-answer block above the fold",
+      "atStage": "ex:stage-ranked",
+      "inIntervention": "xeos:intervention-content-optimization",
+      "requiresCapability": "ex:cap-content"
+    },
+    {
+      "id": "ex:cap-content", "type": "Capability", "name": "content", "approved": true,
+      "websiteId": "example-com"
+    },
+
+    {
+      "id": "ex:diagrun-1", "type": "DiagnosticRun", "runOf": "ex:diag-snippet",
+      "ranAt": "2026-06-03T10:00:00Z", "websiteId": "example-com"
+    },
+    {
+      "id": "ex:gap-1", "type": "Gap", "websiteId": "example-com",
+      "statement": "A competitor holds the featured snippet for 'torque wrench calibration'; our guide sits at position 6.",
+      "gapType": "xeos:gapType-position_climb",
+      "magnitude": "5", "magnitudeUnit": "xeos:magnitudeUnit-positions",
+      "verdict": "xeos:gapVerdict-attack",
+      "revealedIn": "ex:diagrun-1",
+      "evidencedBy": ["ex:serp-1", "ex:url-guide"],
+      "relativeTo": "ex:url-competitor",
+      "atStage": "ex:stage-ranked",
+      "addressableBy": "ex:tactic-answer-block"
+    },
+    {
+      "type": "Edge", "start": "ex:diag-snippet", "edge": "reveals", "end": "ex:gap-1",
+      "method": "rule:serp-position-vs-feature-v1"
+    },
+    {
+      "id": "ex:feedback-1", "type": "Feedback",
+      "feedbackOn": "ex:gap-1",
+      "verdict": "xeos:feedbackVerdict-accepted",
+      "statement": "Agreed. The snippet is the reason clicks are flat."
+    },
+
+    {
+      "id": "ex:project-1", "type": "Project", "websiteId": "example-com",
+      "engagementType": "retainer", "interventionQuota": 4, "cadence": "monthly",
+      "inScope": "xeos:intervention-content-optimization",
+      "hasCampaign": "ex:campaign-1"
+    },
+    {
+      "id": "ex:campaign-1", "type": "Campaign", "websiteId": "example-com",
+      "aboutTopic": "ex:topic-calibration",
+      "coversUrl": "ex:url-guide", "coversTerm": "ex:term-calibration",
+      "hasObjective": "ex:objective-1"
+    },
+    {
+      "id": "ex:objective-1", "type": "Objective",
+      "statement": "Be the page answer engines cite for torque wrench calibration.",
+      "resultsWindowDays": 90,
+      "hasTarget": "ex:target-1"
+    },
+    {
+      "id": "ex:target-1", "type": "MetricTarget",
+      "metric": "citation_rate", "direction": "up", "targetKind": "absolute",
+      "targetValue": "0.40", "baseline": "0.20",
+      "baselineCapturedAt": "2026-06-03T09:05:00Z", "isPrimary": true
+    },
+
+    {
+      "id": "ex:rec-1", "type": "Recommendation", "websiteId": "example-com",
+      "statement": "Add a direct-answer block to the calibration guide.",
+      "status": "completed", "method": "agent:example-recommender-v4", "confidence": "0.74",
+      "recommends": "ex:tactic-answer-block",
+      "closesGap": "ex:gap-1",
+      "supportedBy": "ex:exp-0",
+      "atPriority": "xeos:priority-P1",
+      "appliedPractice": "ex:practice-1",
+      "evaluatedPractice": ["ex:practice-1", "ex:practice-2"],
+      "issuedFor": "ex:campaign-1",
+      "implementedAs": "ex:exp-1"
+    },
+    {
+      "type": "Edge", "start": "ex:rec-1", "edge": "evaluatedPractice", "end": "ex:practice-1",
+      "fired": true, "method": "rule-engine:example-v2", "confidence": "1.0"
+    },
+    {
+      "type": "Edge", "start": "ex:rec-1", "edge": "appliedPractice", "end": "ex:practice-1",
+      "practiceOutcome": "reranked", "method": "rule-engine:example-v2", "confidence": "1.0"
+    },
+    {
+      "type": "Edge", "start": "ex:rec-1", "edge": "evaluatedPractice", "end": "ex:practice-2",
+      "fired": false, "method": "rule-engine:example-v2", "confidence": "1.0"
+    },
+
+    {
+      "id": "ex:exp-0", "type": "Experiment", "websiteId": "example-com",
+      "status": "concluded",
+      "startedAt": "2026-01-05T00:00:00Z", "concludedAt": "2026-04-05T00:00:00Z",
+      "tests": "ex:tactic-answer-block",
+      "treats": "ex:url-product",
+      "producedOutcome": "ex:outcome-0",
+      "precedentFor": "ex:exp-1"
+    },
+    {
+      "type": "Edge", "start": "ex:exp-0", "edge": "precedentFor", "end": "ex:exp-1",
+      "similarity": "0.80", "method": "same tactic, same gapType, same page role"
+    },
+    {
+      "id": "ex:outcome-0", "type": "Outcome",
+      "result": "inconclusive", "resultReason": "confounded_external",
+      "confoundedBy": "ex:event-1"
+    },
+    {
+      "type": "Edge", "start": "ex:outcome-0", "edge": "confoundedBy", "end": "ex:event-1",
+      "method": "analyst review"
+    },
+    {
+      "id": "ex:event-1", "type": "ExternalEvent",
+      "name": "Search engine core ranking update (fictional)",
+      "occurredAt": "2026-02-15T00:00:00Z"
+    },
+    {
+      "id": "ex:exp-1", "type": "Experiment", "websiteId": "example-com",
+      "status": "concluded",
+      "startedAt": "2026-06-10T00:00:00Z", "concludedAt": "2026-09-08T00:00:00Z",
+      "tests": "ex:tactic-answer-block",
+      "inContext": "ex:gap-1",
+      "treats": "ex:url-guide",
+      "hasControl": "ex:url-product",
+      "measures": "ex:target-1",
+      "producedOutcome": "ex:outcome-1"
+    },
+    {
+      "id": "ex:outcome-1", "type": "Outcome",
+      "result": "significant", "lift": "0.15"
+    },
+
+    {
+      "id": "ex:practice-1", "type": "Practice",
+      "statement": "Prefer answering the query in the first 60 words of a guide.",
+      "practiceKind": "preference", "source": "learned", "status": "active",
+      "rationale": "Guides that answer first were cited more often in our own experiments.",
+      "learnedFrom": ["ex:exp-1", "ex:outcome-1"],
+      "appliesTo": "ex:tactic-answer-block",
+      "constrains": "ex:rec-1"
+    },
+    {
+      "id": "ex:practice-2", "type": "Practice",
+      "statement": "Never rewrite a product page's title for an informational query.",
+      "practiceKind": "guardrail", "source": "authored", "status": "active",
+      "appliesTo": "ex:url-product"
+    }
+  ]
+}
