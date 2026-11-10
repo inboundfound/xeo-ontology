@@ -22,13 +22,15 @@ Four conventions sit beside the rule.
 - **Edge-carried properties stay on the relationship.** `avgPosition` belongs on `RANKS_FOR`,
   `anchorText` on `LINKS_TO`, `similarity` on `SIMILAR_TO`. Each property's description in the
   ontology says which relationship carries it.
-- **`layer` is the instance-level epistemic layer.** A graph that wants to filter by kind of
-  claim stamps each node and relationship with `layer`, one of `entity`, `episode`,
+- **`xeoLayer` is the instance-level epistemic layer.** A graph that wants to filter by kind of
+  claim stamps each node and relationship with `xeoLayer`, one of `entity`, `episode`,
   `observation`, `derivation`, `interpretation`, `norm`. The value for a node or relationship is
   the `layer` of its label or type in the profile, with one exception the ontology states: a
   `MENTIONS` edge written by a model is a `derivation`, by a string match an `observation`.
-  `layer` is a profile convention, not an XEO term: XEO types terms with `xeo:epistemicLayer`
-  and has not decided to own an instance-level property (see `xeos:epistemicLayer`).
+  `xeoLayer` is a profile convention (`conventions.layerKey`), not an XEO term: XEO types terms
+  with `xeo:epistemicLayer` and has not decided to own an instance-level property (see
+  `xeos:epistemicLayer`). The key carries the prefix so that it cannot be mistaken for a layer of
+  anything else in the graph (a map layer, a network layer, a model layer).
 
 ### Concept slots: a relationship or a code
 
@@ -82,7 +84,7 @@ with the reference schemes that fill it.
   `"replacedBy"` names what to write instead. An entry with neither is a current core term.
 - **Vendor crosswalks are not in the profile.** Which vendor field fills which slot is in
   `xeo-vendor-schemes.ttl` and under `vendorSchemes` in `schemes.json`.
-- **Stamp `layer` from it.** `labels[label].layer` and `relationshipTypes[type].layer` are the
+- **Stamp `xeoLayer` from it.** `labels[label].layer` and `relationshipTypes[type].layer` are the
   values to write.
 
 ## Lifting an export to RDF
