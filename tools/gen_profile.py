@@ -256,7 +256,7 @@ def build():
             "relationshipType": "UPPER_SNAKE of the object property local name",
             "propertyKey": "the datatype property local name, camelCase",
             "tenancyKey": "websiteId",
-            "layerKey": "layer",
+            "layerKey": "xeoLayer",
             "layers": LAYERS,
         },
         "labels": labels,

@@ -92,7 +92,9 @@ visibility.
 **Tooling and interop.**
 
 - `tools/gen_profile.py` → `neo4j-profile.json`, `context.neo4j.jsonld`,
-  `docs/neo4j-profile.md`.
+  `docs/neo4j-profile.md`. The profile's convention for the instance-level layer stamp is the
+  property key `xeoLayer` (`conventions.layerKey`). Drafts of this branch called it `layer`; it
+  was renamed before release so the key cannot be read as a layer of anything else.
 - `shapes/xeo-shapes.ttl`: fifteen SHACL shapes for rules that were prose only.
 - `examples/`: a worked instance graph, a Neo4j-form sample, and one failing case per shape.
 - `tools/validate.py` and `.github/workflows/validate.yml`.

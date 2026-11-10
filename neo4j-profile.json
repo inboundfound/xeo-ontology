@@ -2,7 +2,7 @@
   "$comment": "Generated from the xeo-*.ttl modules by tools/gen_profile.py — do not edit by hand.",
   "conventions": {
     "label": "the class local name, PascalCase",
-    "layerKey": "layer",
+    "layerKey": "xeoLayer",
     "layers": [
       "entity",
       "episode",
