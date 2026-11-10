@@ -1,0 +1,211 @@
+@prefix sh:   <http://www.w3.org/ns/shacl#> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix dct:  <http://purl.org/dc/terms/> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix xeo:  <https://xeoontology.org/xeo#> .
+@prefix xeosh: <https://xeoontology.org/shapes#> .
+
+# XEO Shapes — the prose rules, made executable.
+#
+# The ontology states its rules in dct:description: a magnitude is "required
+# together with magnitudeUnit and never alone", confidence is "0-1", a captured
+# response without its model "is not comparable across time". RDFS cannot check
+# any of that. rdfs:domain and rdfs:range are entailment rules, not constraints,
+# so until this file the only enforced rule in XEO was a Neo4j uniqueness
+# constraint. These shapes turn the rules that can be checked into SHACL.
+#
+# CONSERVATIVE BY DESIGN. A shape here fires only on data the ontology already
+# calls wrong. Nothing is closed: extra properties, local terms and open
+# domains all pass. Where the ontology says "expected" or "should" rather than
+# "required", there is no shape. Passing these shapes means a graph breaks none
+# of XEO's stated rules; it does not mean the graph is complete or sensible.
+#
+# EDGE-CARRIED PROPERTIES. confidence, similarity, magnitude and the rollup
+# rates ride on relationships in a property graph and on reified statements (or
+# plain nodes) in RDF. The range shapes therefore target "any subject that
+# carries the property" (sh:targetSubjectsOf), which holds wherever it sits.
+#
+# Run:  uv run --no-project --with rdflib --with pyshacl python tools/validate.py
+#   or: pyshacl -s shapes/xeo-shapes.ttl <your-data>
+
+xeosh: a owl:Ontology ;
+    dct:title "XEO Shapes" ;
+    dct:description "SHACL shapes for the rules the XEO ontology states in prose. Conservative: each shape checks one rule a term's description already makes, and none closes a class." ;
+    dct:creator "Inbound Found" ;
+    owl:versionInfo "0.6.0" .
+
+# --- Values in range ---------------------------------------------------------
+
+xeosh:ConfidenceRange a sh:NodeShape ;
+    rdfs:label "confidence is between 0 and 1" ;
+    rdfs:seeAlso xeo:confidence ;
+    sh:targetSubjectsOf xeo:confidence ;
+    sh:property [
+        sh:path xeo:confidence ;
+        sh:minInclusive 0 ; sh:maxInclusive 1 ;
+        sh:message "xeo:confidence must be a number from 0 to 1."
+    ] .
+
+xeosh:SimilarityRange a sh:NodeShape ;
+    rdfs:label "similarity is between 0 and 1" ;
+    rdfs:seeAlso xeo:similarity ;
+    sh:targetSubjectsOf xeo:similarity ;
+    sh:property [
+        sh:path xeo:similarity ;
+        sh:minInclusive 0 ; sh:maxInclusive 1 ;
+        sh:message "xeo:similarity must be a number from 0 to 1."
+    ] .
+
+xeosh:MentionRateRange a sh:NodeShape ;
+    rdfs:label "mentionRate is a share" ;
+    rdfs:seeAlso xeo:mentionRate ;
+    sh:targetSubjectsOf xeo:mentionRate ;
+    sh:property [
+        sh:path xeo:mentionRate ;
+        sh:minInclusive 0 ; sh:maxInclusive 1 ;
+        sh:message "xeo:mentionRate is a share of responses and must be from 0 to 1."
+    ] .
+
+xeosh:CitationRateRange a sh:NodeShape ;
+    rdfs:label "citationRate is a share" ;
+    rdfs:seeAlso xeo:citationRate ;
+    sh:targetSubjectsOf xeo:citationRate ;
+    sh:property [
+        sh:path xeo:citationRate ;
+        sh:minInclusive 0 ; sh:maxInclusive 1 ;
+        sh:message "xeo:citationRate is a share of responses and must be from 0 to 1."
+    ] .
+
+# --- Pairs that travel together ----------------------------------------------
+
+xeosh:MagnitudeNeedsUnit a sh:NodeShape ;
+    rdfs:label "a magnitude has a unit" ;
+    rdfs:seeAlso xeo:magnitude ;
+    sh:targetSubjectsOf xeo:magnitude ;
+    sh:property [
+        sh:path xeo:magnitudeUnit ;
+        sh:minCount 1 ;
+        sh:message "A xeo:magnitude without a xeo:magnitudeUnit is an uninterpretable number."
+    ] .
+
+xeosh:UnitNeedsMagnitude a sh:NodeShape ;
+    rdfs:label "a magnitude unit has a magnitude" ;
+    rdfs:seeAlso xeo:magnitudeUnit ;
+    sh:targetSubjectsOf xeo:magnitudeUnit ;
+    sh:property [
+        sh:path xeo:magnitude ;
+        sh:minCount 1 ;
+        sh:message "A xeo:magnitudeUnit without a xeo:magnitude is noise."
+    ] .
+
+# --- What a node of a class must carry ----------------------------------------
+
+xeosh:URLShape a sh:NodeShape ;
+    rdfs:label "a URL has its address" ;
+    sh:targetClass xeo:URL ;
+    sh:property [
+        sh:path xeo:address ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "A xeo:URL is identified by exactly one xeo:address."
+    ] .
+
+xeosh:DomainShape a sh:NodeShape ;
+    rdfs:label "a Domain has its name" ;
+    sh:targetClass xeo:Domain ;
+    sh:property [
+        sh:path xeo:name ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "A xeo:Domain is identified by exactly one xeo:name."
+    ] .
+
+xeosh:SerpSnapshotShape a sh:NodeShape ;
+    rdfs:label "a SERP snapshot says when it was captured" ;
+    sh:targetClass xeo:SerpSnapshot ;
+    sh:property [
+        sh:path xeo:capturedAt ;
+        sh:minCount 1 ;
+        sh:message "A xeo:SerpSnapshot is an observation at a moment and requires xeo:capturedAt."
+    ] .
+
+xeosh:LLMResponseShape a sh:NodeShape ;
+    rdfs:label "a captured response says when, and from which model" ;
+    sh:targetClass xeo:LLMResponse ;
+    sh:property [
+        sh:path xeo:capturedAt ;
+        sh:minCount 1 ;
+        sh:message "A xeo:LLMResponse requires xeo:capturedAt."
+    ] ;
+    sh:property [
+        sh:path xeo:model ;
+        sh:minCount 1 ;
+        sh:message "A xeo:LLMResponse requires xeo:model: without it the episode is not comparable across time."
+    ] .
+
+xeosh:MetricTargetShape a sh:NodeShape ;
+    rdfs:label "a metric target names its metric and direction" ;
+    sh:targetClass xeo:MetricTarget ;
+    sh:property [
+        sh:path xeo:metric ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "A xeo:MetricTarget requires exactly one xeo:metric."
+    ] ;
+    sh:property [
+        sh:path xeo:direction ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:in ( "up" "down" ) ;
+        sh:message "A xeo:MetricTarget requires xeo:direction, 'up' or 'down'."
+    ] .
+
+xeosh:OutcomeShape a sh:NodeShape ;
+    rdfs:label "an outcome says whether it moved" ;
+    sh:targetClass xeo:Outcome ;
+    sh:property [
+        sh:path xeo:result ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "A xeo:Outcome requires exactly one xeo:result."
+    ] .
+
+xeosh:PracticeShape a sh:NodeShape ;
+    rdfs:label "a practice has a statement, a kind and a status" ;
+    sh:targetClass xeo:Practice ;
+    sh:property [
+        sh:path xeo:statement ;
+        sh:minCount 1 ;
+        sh:message "A xeo:Practice requires xeo:statement, the rule in plain language."
+    ] ;
+    sh:property [
+        sh:path xeo:practiceKind ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "A xeo:Practice requires exactly one xeo:practiceKind."
+    ] ;
+    sh:property [
+        sh:path xeo:status ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "A xeo:Practice requires exactly one xeo:status."
+    ] .
+
+xeosh:StageShape a sh:NodeShape ;
+    rdfs:label "a stage's order, when given, is one integer" ;
+    sh:targetClass xeo:Stage ;
+    sh:property [
+        sh:path xeo:stageOrder ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:integer ;
+        sh:message "xeo:stageOrder, when present on a xeo:Stage, must be a single xsd:integer."
+    ] .
+
+xeosh:AlgorithmRunShape a sh:NodeShape ;
+    rdfs:label "an algorithm run says what ran, and on what" ;
+    sh:targetClass xeo:AlgorithmRun ;
+    sh:property [
+        sh:path xeo:algorithm ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "A xeo:AlgorithmRun requires exactly one xeo:algorithm."
+    ] ;
+    sh:property [
+        sh:path xeo:projection ;
+        sh:minCount 1 ;
+        sh:message "A xeo:AlgorithmRun requires xeo:projection: a score is meaningless without the graph it was computed on."
+    ] .

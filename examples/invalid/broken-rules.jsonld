@@ -1,0 +1,39 @@
+{
+  "@context": [
+    "../../context.jsonld",
+    {
+      "ex": "https://example.com/graph/",
+      "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+      "Edge": "rdf:Statement",
+      "start": { "@id": "rdf:subject", "@type": "@id" },
+      "edge": { "@id": "rdf:predicate", "@type": "@vocab" },
+      "end": { "@id": "rdf:object", "@type": "@id" },
+      "expect": "https://xeoontology.org/shapes#expectedViolation"
+    }
+  ],
+  "@graph": [
+    { "id": "ex:bad-url", "type": "URL", "websiteId": "example-com", "expect": "URLShape" },
+    { "id": "ex:bad-domain", "type": "Domain", "expect": "DomainShape" },
+    { "id": "ex:bad-serp", "type": "SerpSnapshot", "locale": "en-GB", "expect": "SerpSnapshotShape" },
+    { "id": "ex:bad-response", "type": "LLMResponse", "capturedAt": "2026-06-03T09:05:00Z", "expect": "LLMResponseShape" },
+    { "id": "ex:bad-target", "type": "MetricTarget", "metric": "position", "direction": "better", "expect": "MetricTargetShape" },
+    { "id": "ex:bad-outcome", "type": "Outcome", "lift": "0.15", "expect": "OutcomeShape" },
+    { "id": "ex:bad-practice", "type": "Practice", "statement": "A rule with no kind and no status.", "expect": "PracticeShape" },
+    { "id": "ex:bad-stage", "type": "Stage", "name": "Ranked", "stageOrder": "second", "expect": "StageShape" },
+    { "id": "ex:bad-run", "type": "AlgorithmRun", "algorithm": "xeos:algorithm-pagerank", "expect": "AlgorithmRunShape" },
+    { "id": "ex:bad-gap", "type": "Gap", "magnitude": "120", "expect": "MagnitudeNeedsUnit" },
+    { "id": "ex:bad-gap-2", "type": "Gap", "magnitudeUnit": "xeos:magnitudeUnit-clicks", "expect": "UnitNeedsMagnitude" },
+    {
+      "id": "ex:bad-edge-1", "type": "Edge", "start": "ex:a", "edge": "similarTo", "end": "ex:b",
+      "similarity": "1.4", "expect": "SimilarityRange"
+    },
+    {
+      "id": "ex:bad-edge-2", "type": "Edge", "start": "ex:a", "edge": "about", "end": "ex:t",
+      "confidence": "87", "expect": "ConfidenceRange"
+    },
+    {
+      "id": "ex:bad-edge-3", "type": "Edge", "start": "ex:p", "edge": "visibilityFor", "end": "ex:br",
+      "mentionRate": "35", "citationRate": "-0.1", "expect": ["MentionRateRange", "CitationRateRange"]
+    }
+  ]
+}
