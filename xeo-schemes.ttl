@@ -722,7 +722,7 @@ xeos:outcomeResultReason-below_volume_floor a skos:Concept ;
     skos:topConceptOf xeos:outcomeResultReason ;
     skos:notation "below_volume_floor" ;
     skos:prefLabel "Not enough traffic to judge"@en ;
-    skos:definition "The page has data, and not yet enough for a percentage to mean anything"@en .
+    skos:definition "There is data, and not yet enough for a rate to mean anything: a reading's denominatorValue is below its Metric's minDenominator"@en .
 
 # --- Objective metrics ---------------------------------------------------------
 
@@ -730,7 +730,7 @@ xeos:objectiveMetric a skos:ConceptScheme ;
     skos:prefLabel "Objective metrics"@en ;
     xeo:fillsSlot xeo:metric ;
     dct:source "if-control-center packages/contracts/src/objective-metric.ts (OBJECTIVE_METRICS, METRIC_DIRECTIONS, METRIC_UNIT_OF) · launch-guardian LG_OBJECTIVE_METRICS" ;
-    dct:description "The metrics a MetricTarget can be set on. Half the vocabulary is lower-is-better — position and rank_absolute are 1-based ranks — so a target's direction is DERIVED from the metric, never client input; a shared +20% across metrics would silently ask for a rank 20% worse. The note on each concept records direction and unit." .
+    dct:description "The metrics a MetricTarget can be set on. Half the vocabulary is lower-is-better — position and rank_absolute are 1-based ranks — so a target's direction is DERIVED from the metric, never client input; a shared +20% across metrics would silently ask for a rank 20% worse. The note on each concept records direction and unit. Since 0.6.0 this is the compatibility list: the eight codes published before xeo:Metric existed, each an exactMatch of its Metric in xeos:metric, which is the full reference scheme and where a target's code resolves." .
 
 xeos:objectiveMetric-clicks a skos:Concept ;
     skos:inScheme xeos:objectiveMetric ;
@@ -835,7 +835,7 @@ xeos:targetKind a skos:ConceptScheme ;
     skos:prefLabel "Target kinds"@en ;
     xeo:fillsSlot xeo:targetKind ;
     dct:source "if-control-center packages/contracts/src/objective-metric.ts (OBJECTIVE_TARGET_KINDS) · launch-guardian LG_OBJECTIVE_TARGET_KINDS" ;
-    dct:description "How a MetricTarget's targetValue is read: as an absolute value of the metric, or as a percent change from the captured baseline." .
+    dct:description "How a MetricTarget's targetValue is read: as an absolute value of the metric, or as a percent change from the captured baseline. Since 0.6.0 also as a relative change written as a quotient, or as an absolute change from baseline in the metric's unit." .
 
 xeos:targetKind-absolute a skos:Concept ;
     skos:inScheme xeos:targetKind ;
@@ -1361,3 +1361,1498 @@ xeos:objectiveMetric-citation_rate a skos:Concept ;
     skos:prefLabel "Citation rate"@en ;
     skos:definition "Share of captured responses in the window that cite the brand's owned URLs"@en ;
     skos:note "direction up · unit rate · source visibilityFor rollup (xeo:citationRate)"@en .
+
+# --- v0.6.0 (metrics and CRM pipeline, 2026-11-10) --------------------------------
+# Appended at the foot. The reference fillings for the slots the two research
+# reports add: what kind of thing a metric is, the Metrics themselves, and the
+# few closed lists the CRM pipeline slots need. Vendor field names are not here:
+# they are in xeo-vendor-schemes.ttl, each mapped to one of these.
+#
+# Unlike the schemes lifted from production above, these come from the reports,
+# and each dct:source says so. Where a value set or a default is XEO's own
+# inference and not something a vendor documents, the scheme or the concept
+# says that too. Same standing as every other scheme: adopt, extend, or replace.
+#
+# TIGHTENED (in place, above). The descriptions of xeos:objectiveMetric and
+# xeos:targetKind, and the definition of outcomeResultReason-below_volume_floor,
+# one line each.
+
+# --- Metric types -----------------------------------------------------------
+
+xeos:metricType a skos:ConceptScheme ;
+    skos:prefLabel "Metric types"@en ;
+    xeo:fillsSlot xeo:metricType ;
+    dct:source "XEO metrics and KPIs research report, 2026-11-10 · the five metric types of dbt MetricFlow, which Cube and LookML express through measure types" ;
+    dct:description "How a Metric is computed. The type decides what else the definition must carry: a simple metric names one slot and how to aggregate it; a ratio names a numerator and a denominator; a derived metric names its inputs and the arithmetic over them. cumulative and conversion are here so the typing is complete; the properties they need are in the extension set." .
+
+xeos:metricType-simple a skos:Concept ;
+    skos:inScheme xeos:metricType ;
+    skos:topConceptOf xeos:metricType ;
+    skos:notation "simple" ;
+    skos:prefLabel "Simple"@en ;
+    skos:definition "One slot, aggregated over the window: a sum, a count, a mean"@en .
+
+xeos:metricType-ratio a skos:Concept ;
+    skos:inScheme xeos:metricType ;
+    skos:topConceptOf xeos:metricType ;
+    skos:notation "ratio" ;
+    skos:prefLabel "Ratio"@en ;
+    skos:definition "One metric divided by another. Rolled up as the sum of numerators over the sum of denominators, never as a mean of ratios"@en .
+
+xeos:metricType-derived a skos:Concept ;
+    skos:inScheme xeos:metricType ;
+    skos:topConceptOf xeos:metricType ;
+    skos:notation "derived" ;
+    skos:prefLabel "Derived"@en ;
+    skos:definition "Arithmetic over one or more other metrics, stated in expression"@en .
+
+xeos:metricType-cumulative a skos:Concept ;
+    skos:inScheme xeos:metricType ;
+    skos:topConceptOf xeos:metricType ;
+    skos:notation "cumulative" ;
+    skos:prefLabel "Cumulative"@en ;
+    skos:definition "A metric accumulated over a trailing window, or from the start of a grain to date"@en .
+
+xeos:metricType-conversion a skos:Concept ;
+    skos:inScheme xeos:metricType ;
+    skos:topConceptOf xeos:metricType ;
+    skos:notation "conversion" ;
+    skos:prefLabel "Conversion"@en ;
+    skos:definition "The share of an entity's base events that were followed by a conversion event within a window"@en .
+
+# --- Aggregations -----------------------------------------------------------
+
+xeos:aggregation a skos:ConceptScheme ;
+    skos:prefLabel "Aggregations"@en ;
+    xeo:fillsSlot xeo:aggregation ;
+    dct:source "XEO metrics and KPIs research report, 2026-11-10 · the aggregation types common to dbt (agg), Cube and LookML (type) and Malloy" ;
+    dct:description "How a simple Metric reduces the values of the slot it reads to one number over a window. Named for the operation, never for a library's function." .
+
+xeos:aggregation-sum a skos:Concept ;
+    skos:inScheme xeos:aggregation ;
+    skos:topConceptOf xeos:aggregation ;
+    skos:notation "sum" ;
+    skos:prefLabel "Sum"@en ;
+    skos:definition "The values added together"@en .
+
+xeos:aggregation-count a skos:Concept ;
+    skos:inScheme xeos:aggregation ;
+    skos:topConceptOf xeos:aggregation ;
+    skos:notation "count" ;
+    skos:prefLabel "Count"@en ;
+    skos:definition "The number of records"@en .
+
+xeos:aggregation-count_distinct a skos:Concept ;
+    skos:inScheme xeos:aggregation ;
+    skos:topConceptOf xeos:aggregation ;
+    skos:notation "count_distinct" ;
+    skos:prefLabel "Distinct count"@en ;
+    skos:definition "The number of different values. Not additive across windows: a visitor seen on two days is one visitor"@en .
+
+xeos:aggregation-mean a skos:Concept ;
+    skos:inScheme xeos:aggregation ;
+    skos:topConceptOf xeos:aggregation ;
+    skos:notation "mean" ;
+    skos:prefLabel "Mean"@en ;
+    skos:definition "The arithmetic mean of the values"@en .
+
+xeos:aggregation-weighted_mean a skos:Concept ;
+    skos:inScheme xeos:aggregation ;
+    skos:topConceptOf xeos:aggregation ;
+    skos:notation "weighted_mean" ;
+    skos:prefLabel "Weighted mean"@en ;
+    skos:definition "The mean of the values, each weighted by a stated quantity (an average position weighted by impressions)"@en .
+
+xeos:aggregation-min a skos:Concept ;
+    skos:inScheme xeos:aggregation ;
+    skos:topConceptOf xeos:aggregation ;
+    skos:notation "min" ;
+    skos:prefLabel "Minimum"@en ;
+    skos:definition "The smallest value"@en .
+
+xeos:aggregation-max a skos:Concept ;
+    skos:inScheme xeos:aggregation ;
+    skos:topConceptOf xeos:aggregation ;
+    skos:notation "max" ;
+    skos:prefLabel "Maximum"@en ;
+    skos:definition "The largest value"@en .
+
+xeos:aggregation-median a skos:Concept ;
+    skos:inScheme xeos:aggregation ;
+    skos:topConceptOf xeos:aggregation ;
+    skos:notation "median" ;
+    skos:prefLabel "Median"@en ;
+    skos:definition "The middle value"@en .
+
+xeos:aggregation-percentile a skos:Concept ;
+    skos:inScheme xeos:aggregation ;
+    skos:topConceptOf xeos:aggregation ;
+    skos:notation "percentile" ;
+    skos:prefLabel "Percentile"@en ;
+    skos:definition "The value below which a stated share of the values fall; the share is percentileValue"@en .
+
+xeos:aggregation-last a skos:Concept ;
+    skos:inScheme xeos:aggregation ;
+    skos:topConceptOf xeos:aggregation ;
+    skos:notation "last" ;
+    skos:prefLabel "Last"@en ;
+    skos:definition "The most recent value in the window, as for a rank read from the latest snapshot"@en .
+
+# --- Metric units -----------------------------------------------------------
+
+xeos:metricUnit a skos:ConceptScheme ;
+    skos:prefLabel "Metric units"@en ;
+    xeo:fillsSlot xeo:unit ;
+    dct:source "XEO metrics and KPIs research report, 2026-11-10 · the value types of the GA4 Data API (MetricType) and Matomo (metricTypes) · 'days' from the CRM pipeline research report" ;
+    dct:description "What a reading of a Metric is a number of. Deliberately few. A rate is a ratio and is stored as a 0 to 1 quotient: every source read returns rates that way, and a percentage is a display format. Distinct from xeos:magnitudeUnit, which names the unit of a Gap's size and includes things that are metrics rather than units." .
+
+xeos:metricUnit-count a skos:Concept ;
+    skos:inScheme xeos:metricUnit ;
+    skos:topConceptOf xeos:metricUnit ;
+    skos:notation "count" ;
+    skos:prefLabel "Count"@en ;
+    skos:definition "A whole number of things: clicks, sessions, deals"@en .
+
+xeos:metricUnit-ratio a skos:Concept ;
+    skos:inScheme xeos:metricUnit ;
+    skos:topConceptOf xeos:metricUnit ;
+    skos:notation "ratio" ;
+    skos:prefLabel "Ratio"@en ;
+    skos:definition "A quotient from 0 to 1. Never a percentage: 0.05, not 5"@en .
+
+xeos:metricUnit-rank a skos:Concept ;
+    skos:inScheme xeos:metricUnit ;
+    skos:topConceptOf xeos:metricUnit ;
+    skos:notation "rank" ;
+    skos:prefLabel "Rank"@en ;
+    skos:definition "A 1-based position, 1 best. An average of ranks is still a rank and may be fractional"@en .
+
+xeos:metricUnit-currency a skos:Concept ;
+    skos:inScheme xeos:metricUnit ;
+    skos:topConceptOf xeos:metricUnit ;
+    skos:notation "currency" ;
+    skos:prefLabel "Currency"@en ;
+    skos:definition "An amount of money. The reading or target states which, as an ISO 4217 code"@en .
+
+xeos:metricUnit-seconds a skos:Concept ;
+    skos:inScheme xeos:metricUnit ;
+    skos:topConceptOf xeos:metricUnit ;
+    skos:notation "seconds" ;
+    skos:prefLabel "Seconds"@en ;
+    skos:definition "A duration in seconds"@en .
+
+xeos:metricUnit-days a skos:Concept ;
+    skos:inScheme xeos:metricUnit ;
+    skos:topConceptOf xeos:metricUnit ;
+    skos:notation "days" ;
+    skos:prefLabel "Days"@en ;
+    skos:definition "A duration in days, as for the length of a sales cycle"@en .
+
+xeos:metricUnit-score_0_100 a skos:Concept ;
+    skos:inScheme xeos:metricUnit ;
+    skos:topConceptOf xeos:metricUnit ;
+    skos:notation "score_0_100" ;
+    skos:prefLabel "Score, 0 to 100"@en ;
+    skos:definition "A model's score on a 0 to 100 scale. Always a derivation, with the model as its method"@en .
+
+# --- Better directions ------------------------------------------------------
+
+xeos:betterDirection a skos:ConceptScheme ;
+    skos:prefLabel "Better directions"@en ;
+    xeo:fillsSlot xeo:betterDirection ;
+    dct:source "XEO metrics and KPIs research report, 2026-11-10 · if-control-center packages/contracts/src/objective-metric.ts (METRIC_DIRECTIONS), which this generalises" ;
+    dct:description "Which way a change in a Metric counts as improvement. Stated once, on the Metric. 'up' and 'down' are the two values xeo:direction took on a target; 'none' is new, for a quantity that is neither good nor bad to have more of." .
+
+xeos:betterDirection-up a skos:Concept ;
+    skos:inScheme xeos:betterDirection ;
+    skos:topConceptOf xeos:betterDirection ;
+    skos:notation "up" ;
+    skos:prefLabel "Higher is better"@en ;
+    skos:definition "An increase is an improvement"@en .
+
+xeos:betterDirection-down a skos:Concept ;
+    skos:inScheme xeos:betterDirection ;
+    skos:topConceptOf xeos:betterDirection ;
+    skos:notation "down" ;
+    skos:prefLabel "Lower is better"@en ;
+    skos:definition "A decrease is an improvement, as for a position or a rank, where 1 is best"@en .
+
+xeos:betterDirection-none a skos:Concept ;
+    skos:inScheme xeos:betterDirection ;
+    skos:topConceptOf xeos:betterDirection ;
+    skos:notation "none" ;
+    skos:prefLabel "Neither"@en ;
+    skos:definition "More is not better or worse: a sample size, a count of answers collected"@en .
+
+# --- Additivity -------------------------------------------------------------
+
+xeos:additivity a skos:ConceptScheme ;
+    skos:prefLabel "Additivity"@en ;
+    xeo:fillsSlot xeo:additivity ;
+    dct:source "XEO metrics and KPIs research report, 2026-11-10 · dbt (non_additive_dimension), Cube (count_distinct_approx), LookML (sum_distinct), Matomo (sum_daily_nb_uniq_visitors), GSC (aggregationType)" ;
+    dct:description "Whether readings of a Metric may be added together across windows, pages or terms. The rule that keeps an Objective from being read as the sum of its Outcomes." .
+
+xeos:additivity-additive a skos:Concept ;
+    skos:inScheme xeos:additivity ;
+    skos:topConceptOf xeos:additivity ;
+    skos:notation "additive" ;
+    skos:prefLabel "Additive"@en ;
+    skos:definition "Readings may be summed across any dimension, provided they share an aggregationBasis"@en .
+
+xeos:additivity-semi_additive a skos:Concept ;
+    skos:inScheme xeos:additivity ;
+    skos:topConceptOf xeos:additivity ;
+    skos:notation "semi_additive" ;
+    skos:prefLabel "Semi-additive"@en ;
+    skos:definition "Readings may be summed across some dimensions and not others; typically not across time"@en .
+
+xeos:additivity-non_additive a skos:Concept ;
+    skos:inScheme xeos:additivity ;
+    skos:topConceptOf xeos:additivity ;
+    skos:notation "non_additive" ;
+    skos:prefLabel "Non-additive"@en ;
+    skos:definition "Readings are never summed. A ratio, an average, a rank or a distinct count over a union is recomputed from its parts"@en .
+
+# --- Time grains (extension) ------------------------------------------------
+
+xeos:timeGrain a skos:ConceptScheme ;
+    skos:prefLabel "Time grains"@en ;
+    xeo:fillsSlot xeo:grainToDate ;
+    xeo:termStatus "extension" ;
+    dct:source "XEO metrics and KPIs research report, 2026-11-10 · dbt (grain_to_date, time_granularity), Cube (granularity)" ;
+    dct:description "The calendar grains a cumulative Metric can reset at." .
+
+xeos:timeGrain-day a skos:Concept ;
+    skos:inScheme xeos:timeGrain ;
+    skos:topConceptOf xeos:timeGrain ;
+    skos:notation "day" ;
+    skos:prefLabel "Day"@en ;
+    skos:definition "Resets each day"@en .
+
+xeos:timeGrain-week a skos:Concept ;
+    skos:inScheme xeos:timeGrain ;
+    skos:topConceptOf xeos:timeGrain ;
+    skos:notation "week" ;
+    skos:prefLabel "Week"@en ;
+    skos:definition "Resets each week"@en .
+
+xeos:timeGrain-month a skos:Concept ;
+    skos:inScheme xeos:timeGrain ;
+    skos:topConceptOf xeos:timeGrain ;
+    skos:notation "month" ;
+    skos:prefLabel "Month"@en ;
+    skos:definition "Resets each month: a month-to-date total"@en .
+
+xeos:timeGrain-quarter a skos:Concept ;
+    skos:inScheme xeos:timeGrain ;
+    skos:topConceptOf xeos:timeGrain ;
+    skos:notation "quarter" ;
+    skos:prefLabel "Quarter"@en ;
+    skos:definition "Resets each quarter"@en .
+
+xeos:timeGrain-year a skos:Concept ;
+    skos:inScheme xeos:timeGrain ;
+    skos:topConceptOf xeos:timeGrain ;
+    skos:notation "year" ;
+    skos:prefLabel "Year"@en ;
+    skos:definition "Resets each year"@en .
+
+# --- Aggregation bases (extension) ------------------------------------------
+
+xeos:aggregationBasis a skos:ConceptScheme ;
+    skos:prefLabel "Aggregation bases"@en ;
+    xeo:fillsSlot xeo:aggregationBasis ;
+    xeo:termStatus "extension" ;
+    dct:source "XEO metrics and KPIs research report, 2026-11-10 · Google Search Console Search Analytics API (aggregationType: auto, byPage, byProperty), neutral spelling" ;
+    dct:description "How a source deduplicated before it returned a value. One source documents the choice, and there the same field gives two different counts under the two bases." .
+
+xeos:aggregationBasis-by_property a skos:Concept ;
+    skos:inScheme xeos:aggregationBasis ;
+    skos:topConceptOf xeos:aggregationBasis ;
+    skos:notation "by_property" ;
+    skos:prefLabel "By property"@en ;
+    skos:definition "Counted once per site: several of the site's pages in one result count as one impression"@en .
+
+xeos:aggregationBasis-by_page a skos:Concept ;
+    skos:inScheme xeos:aggregationBasis ;
+    skos:topConceptOf xeos:aggregationBasis ;
+    skos:notation "by_page" ;
+    skos:prefLabel "By page"@en ;
+    skos:definition "Counted once per page: each of the site's pages in a result counts"@en .
+
+xeos:aggregationBasis-auto a skos:Concept ;
+    skos:inScheme xeos:aggregationBasis ;
+    skos:topConceptOf xeos:aggregationBasis ;
+    skos:notation "auto" ;
+    skos:prefLabel "Source's choice"@en ;
+    skos:definition "The source chose the basis from the request. Record which it chose where it says"@en .
+
+# --- Data states (extension) ------------------------------------------------
+
+xeos:dataState a skos:ConceptScheme ;
+    skos:prefLabel "Data states"@en ;
+    xeo:fillsSlot xeo:dataState ;
+    xeo:termStatus "extension" ;
+    dct:source "XEO metrics and KPIs research report, 2026-11-10 · Google Search Console Search Analytics API (dataState), reported by a secondary source and not read in the vendor's own documentation" ;
+    dct:description "Whether the source considered a reading's window complete when it answered." .
+
+xeos:dataState-final a skos:Concept ;
+    skos:inScheme xeos:dataState ;
+    skos:topConceptOf xeos:dataState ;
+    skos:notation "final" ;
+    skos:prefLabel "Final"@en ;
+    skos:definition "The source considers the window complete; the value is not expected to change"@en .
+
+xeos:dataState-partial a skos:Concept ;
+    skos:inScheme xeos:dataState ;
+    skos:topConceptOf xeos:dataState ;
+    skos:notation "partial" ;
+    skos:prefLabel "Partial"@en ;
+    skos:definition "The window includes data the source is still processing; the value is expected to change"@en .
+
+# --- Target kinds: two more -------------------------------------------------
+# Two more concepts in xeos:targetKind (declared above). The report asks for
+# 'percent' to be renamed 'relative'. A published code is never renamed, so
+# 'relative' is added beside it, and 'percent' stays valid.
+
+xeos:targetKind-relative a skos:Concept ;
+    skos:inScheme xeos:targetKind ;
+    skos:topConceptOf xeos:targetKind ;
+    skos:notation "relative" ;
+    skos:prefLabel "Relative change"@en ;
+    skos:definition "targetValue is a relative change from baseline in the metric's better direction, written as a quotient: 0.2 is a fifth more than baseline"@en ;
+    skos:closeMatch xeos:targetKind-percent ;
+    skos:editorialNote "closeMatch, not exactMatch, to percent: whether a stored percent target holds 20 or 0.2 for a fifth is each consumer's convention, and the ontology never said."@en .
+
+xeos:targetKind-absolute_change a skos:Concept ;
+    skos:inScheme xeos:targetKind ;
+    skos:topConceptOf xeos:targetKind ;
+    skos:notation "absolute_change" ;
+    skos:prefLabel "Absolute change"@en ;
+    skos:definition "targetValue is a change from baseline in the metric's own unit, in its better direction. For a ratio this is points: 0.02 on a clickthrough rate is two points"@en .
+
+# --- Metrics ----------------------------------------------------------------
+# Every concept here is also an xeo:Metric. The two research reports each
+# published a metric table; this is the two reconciled into one list. Where
+# they disagreed, the editorialNote on the concept says how it was settled.
+# Eight component metrics (the numerators and denominators the ratios need)
+# are in neither table and are marked as added.
+
+xeos:metric a skos:ConceptScheme ;
+    skos:prefLabel "Metrics"@en ;
+    xeo:fillsSlot xeo:metric ;
+    dct:source "XEO metrics and KPIs research report, 2026-11-10 (starter reference scheme) · XEO CRM pipeline research report, 2026-11-10 (pipeline metrics) · the codes of xeos:objectiveMetric, kept unchanged" ;
+    dct:description "The reference scheme of XEO Metrics: each a definition with a type, a unit, a better direction and an additivity, and what it is computed from. Covers search, AI visibility, website analytics and CRM pipeline, so an Objective can target any of them and a reading means the same thing wherever it is computed. The code a MetricTarget stores in xeo:metric is the skos:notation of a concept here. The eight codes published earlier in xeos:objectiveMetric are kept exactly, each with an exactMatch from its old concept. Definitions are neutral: where vendors use one name for different ratios, the definition here states the denominator, and each vendor's field is mapped to it in xeo-vendor-schemes.ttl. Every minDenominator is a stated default inferred for XEO, not a vendor fact. A consumer adds its own Metrics as instances of xeo:Metric in a scheme of its own." .
+
+# Search
+
+xeos:metric-clicks a skos:Concept , xeo:Metric ;
+    skos:inScheme xeos:metric ;
+    skos:topConceptOf xeos:metric ;
+    skos:notation "clicks" ;
+    skos:prefLabel "Clicks"@en ;
+    skos:definition "Search result clicks to the site over the window"@en ;
+    xeo:metricType xeos:metricType-simple ;
+    xeo:aggregation xeos:aggregation-sum ;
+    xeo:readsSlot xeo:clicks ;
+    xeo:unit xeos:metricUnit-count ;
+    xeo:betterDirection xeos:betterDirection-up ;
+    xeo:additivity xeos:additivity-additive ;
+    skos:note "reading: an observation where Search Console returned it for exactly this window and scope; a derivation when rolled up or recomputed"@en ;
+    skos:editorialNote "Additive only within one aggregationBasis: clicks counted by page and by property are different counts."@en .
+
+xeos:metric-impressions a skos:Concept , xeo:Metric ;
+    skos:inScheme xeos:metric ;
+    skos:topConceptOf xeos:metric ;
+    skos:notation "impressions" ;
+    skos:prefLabel "Impressions"@en ;
+    skos:definition "Times a result from the site was shown in search over the window"@en ;
+    xeo:metricType xeos:metricType-simple ;
+    xeo:aggregation xeos:aggregation-sum ;
+    xeo:readsSlot xeo:impressions ;
+    xeo:unit xeos:metricUnit-count ;
+    xeo:betterDirection xeos:betterDirection-up ;
+    xeo:additivity xeos:additivity-additive ;
+    skos:note "reading: an observation where Search Console returned it for exactly this window and scope; a derivation when rolled up or recomputed"@en ;
+    skos:editorialNote "Additive only within one aggregationBasis."@en .
+
+xeos:metric-ctr a skos:Concept , xeo:Metric ;
+    skos:inScheme xeos:metric ;
+    skos:topConceptOf xeos:metric ;
+    skos:notation "ctr" ;
+    skos:prefLabel "Clickthrough rate"@en ;
+    skos:definition "The share of impressions that were clicked: clicks divided by impressions, as a 0 to 1 quotient"@en ;
+    xeo:metricType xeos:metricType-ratio ;
+    xeo:numerator xeos:metric-clicks ;
+    xeo:denominator xeos:metric-impressions ;
+    xeo:unit xeos:metricUnit-ratio ;
+    xeo:betterDirection xeos:betterDirection-up ;
+    xeo:additivity xeos:additivity-non_additive ;
+    xeo:minDenominator 100 ;
+    skos:note "reading: an observation where Search Console returned it for exactly this window and scope; a derivation when rolled up or recomputed"@en ;
+    skos:editorialNote "The unit is ratio. xeos:objectiveMetric-ctr, its earlier form, notes the unit as percent; Search Console returns a quotient (0.1078), and so does every other source read. minDenominator 100 is an inferred default, not a vendor fact."@en .
+
+xeos:metric-position a skos:Concept , xeo:Metric ;
+    skos:inScheme xeos:metric ;
+    skos:topConceptOf xeos:metric ;
+    skos:notation "position" ;
+    skos:prefLabel "Average position"@en ;
+    skos:definition "The average position of the site's results in search over the window, weighted by impressions. 1-based, 1 best"@en ;
+    xeo:metricType xeos:metricType-simple ;
+    xeo:aggregation xeos:aggregation-weighted_mean ;
+    xeo:readsSlot xeo:avgPosition ;
+    xeo:unit xeos:metricUnit-rank ;
+    xeo:betterDirection xeos:betterDirection-down ;
+    xeo:additivity xeos:additivity-non_additive ;
+    xeo:minDenominator 1 ;
+    skos:note "reading: an observation where Search Console returned it for exactly this window and scope; a derivation when rolled up or recomputed"@en ;
+    skos:editorialNote "Depends on aggregationBasis: the source computes it differently by page and by property. minDenominator 1 is an inferred default, not a vendor fact."@en .
+
+xeos:metric-rank_absolute a skos:Concept , xeo:Metric ;
+    skos:inScheme xeos:metric ;
+    skos:topConceptOf xeos:metric ;
+    skos:notation "rank_absolute" ;
+    skos:prefLabel "Rank"@en ;
+    skos:definition "The rank of the site's result in a third-party results-page snapshot, read from the latest snapshot in the window. 1-based, 1 best"@en ;
+    xeo:metricType xeos:metricType-simple ;
+    xeo:aggregation xeos:aggregation-last ;
+    xeo:readsSlot xeo:position ;
+    xeo:unit xeos:metricUnit-rank ;
+    xeo:betterDirection xeos:betterDirection-down ;
+    xeo:additivity xeos:additivity-non_additive ;
+    skos:note "reading: an observation, from a rank tracker's snapshot"@en .
+
+xeos:metric-etv a skos:Concept , xeo:Metric ;
+    skos:inScheme xeos:metric ;
+    skos:topConceptOf xeos:metric ;
+    skos:notation "etv" ;
+    skos:prefLabel "Estimated traffic value"@en ;
+    skos:definition "A vendor's modelled value of the site's search traffic over the window"@en ;
+    xeo:metricType xeos:metricType-simple ;
+    xeo:aggregation xeos:aggregation-sum ;
+    xeo:readsSlot xeo:value ;
+    xeo:unit xeos:metricUnit-currency ;
+    xeo:betterDirection xeos:betterDirection-up ;
+    xeo:additivity xeos:additivity-additive ;
+    skos:note "reading: always a derivation, with the vendor's model as its method. It is a model's output, not a measurement"@en ;
+    skos:editorialNote "Layer corrected in 0.6.0: the earlier concept gave it a source and no layer, and it read as a measurement. The currency is the vendor's; a target on it need not state targetCurrency."@en .
+
+# AI visibility
+
+xeos:metric-ai_answers_sampled a skos:Concept , xeo:Metric ;
+    skos:inScheme xeos:metric ;
+    skos:topConceptOf xeos:metric ;
+    skos:notation "ai_answers_sampled" ;
+    skos:prefLabel "AI answers sampled"@en ;
+    skos:definition "The number of AI answers collected for the tracked prompts over the window. The denominator behind the AI visibility rates"@en ;
+    xeo:metricType xeos:metricType-simple ;
+    xeo:aggregation xeos:aggregation-sum ;
+    xeo:readsSlot xeo:responses ;
+    xeo:timeAnchor xeo:capturedAt ;
+    xeo:unit xeos:metricUnit-count ;
+    xeo:betterDirection xeos:betterDirection-none ;
+    xeo:additivity xeos:additivity-additive ;
+    skos:note "reading: an observation, from the tracker's own run log"@en .
+
+xeos:metric-ai_answers_mentioning a skos:Concept , xeo:Metric ;
+    skos:inScheme xeos:metric ;
+    skos:topConceptOf xeos:metric ;
+    skos:notation "ai_answers_mentioning" ;
+    skos:prefLabel "AI answers mentioning the brand"@en ;
+    skos:definition "The number of sampled answers that mention the brand at least once"@en ;
+    xeo:metricType xeos:metricType-simple ;
+    xeo:aggregation xeos:aggregation-count_distinct ;
+    xeo:readsSlot xeo:mentions ;
+    xeo:timeAnchor xeo:capturedAt ;
+    xeo:unit xeos:metricUnit-count ;
+    xeo:betterDirection xeos:betterDirection-up ;
+    xeo:additivity xeos:additivity-additive ;
+    skos:note "reading: a derivation. Whether an answer mentions or cites a brand is extracted from sampled answers, and the sample is a vendor's or a tracker's choice"@en ;
+    skos:editorialNote "A component metric, in neither report's table: added so the ratio that divides by or into it can be computed and rolled up."@en .
+
+xeos:metric-mention_rate a skos:Concept , xeo:Metric ;
+    skos:inScheme xeos:metric ;
+    skos:topConceptOf xeos:metric ;
+    skos:notation "mention_rate" ;
+    skos:prefLabel "Mention rate"@en ;
+    skos:definition "The share of sampled answers that mention the brand: answers mentioning the brand divided by all answers sampled. Every sampled answer is in the denominator, whether or not it names any brand"@en ;
+    xeo:metricType xeos:metricType-ratio ;
+    xeo:numerator xeos:metric-ai_answers_mentioning ;
+    xeo:denominator xeos:metric-ai_answers_sampled ;
+    xeo:unit xeos:metricUnit-ratio ;
+    xeo:betterDirection xeos:betterDirection-up ;
+    xeo:additivity xeos:additivity-non_additive ;
+    xeo:minDenominator 30 ;
+    skos:altLabel "ai_mention_rate" ;
+    skos:note "reading: a derivation. Whether an answer mentions or cites a brand is extracted from sampled answers, and the sample is a vendor's or a tracker's choice"@en ;
+    skos:editorialNote "The report names this ai_mention_rate. The code mention_rate was already published in xeos:objectiveMetric and stored by consumers, so it is kept, with the report's name as an altLabel. What vendors call 'visibility' or 'visibility score' maps here, and not always exactly: see xeo-vendor-schemes.ttl. minDenominator 30 is an inferred default, not a vendor fact."@en .
+
+xeos:metric-ai_answers_citing_owned a skos:Concept , xeo:Metric ;
+    skos:inScheme xeos:metric ;
+    skos:topConceptOf xeos:metric ;
+    skos:notation "ai_answers_citing_owned" ;
+    skos:prefLabel "AI answers citing an owned URL"@en ;
+    skos:definition "The number of sampled answers that cite at least one URL of a Website the brand owns"@en ;
+    xeo:metricType xeos:metricType-simple ;
+    xeo:aggregation xeos:aggregation-count_distinct ;
+    xeo:readsSlot xeo:cites ;
+    xeo:metricFilter "the cited URL is partOf a Website the brand hasWebsite" ;
+    xeo:timeAnchor xeo:capturedAt ;
+    xeo:unit xeos:metricUnit-count ;
+    xeo:betterDirection xeos:betterDirection-up ;
+    xeo:additivity xeos:additivity-additive ;
+    skos:note "reading: a derivation. Whether an answer mentions or cites a brand is extracted from sampled answers, and the sample is a vendor's or a tracker's choice"@en ;
+    skos:editorialNote "A component metric, in neither report's table: added so the ratio that divides by or into it can be computed and rolled up."@en .
+
+xeos:metric-citation_rate a skos:Concept , xeo:Metric ;
+    skos:inScheme xeos:metric ;
+    skos:topConceptOf xeos:metric ;
+    skos:notation "citation_rate" ;
+    skos:prefLabel "Citation rate"@en ;
+    skos:definition "The share of sampled answers that cite at least one of the brand's owned URLs: answers citing an owned URL divided by all answers sampled"@en ;
+    xeo:metricType xeos:metricType-ratio ;
+    xeo:numerator xeos:metric-ai_answers_citing_owned ;
+    xeo:denominator xeos:metric-ai_answers_sampled ;
+    xeo:unit xeos:metricUnit-ratio ;
+    xeo:betterDirection xeos:betterDirection-up ;
+    xeo:additivity xeos:additivity-non_additive ;
+    xeo:minDenominator 30 ;
+    skos:altLabel "ai_owned_source_rate" ;
+    skos:note "reading: a derivation. Whether an answer mentions or cites a brand is extracted from sampled answers, and the sample is a vendor's or a tracker's choice"@en ;
+    skos:editorialNote "The report names this ai_owned_source_rate. The code citation_rate was already published in xeos:objectiveMetric, so it is kept, with the report's name as an altLabel. Not ai_citation_share, which divides by citations and not by answers. minDenominator 30 is an inferred default, not a vendor fact."@en .
+
+xeos:metric-ai_brand_mentions a skos:Concept , xeo:Metric ;
+    skos:inScheme xeos:metric ;
+    skos:topConceptOf xeos:metric ;
+    skos:notation "ai_brand_mentions" ;
+    skos:prefLabel "Brand mentions in AI answers"@en ;
+    skos:definition "The number of mentions of the brand across the sampled answers"@en ;
+    xeo:metricType xeos:metricType-simple ;
+    xeo:aggregation xeos:aggregation-count ;
+    xeo:readsSlot xeo:mentions ;
+    xeo:timeAnchor xeo:capturedAt ;
+    xeo:unit xeos:metricUnit-count ;
+    xeo:betterDirection xeos:betterDirection-up ;
+    xeo:additivity xeos:additivity-additive ;
+    skos:note "reading: a derivation. Whether an answer mentions or cites a brand is extracted from sampled answers, and the sample is a vendor's or a tracker's choice"@en ;
+    skos:editorialNote "A component metric, in neither report's table: added so the ratio that divides by or into it can be computed and rolled up."@en .
+
+xeos:metric-ai_tracked_brand_mentions a skos:Concept , xeo:Metric ;
+    skos:inScheme xeos:metric ;
+    skos:topConceptOf xeos:metric ;
+    skos:notation "ai_tracked_brand_mentions" ;
+    skos:prefLabel "Tracked-brand mentions in AI answers"@en ;
+    skos:definition "The number of mentions of any tracked brand, the brand and its named competitors together, across the sampled answers"@en ;
+    xeo:metricType xeos:metricType-simple ;
+    xeo:aggregation xeos:aggregation-count ;
+    xeo:readsSlot xeo:mentions ;
+    xeo:metricFilter "the mentioned Brand is the brand or one it competesWith" ;
+    xeo:timeAnchor xeo:capturedAt ;
+    xeo:unit xeos:metricUnit-count ;
+    xeo:betterDirection xeos:betterDirection-none ;
+    xeo:additivity xeos:additivity-additive ;
+    skos:note "reading: a derivation. Whether an answer mentions or cites a brand is extracted from sampled answers, and the sample is a vendor's or a tracker's choice"@en ;
+    skos:editorialNote "A component metric, in neither report's table: added so the ratio that divides by or into it can be computed and rolled up. Depends on which brands are tracked: adding a competitor to the set lowers every share computed over it."@en .
+
+xeos:metric-ai_share_of_voice a skos:Concept , xeo:Metric ;
+    skos:inScheme xeos:metric ;
+    skos:topConceptOf xeos:metric ;
+    skos:notation "ai_share_of_voice" ;
+    skos:prefLabel "AI share of voice"@en ;
+    skos:definition "The brand's share of all tracked-brand mentions in the sampled answers: mentions of the brand divided by mentions of every tracked brand"@en ;
+    xeo:metricType xeos:metricType-ratio ;
+    xeo:numerator xeos:metric-ai_brand_mentions ;
+    xeo:denominator xeos:metric-ai_tracked_brand_mentions ;
+    xeo:unit xeos:metricUnit-ratio ;
+    xeo:betterDirection xeos:betterDirection-up ;
+    xeo:additivity xeos:additivity-non_additive ;
+    xeo:minDenominator 30 ;
+    skos:note "reading: a derivation. Whether an answer mentions or cites a brand is extracted from sampled answers, and the sample is a vendor's or a tracker's choice"@en ;
+    skos:editorialNote "minDenominator 30 is an inferred default, not a vendor fact."@en .
+
+xeos:metric-ai_owned_citations a skos:Concept , xeo:Metric ;
+    skos:inScheme xeos:metric ;
+    skos:topConceptOf xeos:metric ;
+    skos:notation "ai_owned_citations" ;
+    skos:prefLabel "Citations of owned domains"@en ;
+    skos:definition "The number of citations in the sampled answers that point at the brand's owned domains"@en ;
+    xeo:metricType xeos:metricType-simple ;
+    xeo:aggregation xeos:aggregation-count ;
+    xeo:readsSlot xeo:cites ;
+    xeo:metricFilter "the cited URL is partOf a Website the brand hasWebsite" ;
+    xeo:timeAnchor xeo:capturedAt ;
+    xeo:unit xeos:metricUnit-count ;
+    xeo:betterDirection xeos:betterDirection-up ;
+    xeo:additivity xeos:additivity-additive ;
+    skos:note "reading: a derivation. Whether an answer mentions or cites a brand is extracted from sampled answers, and the sample is a vendor's or a tracker's choice"@en ;
+    skos:editorialNote "A component metric, in neither report's table: added so the ratio that divides by or into it can be computed and rolled up."@en .
+
+xeos:metric-ai_citations a skos:Concept , xeo:Metric ;
+    skos:inScheme xeos:metric ;
+    skos:topConceptOf xeos:metric ;
+    skos:notation "ai_citations" ;
+    skos:prefLabel "Citations in AI answers"@en ;
+    skos:definition "The number of citations of any URL across the sampled answers"@en ;
+    xeo:metricType xeos:metricType-simple ;
+    xeo:aggregation xeos:aggregation-count ;
+    xeo:readsSlot xeo:cites ;
+    xeo:timeAnchor xeo:capturedAt ;
+    xeo:unit xeos:metricUnit-count ;
+    xeo:betterDirection xeos:betterDirection-none ;
+    xeo:additivity xeos:additivity-additive ;
+    skos:note "reading: an observation where the engine annotates its own citations and the tracker counts them"@en ;
+    skos:editorialNote "A component metric, in neither report's table: added so the ratio that divides by or into it can be computed and rolled up."@en .
+
+xeos:metric-ai_citation_share a skos:Concept , xeo:Metric ;
+    skos:inScheme xeos:metric ;
+    skos:topConceptOf xeos:metric ;
+    skos:notation "ai_citation_share" ;
+    skos:prefLabel "AI citation share"@en ;
+    skos:definition "The share of all citations in the sampled answers that point at the brand's owned domains: citations of owned domains divided by all citations"@en ;
+    xeo:metricType xeos:metricType-ratio ;
+    xeo:numerator xeos:metric-ai_owned_citations ;
+    xeo:denominator xeos:metric-ai_citations ;
+    xeo:unit xeos:metricUnit-ratio ;
+    xeo:betterDirection xeos:betterDirection-up ;
+    xeo:additivity xeos:additivity-non_additive ;
+    xeo:minDenominator 30 ;
+    skos:note "reading: a derivation. Whether an answer mentions or cites a brand is extracted from sampled answers, and the sample is a vendor's or a tracker's choice"@en ;
+    skos:editorialNote "minDenominator 30 is an inferred default, not a vendor fact."@en .
+
+xeos:metric-ai_average_position a skos:Concept , xeo:Metric ;
+    skos:inScheme xeos:metric ;
+    skos:topConceptOf xeos:metric ;
+    skos:notation "ai_average_position" ;
+    skos:prefLabel "AI average position"@en ;
+    skos:definition "The average order in which the brand is first mentioned among the brands an answer names, over the answers that mention it. 1-based, 1 best"@en ;
+    xeo:metricType xeos:metricType-simple ;
+    xeo:aggregation xeos:aggregation-mean ;
+    xeo:readsSlot xeo:mentionRank ;
+    xeo:timeAnchor xeo:capturedAt ;
+    xeo:unit xeos:metricUnit-rank ;
+    xeo:betterDirection xeos:betterDirection-down ;
+    xeo:additivity xeos:additivity-non_additive ;
+    xeo:minDenominator 10 ;
+    skos:note "reading: a derivation. Whether an answer mentions or cites a brand is extracted from sampled answers, and the sample is a vendor's or a tracker's choice"@en ;
+    skos:editorialNote "Averaged only over answers that mention the brand, so it says nothing about how often that is. Not comparable with a search position, which averages over impressions. minDenominator 10 is an inferred default, not a vendor fact."@en .
+
+xeos:metric-ai_sentiment a skos:Concept , xeo:Metric ;
+    skos:inScheme xeos:metric ;
+    skos:topConceptOf xeos:metric ;
+    skos:notation "ai_sentiment" ;
+    skos:prefLabel "AI sentiment score"@en ;
+    skos:definition "A model's score of the tone in which the sampled answers speak of the brand, averaged over the answers that mention it, from 0 to 100"@en ;
+    xeo:metricType xeos:metricType-simple ;
+    xeo:aggregation xeos:aggregation-mean ;
+    xeo:readsSlot xeo:value ;
+    xeo:unit xeos:metricUnit-score_0_100 ;
+    xeo:betterDirection xeos:betterDirection-up ;
+    xeo:additivity xeos:additivity-non_additive ;
+    xeo:minDenominator 10 ;
+    xeo:termStatus "extension" ;
+    skos:note "reading: always a derivation, with the scoring model as its method. Not xeo:sentiment, which is a four-way code on one mention"@en ;
+    skos:editorialNote "minDenominator 10 is an inferred default, not a vendor fact."@en .
+
+# Website analytics
+
+xeos:metric-sessions a skos:Concept , xeo:Metric ;
+    skos:inScheme xeos:metric ;
+    skos:topConceptOf xeos:metric ;
+    skos:notation "sessions" ;
+    skos:prefLabel "Sessions"@en ;
+    skos:definition "Visits to the site over the window, by the analytics tool's own session rule"@en ;
+    xeo:metricType xeos:metricType-simple ;
+    xeo:aggregation xeos:aggregation-sum ;
+    xeo:readsSlot xeo:value ;
+    xeo:unit xeos:metricUnit-count ;
+    xeo:betterDirection xeos:betterDirection-up ;
+    xeo:additivity xeos:additivity-additive ;
+    skos:note "reading: an observation where the analytics tool returned it for exactly this window and scope; a derivation when rolled up, or when the tool's own channel rule had to be rebuilt"@en ;
+    skos:editorialNote "Tools differ on what ends a session, so sessions from two tools are close and not equal."@en .
+
+xeos:metric-engaged_sessions a skos:Concept , xeo:Metric ;
+    skos:inScheme xeos:metric ;
+    skos:topConceptOf xeos:metric ;
+    skos:notation "engaged_sessions" ;
+    skos:prefLabel "Engaged sessions"@en ;
+    skos:definition "Sessions that met the analytics tool's engagement rule"@en ;
+    xeo:metricType xeos:metricType-simple ;
+    xeo:aggregation xeos:aggregation-sum ;
+    xeo:readsSlot xeo:value ;
+    xeo:metricFilter "the session meets the tool's engagement rule" ;
+    xeo:unit xeos:metricUnit-count ;
+    xeo:betterDirection xeos:betterDirection-up ;
+    xeo:additivity xeos:additivity-additive ;
+    skos:note "reading: an observation where the analytics tool returned it for exactly this window and scope; a derivation when rolled up, or when the tool's own channel rule had to be rebuilt"@en .
+
+xeos:metric-engagement_rate a skos:Concept , xeo:Metric ;
+    skos:inScheme xeos:metric ;
+    skos:topConceptOf xeos:metric ;
+    skos:notation "engagement_rate" ;
+    skos:prefLabel "Engagement rate"@en ;
+    skos:definition "The share of sessions that were engaged: engaged sessions divided by sessions"@en ;
+    xeo:metricType xeos:metricType-ratio ;
+    xeo:numerator xeos:metric-engaged_sessions ;
+    xeo:denominator xeos:metric-sessions ;
+    xeo:unit xeos:metricUnit-ratio ;
+    xeo:betterDirection xeos:betterDirection-up ;
+    xeo:additivity xeos:additivity-non_additive ;
+    xeo:minDenominator 50 ;
+    skos:note "reading: an observation where the analytics tool returned it for exactly this window and scope; a derivation when rolled up, or when the tool's own channel rule had to be rebuilt"@en ;
+    skos:editorialNote "Not one minus a bounce rate: one tool's bounce is a single-pageview visit, another's is a session that was not engaged. minDenominator 50 is an inferred default, not a vendor fact."@en .
+
+xeos:metric-ai_assistant_sessions a skos:Concept , xeo:Metric ;
+    skos:inScheme xeos:metric ;
+    skos:topConceptOf xeos:metric ;
+    skos:notation "ai_assistant_sessions" ;
+    skos:prefLabel "AI-assistant sessions"@en ;
+    skos:definition "Sessions referred by AI assistants"@en ;
+    xeo:metricType xeos:metricType-simple ;
+    xeo:aggregation xeos:aggregation-sum ;
+    xeo:readsSlot xeo:value ;
+    xeo:metricFilter "channel = 'ai_assistant'" ;
+    xeo:unit xeos:metricUnit-count ;
+    xeo:betterDirection xeos:betterDirection-up ;
+    xeo:additivity xeos:additivity-additive ;
+    skos:note "reading: an observation where the tool classifies the channel natively; a derivation where a custom channel rule had to be built"@en .
+
+xeos:metric-key_events a skos:Concept , xeo:Metric ;
+    skos:inScheme xeos:metric ;
+    skos:topConceptOf xeos:metric ;
+    skos:notation "key_events" ;
+    skos:prefLabel "Key events"@en ;
+    skos:definition "Events the site has marked as conversions, counted over the window"@en ;
+    xeo:metricType xeos:metricType-simple ;
+    xeo:aggregation xeos:aggregation-sum ;
+    xeo:readsSlot xeo:value ;
+    xeo:unit xeos:metricUnit-count ;
+    xeo:betterDirection xeos:betterDirection-up ;
+    xeo:additivity xeos:additivity-additive ;
+    skos:note "reading: an observation where the analytics tool returned it for exactly this window and scope; a derivation when rolled up, or when the tool's own channel rule had to be rebuilt"@en .
+
+xeos:metric-converting_sessions a skos:Concept , xeo:Metric ;
+    skos:inScheme xeos:metric ;
+    skos:topConceptOf xeos:metric ;
+    skos:notation "converting_sessions" ;
+    skos:prefLabel "Converting sessions"@en ;
+    skos:definition "Sessions in which at least one key event happened"@en ;
+    xeo:metricType xeos:metricType-simple ;
+    xeo:aggregation xeos:aggregation-sum ;
+    xeo:readsSlot xeo:value ;
+    xeo:metricFilter "the session has at least one key event" ;
+    xeo:unit xeos:metricUnit-count ;
+    xeo:betterDirection xeos:betterDirection-up ;
+    xeo:additivity xeos:additivity-additive ;
+    skos:note "reading: an observation where the analytics tool returned it for exactly this window and scope; a derivation when rolled up, or when the tool's own channel rule had to be rebuilt"@en ;
+    skos:editorialNote "A component metric, in neither report's table: added so the ratio that divides by or into it can be computed and rolled up."@en .
+
+xeos:metric-session_conversion_rate a skos:Concept , xeo:Metric ;
+    skos:inScheme xeos:metric ;
+    skos:topConceptOf xeos:metric ;
+    skos:notation "session_conversion_rate" ;
+    skos:prefLabel "Session conversion rate"@en ;
+    skos:definition "The share of sessions in which at least one key event happened: converting sessions divided by sessions"@en ;
+    xeo:metricType xeos:metricType-ratio ;
+    xeo:numerator xeos:metric-converting_sessions ;
+    xeo:denominator xeos:metric-sessions ;
+    xeo:unit xeos:metricUnit-ratio ;
+    xeo:betterDirection xeos:betterDirection-up ;
+    xeo:additivity xeos:additivity-non_additive ;
+    xeo:minDenominator 100 ;
+    skos:note "reading: an observation where the analytics tool returned it for exactly this window and scope; a derivation when rolled up, or when the tool's own channel rule had to be rebuilt"@en ;
+    skos:editorialNote "minDenominator 100 is an inferred default, not a vendor fact."@en .
+
+# CRM pipeline
+
+xeos:metric-leads_created a skos:Concept , xeo:Metric ;
+    skos:inScheme xeos:metric ;
+    skos:topConceptOf xeos:metric ;
+    skos:notation "leads_created" ;
+    skos:prefLabel "Leads created"@en ;
+    skos:definition "Lead or person records the CRM recorded as created in the window"@en ;
+    xeo:metricType xeos:metricType-simple ;
+    xeo:aggregation xeos:aggregation-count ;
+    xeo:readsSlot xeo:crmRecordRef ;
+    xeo:metricFilter "crmObjectType in ('lead', 'person')" ;
+    xeo:timeAnchor xeo:recordCreatedAt ;
+    xeo:unit xeos:metricUnit-count ;
+    xeo:betterDirection xeos:betterDirection-up ;
+    xeo:additivity xeos:additivity-additive ;
+    skos:note "reading: a derivation. The records are observed in the CRM; the windowed number is computed over them"@en ;
+    skos:editorialNote "The metrics report gives the reading layer as observation; the CRM report says every pipeline number is a derivation over observed records. The second is followed: a count XEO computes over a window is a derivation."@en .
+
+xeos:metric-ai_referred_leads a skos:Concept , xeo:Metric ;
+    skos:inScheme xeos:metric ;
+    skos:topConceptOf xeos:metric ;
+    skos:notation "ai_referred_leads" ;
+    skos:prefLabel "AI-referred leads"@en ;
+    skos:definition "Leads created in the window whose first-touch channel is an AI assistant"@en ;
+    xeo:metricType xeos:metricType-simple ;
+    xeo:aggregation xeos:aggregation-count ;
+    xeo:readsSlot xeo:crmRecordRef ;
+    xeo:metricFilter "crmObjectType in ('lead', 'person') and firstTouchChannel = 'ai_assistant'" ;
+    xeo:timeAnchor xeo:recordCreatedAt ;
+    xeo:unit xeos:metricUnit-count ;
+    xeo:betterDirection xeos:betterDirection-up ;
+    xeo:additivity xeos:additivity-additive ;
+    skos:note "reading: a derivation. The records are observed in the CRM; the windowed number is computed over them"@en ;
+    skos:editorialNote "From the CRM report only."@en .
+
+xeos:metric-deals_created a skos:Concept , xeo:Metric ;
+    skos:inScheme xeos:metric ;
+    skos:topConceptOf xeos:metric ;
+    skos:notation "deals_created" ;
+    skos:prefLabel "Deals created"@en ;
+    skos:definition "Deals the CRM recorded as created in the window"@en ;
+    xeo:metricType xeos:metricType-simple ;
+    xeo:aggregation xeos:aggregation-count ;
+    xeo:readsSlot xeo:crmRecordRef ;
+    xeo:metricFilter "crmObjectType = 'deal'" ;
+    xeo:timeAnchor xeo:recordCreatedAt ;
+    xeo:unit xeos:metricUnit-count ;
+    xeo:betterDirection xeos:betterDirection-up ;
+    xeo:additivity xeos:additivity-additive ;
+    skos:note "reading: a derivation. The records are observed in the CRM; the windowed number is computed over them"@en ;
+    skos:editorialNote "From the CRM report only."@en .
+
+xeos:metric-pipeline_created a skos:Concept , xeo:Metric ;
+    skos:inScheme xeos:metric ;
+    skos:topConceptOf xeos:metric ;
+    skos:notation "pipeline_created" ;
+    skos:prefLabel "Pipeline created"@en ;
+    skos:definition "The summed amount of deals created in the window, in one stated currency"@en ;
+    xeo:metricType xeos:metricType-simple ;
+    xeo:aggregation xeos:aggregation-sum ;
+    xeo:readsSlot xeo:dealAmount ;
+    xeo:metricFilter "crmObjectType = 'deal'" ;
+    xeo:timeAnchor xeo:recordCreatedAt ;
+    xeo:unit xeos:metricUnit-currency ;
+    xeo:betterDirection xeos:betterDirection-up ;
+    xeo:additivity xeos:additivity-additive ;
+    skos:note "reading: a derivation. The records are observed in the CRM; the windowed number is computed over them"@en ;
+    skos:editorialNote "The metrics report gives the reading layer as observation; the CRM report says every pipeline number is a derivation over observed records. The second is followed: a count XEO computes over a window is a derivation. A target on it states targetCurrency."@en .
+
+xeos:metric-deals_won a skos:Concept , xeo:Metric ;
+    skos:inScheme xeos:metric ;
+    skos:topConceptOf xeos:metric ;
+    skos:notation "deals_won" ;
+    skos:prefLabel "Deals won"@en ;
+    skos:definition "Deals whose outcome is won and which closed in the window"@en ;
+    xeo:metricType xeos:metricType-simple ;
+    xeo:aggregation xeos:aggregation-count ;
+    xeo:readsSlot xeo:crmRecordRef ;
+    xeo:metricFilter "dealOutcome = 'won'" ;
+    xeo:timeAnchor xeo:dealClosedAt ;
+    xeo:unit xeos:metricUnit-count ;
+    xeo:betterDirection xeos:betterDirection-up ;
+    xeo:additivity xeos:additivity-additive ;
+    skos:note "reading: a derivation. The records are observed in the CRM; the windowed number is computed over them"@en ;
+    skos:editorialNote "The metrics report gives the reading layer as observation; the CRM report says every pipeline number is a derivation over observed records. The second is followed: a count XEO computes over a window is a derivation."@en .
+
+xeos:metric-deals_closed a skos:Concept , xeo:Metric ;
+    skos:inScheme xeos:metric ;
+    skos:topConceptOf xeos:metric ;
+    skos:notation "deals_closed" ;
+    skos:prefLabel "Deals closed"@en ;
+    skos:definition "Deals whose outcome is won or lost and which closed in the window"@en ;
+    xeo:metricType xeos:metricType-simple ;
+    xeo:aggregation xeos:aggregation-count ;
+    xeo:readsSlot xeo:crmRecordRef ;
+    xeo:metricFilter "dealOutcome in ('won', 'lost')" ;
+    xeo:timeAnchor xeo:dealClosedAt ;
+    xeo:unit xeos:metricUnit-count ;
+    xeo:betterDirection xeos:betterDirection-none ;
+    xeo:additivity xeos:additivity-additive ;
+    skos:note "reading: a derivation. The records are observed in the CRM; the windowed number is computed over them"@en ;
+    skos:editorialNote "A component metric, in neither report's table: added so the ratio that divides by or into it can be computed and rolled up."@en .
+
+xeos:metric-revenue_won a skos:Concept , xeo:Metric ;
+    skos:inScheme xeos:metric ;
+    skos:topConceptOf xeos:metric ;
+    skos:notation "revenue_won" ;
+    skos:prefLabel "Revenue won"@en ;
+    skos:definition "The summed amount of deals won that closed in the window, in one stated currency"@en ;
+    xeo:metricType xeos:metricType-simple ;
+    xeo:aggregation xeos:aggregation-sum ;
+    xeo:readsSlot xeo:dealAmount ;
+    xeo:metricFilter "dealOutcome = 'won'" ;
+    xeo:timeAnchor xeo:dealClosedAt ;
+    xeo:unit xeos:metricUnit-currency ;
+    xeo:betterDirection xeos:betterDirection-up ;
+    xeo:additivity xeos:additivity-additive ;
+    skos:note "reading: a derivation. The records are observed in the CRM; the windowed number is computed over them"@en ;
+    skos:editorialNote "The metrics report gives the reading layer as observation; the CRM report says every pipeline number is a derivation over observed records. The second is followed: a count XEO computes over a window is a derivation. A target on it states targetCurrency."@en .
+
+xeos:metric-win_rate a skos:Concept , xeo:Metric ;
+    skos:inScheme xeos:metric ;
+    skos:topConceptOf xeos:metric ;
+    skos:notation "win_rate" ;
+    skos:prefLabel "Win rate"@en ;
+    skos:definition "The share of deals closed in the window that were won: deals won divided by deals won or lost"@en ;
+    xeo:metricType xeos:metricType-ratio ;
+    xeo:numerator xeos:metric-deals_won ;
+    xeo:denominator xeos:metric-deals_closed ;
+    xeo:unit xeos:metricUnit-ratio ;
+    xeo:betterDirection xeos:betterDirection-up ;
+    xeo:additivity xeos:additivity-non_additive ;
+    skos:note "reading: a derivation. The records are observed in the CRM; the windowed number is computed over them"@en ;
+    skos:editorialNote "From the CRM report only, which gives its unit as percent. Stored as a 0 to 1 quotient like every other ratio. Neither report gives a minimum denominator, so none is stated."@en .
+
+xeos:metric-sales_cycle_days a skos:Concept , xeo:Metric ;
+    skos:inScheme xeos:metric ;
+    skos:topConceptOf xeos:metric ;
+    skos:notation "sales_cycle_days" ;
+    skos:prefLabel "Sales cycle"@en ;
+    skos:definition "The median number of days from a deal's creation to its close, over deals won that closed in the window"@en ;
+    xeo:metricType xeos:metricType-simple ;
+    xeo:aggregation xeos:aggregation-median ;
+    xeo:readsSlot xeo:dealClosedAt ;
+    xeo:metricFilter "dealOutcome = 'won'" ;
+    xeo:expression "days from recordCreatedAt to dealClosedAt" ;
+    xeo:timeAnchor xeo:dealClosedAt ;
+    xeo:unit xeos:metricUnit-days ;
+    xeo:betterDirection xeos:betterDirection-down ;
+    xeo:additivity xeos:additivity-non_additive ;
+    skos:note "reading: a derivation. The records are observed in the CRM; the windowed number is computed over them"@en ;
+    skos:editorialNote "From the CRM report only."@en .
+
+# The earlier objectiveMetric concepts, each tied to its Metric. Extra triples
+# about concepts declared above; none is changed.
+
+xeos:objectiveMetric-clicks skos:exactMatch xeos:metric-clicks .
+xeos:objectiveMetric-impressions skos:exactMatch xeos:metric-impressions .
+xeos:objectiveMetric-position skos:exactMatch xeos:metric-position .
+xeos:objectiveMetric-rank_absolute skos:exactMatch xeos:metric-rank_absolute .
+xeos:objectiveMetric-mention_rate skos:exactMatch xeos:metric-mention_rate .
+xeos:objectiveMetric-citation_rate skos:exactMatch xeos:metric-citation_rate .
+xeos:objectiveMetric-ctr skos:exactMatch xeos:metric-ctr ;
+    skos:editorialNote "The note above gives the unit as percent. The sources return a 0 to 1 quotient, and xeos:metric-ctr states the unit as ratio. The note is left as published, because a consumer may have built on it; whether stored ctr targets and baselines hold 5 or 0.05 needs checking before it is corrected."@en .
+xeos:objectiveMetric-etv skos:exactMatch xeos:metric-etv ;
+    skos:editorialNote "A vendor's model output, so every reading of it is a derivation. xeos:metric-etv says so; this concept's note names only the source."@en .
+
+# --- CRM systems ------------------------------------------------------------
+
+xeos:crmSystem a skos:ConceptScheme ;
+    skos:prefLabel "CRM systems"@en ;
+    xeo:fillsSlot xeo:crmSystem ;
+    dct:source "XEO CRM pipeline research report, 2026-11-10 (the seven CRMs read)" ;
+    dct:description "Which CRM product holds a record: the first part of a crmRecordRef. The seven the report read. A code names the product, never a field of it. Another CRM is another code; three more (Freshsales, Copper, monday CRM) were named and not read." .
+
+xeos:crmSystem-hubspot a skos:Concept ;
+    skos:inScheme xeos:crmSystem ;
+    skos:topConceptOf xeos:crmSystem ;
+    skos:notation "hubspot" ;
+    skos:prefLabel "HubSpot"@en ;
+    skos:definition "HubSpot Smart CRM"@en .
+
+xeos:crmSystem-salesforce a skos:Concept ;
+    skos:inScheme xeos:crmSystem ;
+    skos:topConceptOf xeos:crmSystem ;
+    skos:notation "salesforce" ;
+    skos:prefLabel "Salesforce"@en ;
+    skos:definition "Salesforce Sales Cloud"@en .
+
+xeos:crmSystem-pipedrive a skos:Concept ;
+    skos:inScheme xeos:crmSystem ;
+    skos:topConceptOf xeos:crmSystem ;
+    skos:notation "pipedrive" ;
+    skos:prefLabel "Pipedrive"@en ;
+    skos:definition "Pipedrive"@en .
+
+xeos:crmSystem-dynamics365 a skos:Concept ;
+    skos:inScheme xeos:crmSystem ;
+    skos:topConceptOf xeos:crmSystem ;
+    skos:notation "dynamics365" ;
+    skos:prefLabel "Dynamics 365"@en ;
+    skos:definition "Microsoft Dynamics 365 Sales"@en .
+
+xeos:crmSystem-zoho a skos:Concept ;
+    skos:inScheme xeos:crmSystem ;
+    skos:topConceptOf xeos:crmSystem ;
+    skos:notation "zoho" ;
+    skos:prefLabel "Zoho CRM"@en ;
+    skos:definition "Zoho CRM"@en .
+
+xeos:crmSystem-close a skos:Concept ;
+    skos:inScheme xeos:crmSystem ;
+    skos:topConceptOf xeos:crmSystem ;
+    skos:notation "close" ;
+    skos:prefLabel "Close"@en ;
+    skos:definition "Close"@en .
+
+xeos:crmSystem-attio a skos:Concept ;
+    skos:inScheme xeos:crmSystem ;
+    skos:topConceptOf xeos:crmSystem ;
+    skos:notation "attio" ;
+    skos:prefLabel "Attio"@en ;
+    skos:definition "Attio"@en .
+
+# --- CRM object types -------------------------------------------------------
+
+xeos:crmObjectType a skos:ConceptScheme ;
+    skos:prefLabel "CRM object types"@en ;
+    xeo:fillsSlot xeo:crmObjectType ;
+    dct:source "XEO CRM pipeline research report, 2026-11-10 (crosswalk: all seven CRMs expose a person, an organization and a deal; five a pre-qualification lead)" ;
+    dct:description "The neutral kind of record a crmRecordRef points at. Assigned from the record's structure, not from the vendor's word for it: 'lead' is a prospect record in one CRM, a company in another and a deal stage in a third." .
+
+xeos:crmObjectType-person a skos:Concept ;
+    skos:inScheme xeos:crmObjectType ;
+    skos:topConceptOf xeos:crmObjectType ;
+    skos:notation "person" ;
+    skos:prefLabel "Person"@en ;
+    skos:definition "A record of one human: a contact"@en .
+
+xeos:crmObjectType-organization a skos:Concept ;
+    skos:inScheme xeos:crmObjectType ;
+    skos:topConceptOf xeos:crmObjectType ;
+    skos:notation "organization" ;
+    skos:prefLabel "Organization"@en ;
+    skos:definition "A record of a company or account"@en .
+
+xeos:crmObjectType-lead a skos:Concept ;
+    skos:inScheme xeos:crmObjectType ;
+    skos:topConceptOf xeos:crmObjectType ;
+    skos:notation "lead" ;
+    skos:prefLabel "Lead"@en ;
+    skos:definition "A record of an unqualified prospect, kept apart from persons and deals until it is converted or dropped"@en .
+
+xeos:crmObjectType-deal a skos:Concept ;
+    skos:inScheme xeos:crmObjectType ;
+    skos:topConceptOf xeos:crmObjectType ;
+    skos:notation "deal" ;
+    skos:prefLabel "Deal"@en ;
+    skos:definition "A record of one potential sale, with a stage and an amount: a deal or an opportunity"@en .
+
+# --- Deal outcomes ----------------------------------------------------------
+
+xeos:dealOutcome a skos:ConceptScheme ;
+    skos:prefLabel "Deal outcomes"@en ;
+    xeo:fillsSlot xeo:dealOutcome ;
+    dct:source "XEO CRM pipeline research report, 2026-11-10 (five of seven CRMs state it as a field; in the other two it follows from the stage)" ;
+    dct:description "Whether a deal is still in play, and if not, how it ended. Three values, and no fourth for deleted: a deleted deal has no outcome and is left out of every count." .
+
+xeos:dealOutcome-open a skos:Concept ;
+    skos:inScheme xeos:dealOutcome ;
+    skos:topConceptOf xeos:dealOutcome ;
+    skos:notation "open" ;
+    skos:prefLabel "Open"@en ;
+    skos:definition "The deal has not closed"@en .
+
+xeos:dealOutcome-won a skos:Concept ;
+    skos:inScheme xeos:dealOutcome ;
+    skos:topConceptOf xeos:dealOutcome ;
+    skos:notation "won" ;
+    skos:prefLabel "Won"@en ;
+    skos:definition "The deal closed and was won"@en .
+
+xeos:dealOutcome-lost a skos:Concept ;
+    skos:inScheme xeos:dealOutcome ;
+    skos:topConceptOf xeos:dealOutcome ;
+    skos:notation "lost" ;
+    skos:prefLabel "Lost"@en ;
+    skos:definition "The deal closed and was lost"@en .
+
+# --- Deal stage classes -----------------------------------------------------
+
+xeos:dealStageClass a skos:ConceptScheme ;
+    skos:prefLabel "Deal stage classes"@en ;
+    xeo:fillsSlot xeo:stageClass ;
+    dct:source "XEO CRM pipeline research report, 2026-11-10 (the closed and won flags CRMs keep on a stage's configuration)" ;
+    dct:description "What a tenant's deal stage means, whatever it is called. The class a per-tenant mapping assigns to each stageRef, and what dealOutcome is read through where the CRM states no outcome of its own." .
+
+xeos:dealStageClass-open a skos:Concept ;
+    skos:inScheme xeos:dealStageClass ;
+    skos:topConceptOf xeos:dealStageClass ;
+    skos:notation "open" ;
+    skos:prefLabel "Open"@en ;
+    skos:definition "A stage a deal is still being worked in"@en .
+
+xeos:dealStageClass-won a skos:Concept ;
+    skos:inScheme xeos:dealStageClass ;
+    skos:topConceptOf xeos:dealStageClass ;
+    skos:notation "won" ;
+    skos:prefLabel "Won"@en ;
+    skos:definition "A stage that closes a deal as won"@en .
+
+xeos:dealStageClass-lost a skos:Concept ;
+    skos:inScheme xeos:dealStageClass ;
+    skos:topConceptOf xeos:dealStageClass ;
+    skos:notation "lost" ;
+    skos:prefLabel "Lost"@en ;
+    skos:definition "A stage that closes a deal as lost"@en .
+
+# --- Lifecycle stage classes (extension) ------------------------------------
+
+xeos:lifecycleStageClass a skos:ConceptScheme ;
+    skos:prefLabel "Lifecycle stage classes"@en ;
+    xeo:fillsSlot xeo:lifecycleStage ;
+    xeo:termStatus "extension" ;
+    dct:source "XEO CRM pipeline research report, 2026-11-10 (one CRM's default lifecycle, neutral spelling; the only CRM of the seven that carries a lifecycle stage natively)" ;
+    dct:description "The funnel position of a person or organization. Fills lifecycleStage, and is what stageClass takes on a lifecycle StageTransition. An extension: the stages are one vendor's default ladder, and what qualifies a lead for each is every tenant's own rule. 'other' is where a tenant's custom stage goes." .
+
+xeos:lifecycleStageClass-subscriber a skos:Concept ;
+    skos:inScheme xeos:lifecycleStageClass ;
+    skos:topConceptOf xeos:lifecycleStageClass ;
+    skos:notation "subscriber" ;
+    skos:prefLabel "Subscriber"@en ;
+    skos:definition "Has opted in to hear from the business and nothing more"@en .
+
+xeos:lifecycleStageClass-lead a skos:Concept ;
+    skos:inScheme xeos:lifecycleStageClass ;
+    skos:topConceptOf xeos:lifecycleStageClass ;
+    skos:notation "lead" ;
+    skos:prefLabel "Lead"@en ;
+    skos:definition "Has shown interest beyond subscribing"@en .
+
+xeos:lifecycleStageClass-mql a skos:Concept ;
+    skos:inScheme xeos:lifecycleStageClass ;
+    skos:topConceptOf xeos:lifecycleStageClass ;
+    skos:notation "mql" ;
+    skos:prefLabel "Marketing-qualified lead"@en ;
+    skos:definition "Marketing judges the lead ready to hand to sales, by the tenant's own criteria"@en .
+
+xeos:lifecycleStageClass-sql a skos:Concept ;
+    skos:inScheme xeos:lifecycleStageClass ;
+    skos:topConceptOf xeos:lifecycleStageClass ;
+    skos:notation "sql" ;
+    skos:prefLabel "Sales-qualified lead"@en ;
+    skos:definition "Sales has accepted the lead as worth pursuing, by the tenant's own criteria"@en .
+
+xeos:lifecycleStageClass-opportunity a skos:Concept ;
+    skos:inScheme xeos:lifecycleStageClass ;
+    skos:topConceptOf xeos:lifecycleStageClass ;
+    skos:notation "opportunity" ;
+    skos:prefLabel "Opportunity"@en ;
+    skos:definition "Associated with an open deal"@en .
+
+xeos:lifecycleStageClass-customer a skos:Concept ;
+    skos:inScheme xeos:lifecycleStageClass ;
+    skos:topConceptOf xeos:lifecycleStageClass ;
+    skos:notation "customer" ;
+    skos:prefLabel "Customer"@en ;
+    skos:definition "Has at least one deal won"@en .
+
+xeos:lifecycleStageClass-evangelist a skos:Concept ;
+    skos:inScheme xeos:lifecycleStageClass ;
+    skos:topConceptOf xeos:lifecycleStageClass ;
+    skos:notation "evangelist" ;
+    skos:prefLabel "Evangelist"@en ;
+    skos:definition "A customer who advocates for the business"@en .
+
+xeos:lifecycleStageClass-other a skos:Concept ;
+    skos:inScheme xeos:lifecycleStageClass ;
+    skos:topConceptOf xeos:lifecycleStageClass ;
+    skos:notation "other" ;
+    skos:prefLabel "Other"@en ;
+    skos:definition "A tenant-specific stage with no neutral class"@en .
+
+# --- Stage slots ------------------------------------------------------------
+
+xeos:stageSlot a skos:ConceptScheme ;
+    skos:prefLabel "Stage slots"@en ;
+    xeo:fillsSlot xeo:stageSlot ;
+    dct:source "XEO CRM pipeline research report, 2026-11-10 (StageTransition term card; codes in snake_case to match every other XEO code)" ;
+    dct:description "Which of a record's staged properties a StageTransition records a move in." .
+
+xeos:stageSlot-deal_stage a skos:Concept ;
+    skos:inScheme xeos:stageSlot ;
+    skos:topConceptOf xeos:stageSlot ;
+    skos:notation "deal_stage" ;
+    skos:prefLabel "Deal stage"@en ;
+    skos:definition "The stage of a deal in its pipeline"@en .
+
+xeos:stageSlot-lifecycle a skos:Concept ;
+    skos:inScheme xeos:stageSlot ;
+    skos:topConceptOf xeos:stageSlot ;
+    skos:notation "lifecycle" ;
+    skos:prefLabel "Lifecycle stage"@en ;
+    skos:definition "The funnel position of a person or organization"@en .
+
+xeos:stageSlot-lead_status a skos:Concept ;
+    skos:inScheme xeos:stageSlot ;
+    skos:topConceptOf xeos:stageSlot ;
+    skos:notation "lead_status" ;
+    skos:prefLabel "Lead status"@en ;
+    skos:definition "The sales working state of a lead"@en .
+
+# --- Acquisition channels ---------------------------------------------------
+
+xeos:acquisitionChannel a skos:ConceptScheme ;
+    skos:prefLabel "Acquisition channels"@en ;
+    xeo:fillsSlot xeo:firstTouchChannel ;
+    dct:source "XEO CRM pipeline research report, 2026-11-10 · ai_assistant is evidenced by two vendors' classifiers (one CRM's traffic-source value, one analytics tool's default channel). The other values are a neutral set inferred for XEO from the channel lists those classifiers publish; no vendor's list is adopted" ;
+    dct:description "Where a person came from, as a classifier or a person recorded it. Fills firstTouchChannel and latestTouchChannel, and is the set a session-grain channel should reuse. Deliberately coarse. ai_assistant is the value the set exists for: a visit referred by an AI assistant's own domain. A search engine's AI overview is not one, and stays organic_search. Every vendor draws these lines its own way, so a mapped value is a derivation and says whose rule made it." .
+
+xeos:acquisitionChannel-organic_search a skos:Concept ;
+    skos:inScheme xeos:acquisitionChannel ;
+    skos:topConceptOf xeos:acquisitionChannel ;
+    skos:notation "organic_search" ;
+    skos:prefLabel "Organic search"@en ;
+    skos:definition "Arrived from an unpaid search result"@en .
+
+xeos:acquisitionChannel-paid_search a skos:Concept ;
+    skos:inScheme xeos:acquisitionChannel ;
+    skos:topConceptOf xeos:acquisitionChannel ;
+    skos:notation "paid_search" ;
+    skos:prefLabel "Paid search"@en ;
+    skos:definition "Arrived from a search advertisement"@en .
+
+xeos:acquisitionChannel-ai_assistant a skos:Concept ;
+    skos:inScheme xeos:acquisitionChannel ;
+    skos:topConceptOf xeos:acquisitionChannel ;
+    skos:notation "ai_assistant" ;
+    skos:prefLabel "AI assistant"@en ;
+    skos:definition "Arrived from an AI assistant's own domain or app: a chat or answer product, not a search engine's results page"@en .
+
+xeos:acquisitionChannel-referral a skos:Concept ;
+    skos:inScheme xeos:acquisitionChannel ;
+    skos:topConceptOf xeos:acquisitionChannel ;
+    skos:notation "referral" ;
+    skos:prefLabel "Referral"@en ;
+    skos:definition "Arrived from a link on another site that is not search, social or an AI assistant"@en .
+
+xeos:acquisitionChannel-organic_social a skos:Concept ;
+    skos:inScheme xeos:acquisitionChannel ;
+    skos:topConceptOf xeos:acquisitionChannel ;
+    skos:notation "organic_social" ;
+    skos:prefLabel "Organic social"@en ;
+    skos:definition "Arrived from an unpaid social post or profile"@en .
+
+xeos:acquisitionChannel-paid_social a skos:Concept ;
+    skos:inScheme xeos:acquisitionChannel ;
+    skos:topConceptOf xeos:acquisitionChannel ;
+    skos:notation "paid_social" ;
+    skos:prefLabel "Paid social"@en ;
+    skos:definition "Arrived from a social advertisement"@en .
+
+xeos:acquisitionChannel-email a skos:Concept ;
+    skos:inScheme xeos:acquisitionChannel ;
+    skos:topConceptOf xeos:acquisitionChannel ;
+    skos:notation "email" ;
+    skos:prefLabel "Email"@en ;
+    skos:definition "Arrived from a link in an email"@en .
+
+xeos:acquisitionChannel-direct a skos:Concept ;
+    skos:inScheme xeos:acquisitionChannel ;
+    skos:topConceptOf xeos:acquisitionChannel ;
+    skos:notation "direct" ;
+    skos:prefLabel "Direct"@en ;
+    skos:definition "Arrived with no referrer: typed, bookmarked, or stripped"@en .
+
+xeos:acquisitionChannel-offline a skos:Concept ;
+    skos:inScheme xeos:acquisitionChannel ;
+    skos:topConceptOf xeos:acquisitionChannel ;
+    skos:notation "offline" ;
+    skos:prefLabel "Offline"@en ;
+    skos:definition "Entered other than by a tracked visit: an import, an event, a call, manual entry"@en .
+
+xeos:acquisitionChannel-other a skos:Concept ;
+    skos:inScheme xeos:acquisitionChannel ;
+    skos:topConceptOf xeos:acquisitionChannel ;
+    skos:notation "other" ;
+    skos:prefLabel "Other"@en ;
+    skos:definition "Tracked, and matching none of the above: an untyped campaign"@en .
+
+# --- Conversion point types -------------------------------------------------
+
+xeos:conversionPointType a skos:ConceptScheme ;
+    skos:prefLabel "Conversion point types"@en ;
+    xeo:fillsSlot xeo:conversionPointType ;
+    dct:source "XEO CRM pipeline research report, 2026-11-10 · the three ConversionPoint subclasses of xeo-engagement, as codes, with two kinds the report adds" ;
+    dct:description "The kind of mechanism a ConversionPoint is. The first three say with a code what the CallToAction, LeadCaptureForm and GatedAsset subclasses say with a class; the list was growing, and a growing list is a scheme." .
+
+xeos:conversionPointType-cta a skos:Concept ;
+    skos:inScheme xeos:conversionPointType ;
+    skos:topConceptOf xeos:conversionPointType ;
+    skos:notation "cta" ;
+    skos:prefLabel "Call to action"@en ;
+    skos:definition "A button or link that asks the visitor to take the next step"@en ;
+    skos:exactMatch xeo:CallToAction .
+
+xeos:conversionPointType-lead_form a skos:Concept ;
+    skos:inScheme xeos:conversionPointType ;
+    skos:topConceptOf xeos:conversionPointType ;
+    skos:notation "lead_form" ;
+    skos:prefLabel "Lead capture form"@en ;
+    skos:definition "A form that exchanges contact details for a response, a quote or a booking"@en ;
+    skos:exactMatch xeo:LeadCaptureForm .
+
+xeos:conversionPointType-gated_asset a skos:Concept ;
+    skos:inScheme xeos:conversionPointType ;
+    skos:topConceptOf xeos:conversionPointType ;
+    skos:notation "gated_asset" ;
+    skos:prefLabel "Gated asset"@en ;
+    skos:definition "Content exchanged for contact information"@en ;
+    skos:exactMatch xeo:GatedAsset .
+
+xeos:conversionPointType-meeting_booker a skos:Concept ;
+    skos:inScheme xeos:conversionPointType ;
+    skos:topConceptOf xeos:conversionPointType ;
+    skos:notation "meeting_booker" ;
+    skos:prefLabel "Meeting booker"@en ;
+    skos:definition "An embedded scheduler that books a meeting"@en .
+
+xeos:conversionPointType-chat a skos:Concept ;
+    skos:inScheme xeos:conversionPointType ;
+    skos:topConceptOf xeos:conversionPointType ;
+    skos:notation "chat" ;
+    skos:prefLabel "Chat"@en ;
+    skos:definition "A live chat or chatbot that can capture a contact"@en .
+
+# --- Search intents ---------------------------------------------------------
+
+xeos:searchIntent a skos:ConceptScheme ;
+    skos:prefLabel "Search intents"@en ;
+    xeo:fillsSlot xeo:targetsIntent ;
+    dct:source "Broder (2002), 'A taxonomy of web search', as extended in common practice · the four SearchIntent individuals of xeo-engagement, as concepts" ;
+    dct:description "Why the person is asking. The same four values xeo-engagement declares as named individuals, published as concepts so that a value is a code and not a term. Each concept is also an xeo:SearchIntent, so targetsIntent may point at it without any change to that property." .
+
+xeos:searchIntent-informational a skos:Concept , xeo:SearchIntent ;
+    skos:inScheme xeos:searchIntent ;
+    skos:topConceptOf xeos:searchIntent ;
+    skos:notation "informational" ;
+    skos:prefLabel "Informational"@en ;
+    skos:definition "The person wants to learn something"@en ;
+    skos:exactMatch xeo:Informational .
+
+xeos:searchIntent-navigational a skos:Concept , xeo:SearchIntent ;
+    skos:inScheme xeos:searchIntent ;
+    skos:topConceptOf xeos:searchIntent ;
+    skos:notation "navigational" ;
+    skos:prefLabel "Navigational"@en ;
+    skos:definition "The person wants to reach a particular site or page"@en ;
+    skos:exactMatch xeo:Navigational .
+
+xeos:searchIntent-commercial_investigation a skos:Concept , xeo:SearchIntent ;
+    skos:inScheme xeos:searchIntent ;
+    skos:topConceptOf xeos:searchIntent ;
+    skos:notation "commercial_investigation" ;
+    skos:prefLabel "Commercial investigation"@en ;
+    skos:definition "The person is comparing options before a purchase"@en ;
+    skos:exactMatch xeo:CommercialInvestigation .
+
+xeos:searchIntent-transactional a skos:Concept , xeo:SearchIntent ;
+    skos:inScheme xeos:searchIntent ;
+    skos:topConceptOf xeos:searchIntent ;
+    skos:notation "transactional" ;
+    skos:prefLabel "Transactional"@en ;
+    skos:definition "The person wants to do something now: buy, book, sign up"@en ;
+    skos:exactMatch xeo:Transactional .
+
+# --- Forecast categories (extension) ----------------------------------------
+
+xeos:forecastCategory a skos:ConceptScheme ;
+    skos:prefLabel "Forecast categories"@en ;
+    xeo:fillsSlot xeo:forecastCategory ;
+    xeo:termStatus "extension" ;
+    dct:source "XEO CRM pipeline research report, 2026-11-10 (two of seven CRMs; neutral spelling)" ;
+    dct:description "The forecast bucket a deal is placed in." .
+
+xeos:forecastCategory-omitted a skos:Concept ;
+    skos:inScheme xeos:forecastCategory ;
+    skos:topConceptOf xeos:forecastCategory ;
+    skos:notation "omitted" ;
+    skos:prefLabel "Omitted"@en ;
+    skos:definition "Left out of the forecast"@en .
+
+xeos:forecastCategory-pipeline a skos:Concept ;
+    skos:inScheme xeos:forecastCategory ;
+    skos:topConceptOf xeos:forecastCategory ;
+    skos:notation "pipeline" ;
+    skos:prefLabel "Pipeline"@en ;
+    skos:definition "In the pipeline, with no commitment"@en .
+
+xeos:forecastCategory-best_case a skos:Concept ;
+    skos:inScheme xeos:forecastCategory ;
+    skos:topConceptOf xeos:forecastCategory ;
+    skos:notation "best_case" ;
+    skos:prefLabel "Best case"@en ;
+    skos:definition "Could close in the period if things go well"@en .
+
+xeos:forecastCategory-commit a skos:Concept ;
+    skos:inScheme xeos:forecastCategory ;
+    skos:topConceptOf xeos:forecastCategory ;
+    skos:notation "commit" ;
+    skos:prefLabel "Commit"@en ;
+    skos:definition "The owner commits to closing it in the period"@en .
+
+xeos:forecastCategory-closed a skos:Concept ;
+    skos:inScheme xeos:forecastCategory ;
+    skos:topConceptOf xeos:forecastCategory ;
+    skos:notation "closed" ;
+    skos:prefLabel "Closed"@en ;
+    skos:definition "Already closed won"@en .
+
+# --- Record origins (extension) ---------------------------------------------
+
+xeos:recordOrigin a skos:ConceptScheme ;
+    skos:prefLabel "Record origins"@en ;
+    xeo:fillsSlot xeo:recordOrigin ;
+    xeo:termStatus "extension" ;
+    dct:source "XEO CRM pipeline research report, 2026-11-10 (two of seven CRMs keep a system-set origin; the five values are the report's neutral set)" ;
+    dct:description "How a record came to exist in the CRM, as the system recorded it." .
+
+xeos:recordOrigin-manual a skos:Concept ;
+    skos:inScheme xeos:recordOrigin ;
+    skos:topConceptOf xeos:recordOrigin ;
+    skos:notation "manual" ;
+    skos:prefLabel "Manual"@en ;
+    skos:definition "Created by a person in the CRM"@en .
+
+xeos:recordOrigin-import a skos:Concept ;
+    skos:inScheme xeos:recordOrigin ;
+    skos:topConceptOf xeos:recordOrigin ;
+    skos:notation "import" ;
+    skos:prefLabel "Import"@en ;
+    skos:definition "Created by a file import"@en .
+
+xeos:recordOrigin-api a skos:Concept ;
+    skos:inScheme xeos:recordOrigin ;
+    skos:topConceptOf xeos:recordOrigin ;
+    skos:notation "api" ;
+    skos:prefLabel "API"@en ;
+    skos:definition "Created through the CRM's API"@en .
+
+xeos:recordOrigin-form a skos:Concept ;
+    skos:inScheme xeos:recordOrigin ;
+    skos:topConceptOf xeos:recordOrigin ;
+    skos:notation "form" ;
+    skos:prefLabel "Form"@en ;
+    skos:definition "Created by a form submission"@en .
+
+xeos:recordOrigin-integration a skos:Concept ;
+    skos:inScheme xeos:recordOrigin ;
+    skos:topConceptOf xeos:recordOrigin ;
+    skos:notation "integration" ;
+    skos:prefLabel "Integration"@en ;
+    skos:definition "Created by a connected product"@en .
+
+# --- Value periods (extension) ----------------------------------------------
+
+xeos:valuePeriod a skos:ConceptScheme ;
+    skos:prefLabel "Value periods"@en ;
+    xeo:fillsSlot xeo:valuePeriod ;
+    xeo:termStatus "extension" ;
+    dct:source "XEO CRM pipeline research report, 2026-11-10 (three of seven CRMs record a recurring value). The three codes are inferred for XEO from the fields those CRMs expose (a one-time value, a monthly and an annual recurring value); no vendor's list is adopted" ;
+    dct:description "The period a recurringValue recurs over." .
+
+xeos:valuePeriod-one_time a skos:Concept ;
+    skos:inScheme xeos:valuePeriod ;
+    skos:topConceptOf xeos:valuePeriod ;
+    skos:notation "one_time" ;
+    skos:prefLabel "One-time"@en ;
+    skos:definition "Not recurring"@en .
+
+xeos:valuePeriod-monthly a skos:Concept ;
+    skos:inScheme xeos:valuePeriod ;
+    skos:topConceptOf xeos:valuePeriod ;
+    skos:notation "monthly" ;
+    skos:prefLabel "Monthly"@en ;
+    skos:definition "Recurs each month"@en .
+
+xeos:valuePeriod-annual a skos:Concept ;
+    skos:inScheme xeos:valuePeriod ;
+    skos:topConceptOf xeos:valuePeriod ;
+    skos:notation "annual" ;
+    skos:prefLabel "Annual"@en ;
+    skos:definition "Recurs each year"@en .
