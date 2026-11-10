@@ -36,7 +36,7 @@ xeo:schemes-module a owl:Ontology ;
     dct:description "SKOS concept schemes filling the slots the XEO ontology leaves open — gap types, verdicts, priorities, the intervention catalogue, lifecycles, metrics. Published reference values, not part of the ontology's class vocabulary; adopt, extend, or replace." ;
     dct:creator "Inbound Found" ;
     rdfs:seeAlso <https://xeoontology.org/schemes.json> ;
-    owl:versionInfo "0.5.0" .
+    owl:versionInfo "0.6.0" .
 
 xeo:fillsSlot a owl:AnnotationProperty ;
     rdfs:comment "Names the XEO property whose skos:Concept range (or controlled-string value) this scheme is a reference filling for — xeo:gapType, xeo:atPriority, xeo:inIntervention, xeo:status. A consumer reading a slot property can follow this to a published default; nothing in the ontology requires it." .
@@ -905,3 +905,459 @@ xeos:epistemicLayer-order a skos:OrderedCollection ;
     skos:prefLabel "Epistemic layers (ordered)"@en ;
     skos:inScheme xeos:epistemicLayer ;
     skos:memberList ( xeos:epistemicLayer-entity xeos:epistemicLayer-episode xeos:epistemicLayer-observation xeos:epistemicLayer-derivation xeos:epistemicLayer-interpretation xeos:epistemicLayer-norm ) .
+
+# --- v0.6.0 (kit sync) ---------------------------------------------------------
+# Appended at the foot. Nine new schemes for the slots v0.6.0 adds, and two new
+# concepts in objectiveMetric. Unlike the schemes above, most of these are not
+# lifted from a production repo: they are the reference fillings the
+# xeo-graph-kit courses teach with, and each dct:source says so. Same standing
+# as every other scheme: adopt, extend, or replace.
+
+# --- SERP result types ---------------------------------------------------------
+
+xeos:serpResultType a skos:ConceptScheme ;
+    skos:prefLabel "SERP result types"@en ;
+    xeo:fillsSlot xeo:resultType ;
+    dct:source "xeo-graph-kit docs/learn/GRAPH-MODEL.md §2 (the kit's SERP loader) · result kinds reported in common by SERP data providers" ;
+    dct:description "The kinds of result a results page can carry, as stored on hasResult and relatedTerm. The first is the classic ranked listing; the rest are the features that sit around or above it. Two of them (people_also_ask, related_search) are suggested queries and so ride on relatedTerm, pointing at a Term; the others point at a URL. Engines add and retire features, and each provider names them its own way: map a provider's value to one of these, or extend the scheme. A value here says what kind of block the result was shown in, never how prominent it was." .
+
+xeos:serpResultType-organic a skos:Concept ;
+    skos:inScheme xeos:serpResultType ;
+    skos:topConceptOf xeos:serpResultType ;
+    skos:notation "organic" ;
+    skos:prefLabel "Organic result"@en ;
+    skos:definition "A standard ranked web result"@en .
+
+xeos:serpResultType-ai_overview a skos:Concept ;
+    skos:inScheme xeos:serpResultType ;
+    skos:topConceptOf xeos:serpResultType ;
+    skos:notation "ai_overview" ;
+    skos:prefLabel "AI overview"@en ;
+    skos:definition "A generated answer shown on the results page; its cited pages are the results"@en .
+
+xeos:serpResultType-featured_snippet a skos:Concept ;
+    skos:inScheme xeos:serpResultType ;
+    skos:topConceptOf xeos:serpResultType ;
+    skos:notation "featured_snippet" ;
+    skos:prefLabel "Featured snippet"@en ;
+    skos:definition "An extracted answer shown above the organic results, credited to one page"@en .
+
+xeos:serpResultType-people_also_ask a skos:Concept ;
+    skos:inScheme xeos:serpResultType ;
+    skos:topConceptOf xeos:serpResultType ;
+    skos:notation "people_also_ask" ;
+    skos:prefLabel "People also ask"@en ;
+    skos:definition "A related question shown in an expandable question box"@en .
+
+xeos:serpResultType-related_search a skos:Concept ;
+    skos:inScheme xeos:serpResultType ;
+    skos:topConceptOf xeos:serpResultType ;
+    skos:notation "related_search" ;
+    skos:prefLabel "Related search"@en ;
+    skos:definition "A query the engine suggests alongside the results"@en .
+
+xeos:serpResultType-local_pack a skos:Concept ;
+    skos:inScheme xeos:serpResultType ;
+    skos:topConceptOf xeos:serpResultType ;
+    skos:notation "local_pack" ;
+    skos:prefLabel "Local pack"@en ;
+    skos:definition "A map-backed block of local business listings"@en .
+
+xeos:serpResultType-video a skos:Concept ;
+    skos:inScheme xeos:serpResultType ;
+    skos:topConceptOf xeos:serpResultType ;
+    skos:notation "video" ;
+    skos:prefLabel "Video"@en ;
+    skos:definition "A result shown in a video block or carousel"@en .
+
+xeos:serpResultType-image a skos:Concept ;
+    skos:inScheme xeos:serpResultType ;
+    skos:topConceptOf xeos:serpResultType ;
+    skos:notation "image" ;
+    skos:prefLabel "Image"@en ;
+    skos:definition "A result shown in an image block"@en .
+
+xeos:serpResultType-shopping a skos:Concept ;
+    skos:inScheme xeos:serpResultType ;
+    skos:topConceptOf xeos:serpResultType ;
+    skos:notation "shopping" ;
+    skos:prefLabel "Shopping"@en ;
+    skos:definition "A product listing shown in a shopping block"@en .
+
+xeos:serpResultType-knowledge_panel a skos:Concept ;
+    skos:inScheme xeos:serpResultType ;
+    skos:topConceptOf xeos:serpResultType ;
+    skos:notation "knowledge_panel" ;
+    skos:prefLabel "Knowledge panel"@en ;
+    skos:definition "A panel about one entity, drawn from the engine's knowledge base"@en .
+
+xeos:serpResultType-top_stories a skos:Concept ;
+    skos:inScheme xeos:serpResultType ;
+    skos:topConceptOf xeos:serpResultType ;
+    skos:notation "top_stories" ;
+    skos:prefLabel "Top stories"@en ;
+    skos:definition "A result shown in a news block"@en .
+
+xeos:serpResultType-paid a skos:Concept ;
+    skos:inScheme xeos:serpResultType ;
+    skos:topConceptOf xeos:serpResultType ;
+    skos:notation "paid" ;
+    skos:prefLabel "Paid"@en ;
+    skos:definition "An advertisement"@en .
+
+# --- Link positions ------------------------------------------------------------
+
+xeos:linkPosition a skos:ConceptScheme ;
+    skos:prefLabel "Link positions"@en ;
+    xeo:fillsSlot xeo:linkPosition ;
+    dct:source "Crawler link-position classification (one source: the 'Link Position' column of a Screaming Frog SEO Spider link export) · xeo-graph-kit docs/learn/GRAPH-MODEL.md §1" ;
+    dct:description "Where on the source page a hyperlink sits. The slot means the region of the page the link was found in; any one crawler's column is a source of that, mapped onto these codes, and is not the meaning. The split that matters most is content against everything else: a link in the main content was placed by an editor, a link in navigation, header, footer or sidebar comes with the template and appears on every page that uses it." .
+
+xeos:linkPosition-content a skos:Concept ;
+    skos:inScheme xeos:linkPosition ;
+    skos:topConceptOf xeos:linkPosition ;
+    skos:notation "content" ;
+    skos:prefLabel "Content"@en ;
+    skos:definition "In the main content of the page"@en .
+
+xeos:linkPosition-navigation a skos:Concept ;
+    skos:inScheme xeos:linkPosition ;
+    skos:topConceptOf xeos:linkPosition ;
+    skos:notation "navigation" ;
+    skos:prefLabel "Navigation"@en ;
+    skos:definition "In a navigation menu"@en .
+
+xeos:linkPosition-header a skos:Concept ;
+    skos:inScheme xeos:linkPosition ;
+    skos:topConceptOf xeos:linkPosition ;
+    skos:notation "header" ;
+    skos:prefLabel "Header"@en ;
+    skos:definition "In the page header, outside the main navigation"@en .
+
+xeos:linkPosition-footer a skos:Concept ;
+    skos:inScheme xeos:linkPosition ;
+    skos:topConceptOf xeos:linkPosition ;
+    skos:notation "footer" ;
+    skos:prefLabel "Footer"@en ;
+    skos:definition "In the page footer"@en .
+
+xeos:linkPosition-sidebar a skos:Concept ;
+    skos:inScheme xeos:linkPosition ;
+    skos:topConceptOf xeos:linkPosition ;
+    skos:notation "sidebar" ;
+    skos:prefLabel "Sidebar"@en ;
+    skos:definition "In a sidebar or aside"@en .
+
+xeos:linkPosition-other a skos:Concept ;
+    skos:inScheme xeos:linkPosition ;
+    skos:topConceptOf xeos:linkPosition ;
+    skos:notation "other" ;
+    skos:prefLabel "Other"@en ;
+    skos:definition "Somewhere else, or the crawler could not tell"@en .
+
+# --- Similarity bases ----------------------------------------------------------
+
+xeos:similarityBasis a skos:ConceptScheme ;
+    skos:prefLabel "Similarity bases"@en ;
+    xeo:fillsSlot xeo:basis ;
+    dct:source "xeo-graph-kit docs/learn/GRAPH-MODEL.md §4" ;
+    dct:description "What was compared to produce a similarity. Carried on every similarTo edge, because two pages can be near on one basis and far on another, and a similarity that does not name its basis cannot be read. Similarities on different bases are not comparable." .
+
+xeos:similarityBasis-shared_terms a skos:Concept ;
+    skos:inScheme xeos:similarityBasis ;
+    skos:topConceptOf xeos:similarityBasis ;
+    skos:notation "shared_terms" ;
+    skos:prefLabel "Shared terms"@en ;
+    skos:definition "Overlap in the Terms the two rank for or belong to"@en .
+
+xeos:similarityBasis-links a skos:Concept ;
+    skos:inScheme xeos:similarityBasis ;
+    skos:topConceptOf xeos:similarityBasis ;
+    skos:notation "links" ;
+    skos:prefLabel "Links"@en ;
+    skos:definition "Overlap in what the two link to or are linked from"@en .
+
+xeos:similarityBasis-text_embedding a skos:Concept ;
+    skos:inScheme xeos:similarityBasis ;
+    skos:topConceptOf xeos:similarityBasis ;
+    skos:notation "text_embedding" ;
+    skos:prefLabel "Text embedding"@en ;
+    skos:definition "Distance between embeddings of the two texts"@en .
+
+xeos:similarityBasis-structural_embedding a skos:Concept ;
+    skos:inScheme xeos:similarityBasis ;
+    skos:topConceptOf xeos:similarityBasis ;
+    skos:notation "structural_embedding" ;
+    skos:prefLabel "Structural embedding"@en ;
+    skos:definition "Distance between node embeddings computed from graph structure"@en .
+
+xeos:similarityBasis-lexical a skos:Concept ;
+    skos:inScheme xeos:similarityBasis ;
+    skos:topConceptOf xeos:similarityBasis ;
+    skos:notation "lexical" ;
+    skos:prefLabel "Lexical"@en ;
+    skos:definition "Overlap in surface strings: tokens, n-grams, edit distance"@en .
+
+# --- Algorithms ----------------------------------------------------------------
+
+xeos:algorithm a skos:ConceptScheme ;
+    skos:prefLabel "Algorithms"@en ;
+    xeo:fillsSlot xeo:algorithm ;
+    dct:source "xeo-graph-kit docs/learn/GRAPH-MODEL.md §5 · the published algorithms named in each definition" ;
+    dct:description "The methods an AlgorithmRun can execute. Each concept names the published algorithm, not a library's procedure: the implementing library and its version are parameters of the run. Three families: centrality (pagerank, betweenness, degree), community detection (louvain, leiden, label_propagation), and similarity or embedding (node_similarity, fastrp, knn, cosine), plus shortest_path. Extend it with whatever else you run." .
+
+xeos:algorithm-pagerank a skos:Concept ;
+    skos:inScheme xeos:algorithm ;
+    skos:topConceptOf xeos:algorithm ;
+    skos:notation "pagerank" ;
+    skos:prefLabel "PageRank"@en ;
+    skos:definition "Stationary distribution of a damped random walk over the edges (Brin and Page, 1998)"@en .
+
+xeos:algorithm-betweenness a skos:Concept ;
+    skos:inScheme xeos:algorithm ;
+    skos:topConceptOf xeos:algorithm ;
+    skos:notation "betweenness" ;
+    skos:prefLabel "Betweenness centrality"@en ;
+    skos:definition "Share of shortest paths between other nodes that pass through a node (Freeman, 1977)"@en .
+
+xeos:algorithm-degree a skos:Concept ;
+    skos:inScheme xeos:algorithm ;
+    skos:topConceptOf xeos:algorithm ;
+    skos:notation "degree" ;
+    skos:prefLabel "Degree centrality"@en ;
+    skos:definition "Count of edges touching a node, in a stated orientation"@en .
+
+xeos:algorithm-louvain a skos:Concept ;
+    skos:inScheme xeos:algorithm ;
+    skos:topConceptOf xeos:algorithm ;
+    skos:notation "louvain" ;
+    skos:prefLabel "Louvain"@en ;
+    skos:definition "Community detection by greedy modularity optimisation (Blondel et al., 2008)"@en .
+
+xeos:algorithm-leiden a skos:Concept ;
+    skos:inScheme xeos:algorithm ;
+    skos:topConceptOf xeos:algorithm ;
+    skos:notation "leiden" ;
+    skos:prefLabel "Leiden"@en ;
+    skos:definition "Community detection that refines Louvain to guarantee connected communities (Traag et al., 2019)"@en .
+
+xeos:algorithm-label_propagation a skos:Concept ;
+    skos:inScheme xeos:algorithm ;
+    skos:topConceptOf xeos:algorithm ;
+    skos:notation "label_propagation" ;
+    skos:prefLabel "Label propagation"@en ;
+    skos:definition "Community detection by iterated neighbour-majority labelling (Raghavan et al., 2007)"@en .
+
+xeos:algorithm-node_similarity a skos:Concept ;
+    skos:inScheme xeos:algorithm ;
+    skos:topConceptOf xeos:algorithm ;
+    skos:notation "node_similarity" ;
+    skos:prefLabel "Node similarity"@en ;
+    skos:definition "Pairwise similarity from shared neighbours (Jaccard or overlap)"@en .
+
+xeos:algorithm-fastrp a skos:Concept ;
+    skos:inScheme xeos:algorithm ;
+    skos:topConceptOf xeos:algorithm ;
+    skos:notation "fastrp" ;
+    skos:prefLabel "FastRP"@en ;
+    skos:definition "Node embeddings by fast random projection of the adjacency structure (Chen et al., 2019)"@en .
+
+xeos:algorithm-knn a skos:Concept ;
+    skos:inScheme xeos:algorithm ;
+    skos:topConceptOf xeos:algorithm ;
+    skos:notation "knn" ;
+    skos:prefLabel "k-nearest neighbours"@en ;
+    skos:definition "For each node, the k most similar nodes on a stated property or embedding"@en .
+
+xeos:algorithm-cosine a skos:Concept ;
+    skos:inScheme xeos:algorithm ;
+    skos:topConceptOf xeos:algorithm ;
+    skos:notation "cosine" ;
+    skos:prefLabel "Cosine similarity"@en ;
+    skos:definition "Cosine of the angle between two vectors"@en .
+
+xeos:algorithm-shortest_path a skos:Concept ;
+    skos:inScheme xeos:algorithm ;
+    skos:topConceptOf xeos:algorithm ;
+    skos:notation "shortest_path" ;
+    skos:prefLabel "Shortest path"@en ;
+    skos:definition "Fewest-hop or least-weight path between two nodes (Dijkstra, 1959)"@en .
+
+# --- Framework kinds -----------------------------------------------------------
+
+xeos:frameworkKind a skos:ConceptScheme ;
+    skos:prefLabel "Framework kinds"@en ;
+    xeo:fillsSlot xeo:frameworkKind ;
+    dct:source "xeo-graph-kit docs/learn/GRAPH-MODEL.md §6" ;
+    dct:description "What shape of method a Framework is, which decides how its Stages are read." .
+
+xeos:frameworkKind-diagnostic a skos:Concept ;
+    skos:inScheme xeos:frameworkKind ;
+    skos:topConceptOf xeos:frameworkKind ;
+    skos:notation "diagnostic" ;
+    skos:prefLabel "Diagnostic"@en ;
+    skos:definition "Ordered stages, each with a test; a subject is placed at the first stage it fails"@en .
+
+xeos:frameworkKind-tactic_matrix a skos:Concept ;
+    skos:inScheme xeos:frameworkKind ;
+    skos:topConceptOf xeos:frameworkKind ;
+    skos:notation "tactic_matrix" ;
+    skos:prefLabel "Tactic matrix"@en ;
+    skos:definition "Stages are the cells of a grid that tactics are sorted into"@en .
+
+xeos:frameworkKind-checklist a skos:Concept ;
+    skos:inScheme xeos:frameworkKind ;
+    skos:topConceptOf xeos:frameworkKind ;
+    skos:notation "checklist" ;
+    skos:prefLabel "Checklist"@en ;
+    skos:definition "Stages are items to complete; order is a convenience, not a dependency"@en .
+
+xeos:frameworkKind-playbook a skos:Concept ;
+    skos:inScheme xeos:frameworkKind ;
+    skos:topConceptOf xeos:frameworkKind ;
+    skos:notation "playbook" ;
+    skos:prefLabel "Playbook"@en ;
+    skos:definition "Stages group the diagnostics, tactics and practices of one discipline"@en .
+
+# --- Organization kinds --------------------------------------------------------
+
+xeos:organizationKind a skos:ConceptScheme ;
+    skos:prefLabel "Organization kinds"@en ;
+    xeo:fillsSlot xeo:organizationKind ;
+    dct:source "xeo-graph-kit docs/learn/GRAPH-MODEL.md §6" ;
+    dct:description "What kind of party an Organization is." .
+
+xeos:organizationKind-agency a skos:Concept ;
+    skos:inScheme xeos:organizationKind ;
+    skos:topConceptOf xeos:organizationKind ;
+    skos:notation "agency" ;
+    skos:prefLabel "Agency"@en ;
+    skos:definition "Does the work for clients"@en .
+
+xeos:organizationKind-brand a skos:Concept ;
+    skos:inScheme xeos:organizationKind ;
+    skos:topConceptOf xeos:organizationKind ;
+    skos:notation "brand" ;
+    skos:prefLabel "Brand"@en ;
+    skos:definition "A company whose sites and brands are worked on, by an agency or by itself"@en .
+
+xeos:organizationKind-in_house a skos:Concept ;
+    skos:inScheme xeos:organizationKind ;
+    skos:topConceptOf xeos:organizationKind ;
+    skos:notation "in_house" ;
+    skos:prefLabel "In-house team"@en ;
+    skos:definition "A team inside a company, working on that company's own sites"@en .
+
+# --- Mention sentiment ---------------------------------------------------------
+
+xeos:sentiment a skos:ConceptScheme ;
+    skos:prefLabel "Mention sentiment"@en ;
+    xeo:fillsSlot xeo:sentiment ;
+    dct:source "xeo-graph-kit docs/learn/GRAPH-MODEL.md §3 · the four-way polarity common to sentiment classifiers" ;
+    dct:description "The polarity with which a response speaks of a brand. A small reference set, deliberately coarse: a finer scale or a numeric score is a different derivation with its own method. mixed is not the midpoint of the scale; it says the response is both for and against." .
+
+xeos:sentiment-positive a skos:Concept ;
+    skos:inScheme xeos:sentiment ;
+    skos:topConceptOf xeos:sentiment ;
+    skos:notation "positive" ;
+    skos:prefLabel "Positive"@en ;
+    skos:definition "The response speaks well of the brand"@en .
+
+xeos:sentiment-neutral a skos:Concept ;
+    skos:inScheme xeos:sentiment ;
+    skos:topConceptOf xeos:sentiment ;
+    skos:notation "neutral" ;
+    skos:prefLabel "Neutral"@en ;
+    skos:definition "The response names the brand without judging it"@en .
+
+xeos:sentiment-negative a skos:Concept ;
+    skos:inScheme xeos:sentiment ;
+    skos:topConceptOf xeos:sentiment ;
+    skos:notation "negative" ;
+    skos:prefLabel "Negative"@en ;
+    skos:definition "The response speaks badly of the brand"@en .
+
+xeos:sentiment-mixed a skos:Concept ;
+    skos:inScheme xeos:sentiment ;
+    skos:topConceptOf xeos:sentiment ;
+    skos:notation "mixed" ;
+    skos:prefLabel "Mixed"@en ;
+    skos:definition "The response is both favourable and unfavourable"@en .
+
+# --- Devices -------------------------------------------------------------------
+
+xeos:device a skos:ConceptScheme ;
+    skos:prefLabel "Devices"@en ;
+    xeo:fillsSlot xeo:device ;
+    dct:source "GSC Search Analytics API (device dimension: DESKTOP, MOBILE, TABLET), lower-cased · xeo-graph-kit docs/learn/GRAPH-MODEL.md §2" ;
+    dct:description "The device class a results page was captured for. The same three classes search performance data is segmented by, so a snapshot and a rollup can be compared on like terms." .
+
+xeos:device-desktop a skos:Concept ;
+    skos:inScheme xeos:device ;
+    skos:topConceptOf xeos:device ;
+    skos:notation "desktop" ;
+    skos:prefLabel "Desktop"@en ;
+    skos:definition "A desktop or laptop browser"@en .
+
+xeos:device-mobile a skos:Concept ;
+    skos:inScheme xeos:device ;
+    skos:topConceptOf xeos:device ;
+    skos:notation "mobile" ;
+    skos:prefLabel "Mobile"@en ;
+    skos:definition "A phone"@en .
+
+xeos:device-tablet a skos:Concept ;
+    skos:inScheme xeos:device ;
+    skos:topConceptOf xeos:device ;
+    skos:notation "tablet" ;
+    skos:prefLabel "Tablet"@en ;
+    skos:definition "A tablet"@en .
+
+# --- Feedback verdicts ---------------------------------------------------------
+
+xeos:feedbackVerdict a skos:ConceptScheme ;
+    skos:prefLabel "Feedback verdicts"@en ;
+    xeo:fillsSlot xeo:verdict ;
+    dct:source "if-control-center packages/contracts/src/gap.ts (FEEDBACK_VERDICTS, FEEDBACK_VERDICT_LABELS, FEEDBACK_VERDICT_HINTS)" ;
+    dct:description "An operator's judgment of one machine claim, carried on a Feedback. Fills the same slot as gapVerdict for a different subject: on a Gap the verdict says what to do about the deficit, on a Feedback it says whether the claim was right." .
+
+xeos:feedbackVerdict-accepted a skos:Concept ;
+    skos:inScheme xeos:feedbackVerdict ;
+    skos:topConceptOf xeos:feedbackVerdict ;
+    skos:notation "accepted" ;
+    skos:prefLabel "Agree"@en ;
+    skos:definition "The finding is right as stated"@en .
+
+xeos:feedbackVerdict-rejected a skos:Concept ;
+    skos:inScheme xeos:feedbackVerdict ;
+    skos:topConceptOf xeos:feedbackVerdict ;
+    skos:notation "rejected" ;
+    skos:prefLabel "Wrong"@en ;
+    skos:definition "The finding is wrong for this client"@en .
+
+xeos:feedbackVerdict-needs_work a skos:Concept ;
+    skos:inScheme xeos:feedbackVerdict ;
+    skos:topConceptOf xeos:feedbackVerdict ;
+    skos:notation "needs_work" ;
+    skos:prefLabel "Needs work"@en ;
+    skos:definition "Partly right — the detail is off"@en .
+
+# --- Objective metrics: AI visibility ------------------------------------------
+# Two more concepts in xeos:objectiveMetric (declared above), so a campaign can
+# target AI visibility. Both are the rollup values carried on visibilityFor.
+
+xeos:objectiveMetric-mention_rate a skos:Concept ;
+    skos:inScheme xeos:objectiveMetric ;
+    skos:topConceptOf xeos:objectiveMetric ;
+    skos:notation "mention_rate" ;
+    skos:prefLabel "Mention rate"@en ;
+    skos:definition "Share of captured responses in the window that mention the brand"@en ;
+    skos:note "direction up · unit rate · source visibilityFor rollup (xeo:mentionRate)"@en .
+
+xeos:objectiveMetric-citation_rate a skos:Concept ;
+    skos:inScheme xeos:objectiveMetric ;
+    skos:topConceptOf xeos:objectiveMetric ;
+    skos:notation "citation_rate" ;
+    skos:prefLabel "Citation rate"@en ;
+    skos:definition "Share of captured responses in the window that cite the brand's owned URLs"@en ;
+    skos:note "direction up · unit rate · source visibilityFor rollup (xeo:citationRate)"@en .

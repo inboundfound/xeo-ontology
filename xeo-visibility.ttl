@@ -18,7 +18,7 @@ xeo:visibility-module a owl:Ontology ;
     dct:title "XEO Visibility (the xEO layer)" ;
     dct:description "Extends XEO Core with the terms needed once the engine stops being a results page and starts being an answer: engines, prompts, captured responses, citations, mentions, and the visibility rollups over them." ;
     dct:creator "Inbound Found" ;
-    owl:versionInfo "0.5.0" .
+    owl:versionInfo "0.6.0" .
 
 # --- Classes ----------------------------------------------------------------
 
@@ -70,9 +70,9 @@ xeo:hasResponse a owl:ObjectProperty ;
     xeo:epistemicLayer "episode" .
 
 xeo:onEngine a owl:ObjectProperty ;
-    rdfs:domain xeo:LLMResponse ; rdfs:range xeo:Engine ;
+    rdfs:range xeo:Engine ;  # domain-free since v0.6.0 (was xeo:LLMResponse): a SerpSnapshot is on an engine too.
     xeo:epistemicLayer "episode" ;
-    dct:description "Which engine (and, via model/modelVersion properties, which model) produced this response." .
+    dct:description "Which engine (and, via model/modelVersion properties, which model) produced this response — or, on a SerpSnapshot, served this results page." .
 
 xeo:cites a owl:ObjectProperty ;
     rdfs:domain xeo:LLMResponse ; rdfs:range xeo:URL ;
@@ -100,13 +100,13 @@ xeo:visibilityFor a owl:ObjectProperty ;
 # --- Datatype properties ------------------------------------------------------
 
 xeo:capturedAt a owl:DatatypeProperty ;
-    rdfs:domain xeo:LLMResponse ; rdfs:range xsd:dateTime ;
+    rdfs:range xsd:dateTime ;  # domain-free since v0.6.0 (was xeo:LLMResponse): SerpSnapshot carries it, and the domain typed every snapshot as a response.
     xeo:epistemicLayer "episode" .
 
 xeo:model a owl:DatatypeProperty ;
-    rdfs:domain xeo:LLMResponse ; rdfs:range xsd:string ;
+    rdfs:range xsd:string ;  # domain-free since v0.6.0 (was xeo:LLMResponse): inTopic and other derivation edges carry it.
     xeo:epistemicLayer "episode" ;
-    dct:description "Model identifier + version as reported at capture time. Without this the episode is not comparable across time." .
+    dct:description "Model identifier + version as reported at capture time. Without this the episode is not comparable across time. Also carried on derivation edges (inTopic, about) to name the model that produced the assignment." .
 
 xeo:webSearchEnabled a owl:DatatypeProperty ;
     rdfs:domain xeo:LLMResponse ; rdfs:range xsd:boolean ;
@@ -150,3 +150,73 @@ xeo:responses a owl:DatatypeProperty ;
     rdfs:range xsd:integer ;
     xeo:epistemicLayer "observation" ;
     dct:description "How many captured responses the rollup window covers — the denominator behind mentionRate and citationRate. Carried on visibilityFor; a rate without it cannot be weighted." .
+
+# --- v0.6.0 (kit sync) ---------------------------------------------------------
+# Appended at the foot, so no line above moves.
+#
+# ADDED. hasWebsite, without which citationRate ("cites the brand's owned URLs")
+# could not be computed from the graph: nothing said which URLs a Brand owns.
+# competesWith, the claim a share-of-voice comparison rests on. sentiment, the
+# polarity of a mention.
+#
+# WIDENED / FIXED (in place, above). onEngine lost `rdfs:domain xeo:LLMResponse`:
+# a SerpSnapshot is "for a stated engine" by core's own definition and had no
+# edge to say which. capturedAt and model lost the same domain, which was a bug
+# rather than a narrowing: core's SerpSnapshot is captured at a time and
+# inTopic carries a model, and rdfs:domain being an entailment rule, every
+# snapshot and every topic assignment was being typed as an LLMResponse.
+#
+# sentiment is a controlled string with a published scheme, not a skos:Concept
+# range: this module stands alone on primary web standards and takes no SKOS
+# dependency, the same choice core makes for resultType.
+
+xeo:hasWebsite a owl:ObjectProperty ;
+    rdfs:label "has website" ;
+    rdfs:domain xeo:Brand ; rdfs:range xeo:Website ;
+    xeo:epistemicLayer "entity" ;
+    dct:description "A Website this Brand owns or publishes. The join citationRate depends on: a response cites the brand when it cites a URL that is partOf one of the brand's Websites. A Brand may have several (regional sites, a documentation site); a tracked competitor Brand may have none in the graph, and its cited URLs are then matched by onDomain." .
+
+xeo:competesWith a owl:ObjectProperty ;
+    rdfs:label "competes with" ;
+    xeo:epistemicLayer "interpretation" ;
+    xeo:domainIncludes xeo:Brand , xeo:Website , xeo:Domain ;
+    xeo:rangeIncludes xeo:Brand , xeo:Website , xeo:Domain ;
+    dct:description "The claim that two parties contest the same audience: Brand against Brand in engine answers, Website or Domain against Domain on results pages. An interpretation, and it must carry method: named by the client, inferred from shared Terms, or inferred from co-mention in responses are three different claims. Stated from the tenant's side and tenant-scoped; it is not asserted to be symmetric." .
+
+xeo:sentiment a owl:DatatypeProperty ;
+    rdfs:label "sentiment" ;
+    rdfs:range xsd:string ;
+    xeo:epistemicLayer "derivation" ;
+    dct:description "The polarity with which a response speaks of a brand, as a code from a slotted-in scheme (positive, neutral, negative, mixed — xeos:sentiment is a published reference filling). Carried on mentions. Always a derivation: a model or a rule read the text, so the edge carries method, and confidence where the method reports one. A tool's proprietary sentiment score is a different derivation with that tool as its method, and does not belong in this slot." .
+
+# --- v0.6.0 annotation completeness -----------------------------------------------
+# The triples below add what the declarations above lacked; nothing is redefined.
+
+xeo:SearchEngine xeo:epistemicLayer "entity" .
+xeo:GenerativeEngine xeo:epistemicLayer "entity" .
+xeo:AnswerEngine xeo:epistemicLayer "entity" .
+xeo:ConversationalAgent xeo:epistemicLayer "entity" .
+
+xeo:hasResponse dct:description "A captured response to this Prompt." .
+
+xeo:capturedAt dct:description "When a capture episode was taken: an LLMResponse or a SerpSnapshot. The instant the record was made, after which it is immutable." .
+
+# Labels for the properties declared above, which carried none.
+
+xeo:tracksPrompt rdfs:label "tracks prompt" .
+xeo:hasResponse rdfs:label "has response" .
+xeo:onEngine rdfs:label "on engine" .
+xeo:cites rdfs:label "cites" .
+xeo:mentions rdfs:label "mentions" .
+xeo:fansOutTo rdfs:label "fans out to" .
+xeo:visibilityFor rdfs:label "visibility for" .
+xeo:capturedAt rdfs:label "captured at" .
+xeo:model rdfs:label "model" .
+xeo:webSearchEnabled rdfs:label "web search enabled" .
+xeo:mentionRank rdfs:label "mention rank" .
+xeo:mentionRate rdfs:label "mention rate" .
+xeo:citationRate rdfs:label "citation rate" .
+xeo:text rdfs:label "text" .
+xeo:modelVersion rdfs:label "model version" .
+xeo:citationRank rdfs:label "citation rank" .
+xeo:responses rdfs:label "responses" .
