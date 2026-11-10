@@ -5,6 +5,7 @@
 @prefix dct:  <http://purl.org/dc/terms/> .
 @prefix owl:  <http://www.w3.org/2002/07/owl#> .
 @prefix xeo:  <https://xeoontology.org/xeo#> .
+@prefix xeos: <https://xeoontology.org/schemes#> .
 @prefix xeosh: <https://xeoontology.org/shapes#> .
 
 # XEO Shapes — the prose rules, made executable.
@@ -144,7 +145,7 @@ xeosh:LLMResponseShape a sh:NodeShape ;
     ] .
 
 xeosh:MetricTargetShape a sh:NodeShape ;
-    rdfs:label "a metric target names its metric and direction" ;
+    rdfs:label "a metric target names its metric; a direction, where one is kept, is up or down" ;
     sh:targetClass xeo:MetricTarget ;
     sh:property [
         sh:path xeo:metric ;
@@ -152,10 +153,13 @@ xeosh:MetricTargetShape a sh:NodeShape ;
         sh:message "A xeo:MetricTarget requires exactly one xeo:metric."
     ] ;
     sh:property [
+        # xeo:direction is deprecated in favour of xeo:betterDirection on the
+        # Metric (advisory), so it is no longer required. A stored copy is
+        # still checked.
         sh:path xeo:direction ;
-        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:maxCount 1 ;
         sh:in ( "up" "down" ) ;
-        sh:message "A xeo:MetricTarget requires xeo:direction, 'up' or 'down'."
+        sh:message "xeo:direction, where a xeo:MetricTarget carries one, is a single 'up' or 'down'."
     ] .
 
 xeosh:OutcomeShape a sh:NodeShape ;
@@ -208,4 +212,183 @@ xeosh:AlgorithmRunShape a sh:NodeShape ;
         sh:path xeo:projection ;
         sh:minCount 1 ;
         sh:message "A xeo:AlgorithmRun requires xeo:projection: a score is meaningless without the graph it was computed on."
+    ] .
+
+# --- Metrics and readings ----------------------------------------------------
+# The rules xeo-metrics.ttl states for a Metric and a MetricReading. The typed
+# rules (simple, ratio, derived) fire only when metricType is the concept from
+# the published xeos:metricType scheme; a Metric typed from a consumer's own
+# scheme is not judged by them. The Metrics published in xeos:metric are held
+# to these shapes by tools/validate.py.
+#
+# CurrencyReadingNeedsCurrency reads through readingOf to the Metric's unit, so
+# it can only fire where the Metric's definition is in the graph being
+# validated. Load xeo-schemes.ttl beside your data, as tools/validate.py does,
+# or keep your Metrics as nodes.
+
+xeosh:MetricShape a sh:NodeShape ;
+    rdfs:label "a metric has one type, unit, better direction and additivity" ;
+    rdfs:seeAlso xeo:Metric ;
+    sh:targetClass xeo:Metric ;
+    sh:property [
+        sh:path xeo:metricType ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "A xeo:Metric requires exactly one xeo:metricType."
+    ] ;
+    sh:property [
+        sh:path xeo:unit ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "A xeo:Metric requires exactly one xeo:unit."
+    ] ;
+    sh:property [
+        sh:path xeo:betterDirection ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "A xeo:Metric requires exactly one xeo:betterDirection."
+    ] ;
+    sh:property [
+        sh:path xeo:additivity ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "A xeo:Metric requires exactly one xeo:additivity."
+    ] .
+
+xeosh:SimpleMetricShape a sh:NodeShape ;
+    rdfs:label "a simple metric names its aggregation and the slot it reads" ;
+    rdfs:seeAlso xeo:aggregation , xeo:readsSlot ;
+    sh:targetClass xeo:Metric ;
+    sh:or (
+        [ sh:not [ sh:path xeo:metricType ; sh:hasValue xeos:metricType-simple ] ]
+        [ sh:and (
+            [ sh:path xeo:aggregation ; sh:minCount 1 ; sh:maxCount 1 ]
+            [ sh:path xeo:readsSlot ; sh:minCount 1 ; sh:maxCount 1 ]
+        ) ]
+    ) ;
+    sh:message "A simple xeo:Metric requires one xeo:aggregation and one xeo:readsSlot." .
+
+xeosh:RatioMetricShape a sh:NodeShape ;
+    rdfs:label "a ratio metric has a numerator, a denominator and unit ratio" ;
+    rdfs:seeAlso xeo:numerator , xeo:denominator ;
+    sh:targetClass xeo:Metric ;
+    sh:or (
+        [ sh:not [ sh:path xeo:metricType ; sh:hasValue xeos:metricType-ratio ] ]
+        [ sh:and (
+            [ sh:path xeo:numerator ; sh:minCount 1 ; sh:maxCount 1 ]
+            [ sh:path xeo:denominator ; sh:minCount 1 ; sh:maxCount 1 ]
+            [ sh:path xeo:unit ; sh:hasValue xeos:metricUnit-ratio ]
+        ) ]
+    ) ;
+    sh:message "A ratio xeo:Metric requires one xeo:numerator, one xeo:denominator, and xeo:unit ratio." .
+
+xeosh:DerivedMetricShape a sh:NodeShape ;
+    rdfs:label "a derived metric has an expression and at least one input" ;
+    rdfs:seeAlso xeo:expression , xeo:inputMetric ;
+    sh:targetClass xeo:Metric ;
+    sh:or (
+        [ sh:not [ sh:path xeo:metricType ; sh:hasValue xeos:metricType-derived ] ]
+        [ sh:and (
+            [ sh:path xeo:expression ; sh:minCount 1 ; sh:maxCount 1 ]
+            [ sh:path xeo:inputMetric ; sh:minCount 1 ]
+        ) ]
+    ) ;
+    sh:message "A derived xeo:Metric requires one xeo:expression and at least one xeo:inputMetric." .
+
+xeosh:MetricReadingShape a sh:NodeShape ;
+    rdfs:label "a reading has a value, a window and the metric it is a reading of" ;
+    rdfs:seeAlso xeo:MetricReading ;
+    sh:targetClass xeo:MetricReading ;
+    sh:property [
+        sh:path xeo:readingOf ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "A xeo:MetricReading requires exactly one xeo:readingOf."
+    ] ;
+    sh:property [
+        sh:path xeo:value ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "A xeo:MetricReading requires exactly one xeo:value."
+    ] ;
+    sh:property [
+        sh:path xeo:periodStart ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "A xeo:MetricReading requires exactly one xeo:periodStart."
+    ] ;
+    sh:property [
+        sh:path xeo:periodEnd ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "A xeo:MetricReading requires exactly one xeo:periodEnd."
+    ] .
+
+xeosh:CurrencyReadingNeedsCurrency a sh:NodeShape ;
+    rdfs:label "a reading of a currency metric says which currency" ;
+    rdfs:seeAlso xeo:currencyCode ;
+    sh:targetClass xeo:MetricReading ;
+    sh:or (
+        [ sh:not [ sh:path ( xeo:readingOf xeo:unit ) ; sh:hasValue xeos:metricUnit-currency ] ]
+        [ sh:path xeo:currencyCode ; sh:minCount 1 ; sh:maxCount 1 ]
+    ) ;
+    sh:message "A xeo:MetricReading of a Metric whose unit is currency requires one xeo:currencyCode." .
+
+# --- Money ---------------------------------------------------------------------
+
+xeosh:CurrencyTargetNeedsCurrency a sh:NodeShape ;
+    rdfs:label "a pipeline currency target says which currency" ;
+    rdfs:seeAlso xeo:targetCurrency ;
+    sh:targetClass xeo:MetricTarget ;
+    # xeo:metric is a code, so the currency metrics are listed. Only the two
+    # read from deal amounts: etv was targetable before targetCurrency existed
+    # and its currency is the vendor's, so it is left alone.
+    sh:or (
+        [ sh:not [ sh:path xeo:metric ; sh:minCount 1 ; sh:in ( "pipeline_created" "revenue_won" ) ] ]
+        [ sh:path xeo:targetCurrency ; sh:minCount 1 ; sh:maxCount 1 ]
+    ) ;
+    sh:message "A xeo:MetricTarget on pipeline_created or revenue_won requires one xeo:targetCurrency." .
+
+xeosh:DealAmountNeedsCurrency a sh:NodeShape ;
+    rdfs:label "a deal amount has a currency, and is not negative" ;
+    rdfs:seeAlso xeo:dealAmount ;
+    sh:targetSubjectsOf xeo:dealAmount ;
+    sh:property [
+        sh:path xeo:currencyCode ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "A xeo:dealAmount without a xeo:currencyCode cannot be summed or compared."
+    ] ;
+    sh:property [
+        sh:path xeo:dealAmount ;
+        sh:minInclusive 0 ;
+        sh:message "xeo:dealAmount is zero or more."
+    ] .
+
+xeosh:CurrencyCodeFormat a sh:NodeShape ;
+    rdfs:label "a currency code is three upper-case letters" ;
+    rdfs:seeAlso xeo:currencyCode , xeo:targetCurrency ;
+    sh:targetSubjectsOf xeo:currencyCode , xeo:targetCurrency ;
+    sh:property [
+        sh:path xeo:currencyCode ;
+        sh:pattern "^[A-Z]{3}$" ;
+        sh:message "xeo:currencyCode is an ISO 4217 code: three upper-case letters."
+    ] ;
+    sh:property [
+        sh:path xeo:targetCurrency ;
+        sh:pattern "^[A-Z]{3}$" ;
+        sh:message "xeo:targetCurrency is an ISO 4217 code: three upper-case letters."
+    ] .
+
+# --- CRM stage history ---------------------------------------------------------
+
+xeosh:StageTransitionShape a sh:NodeShape ;
+    rdfs:label "a stage transition says which record entered which stage, and when" ;
+    rdfs:seeAlso xeo:StageTransition ;
+    sh:targetClass xeo:StageTransition ;
+    sh:property [
+        sh:path xeo:crmRecordRef ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "A xeo:StageTransition requires exactly one xeo:crmRecordRef."
+    ] ;
+    sh:property [
+        sh:path xeo:toStageRef ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "A xeo:StageTransition requires exactly one xeo:toStageRef."
+    ] ;
+    sh:property [
+        sh:path xeo:enteredAt ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "A xeo:StageTransition requires exactly one xeo:enteredAt."
     ] .
