@@ -20,7 +20,7 @@ xeo:engagement-module a owl:Ontology ;
     dct:title "XEO Engagement (draft)" ;
     dct:description "DRAFT v0. The seam between web-engine visibility and the pipeline: intents, conversion points, conversion events, and identity-key pointers into whatever CRM you run." ;
     dct:creator "Inbound Found" ;
-    owl:versionInfo "0.5.0" .
+    owl:versionInfo "0.6.0" .
 
 # --- Intent ------------------------------------------------------------------
 
@@ -74,7 +74,7 @@ xeo:capturedBy a owl:ObjectProperty ;
     xeo:epistemicLayer "observation" .
 
 xeo:occurredAt a owl:DatatypeProperty ;
-    rdfs:domain xeo:ConversionEvent ; rdfs:range xsd:dateTime ;
+    rdfs:range xsd:dateTime ;  # domain-free since v0.6.0 (was xeo:ConversionEvent): xeo:ExternalEvent carries it too.
     xeo:epistemicLayer "episode" .
 
 xeo:crmRecordRef a owl:DatatypeProperty ;
@@ -89,3 +89,31 @@ xeo:attributedResponse a owl:ObjectProperty ;
     rdfs:domain xeo:ConversionEvent ; rdfs:range xeo:LLMResponse ;
     xeo:epistemicLayer "interpretation" ;
     dct:description "The claim that this conversion traces to engine visibility captured in this response episode. Multi-engine attribution is inherently inferential: this edge MUST carry method and confidence, and honest implementations will leave it sparse." .
+
+# --- v0.6.0 (kit sync) ---------------------------------------------------------
+# Appended at the foot. No new terms in this module. occurredAt lost
+# `rdfs:domain xeo:ConversionEvent` (in place, above) so xeo:ExternalEvent in
+# xeo-decision can carry it without being typed a conversion. The triples below
+# add the labels, descriptions and layers the declarations above lacked, so
+# tools/validate.py can require all three of every term.
+
+xeo:CallToAction xeo:epistemicLayer "entity" ;
+    dct:description "A button or link that asks the visitor to take the next step." .
+
+xeo:LeadCaptureForm xeo:epistemicLayer "entity" ;
+    dct:description "A form that exchanges contact details for a response, a quote or a booking." .
+
+xeo:GatedAsset xeo:epistemicLayer "entity" .
+
+xeo:capturedBy dct:description "The conversion point this event happened at." .
+
+xeo:occurredAt dct:description "When an event happened: a ConversionEvent, an ExternalEvent. Domain left open so any dated event can carry it." .
+
+# Labels for the properties declared above, which carried none.
+
+xeo:targetsIntent rdfs:label "targets intent" .
+xeo:hasConversionPoint rdfs:label "has conversion point" .
+xeo:capturedBy rdfs:label "captured by" .
+xeo:occurredAt rdfs:label "occurred at" .
+xeo:crmRecordRef rdfs:label "CRM record reference" .
+xeo:attributedResponse rdfs:label "attributed response" .

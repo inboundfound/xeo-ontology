@@ -5,14 +5,14 @@
 @prefix xeo:  <https://xeoontology.org/xeo#> .
 
 # XEO — the ontology for the xEO family, core module.
-# Namespace served from GitHub Pages; a w3id.org redirect may replace it later
+# Namespace served at xeoontology.org; a w3id.org redirect may front it later
 # without changing term local names.
 
 xeo: a owl:Ontology ;
     dct:title "XEO Core Ontology" ;
     dct:description "Standards-grounded observation layer for web-engine data in a property graph. XEO generalizes the xEO family (SEO, GEO, AEO): one vocabulary for how search, generative, and answer engines see and serve web content. Entities are durable, episodes are immutable, derivations carry provenance. Interpretations and decisions are modeled in higher layers." ;
     dct:creator "Inbound Found" ;
-    owl:versionInfo "0.5.0" .
+    owl:versionInfo "0.6.0" .
 
 # --- Annotation properties -------------------------------------------------
 
@@ -57,7 +57,7 @@ xeo:SerpSnapshot a owl:Class ;
 xeo:Topic a owl:Class ;
     rdfs:label "Topic" ;
     xeo:epistemicLayer "derivation" ;
-    dct:description "A named grouping of Terms produced by a clustering or labeling process. Site-scoped. Assignments carry method, model, and confidence." .
+    dct:description "A named grouping of Terms and/or URLs produced by a clustering or labeling process. Site-scoped. Assignments (inTopic for a Term, about for a URL or Prompt) carry method, model, and confidence." .
 
 xeo:SearchPerformanceFact a owl:Class ;
     rdfs:label "Search Performance Fact" ;
@@ -86,7 +86,7 @@ xeo:linksTo a owl:ObjectProperty ;
     rdfs:domain xeo:URL ; rdfs:range xeo:URL ;
     xeo:epistemicLayer "observation" ;
     xeo:groundedIn "WHATWG HTML §4.5.1 (the a element)" ;
-    dct:description "An observed hyperlink. Carries anchorText, rel, firstSeenAt, lastSeenAt, lastSeenCrawlId." .
+    dct:description "An observed hyperlink. Carries anchorText, rel, linkPosition, firstSeenAt, lastSeenAt, lastSeenCrawlId." .
 
 xeo:redirectsTo a owl:ObjectProperty ;
     rdfs:domain xeo:URL ; rdfs:range xeo:URL ;
@@ -112,7 +112,7 @@ xeo:hasSnapshot a owl:ObjectProperty ;
 xeo:hasResult a owl:ObjectProperty ;
     rdfs:domain xeo:SerpSnapshot ; rdfs:range xeo:URL ;
     xeo:epistemicLayer "observation" ;
-    dct:description "A result observed on the SERP. Carries position and resultType." .
+    dct:description "A result observed on the SERP. Carries position and resultType. A result is a URL whether or not its site is under observation: a competitor's result has no partOf edge, it has onDomain." .
 
 xeo:inTopic a owl:ObjectProperty ;
     rdfs:domain xeo:Term ; rdfs:range xeo:Topic ;
@@ -163,13 +163,13 @@ xeo:avgPosition a owl:DatatypeProperty ;
     xeo:groundedIn "GSC Search Analytics API" .
 
 xeo:embeddingRef a owl:DatatypeProperty ;
-    rdfs:domain xeo:Term ; rdfs:range xsd:string ;
+    rdfs:range xsd:string ;  # domain-free since v0.6.0 (was xeo:Term): any embedded node carries it. See the v0.6.0 notes at the foot.
     xeo:epistemicLayer "derivation" ;
     xeo:canonicalStore "vector-store" ;
-    dct:description "Pointer (collection + id) to the vector in the external store. The geometry lives where ANN search happens; the graph keeps the claim and its provenance." .
+    dct:description "Pointer (collection + id) to the vector in the external store, on any embedded node (a Term, a URL, a Prompt, a Topic). The geometry lives where ANN search happens; the graph keeps the claim and its provenance." .
 
 xeo:embeddingModel a owl:DatatypeProperty ;
-    rdfs:domain xeo:Term ; rdfs:range xsd:string ;
+    rdfs:range xsd:string ;  # domain-free since v0.6.0 (was xeo:Term), with embeddingRef.
     xeo:epistemicLayer "derivation" .
 
 xeo:confidence a owl:DatatypeProperty ;
@@ -195,7 +195,7 @@ xeo:datasetUri a owl:DatatypeProperty ;
 xeo:name a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
     xeo:epistemicLayer "entity" ;
-    dct:description "The identifying name of a Term, Topic, Brand, or Capability. Unique within its scope; see schema.cypher for the per-class identity keys." .
+    dct:description "The identifying name of a Term, Topic, Brand, or Capability — and of a Domain, Entity, Engine, Organization, Framework, Stage, Diagnostic, Tactic or ExternalEvent. Unique within its scope; see schema.cypher for the per-class identity keys." .
 
 xeo:title a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
@@ -218,7 +218,7 @@ xeo:rel a owl:DatatypeProperty ;
 xeo:resultType a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
     xeo:epistemicLayer "observation" ;
-    dct:description "The kind of SERP result observed (organic, featured snippet, local pack, ...). Carried on hasResult; the vocabulary is per-engine and belongs to the consumer." .
+    dct:description "The kind of SERP result observed (organic, featured snippet, local pack, ...). Carried on hasResult and relatedTerm. The vocabulary is per-engine and belongs to the consumer; xeos:serpResultType is a published reference filling." .
 
 xeo:position a owl:DatatypeProperty ;
     rdfs:range xsd:integer ;
@@ -266,3 +266,265 @@ xeo:assignedAt a owl:DatatypeProperty ;
 # namespace, so a term IRI never says which file it came from. Each module also
 # declares `xeo:<name>-module` (xeo:visibility-module, xeo:align-module, ...) so
 # it can be versioned and cited on its own.
+
+# --- v0.6.0 (kit sync) ---------------------------------------------------------
+# Appended at the foot, so no line above moves. Three kinds of change:
+#
+# ADDED. The slots every crawl export and SERP capture already carried, which
+# core named only in prose (contentType, robotsMeta, contentHash, crawlDepth,
+# indexable, wordCount, h1, linkPosition, crawler, startedAt, endedAt,
+# lastSeenCrawlId, syncedAt, embeddedAt, embeddingDim, locale, device); the
+# registrable Domain a URL sits on, so a competitor's result has somewhere to
+# attach without becoming a tracked Website; relatedTerm for the queries a
+# results page suggests; and Entity + about for meaning that is not a keyword
+# cluster.
+#
+# WIDENED (in place, above, each on its own line so nothing shifted).
+# embeddingRef and embeddingModel lost `rdfs:domain xeo:Term`: URLs, Prompts and
+# Topics are embedded too, and rdfs:domain is an entailment rule, not a
+# constraint — the old domain typed every embedded URL as a Term. Topic's
+# description now covers grouping URLs as well as Terms.
+#
+# HINTS. xeo:domainIncludes / xeo:rangeIncludes say where an open-domain
+# property is expected, without the entailment rdfs:domain would bring.
+
+xeo:domainIncludes a owl:AnnotationProperty ;
+    rdfs:comment "A class this property is expected on, where rdfs:domain is deliberately left open or would be too narrow. A hint for documentation, the Neo4j profile and SHACL shapes — never an entailment, so a value on some other class is unlisted, not wrong. Same reading as schema.org's domainIncludes." .
+
+xeo:rangeIncludes a owl:AnnotationProperty ;
+    rdfs:comment "A class this property is expected to point at, where rdfs:range is deliberately left open. A hint, never an entailment. Same reading as schema.org's rangeIncludes." .
+
+# --- v0.6.0 classes -------------------------------------------------------------
+
+xeo:Domain a owl:Class ;
+    rdfs:label "Domain" ;
+    xeo:epistemicLayer "entity" ;
+    xeo:groundedIn "WHATWG URL Standard (host) · Public Suffix List (registrable domain)" ;
+    dct:description "A registrable domain (the public suffix plus one label, e.g. example.co.uk), identified by its name in lower case. The publisher-level identity a URL sits on, whether or not the site is under observation: a competitor's result has no partOf edge to a tracked Website, it has onDomain. Not tenant-scoped: one node per domain, shared by every tenant that sees it, and it carries no websiteId." .
+
+xeo:Entity a owl:Class ;
+    rdfs:label "Entity" ;
+    xeo:epistemicLayer "entity" ;
+    dct:description "A real-world thing or concept that content is about — a product, a place, a person, a material, a method — identified by a reference into a public knowledge base (entityRef) where one exists, otherwise by name. Distinct from Topic, which is a site-scoped grouping somebody derived, and from Brand, which is a market identity engines mention: an Entity is the thing itself, shared across sites. Not tenant-scoped. Named for the knowledge-graph sense of the word; not to be confused with the epistemic layer 'entity', which Website, URL and Term also occupy." .
+
+# --- v0.6.0 object properties ----------------------------------------------------
+
+xeo:onDomain a owl:ObjectProperty ;
+    rdfs:label "on domain" ;
+    rdfs:domain xeo:URL ; rdfs:range xeo:Domain ;
+    xeo:epistemicLayer "entity" ;
+    xeo:groundedIn "WHATWG URL Standard (host) · Public Suffix List (registrable domain)" ;
+    dct:description "The registrable domain this URL's host belongs to. A fact of the address, not of any crawl: computed from the host and the public suffix list, the same for every tenant. One per URL." .
+
+xeo:relatedTerm a owl:ObjectProperty ;
+    rdfs:label "related term" ;
+    rdfs:domain xeo:SerpSnapshot ; rdfs:range xeo:Term ;
+    xeo:epistemicLayer "observation" ;
+    xeo:groundedIn "The results page as served (per-provider SERP API contract)" ;
+    dct:description "A query the results page itself suggested: a 'people also ask' question or a related search. Carries resultType to say which, and position where the engine orders them. The suggested query is a Term like any other, which is what joins a snapshot's neighbourhood back to rank data." .
+
+xeo:about a owl:ObjectProperty ;
+    rdfs:label "about" ;
+    xeo:epistemicLayer "derivation" ;
+    xeo:domainIncludes xeo:URL , xeo:Prompt , xeo:Term ;
+    xeo:rangeIncludes xeo:Topic , xeo:Entity ;
+    dct:description "The subject says something about this Topic or Entity, as assigned by a stated process (entity linking, a classifier, a human tagger). Carries method and confidence, and model where a model made the call. Many per subject. Domain and range left open across the terms listed: inTopic stays the narrower, clustering-specific edge from a Term to its Topic; about is the general aboutness claim for a URL, a Prompt or a Term." .
+
+# --- v0.6.0 crawl-observation slots ----------------------------------------------
+# Carried on the fetched edge unless stated: the address is durable, these are
+# what one crawl saw. A property-graph implementation often copies the latest
+# crawl's values onto the URL node for convenience. That copy is a cache of one
+# observation and should say which (lastSeenCrawlId); the fetched edge remains
+# the record.
+
+xeo:contentType a owl:DatatypeProperty ;
+    rdfs:label "content type" ;
+    rdfs:range xsd:string ;
+    xeo:epistemicLayer "observation" ;
+    xeo:groundedIn "RFC 9110 §8.3 (Content-Type)" ;
+    dct:description "The media type the server declared for the fetched representation (text/html, application/pdf, ...), parameters dropped. Carried on fetched." .
+
+xeo:robotsMeta a owl:DatatypeProperty ;
+    rdfs:label "robots meta" ;
+    rdfs:range xsd:string ;
+    xeo:epistemicLayer "observation" ;
+    xeo:groundedIn "WHATWG HTML (meta name=robots) · the X-Robots-Tag response header" ;
+    dct:description "The robots directives observed on a fetch, as a comma-separated list in lower case (noindex, nofollow, ...), combining the robots meta element and the X-Robots-Tag header. Absent when the page declares none. Carried on fetched." .
+
+xeo:h1 a owl:DatatypeProperty ;
+    rdfs:label "h1" ;
+    rdfs:range xsd:string ;
+    xeo:epistemicLayer "observation" ;
+    xeo:groundedIn "WHATWG HTML §4.3.6 (the h1 element)" ;
+    dct:description "The text of the first h1 element observed on a fetch. Carried on fetched. A page with several h1 elements records the first; the count is a crawler's finding, not this slot's." .
+
+xeo:contentHash a owl:DatatypeProperty ;
+    rdfs:label "content hash" ;
+    rdfs:range xsd:string ;
+    xeo:epistemicLayer "derivation" ;
+    dct:description "A digest of the fetched body, used to tell whether a page changed between crawls. A derivation: the algorithm and what was hashed (raw bytes, rendered text) are the crawler's choice, so the value names its algorithm (sha256:...) and is only comparable with hashes made the same way. Carried on fetched." .
+
+xeo:crawlDepth a owl:DatatypeProperty ;
+    rdfs:label "crawl depth" ;
+    rdfs:range xsd:integer ;
+    xeo:epistemicLayer "derivation" ;
+    dct:description "The fewest link hops from the crawl's start URL to this one, 0 for the start URL. A derivation over one crawl's link graph: it depends on where that crawl started and what it was allowed to follow, so it is carried on fetched and compared only within a crawl." .
+
+xeo:indexable a owl:DatatypeProperty ;
+    rdfs:label "indexable" ;
+    rdfs:range xsd:boolean ;
+    xeo:epistemicLayer "derivation" ;
+    dct:description "Whether the crawler judged the fetched page eligible for indexing: a successful status, no noindex directive, not canonicalised elsewhere, not blocked. A derivation from statusCode, robotsMeta and hasCanonical by the crawler's own rule, which is the method; it is not a statement that any engine has indexed the page. Carried on fetched." .
+
+xeo:wordCount a owl:DatatypeProperty ;
+    rdfs:label "word count" ;
+    rdfs:range xsd:integer ;
+    xeo:epistemicLayer "derivation" ;
+    dct:description "The number of words the crawler counted in the fetched page. A derivation: tools differ on what is counted (body text only, or navigation and footer as well), so counts from different crawlers are not comparable. Carried on fetched." .
+
+xeo:linkPosition a owl:DatatypeProperty ;
+    rdfs:label "link position" ;
+    rdfs:range xsd:string ;
+    xeo:epistemicLayer "derivation" ;
+    dct:description "Where on the source page an observed hyperlink sits, as a code from a slotted-in scheme (content, navigation, header, footer, sidebar, other — xeos:linkPosition is a published reference filling). A derivation: the crawler classifies it from the markup around the link. Carried on linksTo. It is what separates an editorial link from a template link, which is why role and authority derivations read it." .
+
+xeo:crawler a owl:DatatypeProperty ;
+    rdfs:label "crawler" ;
+    rdfs:range xsd:string ;
+    xeo:epistemicLayer "episode" ;
+    xeo:groundedIn "RFC 9110 §10.1.5 (User-Agent)" ;
+    dct:description "The agent that ran a Crawl: its product token and version as sent in User-Agent, or the tool's name and version. Carried on the Crawl. Without it two crawls of one site are not comparable, because rendering, depth limits and counting rules differ by tool." .
+
+xeo:startedAt a owl:DatatypeProperty ;
+    rdfs:label "started at" ;
+    rdfs:range xsd:dateTime ;
+    xeo:epistemicLayer "episode" ;
+    dct:description "When a time-bounded episode began: a Crawl, an Experiment. Domain left open so any episode with a duration can carry it. With endedAt (or concludedAt on an Experiment) it bounds the window." .
+
+xeo:endedAt a owl:DatatypeProperty ;
+    rdfs:label "ended at" ;
+    rdfs:range xsd:dateTime ;
+    xeo:epistemicLayer "episode" ;
+    dct:description "When a time-bounded episode finished and became immutable. Carried on a Crawl. An Experiment keeps concludedAt, which says the same for its own case. Domain left open." .
+
+xeo:lastSeenCrawlId a owl:DatatypeProperty ;
+    rdfs:label "last seen crawl id" ;
+    rdfs:range xsd:string ;
+    xeo:epistemicLayer "observation" ;
+    dct:description "The id of the Crawl that most recently observed an edge or a cached value. Carried on linksTo with lastSeenAt: a link whose lastSeenCrawlId is not the site's latest crawl is one that crawl did not find." .
+
+xeo:syncedAt a owl:DatatypeProperty ;
+    rdfs:label "synced at" ;
+    rdfs:range xsd:dateTime ;
+    xeo:epistemicLayer "derivation" ;
+    dct:description "When a windowed rollup was last projected from its authoritative table. Carried on ranksFor and visibilityFor beside datasetUri. It dates the projection, not the data: the window is periodStart to periodEnd." .
+
+xeo:embeddedAt a owl:DatatypeProperty ;
+    rdfs:label "embedded at" ;
+    rdfs:range xsd:dateTime ;
+    xeo:epistemicLayer "derivation" ;
+    dct:description "When the vector behind embeddingRef was computed. Carried beside embeddingRef and embeddingModel on any embedded node; an embedding older than the content it was made from is stale." .
+
+xeo:embeddingDim a owl:DatatypeProperty ;
+    rdfs:label "embedding dimension" ;
+    rdfs:range xsd:integer ;
+    xeo:epistemicLayer "derivation" ;
+    dct:description "The number of dimensions of the vector behind embeddingRef. Fixed by embeddingModel and any truncation applied; two vectors are comparable only when model and dimension both match." .
+
+# --- v0.6.0 SERP capture slots ----------------------------------------------------
+
+xeo:locale a owl:DatatypeProperty ;
+    rdfs:label "locale" ;
+    rdfs:range xsd:string ;
+    xeo:epistemicLayer "episode" ;
+    xeo:groundedIn "BCP 47 (RFC 5646)" ;
+    dct:description "The language and region a capture was requested for, as a BCP 47 tag (en-GB, de-DE). Carried on a SerpSnapshot, and on an LLMResponse where the engine takes one. Part of what makes two captures comparable: never pool across locales silently. A finer location (a city, coordinates) is the capturing tool's parameter and is not modelled here." .
+
+xeo:device a owl:DatatypeProperty ;
+    rdfs:label "device" ;
+    rdfs:range xsd:string ;
+    xeo:epistemicLayer "episode" ;
+    dct:description "The device class a capture was requested for, as a code from a slotted-in scheme (desktop, mobile, tablet — xeos:device is a published reference filling). Carried on a SerpSnapshot. Results differ by device, so it is part of what makes two snapshots comparable." .
+
+xeo:entityRef a owl:DatatypeProperty ;
+    rdfs:label "entity reference" ;
+    rdfs:range xsd:string ;
+    xeo:epistemicLayer "entity" ;
+    dct:description "Identity-key pointer from an Entity to its record in a public knowledge base, written as a compact or full IRI (a Wikidata item, a knowledge-graph machine id). The identity of the Entity where present: two Entities with the same entityRef are the same thing whatever their names. The graph joins on the key and never mirrors the knowledge base's schema." .
+
+# --- v0.6.0 annotation completeness -----------------------------------------------
+# Every class and property now carries rdfs:label, dct:description and
+# xeo:epistemicLayer, so tools/validate.py can require all three. The triples
+# below add what the declarations above lacked; nothing is redefined.
+
+xeo:origin xeo:epistemicLayer "entity" ;
+    dct:description "The serialized origin (scheme, host, port) that identifies a Website, e.g. https://www.example.com. One per Website." .
+
+xeo:address xeo:epistemicLayer "entity" ;
+    dct:description "The serialized absolute URL. The identity of a URL, together with websiteId where the URL is tenant-scoped." .
+
+xeo:partOf dct:description "The Website this URL belongs to. Present only for URLs of a site under observation; any other URL is placed by onDomain alone." .
+
+xeo:hasCrawl dct:description "A crawl run over this Website." .
+
+xeo:redirectsTo dct:description "An observed HTTP redirect from one URL to the next hop. Carries statusCode and the crawl that saw it." .
+
+xeo:hasCanonical dct:description "The canonical URL a page declared for itself, by link element or header, as observed on a fetch." .
+
+xeo:hasSnapshot dct:description "A captured results page for this Term." .
+
+xeo:childOf dct:description "The broader Topic this Topic sits under. The Topic tree is the only hierarchy core defines." .
+
+xeo:scopedTo dct:description "The Website whose content a Topic was derived from. Topics are site-scoped." .
+
+xeo:statusCode dct:description "The HTTP status code of a fetch. Carried on fetched, and on redirectsTo for the redirect's own code." .
+
+xeo:anchorText dct:description "The text content of an observed hyperlink. Carried on linksTo." .
+
+xeo:clicks dct:description "Search clicks over the rollup window. Carried on ranksFor." .
+
+xeo:impressions dct:description "Search impressions over the rollup window. Carried on ranksFor." .
+
+xeo:avgPosition dct:description "Impression-weighted average position over the rollup window, 1-based, lower is better. Carried on ranksFor. Distinct from position, which is one observation on one results page." .
+
+xeo:embeddingModel dct:description "The model that produced the vector behind embeddingRef, with its version. Two vectors are comparable only when this matches." .
+
+# Labels for the properties declared above, which carried none.
+
+xeo:partOf rdfs:label "part of" .
+xeo:hasCrawl rdfs:label "has crawl" .
+xeo:fetched rdfs:label "fetched" .
+xeo:linksTo rdfs:label "links to" .
+xeo:redirectsTo rdfs:label "redirects to" .
+xeo:hasCanonical rdfs:label "has canonical" .
+xeo:ranksFor rdfs:label "ranks for" .
+xeo:hasSnapshot rdfs:label "has snapshot" .
+xeo:hasResult rdfs:label "has result" .
+xeo:inTopic rdfs:label "in topic" .
+xeo:childOf rdfs:label "child of" .
+xeo:scopedTo rdfs:label "scoped to" .
+xeo:origin rdfs:label "origin" .
+xeo:address rdfs:label "address" .
+xeo:statusCode rdfs:label "status code" .
+xeo:anchorText rdfs:label "anchor text" .
+xeo:clicks rdfs:label "clicks" .
+xeo:impressions rdfs:label "impressions" .
+xeo:avgPosition rdfs:label "average position" .
+xeo:embeddingRef rdfs:label "embedding reference" .
+xeo:embeddingModel rdfs:label "embedding model" .
+xeo:confidence rdfs:label "confidence" .
+xeo:websiteId rdfs:label "website id" .
+xeo:datasetUri rdfs:label "dataset URI" .
+xeo:name rdfs:label "name" .
+xeo:title rdfs:label "title" .
+xeo:metaDescription rdfs:label "meta description" .
+xeo:rel rdfs:label "rel" .
+xeo:resultType rdfs:label "result type" .
+xeo:position rdfs:label "position" .
+xeo:ctr rdfs:label "CTR" .
+xeo:periodStart rdfs:label "period start" .
+xeo:periodEnd rdfs:label "period end" .
+xeo:fetchedAt rdfs:label "fetched at" .
+xeo:firstSeenAt rdfs:label "first seen at" .
+xeo:lastSeenAt rdfs:label "last seen at" .
+xeo:assignedAt rdfs:label "assigned at" .

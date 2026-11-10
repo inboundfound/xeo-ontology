@@ -48,7 +48,7 @@ xeo:delivery-module a owl:Ontology ;
     dct:title "XEO Delivery (projects, campaigns, objectives)" ;
     dct:description "The container work is delivered in: a Project (the contract — type, quota, scope), its Campaigns (a body of work against one Topic), the Objective each campaign is measured by, and the MetricTargets an Experiment is read against. Lifted from a production implementation; fills the layer the decision and norms tiers left open." ;
     dct:creator "Inbound Found" ;
-    owl:versionInfo "0.5.0" .
+    owl:versionInfo "0.6.0" .
 
 # --- Classes ----------------------------------------------------------------
 
@@ -202,3 +202,85 @@ xeo:deletedAt a owl:DatatypeProperty ;
     rdfs:range xsd:dateTime ;
     xeo:epistemicLayer "entity" ;
     dct:description "Soft-delete stamp. XEO never destroys a node something else was derived from — xeo-strategy states the rule for a Practice (destroying it destroys the record of what it vetoed) and it holds here for a Project, a Campaign, or a MetricTarget that measured history hangs off. Absent on a live node; domain left open so any revisable term can carry it." .
+
+# --- v0.6.0 (kit sync) ---------------------------------------------------------
+# Appended at the foot, so no line above moves.
+#
+# ADDED. Organization: the party that does the work or has it done. Until now
+# the only tenancy node was the Website, so "this agency's method", "this
+# client of that agency" and "what this team is able to do" had nowhere to
+# hang. An Organization owns Websites and Brands, may be the client of another,
+# holds Capabilities, and activates Frameworks and Playbooks (xeo-strategy).
+#
+# This is NOT a CRM mirror. An Organization here is the handful of parties the
+# graph reasons about: the agency, its clients, an in-house team. Accounts,
+# contacts, deals and the rest of the pipeline stay in the CRM and join by
+# identity key (crmRecordRef), as xeo-engagement states. An Organization may
+# carry a crmRecordRef; it never carries the CRM's fields.
+
+xeo:Organization a owl:Class ;
+    rdfs:label "Organization" ;
+    xeo:epistemicLayer "entity" ;
+    dct:description "A party that does optimization work or has it done: an agency, a brand's company, an in-house team. Identified by name. The owner of Websites and Brands (owns), the holder of Capabilities (holdsCapability), and a tenancy node that activates Frameworks and Playbooks. Not a CRM account: it carries no pipeline fields, and joins to the CRM record by crmRecordRef where one exists. Its kind is a slotted-in concept (organizationKind), never a subclass." .
+
+xeo:owns a owl:ObjectProperty ;
+    rdfs:label "owns" ;
+    rdfs:domain xeo:Organization ;
+    xeo:epistemicLayer "entity" ;
+    xeo:rangeIncludes xeo:Website , xeo:Brand ;
+    dct:description "A Website or Brand this Organization is responsible for. Ownership in the working sense — whose site it is — not a legal claim. Range left open across Website and Brand." .
+
+xeo:clientOf a owl:ObjectProperty ;
+    rdfs:label "client of" ;
+    rdfs:domain xeo:Organization ; rdfs:range xeo:Organization ;
+    xeo:epistemicLayer "entity" ;
+    dct:description "This Organization is served by that one: a brand is the client of an agency. The contract itself is a Project on the client's Website; this edge says only who works for whom." .
+
+xeo:holdsCapability a owl:ObjectProperty ;
+    rdfs:label "holds capability" ;
+    rdfs:domain xeo:Organization ; rdfs:range xeo:Capability ;
+    xeo:epistemicLayer "entity" ;
+    dct:description "A Capability this Organization is able to bring: the lever exists in this team. A third question beside the two the scope gate already asks. holdsCapability says the party can do it; approved says the lever is cleared for this engagement; inScope says the contract covers it." .
+
+xeo:organizationKind a owl:ObjectProperty ;
+    rdfs:label "organization kind" ;
+    rdfs:domain xeo:Organization ; rdfs:range skos:Concept ;
+    xeo:epistemicLayer "entity" ;
+    dct:description "What kind of party an Organization is, as a slotted-in concept (agency, brand, in_house — xeos:organizationKind is a published reference filling). One per Organization." .
+
+# --- v0.6.0 annotation completeness -----------------------------------------------
+# The triples below add what the declarations above lacked; nothing is redefined.
+
+xeo:hasCampaign dct:description "A campaign run under this Project." .
+
+xeo:baselineCapturedAt dct:description "When baseline was read. Not the same instant as the target's creation." .
+
+xeo:inScope xeo:rangeIncludes xeo:Intervention , xeo:Tactic .
+
+# Labels for the properties declared above, which carried none.
+
+xeo:hasProject rdfs:label "has project" .
+xeo:hasCampaign rdfs:label "has campaign" .
+xeo:inScope rdfs:label "in scope" .
+xeo:aboutTopic rdfs:label "about topic" .
+xeo:coversUrl rdfs:label "covers URL" .
+xeo:coversTerm rdfs:label "covers term" .
+xeo:hasObjective rdfs:label "has objective" .
+xeo:hasTarget rdfs:label "has target" .
+xeo:issuedFor rdfs:label "issued for" .
+xeo:measures rdfs:label "measures" .
+xeo:effortEstimate rdfs:label "effort estimate" .
+xeo:execution rdfs:label "execution" .
+xeo:engagementType rdfs:label "engagement type" .
+xeo:interventionQuota rdfs:label "intervention quota" .
+xeo:cadence rdfs:label "cadence" .
+xeo:durationDays rdfs:label "duration days" .
+xeo:resultsWindowDays rdfs:label "results window days" .
+xeo:metric rdfs:label "metric" .
+xeo:direction rdfs:label "direction" .
+xeo:targetKind rdfs:label "target kind" .
+xeo:targetValue rdfs:label "target value" .
+xeo:baseline rdfs:label "baseline" .
+xeo:baselineCapturedAt rdfs:label "baseline captured at" .
+xeo:isPrimary rdfs:label "is primary" .
+xeo:deletedAt rdfs:label "deleted at" .
