@@ -410,8 +410,8 @@ xeo:endedAt a owl:DatatypeProperty ;
 xeo:lastSeenCrawlId a owl:DatatypeProperty ;
     rdfs:label "last seen crawl id" ;
     rdfs:range xsd:string ;
-    xeo:epistemicLayer "observation" ;
-    dct:description "The id of the Crawl that most recently observed an edge or a cached value. Carried on linksTo with lastSeenAt: a link whose lastSeenCrawlId is not the site's latest crawl is one that crawl did not find." .
+    xeo:epistemicLayer "episode" ;
+    dct:description "The id of the Crawl that most recently observed an edge or a cached value. An identity key naming an episode, not itself a measurement. Carried on linksTo with lastSeenAt: a link whose lastSeenCrawlId is not the site's latest crawl is one that crawl did not find." .
 
 xeo:syncedAt a owl:DatatypeProperty ;
     rdfs:label "synced at" ;

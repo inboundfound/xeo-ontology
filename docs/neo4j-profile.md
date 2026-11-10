@@ -313,7 +313,7 @@ Generated from XEO 0.6.0. Do not edit between the markers; run `tools/gen_profil
 | `interventionQuota` | `xsd:integer` |  | entity | delivery |
 | `isPrimary` | `xsd:boolean` |  | interpretation | delivery |
 | `lastSeenAt` | `xsd:dateTime` |  | observation | core |
-| `lastSeenCrawlId` | `xsd:string` |  | observation | core |
+| `lastSeenCrawlId` | `xsd:string` |  | episode | core |
 | `lift` | `xsd:decimal` |  | observation | decision |
 | `linkPosition` | `xsd:string` | `linkPosition` | derivation | core |
 | `locale` | `xsd:string` |  | episode | core |

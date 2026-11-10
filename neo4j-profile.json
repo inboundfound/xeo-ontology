@@ -732,7 +732,7 @@
     "lastSeenCrawlId": {
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#lastSeenCrawlId",
-      "layer": "observation",
+      "layer": "episode",
       "module": "core"
     },
     "lift": {
