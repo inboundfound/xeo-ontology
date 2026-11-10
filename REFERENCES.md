@@ -53,7 +53,9 @@ profile of `seovoc`:
    it, is a first-class requirement here.
 2. **Chat assistant / agent surface.** Engagement with assistants — citations, mentions, sentiment
    and the visibility layer they feed (`xeo-visibility`, `xeo-engagement`) — is native to XEO's
-   subject and largely outside a workflow-centred SEO vocabulary.
+   subject and largely outside a workflow-centred SEO vocabulary. (Sentiment has been a declared
+   term, `xeo:sentiment` on a `mentions` edge, since 0.6.0. Before that this sentence was ahead
+   of the vocabulary.)
 
 **Practical stance:** cite SEOntology, align the overlapping terms in `xeo-align.ttl` when we do
 the alignment pass, and do not force the decision-intelligence or assistant layers into it. The
@@ -61,7 +63,8 @@ overlap is worth an explicit mapping; the extension is the point of the ontology
 
 **Status:** `xeo-align.ttl` currently relates XEO to `schema.org`, `prov` and `skos` (`dcterms` is
 used for module metadata, not aligned to),
-and does not yet mention `seovoc`. The alignment pass is open work.
+and does not yet mention `seovoc`. The alignment pass is open work, and was deliberately left
+out of 0.6.0 (see `docs/v0.6-kit-sync.md`, open questions).
 
 ---
 
