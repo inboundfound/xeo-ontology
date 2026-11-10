@@ -9,12 +9,14 @@ The `x` is the variable. That is the whole point of the name: the letter in fron
 keeps changing, and the discipline behind it doesn't.
 
 **Prefix:** `xeo:` · **Namespace:** `https://xeoontology.org/xeo#`
-· **Status:** v0.5 — open draft, built to be riffed on. Issues and PRs welcome.
+· **Status:** v0.6 — open draft, built to be riffed on. Issues and PRs welcome.
+What changed and why: [`CHANGELOG.md`](CHANGELOG.md).
 
 > **Namespace note.** Term IRIs resolve at `xeoontology.org`, not at this repo.
 > Whoever serves that domain must publish `/xeo` (the term docs), `/schemes`,
-> `/context.jsonld` and `/schemes.json` from this repo's contents, or every IRI
-> here 404s. The namespace deliberately does not point at a GitHub org, so the
+> `/context.jsonld`, `/schemes.json`, `/neo4j-profile.json`,
+> `/context.neo4j.jsonld` and `/shapes` from this repo's contents, or every IRI
+> here 404s. Publishing is a manual step after each release. The namespace deliberately does not point at a GitHub org, so the
 > vocabulary's identity survives a repo move, an org rename, or a change of host.
 
 ## Why "XEO"
@@ -51,16 +53,20 @@ acronyms.
 
 | File | Layer | Contents |
 |---|---|---|
-| `xeo-core.ttl` | the SEO substrate | `Website`, `URL`, `Term`, `Crawl`, `SerpSnapshot`, `Topic`, `SearchPerformanceFact`; `FETCHED`, `LINKS_TO`, `REDIRECTS_TO`, `HAS_CANONICAL`, `RANKS_FOR` (windowed rollups with `datasetUri` provenance), `HAS_RESULT`, `IN_TOPIC` |
-| `xeo-visibility.ttl` | the xEO layer | `Engine` (+ `SearchEngine` / `GenerativeEngine` / `AnswerEngine` / `ConversationalAgent`), `Brand`, `Prompt`, `LLMResponse`; `CITES`, `MENTIONS {mentionRank}`, `FANS_OUT_TO` (fan-out queries **are** Terms — the join back to rank data), `VISIBILITY_FOR` rollups (`mentionRate`, `citationRate`) |
+| `xeo-core.ttl` | the SEO substrate | `Website`, `URL`, `Domain` (the registrable domain any URL sits on, tracked or not), `Term`, `Crawl`, `SerpSnapshot`, `Topic`, `Entity`, `SearchPerformanceFact`; `FETCHED`, `LINKS_TO`, `REDIRECTS_TO`, `HAS_CANONICAL`, `ON_DOMAIN`, `RANKS_FOR` (windowed rollups with `datasetUri` provenance), `HAS_RESULT`, `RELATED_TERM`, `IN_TOPIC`, `ABOUT` |
+| `xeo-visibility.ttl` | the xEO layer | `Engine` (+ `SearchEngine` / `GenerativeEngine` / `AnswerEngine` / `ConversationalAgent`), `Brand`, `Prompt`, `LLMResponse`; `CITES`, `MENTIONS {mentionRank, sentiment}`, `FANS_OUT_TO` (fan-out queries **are** Terms — the join back to rank data), `VISIBILITY_FOR` rollups (`mentionRate`, `citationRate`), `HAS_WEBSITE`, `COMPETES_WITH` |
 | `xeo-engagement.ttl` | draft v0 | `SearchIntent` individuals (Broder 2002, extended), `ConversionPoint` (+ `CallToAction` / `LeadCaptureForm` / `GatedAsset`), `ConversionEvent`, `crmRecordRef` (the CRM join key), `attributedResponse` (pre-click attribution — a labeled interpretation) |
-| `xeo-decision.ttl` | the interpretation tier | `Diagnostic`, `Gap`, `Tactic`, `Capability`, `Experiment`, `Outcome`, `Recommendation`; the chain `reveals`→`addressableBy`→`requiresCapability` (scope gate)→`tests`/`inContext`→`recommends`/`supportedBy`. Classes, never values — `gapType`/`inIntervention`/`onDimension`/`atPriority` are `skos:Concept` slots you fill. |
-| `xeo-strategy.ttl` | the norms tier | `Practice` (a standing rule: `guardrail` vetoes a candidate, `preference` reorders it, `guidance` caveats it), `Playbook` (a reusable discipline bundle); `constrains`, `appliesToConcept`, `appliedPractice` (the audit edge — why a candidate was blocked), `supersedes` (revisable, never deleted), `hasRole` (page roles as a derivation, not regexes), `appliesAtScope` (the tenancy specificity ladder). Governs **how** a `Recommendation` is allowed to be made. |
-| `xeo-delivery.ttl` | the delivery layer | `Project` (the contract — `engagementType`, `interventionQuota`, `cadence`/`durationDays`, what's `inScope`), `Campaign` (a body of work `aboutTopic`, covering URLs and Terms), `Objective` → `MetricTarget` (the intent, as targets a later `Outcome` is read against). `Recommendation` `issuedFor` a campaign; `Experiment` `measures` a target. The layer the decision and norms tiers left open. |
-| `xeo-schemes.ttl` · `schemes.json` | reference values | **The slots, filled.** SKOS concept schemes for every `skos:Concept` slot and controlled string in the ontology — 20 schemes, ~100 concepts: gap types, verdicts, priority, the intervention catalogue, lifecycles, metrics, epistemic layers. Every value lifted from a production implementation and sourced. `schemes.json` is the generated projection for anything that builds an enum at boot. |
+| `xeo-decision.ttl` | the interpretation tier | `Diagnostic` (and its episode, `DiagnosticRun`), `Gap`, `Tactic`, `Capability`, `Experiment`, `Outcome`, `ExternalEvent`, `Recommendation`, `Feedback`; the chain `reveals`→`addressableBy`→`requiresCapability` (scope gate)→`tests`/`inContext`→`recommends`/`supportedBy`. Classes, never values — `gapType`/`inIntervention`/`onDimension`/`atPriority` are `skos:Concept` slots you fill. |
+| `xeo-strategy.ttl` | the norms tier | `Practice` (a standing rule: `guardrail` vetoes a candidate, `preference` reorders it, `guidance` caveats it), `Playbook` (a reusable discipline bundle); `constrains`, `appliesToConcept`, `appliedPractice` (the audit edge — why a candidate was blocked), `supersedes` (revisable, never deleted), `hasRole` (page roles as a derivation, not regexes), `appliesAtScope` (the tenancy specificity ladder); `Framework` and `Stage` (a named method as data: stages, ordered or not, with diagnostics and tactics placed `atStage`); `learnedFrom` and `evaluatedPractice {fired}`. Governs **how** a `Recommendation` is allowed to be made. |
+| `xeo-delivery.ttl` | the delivery layer | `Project` (the contract — `engagementType`, `interventionQuota`, `cadence`/`durationDays`, what's `inScope`), `Campaign` (a body of work `aboutTopic`, covering URLs and Terms), `Objective` → `MetricTarget` (the intent, as targets a later `Outcome` is read against). `Recommendation` `issuedFor` a campaign; `Experiment` `measures` a target. `Organization` (an agency, a brand, an in-house team) `owns` websites and brands and is `clientOf` another. Not a CRM mirror. The layer the decision and norms tiers left open. |
+| `xeo-analysis.ttl` | derived structure | What algorithms and models add to the graph: `AlgorithmRun` (algorithm, parameters, projection), `COMPUTED_BY`, `SIMILAR_TO {similarity, basis}`, `PRECEDENT_FOR`, and the node scores `pageRank`, `betweenness`, `degree`, `communityId`. All derivations. Similarity and centrality nominate candidates; they decide nothing, and a score is meaningless without the projection it was computed on. |
+| `xeo-schemes.ttl` · `schemes.json` | reference values | **The slots, filled.** SKOS concept schemes for every `skos:Concept` slot and controlled string in the ontology — 29 schemes, ~150 concepts: gap types, verdicts, priority, the intervention catalogue, lifecycles, metrics, SERP result types, link positions, algorithms, epistemic layers. Every scheme names its source. `schemes.json` is the generated projection for anything that builds an enum at boot. |
 | `xeo-align.ttl` | interoperability | Optional bridges — schema.org (`WebSite`, `WebPage`, `Brand`, `Observation`), PROV-O (`Crawl`→`Activity`, `Engine`→`SoftwareAgent`, `LLMResponse`→`Entity`), SKOS (`Topic`→`Concept`, `childOf`→`broader`). **Alignments, not dependencies.** |
 | `context.jsonld` | interoperability | A JSON-LD `@context` mapping graph labels/relationships/properties to IRIs — turns a Neo4j export into valid RDF/JSON-LD in one pass. |
 | `schema.cypher` | property graph | Neo4j 5.x constraints + indexes for every module |
+| `neo4j-profile.json` · `context.neo4j.jsonld` | property graph | **Generated.** Every class as a node label, every object property as an `UPPER_SNAKE` relationship type, every datatype property as a property key, each with its IRI, layer and module. See [Use it from Neo4j](#use-it-from-neo4j). |
+| `shapes/xeo-shapes.ttl` | validation | SHACL shapes for the rules the ontology states in prose: a magnitude has a unit, a confidence is between 0 and 1, a captured response names its model. Conservative; nothing is closed. |
+| `examples/` | worked data | One fictional site, end to end, as JSON-LD that conforms to the shapes. |
 
 The core module is the stable substrate. Visibility is field-tested against a
 working tracker/response-capture/Neo4j implementation. Decision and strategy are
@@ -77,7 +83,8 @@ engine-side data has been missing.
   engagement  ConversionPoint · SearchIntent   ConversionEvent
   decision    Gap · Tactic · Capability        Experiment (→ Outcome)
   strategy    Practice · Playbook               (norms — rules, not events)
-  delivery    Project · Campaign                (Objective → MetricTarget: the intent)
+  delivery    Project · Campaign · Organization (Objective → MetricTarget: the intent)
+  analysis    (scores and similarity edges)    AlgorithmRun
 
   observations attach facts to entities/episodes (FETCHED, CITES, MENTIONS…)
   derivations carry method/model/confidence (IN_TOPIC, embeddingRef…)
@@ -145,14 +152,20 @@ traversal:
 ```cypher
 // In-reach tactics for an open gap, ranked by precedent strength
 MATCH (g:Gap {websiteId: $tenant})-[:ADDRESSABLE_BY]->(t:Tactic)
-WHERE all(c IN [(t)-[:REQUIRES_CAPABILITY]->(cap) | cap]
-          WHERE (cap)-[:APPROVED]->() OR cap.approved = true)   // scope gate
+WHERE all(cap IN [(t)-[:REQUIRES_CAPABILITY]->(c:Capability) | c]
+          WHERE cap.websiteId = $tenant AND cap.approved)        // scope gate
 OPTIONAL MATCH (e:Experiment)-[:TESTS]->(t),
-              (e)-[:IN_CONTEXT]->(:Gap)-[:GAP_TYPE]->(gt)<-[:GAP_TYPE]-(g),
+              (e)-[:IN_CONTEXT]->(prior:Gap),
               (e)-[:PRODUCED_OUTCOME]->(o:Outcome)
-RETURN t.label, count(e) AS precedents, avg(o.lift) AS avg_lift
+WHERE prior.gapType = g.gapType                                  // same kind of gap
+RETURN t.name, count(e) AS precedents, avg(o.lift) AS avg_lift
 ORDER BY precedents DESC, avg_lift DESC;
 ```
+
+`approved` is a boolean property on the `Capability`, and `gapType` is a concept
+slot stored here as its code. A graph that keeps concepts as nodes matches
+`(prior)-[:GAP_TYPE]->(c)<-[:GAP_TYPE]-(g)` instead; both forms conform (see
+[`docs/neo4j-profile.md`](docs/neo4j-profile.md)).
 
 **Classes, never values.** `Gap` and `Tactic` are terms; a *Citation-Waterfall
 stage* and *"publish a comparison page"* are not — they are `skos:Concept`s and
@@ -238,6 +251,10 @@ slot is what XEO defines; a scheme is one answer.
 | `outcomeResult` · `outcomeResultReason` | `xeo:result` · `xeo:resultReason` | did it move, and why it couldn't be judged |
 | `objectiveMetric` · `targetKind` · `engagementType` · `cadence` · `effort` · `execution` | the delivery layer | |
 | `magnitudeUnit` | `xeo:magnitudeUnit` | 8 — a size is never rendered bare |
+| `serpResultType` · `device` · `linkPosition` | `xeo:resultType` · `xeo:device` · `xeo:linkPosition` | what kind of result, on which device, and where on the page a link sits |
+| `sentiment` | `xeo:sentiment` | 4 — positive · neutral · negative · mixed |
+| `algorithm` · `similarityBasis` | `xeo:algorithm` · `xeo:basis` | what ran, and what was compared |
+| `frameworkKind` · `organizationKind` · `feedbackVerdict` | `xeo:frameworkKind` · `xeo:organizationKind` · `xeo:verdict` | the method and delivery slots added in 0.6 |
 | `epistemicLayer` | `xeo:epistemicLayer` | the six kinds of claim, one IRI each |
 
 Two conventions make them consumable by software: `skos:notation` on every
@@ -248,12 +265,34 @@ build a JSON Schema `enum` at boot without parsing Turtle:
 ```python
 import json, urllib.request
 schemes = json.load(urllib.request.urlopen(
-    "https://raw.githubusercontent.com/inboundfound/xeo-ontology/main/schemes.json"))["schemes"]
+    "https://xeoontology.org/schemes.json"))["schemes"]
 GAP_TYPES = [c["code"] for c in schemes["gapType"]["concepts"]]   # 14 codes, in stated order
 ```
 
 Regenerate with `python tools/gen_schemes.py` after editing the TTL; never edit
 the JSON by hand.
+
+## Use it from Neo4j
+
+A property graph has labels, relationship types and property keys, not IRIs. One
+rule maps XEO onto them:
+
+| XEO | Neo4j | Example |
+|---|---|---|
+| class | node label, unchanged | `xeo:SerpSnapshot` → `:SerpSnapshot` |
+| object property | relationship type, `UPPER_SNAKE` | `xeo:linksTo` → `:LINKS_TO` |
+| datatype property | property key, unchanged | `xeo:avgPosition` → `avgPosition` |
+
+Tenancy is the `websiteId` property, never a label. `neo4j-profile.json` is that
+mapping written out for software: every label, relationship type and property
+key with its IRI, epistemic layer, module, and expected domain and range, plus
+the reference schemes as plain code lists. Vendor it, and check the names your
+loaders write against it. `context.neo4j.jsonld` is the same mapping as a
+JSON-LD context, so a Neo4j export lifts back to RDF.
+
+Both are generated from the Turtle (`tools/gen_profile.py`) and are never edited
+by hand. The naming rule in full, how to consume the profile, and the complete
+mapping table are in [`docs/neo4j-profile.md`](docs/neo4j-profile.md).
 
 ## Using it
 
@@ -263,19 +302,30 @@ cat schema.cypher | cypher-shell -u neo4j -p <password>
 ```
 
 The TTL files are plain OWL — load `xeo-core`, `xeo-visibility`,
-`xeo-engagement`, `xeo-decision`, `xeo-strategy`, `xeo-delivery`, and (if you
-want the crosswalk) `xeo-align` into any triple store or ontology editor.
-Decision builds on core; strategy and delivery build on decision; the rest stand
-alone. `xeo-schemes` is SKOS data, not ontology — load it where you want the
+`xeo-engagement`, `xeo-decision`, `xeo-strategy`, `xeo-delivery`,
+`xeo-analysis`, and (if you want the crosswalk) `xeo-align` into any triple
+store or ontology editor. Decision builds on core; strategy, delivery and
+analysis build on decision; the rest stand alone. `xeo-schemes` is SKOS data, not ontology — load it where you want the
 reference values. To publish graph data as linked data, serve your
 Neo4j export under `context.jsonld` and it validates as RDF/JSON-LD.
 
-**Namespace.** Terms currently resolve under GitHub Pages
-(`https://xeoontology.org/xeo#`). The intended permanent home
-is **xeoontology.org** — served with content negotiation so each term IRI
-resolves to human docs (HTML) or the ontology (Turtle). Local term names never
-change, so a w3id.org-style redirect can front either host without breaking any
-published IRI.
+**Namespace.** Terms resolve at **xeoontology.org**
+(`https://xeoontology.org/xeo#`), which serves the term docs as HTML. Content
+negotiation, so the same IRI returns Turtle to a client that asks for it, is
+intended and not yet in place. Local term names never change, so a
+w3id.org-style redirect can front the host later without breaking any published
+IRI.
+
+**Checking a change.** One command validates the repository: every term is
+labelled, described and layered; `context.jsonld` covers every term; the
+generated files are current; the examples conform to the SHACL shapes.
+
+```bash
+uv run --no-project --with rdflib --with pyshacl python tools/validate.py
+```
+
+It runs on every push and pull request. After editing a `.ttl`, regenerate with
+`tools/gen_schemes.py`, `tools/gen_docs.py` and `tools/gen_profile.py`.
 
 ## Maintained by
 
