@@ -1,0 +1,764 @@
+{
+  "$comment": "Generated from the xeo-*.ttl modules by tools/gen_profile.py — do not edit by hand.",
+  "@context": {
+    "ABOUT": {
+      "@id": "xeo:about",
+      "@type": "@id"
+    },
+    "ABOUT_TOPIC": {
+      "@id": "xeo:aboutTopic",
+      "@type": "@id"
+    },
+    "ACTIVATES": {
+      "@id": "xeo:activates",
+      "@type": "@id"
+    },
+    "ADDRESSABLE_BY": {
+      "@id": "xeo:addressableBy",
+      "@type": "@id"
+    },
+    "ALGORITHM": {
+      "@id": "xeo:algorithm",
+      "@type": "@id"
+    },
+    "APPLIED_PRACTICE": {
+      "@id": "xeo:appliedPractice",
+      "@type": "@id"
+    },
+    "APPLIES_AT_SCOPE": {
+      "@id": "xeo:appliesAtScope",
+      "@type": "@id"
+    },
+    "APPLIES_TO": {
+      "@id": "xeo:appliesTo",
+      "@type": "@id"
+    },
+    "APPLIES_TO_CONCEPT": {
+      "@id": "xeo:appliesToConcept",
+      "@type": "@id"
+    },
+    "ASSESSED_AS": {
+      "@id": "xeo:assessedAs",
+      "@type": "@id"
+    },
+    "ATTRIBUTED_RESPONSE": {
+      "@id": "xeo:attributedResponse",
+      "@type": "@id"
+    },
+    "AT_PRIORITY": {
+      "@id": "xeo:atPriority",
+      "@type": "@id"
+    },
+    "AT_STAGE": {
+      "@id": "xeo:atStage",
+      "@type": "@id"
+    },
+    "AUTHORED_BY": {
+      "@id": "xeo:authoredBy",
+      "@type": "@id"
+    },
+    "AlgorithmRun": "xeo:AlgorithmRun",
+    "AnswerEngine": "xeo:AnswerEngine",
+    "BASIS": {
+      "@id": "xeo:basis",
+      "@type": "@id"
+    },
+    "Brand": "xeo:Brand",
+    "CAPTURED_BY": {
+      "@id": "xeo:capturedBy",
+      "@type": "@id"
+    },
+    "CHILD_OF": {
+      "@id": "xeo:childOf",
+      "@type": "@id"
+    },
+    "CITES": {
+      "@id": "xeo:cites",
+      "@type": "@id"
+    },
+    "CLIENT_OF": {
+      "@id": "xeo:clientOf",
+      "@type": "@id"
+    },
+    "CLOSES_GAP": {
+      "@id": "xeo:closesGap",
+      "@type": "@id"
+    },
+    "COMPETES_WITH": {
+      "@id": "xeo:competesWith",
+      "@type": "@id"
+    },
+    "COMPUTED_BY": {
+      "@id": "xeo:computedBy",
+      "@type": "@id"
+    },
+    "CONFOUNDED_BY": {
+      "@id": "xeo:confoundedBy",
+      "@type": "@id"
+    },
+    "CONSTRAINS": {
+      "@id": "xeo:constrains",
+      "@type": "@id"
+    },
+    "COVERS_TERM": {
+      "@id": "xeo:coversTerm",
+      "@type": "@id"
+    },
+    "COVERS_URL": {
+      "@id": "xeo:coversUrl",
+      "@type": "@id"
+    },
+    "CallToAction": "xeo:CallToAction",
+    "Campaign": "xeo:Campaign",
+    "Capability": "xeo:Capability",
+    "ConversationalAgent": "xeo:ConversationalAgent",
+    "ConversionEvent": "xeo:ConversionEvent",
+    "ConversionPoint": "xeo:ConversionPoint",
+    "Crawl": "xeo:Crawl",
+    "Diagnostic": "xeo:Diagnostic",
+    "DiagnosticRun": "xeo:DiagnosticRun",
+    "Domain": "xeo:Domain",
+    "EFFORT_ESTIMATE": {
+      "@id": "xeo:effortEstimate",
+      "@type": "@id"
+    },
+    "EVALUATED_PRACTICE": {
+      "@id": "xeo:evaluatedPractice",
+      "@type": "@id"
+    },
+    "EVIDENCED_BY": {
+      "@id": "xeo:evidencedBy",
+      "@type": "@id"
+    },
+    "EXECUTION": {
+      "@id": "xeo:execution",
+      "@type": "@id"
+    },
+    "Edge": "rdf:Statement",
+    "Engine": "xeo:Engine",
+    "Entity": "xeo:Entity",
+    "Experiment": "xeo:Experiment",
+    "ExternalEvent": "xeo:ExternalEvent",
+    "FANS_OUT_TO": {
+      "@id": "xeo:fansOutTo",
+      "@type": "@id"
+    },
+    "FEEDBACK_ON": {
+      "@id": "xeo:feedbackOn",
+      "@type": "@id"
+    },
+    "FETCHED": {
+      "@id": "xeo:fetched",
+      "@type": "@id"
+    },
+    "FRAMEWORK_KIND": {
+      "@id": "xeo:frameworkKind",
+      "@type": "@id"
+    },
+    "Feedback": "xeo:Feedback",
+    "Framework": "xeo:Framework",
+    "GAP_TYPE": {
+      "@id": "xeo:gapType",
+      "@type": "@id"
+    },
+    "Gap": "xeo:Gap",
+    "GatedAsset": "xeo:GatedAsset",
+    "GenerativeEngine": "xeo:GenerativeEngine",
+    "HAS_CAMPAIGN": {
+      "@id": "xeo:hasCampaign",
+      "@type": "@id"
+    },
+    "HAS_CANONICAL": {
+      "@id": "xeo:hasCanonical",
+      "@type": "@id"
+    },
+    "HAS_CONTROL": {
+      "@id": "xeo:hasControl",
+      "@type": "@id"
+    },
+    "HAS_CONVERSION_POINT": {
+      "@id": "xeo:hasConversionPoint",
+      "@type": "@id"
+    },
+    "HAS_CRAWL": {
+      "@id": "xeo:hasCrawl",
+      "@type": "@id"
+    },
+    "HAS_OBJECTIVE": {
+      "@id": "xeo:hasObjective",
+      "@type": "@id"
+    },
+    "HAS_PROJECT": {
+      "@id": "xeo:hasProject",
+      "@type": "@id"
+    },
+    "HAS_RESPONSE": {
+      "@id": "xeo:hasResponse",
+      "@type": "@id"
+    },
+    "HAS_RESULT": {
+      "@id": "xeo:hasResult",
+      "@type": "@id"
+    },
+    "HAS_ROLE": {
+      "@id": "xeo:hasRole",
+      "@type": "@id"
+    },
+    "HAS_SNAPSHOT": {
+      "@id": "xeo:hasSnapshot",
+      "@type": "@id"
+    },
+    "HAS_STAGE": {
+      "@id": "xeo:hasStage",
+      "@type": "@id"
+    },
+    "HAS_TARGET": {
+      "@id": "xeo:hasTarget",
+      "@type": "@id"
+    },
+    "HAS_WEBSITE": {
+      "@id": "xeo:hasWebsite",
+      "@type": "@id"
+    },
+    "HOLDS_CAPABILITY": {
+      "@id": "xeo:holdsCapability",
+      "@type": "@id"
+    },
+    "IMPLEMENTED_AS": {
+      "@id": "xeo:implementedAs",
+      "@type": "@id"
+    },
+    "INCLUDES": {
+      "@id": "xeo:includes",
+      "@type": "@id"
+    },
+    "IN_CONTEXT": {
+      "@id": "xeo:inContext",
+      "@type": "@id"
+    },
+    "IN_INTERVENTION": {
+      "@id": "xeo:inIntervention",
+      "@type": "@id"
+    },
+    "IN_SCOPE": {
+      "@id": "xeo:inScope",
+      "@type": "@id"
+    },
+    "IN_TOPIC": {
+      "@id": "xeo:inTopic",
+      "@type": "@id"
+    },
+    "ISSUED_FOR": {
+      "@id": "xeo:issuedFor",
+      "@type": "@id"
+    },
+    "Intervention": "xeo:Intervention",
+    "LEARNED_FROM": {
+      "@id": "xeo:learnedFrom",
+      "@type": "@id"
+    },
+    "LINKS_TO": {
+      "@id": "xeo:linksTo",
+      "@type": "@id"
+    },
+    "LLMResponse": "xeo:LLMResponse",
+    "LeadCaptureForm": "xeo:LeadCaptureForm",
+    "MAGNITUDE_UNIT": {
+      "@id": "xeo:magnitudeUnit",
+      "@type": "@id"
+    },
+    "MEASURES": {
+      "@id": "xeo:measures",
+      "@type": "@id"
+    },
+    "MENTIONS": {
+      "@id": "xeo:mentions",
+      "@type": "@id"
+    },
+    "MetricTarget": "xeo:MetricTarget",
+    "NEXT_STAGE": {
+      "@id": "xeo:nextStage",
+      "@type": "@id"
+    },
+    "ON_DIMENSION": {
+      "@id": "xeo:onDimension",
+      "@type": "@id"
+    },
+    "ON_DOMAIN": {
+      "@id": "xeo:onDomain",
+      "@type": "@id"
+    },
+    "ON_ENGINE": {
+      "@id": "xeo:onEngine",
+      "@type": "@id"
+    },
+    "ORGANIZATION_KIND": {
+      "@id": "xeo:organizationKind",
+      "@type": "@id"
+    },
+    "OWNS": {
+      "@id": "xeo:owns",
+      "@type": "@id"
+    },
+    "Objective": "xeo:Objective",
+    "Organization": "xeo:Organization",
+    "Outcome": "xeo:Outcome",
+    "PART_OF": {
+      "@id": "xeo:partOf",
+      "@type": "@id"
+    },
+    "PRECEDENT_FOR": {
+      "@id": "xeo:precedentFor",
+      "@type": "@id"
+    },
+    "PRODUCED_OUTCOME": {
+      "@id": "xeo:producedOutcome",
+      "@type": "@id"
+    },
+    "Playbook": "xeo:Playbook",
+    "Practice": "xeo:Practice",
+    "Project": "xeo:Project",
+    "Prompt": "xeo:Prompt",
+    "RANKS_FOR": {
+      "@id": "xeo:ranksFor",
+      "@type": "@id"
+    },
+    "RECOMMENDS": {
+      "@id": "xeo:recommends",
+      "@type": "@id"
+    },
+    "REDIRECTS_TO": {
+      "@id": "xeo:redirectsTo",
+      "@type": "@id"
+    },
+    "RELATED_TERM": {
+      "@id": "xeo:relatedTerm",
+      "@type": "@id"
+    },
+    "RELATIVE_TO": {
+      "@id": "xeo:relativeTo",
+      "@type": "@id"
+    },
+    "REQUIRES_CAPABILITY": {
+      "@id": "xeo:requiresCapability",
+      "@type": "@id"
+    },
+    "REVEALED_IN": {
+      "@id": "xeo:revealedIn",
+      "@type": "@id"
+    },
+    "REVEALS": {
+      "@id": "xeo:reveals",
+      "@type": "@id"
+    },
+    "RUN_OF": {
+      "@id": "xeo:runOf",
+      "@type": "@id"
+    },
+    "Recommendation": "xeo:Recommendation",
+    "SCOPED_TO": {
+      "@id": "xeo:scopedTo",
+      "@type": "@id"
+    },
+    "SIMILAR_TO": {
+      "@id": "xeo:similarTo",
+      "@type": "@id"
+    },
+    "SUGGESTS": {
+      "@id": "xeo:suggests",
+      "@type": "@id"
+    },
+    "SUPERSEDES": {
+      "@id": "xeo:supersedes",
+      "@type": "@id"
+    },
+    "SUPPORTED_BY": {
+      "@id": "xeo:supportedBy",
+      "@type": "@id"
+    },
+    "SearchEngine": "xeo:SearchEngine",
+    "SearchIntent": "xeo:SearchIntent",
+    "SearchPerformanceFact": "xeo:SearchPerformanceFact",
+    "SerpSnapshot": "xeo:SerpSnapshot",
+    "Stage": "xeo:Stage",
+    "TARGETS_INTENT": {
+      "@id": "xeo:targetsIntent",
+      "@type": "@id"
+    },
+    "TESTS": {
+      "@id": "xeo:tests",
+      "@type": "@id"
+    },
+    "TRACKS_PROMPT": {
+      "@id": "xeo:tracksPrompt",
+      "@type": "@id"
+    },
+    "TREATS": {
+      "@id": "xeo:treats",
+      "@type": "@id"
+    },
+    "Tactic": "xeo:Tactic",
+    "TacticAssessment": "xeo:TacticAssessment",
+    "Term": "xeo:Term",
+    "Topic": "xeo:Topic",
+    "URL": "xeo:URL",
+    "VERDICT": {
+      "@id": "xeo:verdict",
+      "@type": "@id"
+    },
+    "VISIBILITY_FOR": {
+      "@id": "xeo:visibilityFor",
+      "@type": "@id"
+    },
+    "Website": "xeo:Website",
+    "address": "xeo:address",
+    "algorithm": {
+      "@context": {
+        "@vocab": "https://xeoontology.org/schemes#algorithm-"
+      },
+      "@id": "xeo:algorithm",
+      "@type": "@vocab"
+    },
+    "anchorText": "xeo:anchorText",
+    "appliesAtScope": {
+      "@id": "xeo:appliesAtScope",
+      "@type": "@id"
+    },
+    "appliesToConcept": {
+      "@id": "xeo:appliesToConcept",
+      "@type": "@id"
+    },
+    "approved": {
+      "@id": "xeo:approved",
+      "@type": "xsd:boolean"
+    },
+    "assignedAt": {
+      "@id": "xeo:assignedAt",
+      "@type": "xsd:dateTime"
+    },
+    "atPriority": {
+      "@context": {
+        "@vocab": "https://xeoontology.org/schemes#priority-"
+      },
+      "@id": "xeo:atPriority",
+      "@type": "@vocab"
+    },
+    "avgPosition": {
+      "@id": "xeo:avgPosition",
+      "@type": "xsd:decimal"
+    },
+    "baseline": {
+      "@id": "xeo:baseline",
+      "@type": "xsd:decimal"
+    },
+    "baselineCapturedAt": {
+      "@id": "xeo:baselineCapturedAt",
+      "@type": "xsd:dateTime"
+    },
+    "basis": {
+      "@context": {
+        "@vocab": "https://xeoontology.org/schemes#similarityBasis-"
+      },
+      "@id": "xeo:basis",
+      "@type": "@vocab"
+    },
+    "betweenness": {
+      "@id": "xeo:betweenness",
+      "@type": "xsd:decimal"
+    },
+    "cadence": "xeo:cadence",
+    "capturedAt": {
+      "@id": "xeo:capturedAt",
+      "@type": "xsd:dateTime"
+    },
+    "citationRank": {
+      "@id": "xeo:citationRank",
+      "@type": "xsd:integer"
+    },
+    "citationRate": {
+      "@id": "xeo:citationRate",
+      "@type": "xsd:decimal"
+    },
+    "clicks": {
+      "@id": "xeo:clicks",
+      "@type": "xsd:integer"
+    },
+    "communityId": {
+      "@id": "xeo:communityId",
+      "@type": "xsd:integer"
+    },
+    "concludedAt": {
+      "@id": "xeo:concludedAt",
+      "@type": "xsd:dateTime"
+    },
+    "confidence": {
+      "@id": "xeo:confidence",
+      "@type": "xsd:decimal"
+    },
+    "contentHash": "xeo:contentHash",
+    "contentType": "xeo:contentType",
+    "crawlDepth": {
+      "@id": "xeo:crawlDepth",
+      "@type": "xsd:integer"
+    },
+    "crawler": "xeo:crawler",
+    "crmRecordRef": "xeo:crmRecordRef",
+    "ctr": {
+      "@id": "xeo:ctr",
+      "@type": "xsd:decimal"
+    },
+    "datasetUri": "xeo:datasetUri",
+    "degree": {
+      "@id": "xeo:degree",
+      "@type": "xsd:integer"
+    },
+    "deletedAt": {
+      "@id": "xeo:deletedAt",
+      "@type": "xsd:dateTime"
+    },
+    "device": "xeo:device",
+    "direction": "xeo:direction",
+    "durationDays": {
+      "@id": "xeo:durationDays",
+      "@type": "xsd:integer"
+    },
+    "edge": {
+      "@id": "rdf:predicate",
+      "@type": "@vocab"
+    },
+    "effortEstimate": {
+      "@context": {
+        "@vocab": "https://xeoontology.org/schemes#effort-"
+      },
+      "@id": "xeo:effortEstimate",
+      "@type": "@vocab"
+    },
+    "embeddedAt": {
+      "@id": "xeo:embeddedAt",
+      "@type": "xsd:dateTime"
+    },
+    "embeddingDim": {
+      "@id": "xeo:embeddingDim",
+      "@type": "xsd:integer"
+    },
+    "embeddingModel": "xeo:embeddingModel",
+    "embeddingRef": "xeo:embeddingRef",
+    "end": {
+      "@id": "rdf:object",
+      "@type": "@id"
+    },
+    "endedAt": {
+      "@id": "xeo:endedAt",
+      "@type": "xsd:dateTime"
+    },
+    "engagementType": "xeo:engagementType",
+    "entityRef": "xeo:entityRef",
+    "execution": {
+      "@context": {
+        "@vocab": "https://xeoontology.org/schemes#execution-"
+      },
+      "@id": "xeo:execution",
+      "@type": "@vocab"
+    },
+    "fetchedAt": {
+      "@id": "xeo:fetchedAt",
+      "@type": "xsd:dateTime"
+    },
+    "fired": {
+      "@id": "xeo:fired",
+      "@type": "xsd:boolean"
+    },
+    "firstSeenAt": {
+      "@id": "xeo:firstSeenAt",
+      "@type": "xsd:dateTime"
+    },
+    "frameworkKind": {
+      "@context": {
+        "@vocab": "https://xeoontology.org/schemes#frameworkKind-"
+      },
+      "@id": "xeo:frameworkKind",
+      "@type": "@vocab"
+    },
+    "gapType": {
+      "@context": {
+        "@vocab": "https://xeoontology.org/schemes#gapType-"
+      },
+      "@id": "xeo:gapType",
+      "@type": "@vocab"
+    },
+    "h1": "xeo:h1",
+    "halfLife": {
+      "@id": "xeo:halfLife",
+      "@type": "xsd:duration"
+    },
+    "hasRole": {
+      "@id": "xeo:hasRole",
+      "@type": "@id"
+    },
+    "id": "@id",
+    "impressions": {
+      "@id": "xeo:impressions",
+      "@type": "xsd:integer"
+    },
+    "indexable": {
+      "@id": "xeo:indexable",
+      "@type": "xsd:boolean"
+    },
+    "interventionQuota": {
+      "@id": "xeo:interventionQuota",
+      "@type": "xsd:integer"
+    },
+    "isPrimary": {
+      "@id": "xeo:isPrimary",
+      "@type": "xsd:boolean"
+    },
+    "lastSeenAt": {
+      "@id": "xeo:lastSeenAt",
+      "@type": "xsd:dateTime"
+    },
+    "lastSeenCrawlId": "xeo:lastSeenCrawlId",
+    "lift": {
+      "@id": "xeo:lift",
+      "@type": "xsd:decimal"
+    },
+    "linkPosition": "xeo:linkPosition",
+    "locale": "xeo:locale",
+    "magnitude": {
+      "@id": "xeo:magnitude",
+      "@type": "xsd:decimal"
+    },
+    "magnitudeUnit": {
+      "@context": {
+        "@vocab": "https://xeoontology.org/schemes#magnitudeUnit-"
+      },
+      "@id": "xeo:magnitudeUnit",
+      "@type": "@vocab"
+    },
+    "mentionRank": {
+      "@id": "xeo:mentionRank",
+      "@type": "xsd:integer"
+    },
+    "mentionRate": {
+      "@id": "xeo:mentionRate",
+      "@type": "xsd:decimal"
+    },
+    "metaDescription": "xeo:metaDescription",
+    "method": "xeo:method",
+    "metric": "xeo:metric",
+    "model": "xeo:model",
+    "modelVersion": "xeo:modelVersion",
+    "name": "xeo:name",
+    "occurredAt": {
+      "@id": "xeo:occurredAt",
+      "@type": "xsd:dateTime"
+    },
+    "onDimension": {
+      "@id": "xeo:onDimension",
+      "@type": "@id"
+    },
+    "organizationKind": {
+      "@context": {
+        "@vocab": "https://xeoontology.org/schemes#organizationKind-"
+      },
+      "@id": "xeo:organizationKind",
+      "@type": "@vocab"
+    },
+    "origin": "xeo:origin",
+    "pageRank": {
+      "@id": "xeo:pageRank",
+      "@type": "xsd:decimal"
+    },
+    "parameters": "xeo:parameters",
+    "periodEnd": {
+      "@id": "xeo:periodEnd",
+      "@type": "xsd:date"
+    },
+    "periodStart": {
+      "@id": "xeo:periodStart",
+      "@type": "xsd:date"
+    },
+    "position": {
+      "@id": "xeo:position",
+      "@type": "xsd:integer"
+    },
+    "practiceKind": "xeo:practiceKind",
+    "practiceOutcome": "xeo:practiceOutcome",
+    "projection": "xeo:projection",
+    "ranAt": {
+      "@id": "xeo:ranAt",
+      "@type": "xsd:dateTime"
+    },
+    "rationale": "xeo:rationale",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rel": "xeo:rel",
+    "responses": {
+      "@id": "xeo:responses",
+      "@type": "xsd:integer"
+    },
+    "result": "xeo:result",
+    "resultReason": "xeo:resultReason",
+    "resultType": "xeo:resultType",
+    "resultsWindowDays": {
+      "@id": "xeo:resultsWindowDays",
+      "@type": "xsd:integer"
+    },
+    "robotsMeta": "xeo:robotsMeta",
+    "score": {
+      "@id": "xeo:score",
+      "@type": "xsd:decimal"
+    },
+    "sentiment": "xeo:sentiment",
+    "similarity": {
+      "@id": "xeo:similarity",
+      "@type": "xsd:decimal"
+    },
+    "source": "xeo:source",
+    "stageOrder": {
+      "@id": "xeo:stageOrder",
+      "@type": "xsd:integer"
+    },
+    "start": {
+      "@id": "rdf:subject",
+      "@type": "@id"
+    },
+    "startedAt": {
+      "@id": "xeo:startedAt",
+      "@type": "xsd:dateTime"
+    },
+    "statement": "xeo:statement",
+    "status": "xeo:status",
+    "statusCode": {
+      "@id": "xeo:statusCode",
+      "@type": "xsd:integer"
+    },
+    "syncedAt": {
+      "@id": "xeo:syncedAt",
+      "@type": "xsd:dateTime"
+    },
+    "targetKind": "xeo:targetKind",
+    "targetValue": {
+      "@id": "xeo:targetValue",
+      "@type": "xsd:decimal"
+    },
+    "test": "xeo:test",
+    "text": "xeo:text",
+    "title": "xeo:title",
+    "type": "@type",
+    "verdict": {
+      "@id": "xeo:verdict",
+      "@type": "@id"
+    },
+    "webSearchEnabled": {
+      "@id": "xeo:webSearchEnabled",
+      "@type": "xsd:boolean"
+    },
+    "websiteId": "xeo:websiteId",
+    "wordCount": {
+      "@id": "xeo:wordCount",
+      "@type": "xsd:integer"
+    },
+    "xeo": "https://xeoontology.org/xeo#",
+    "xeos": "https://xeoontology.org/schemes#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  }
+}
