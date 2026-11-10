@@ -2,8 +2,95 @@
   "$comment": "Generated from xeo-schemes.ttl by tools/gen_schemes.py — do not edit by hand.",
   "namespace": "https://xeoontology.org/schemes#",
   "ontology": "https://xeoontology.org/xeo#",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "schemes": {
+    "algorithm": {
+      "iri": "https://xeoontology.org/schemes#algorithm",
+      "label": "Algorithms",
+      "fillsSlot": "xeo:algorithm",
+      "description": "The methods an AlgorithmRun can execute. Each concept names the published algorithm, not a library's procedure: the implementing library and its version are parameters of the run. Three families: centrality (pagerank, betweenness, degree), community detection (louvain, leiden, label_propagation), and similarity or embedding (node_similarity, fastrp, knn, cosine), plus shortest_path. Extend it with whatever else you run.",
+      "source": "xeo-graph-kit docs/learn/GRAPH-MODEL.md §5 · the published algorithms named in each definition",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "betweenness",
+          "iri": "https://xeoontology.org/schemes#algorithm-betweenness",
+          "label": "Betweenness centrality",
+          "definition": "Share of shortest paths between other nodes that pass through a node (Freeman, 1977)",
+          "note": null
+        },
+        {
+          "code": "cosine",
+          "iri": "https://xeoontology.org/schemes#algorithm-cosine",
+          "label": "Cosine similarity",
+          "definition": "Cosine of the angle between two vectors",
+          "note": null
+        },
+        {
+          "code": "degree",
+          "iri": "https://xeoontology.org/schemes#algorithm-degree",
+          "label": "Degree centrality",
+          "definition": "Count of edges touching a node, in a stated orientation",
+          "note": null
+        },
+        {
+          "code": "fastrp",
+          "iri": "https://xeoontology.org/schemes#algorithm-fastrp",
+          "label": "FastRP",
+          "definition": "Node embeddings by fast random projection of the adjacency structure (Chen et al., 2019)",
+          "note": null
+        },
+        {
+          "code": "knn",
+          "iri": "https://xeoontology.org/schemes#algorithm-knn",
+          "label": "k-nearest neighbours",
+          "definition": "For each node, the k most similar nodes on a stated property or embedding",
+          "note": null
+        },
+        {
+          "code": "label_propagation",
+          "iri": "https://xeoontology.org/schemes#algorithm-label_propagation",
+          "label": "Label propagation",
+          "definition": "Community detection by iterated neighbour-majority labelling (Raghavan et al., 2007)",
+          "note": null
+        },
+        {
+          "code": "leiden",
+          "iri": "https://xeoontology.org/schemes#algorithm-leiden",
+          "label": "Leiden",
+          "definition": "Community detection that refines Louvain to guarantee connected communities (Traag et al., 2019)",
+          "note": null
+        },
+        {
+          "code": "louvain",
+          "iri": "https://xeoontology.org/schemes#algorithm-louvain",
+          "label": "Louvain",
+          "definition": "Community detection by greedy modularity optimisation (Blondel et al., 2008)",
+          "note": null
+        },
+        {
+          "code": "node_similarity",
+          "iri": "https://xeoontology.org/schemes#algorithm-node_similarity",
+          "label": "Node similarity",
+          "definition": "Pairwise similarity from shared neighbours (Jaccard or overlap)",
+          "note": null
+        },
+        {
+          "code": "pagerank",
+          "iri": "https://xeoontology.org/schemes#algorithm-pagerank",
+          "label": "PageRank",
+          "definition": "Stationary distribution of a damped random walk over the edges (Brin and Page, 1998)",
+          "note": null
+        },
+        {
+          "code": "shortest_path",
+          "iri": "https://xeoontology.org/schemes#algorithm-shortest_path",
+          "label": "Shortest path",
+          "definition": "Fewest-hop or least-weight path between two nodes (Dijkstra, 1959)",
+          "note": null
+        }
+      ]
+    },
     "cadence": {
       "iri": "https://xeoontology.org/schemes#cadence",
       "label": "Retainer cadences",
@@ -24,6 +111,37 @@
           "iri": "https://xeoontology.org/schemes#cadence-quarterly",
           "label": "Quarterly",
           "definition": "Quota resets each quarter",
+          "note": null
+        }
+      ]
+    },
+    "device": {
+      "iri": "https://xeoontology.org/schemes#device",
+      "label": "Devices",
+      "fillsSlot": "xeo:device",
+      "description": "The device class a results page was captured for. The same three classes search performance data is segmented by, so a snapshot and a rollup can be compared on like terms.",
+      "source": "GSC Search Analytics API (device dimension: DESKTOP, MOBILE, TABLET), lower-cased · xeo-graph-kit docs/learn/GRAPH-MODEL.md §2",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "desktop",
+          "iri": "https://xeoontology.org/schemes#device-desktop",
+          "label": "Desktop",
+          "definition": "A desktop or laptop browser",
+          "note": null
+        },
+        {
+          "code": "mobile",
+          "iri": "https://xeoontology.org/schemes#device-mobile",
+          "label": "Mobile",
+          "definition": "A phone",
+          "note": null
+        },
+        {
+          "code": "tablet",
+          "iri": "https://xeoontology.org/schemes#device-tablet",
+          "label": "Tablet",
+          "definition": "A tablet",
           "note": null
         }
       ]
@@ -200,6 +318,75 @@
           "iri": "https://xeoontology.org/schemes#experimentStatus-unmeasurable",
           "label": "Not measurable",
           "definition": "No usable baseline or observation stream",
+          "note": null
+        }
+      ]
+    },
+    "feedbackVerdict": {
+      "iri": "https://xeoontology.org/schemes#feedbackVerdict",
+      "label": "Feedback verdicts",
+      "fillsSlot": "xeo:verdict",
+      "description": "An operator's judgment of one machine claim, carried on a Feedback. Fills the same slot as gapVerdict for a different subject: on a Gap the verdict says what to do about the deficit, on a Feedback it says whether the claim was right.",
+      "source": "if-control-center packages/contracts/src/gap.ts (FEEDBACK_VERDICTS, FEEDBACK_VERDICT_LABELS, FEEDBACK_VERDICT_HINTS)",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "accepted",
+          "iri": "https://xeoontology.org/schemes#feedbackVerdict-accepted",
+          "label": "Agree",
+          "definition": "The finding is right as stated",
+          "note": null
+        },
+        {
+          "code": "needs_work",
+          "iri": "https://xeoontology.org/schemes#feedbackVerdict-needs_work",
+          "label": "Needs work",
+          "definition": "Partly right — the detail is off",
+          "note": null
+        },
+        {
+          "code": "rejected",
+          "iri": "https://xeoontology.org/schemes#feedbackVerdict-rejected",
+          "label": "Wrong",
+          "definition": "The finding is wrong for this client",
+          "note": null
+        }
+      ]
+    },
+    "frameworkKind": {
+      "iri": "https://xeoontology.org/schemes#frameworkKind",
+      "label": "Framework kinds",
+      "fillsSlot": "xeo:frameworkKind",
+      "description": "What shape of method a Framework is, which decides how its Stages are read.",
+      "source": "xeo-graph-kit docs/learn/GRAPH-MODEL.md §6",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "checklist",
+          "iri": "https://xeoontology.org/schemes#frameworkKind-checklist",
+          "label": "Checklist",
+          "definition": "Stages are items to complete; order is a convenience, not a dependency",
+          "note": null
+        },
+        {
+          "code": "diagnostic",
+          "iri": "https://xeoontology.org/schemes#frameworkKind-diagnostic",
+          "label": "Diagnostic",
+          "definition": "Ordered stages, each with a test; a subject is placed at the first stage it fails",
+          "note": null
+        },
+        {
+          "code": "playbook",
+          "iri": "https://xeoontology.org/schemes#frameworkKind-playbook",
+          "label": "Playbook",
+          "definition": "Stages group the diagnostics, tactics and practices of one discipline",
+          "note": null
+        },
+        {
+          "code": "tactic_matrix",
+          "iri": "https://xeoontology.org/schemes#frameworkKind-tactic_matrix",
+          "label": "Tactic matrix",
+          "definition": "Stages are the cells of a grid that tactics are sorted into",
           "note": null
         }
       ]
@@ -423,6 +610,58 @@
         }
       ]
     },
+    "linkPosition": {
+      "iri": "https://xeoontology.org/schemes#linkPosition",
+      "label": "Link positions",
+      "fillsSlot": "xeo:linkPosition",
+      "description": "Where on the source page a hyperlink sits. The slot means the region of the page the link was found in; any one crawler's column is a source of that, mapped onto these codes, and is not the meaning. The split that matters most is content against everything else: a link in the main content was placed by an editor, a link in navigation, header, footer or sidebar comes with the template and appears on every page that uses it.",
+      "source": "Crawler link-position classification (one source: the 'Link Position' column of a Screaming Frog SEO Spider link export) · xeo-graph-kit docs/learn/GRAPH-MODEL.md §1",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "content",
+          "iri": "https://xeoontology.org/schemes#linkPosition-content",
+          "label": "Content",
+          "definition": "In the main content of the page",
+          "note": null
+        },
+        {
+          "code": "footer",
+          "iri": "https://xeoontology.org/schemes#linkPosition-footer",
+          "label": "Footer",
+          "definition": "In the page footer",
+          "note": null
+        },
+        {
+          "code": "header",
+          "iri": "https://xeoontology.org/schemes#linkPosition-header",
+          "label": "Header",
+          "definition": "In the page header, outside the main navigation",
+          "note": null
+        },
+        {
+          "code": "navigation",
+          "iri": "https://xeoontology.org/schemes#linkPosition-navigation",
+          "label": "Navigation",
+          "definition": "In a navigation menu",
+          "note": null
+        },
+        {
+          "code": "other",
+          "iri": "https://xeoontology.org/schemes#linkPosition-other",
+          "label": "Other",
+          "definition": "Somewhere else, or the crawler could not tell",
+          "note": null
+        },
+        {
+          "code": "sidebar",
+          "iri": "https://xeoontology.org/schemes#linkPosition-sidebar",
+          "label": "Sidebar",
+          "definition": "In a sidebar or aside",
+          "note": null
+        }
+      ]
+    },
     "magnitudeUnit": {
       "iri": "https://xeoontology.org/schemes#magnitudeUnit",
       "label": "Magnitude units",
@@ -498,6 +737,13 @@
       "ordered": false,
       "concepts": [
         {
+          "code": "citation_rate",
+          "iri": "https://xeoontology.org/schemes#objectiveMetric-citation_rate",
+          "label": "Citation rate",
+          "definition": "Share of captured responses in the window that cite the brand's owned URLs",
+          "note": "direction up · unit rate · source visibilityFor rollup (xeo:citationRate)"
+        },
+        {
           "code": "clicks",
           "iri": "https://xeoontology.org/schemes#objectiveMetric-clicks",
           "label": "Clicks",
@@ -526,6 +772,13 @@
           "note": "direction up · unit count · source GSC"
         },
         {
+          "code": "mention_rate",
+          "iri": "https://xeoontology.org/schemes#objectiveMetric-mention_rate",
+          "label": "Mention rate",
+          "definition": "Share of captured responses in the window that mention the brand",
+          "note": "direction up · unit rate · source visibilityFor rollup (xeo:mentionRate)"
+        },
+        {
           "code": "position",
           "iri": "https://xeoontology.org/schemes#objectiveMetric-position",
           "label": "Avg position",
@@ -538,6 +791,37 @@
           "label": "Rank",
           "definition": "Absolute rank from a rank tracker",
           "note": "direction down · unit rank · source DataForSEO"
+        }
+      ]
+    },
+    "organizationKind": {
+      "iri": "https://xeoontology.org/schemes#organizationKind",
+      "label": "Organization kinds",
+      "fillsSlot": "xeo:organizationKind",
+      "description": "What kind of party an Organization is.",
+      "source": "xeo-graph-kit docs/learn/GRAPH-MODEL.md §6",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "agency",
+          "iri": "https://xeoontology.org/schemes#organizationKind-agency",
+          "label": "Agency",
+          "definition": "Does the work for clients",
+          "note": null
+        },
+        {
+          "code": "brand",
+          "iri": "https://xeoontology.org/schemes#organizationKind-brand",
+          "label": "Brand",
+          "definition": "A company whose sites and brands are worked on, by an agency or by itself",
+          "note": null
+        },
+        {
+          "code": "in_house",
+          "iri": "https://xeoontology.org/schemes#organizationKind-in_house",
+          "label": "In-house team",
+          "definition": "A team inside a company, working on that company's own sites",
+          "note": null
         }
       ]
     },
@@ -827,6 +1111,183 @@
           "iri": "https://xeoontology.org/schemes#recommendationStatus-completed",
           "label": "Done",
           "definition": "Shipped; measuring until its results window closes",
+          "note": null
+        }
+      ]
+    },
+    "sentiment": {
+      "iri": "https://xeoontology.org/schemes#sentiment",
+      "label": "Mention sentiment",
+      "fillsSlot": "xeo:sentiment",
+      "description": "The polarity with which a response speaks of a brand. A small reference set, deliberately coarse: a finer scale or a numeric score is a different derivation with its own method. mixed is not the midpoint of the scale; it says the response is both for and against.",
+      "source": "xeo-graph-kit docs/learn/GRAPH-MODEL.md §3 · the four-way polarity common to sentiment classifiers",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "mixed",
+          "iri": "https://xeoontology.org/schemes#sentiment-mixed",
+          "label": "Mixed",
+          "definition": "The response is both favourable and unfavourable",
+          "note": null
+        },
+        {
+          "code": "negative",
+          "iri": "https://xeoontology.org/schemes#sentiment-negative",
+          "label": "Negative",
+          "definition": "The response speaks badly of the brand",
+          "note": null
+        },
+        {
+          "code": "neutral",
+          "iri": "https://xeoontology.org/schemes#sentiment-neutral",
+          "label": "Neutral",
+          "definition": "The response names the brand without judging it",
+          "note": null
+        },
+        {
+          "code": "positive",
+          "iri": "https://xeoontology.org/schemes#sentiment-positive",
+          "label": "Positive",
+          "definition": "The response speaks well of the brand",
+          "note": null
+        }
+      ]
+    },
+    "serpResultType": {
+      "iri": "https://xeoontology.org/schemes#serpResultType",
+      "label": "SERP result types",
+      "fillsSlot": "xeo:resultType",
+      "description": "The kinds of result a results page can carry, as stored on hasResult and relatedTerm. The first is the classic ranked listing; the rest are the features that sit around or above it. Two of them (people_also_ask, related_search) are suggested queries and so ride on relatedTerm, pointing at a Term; the others point at a URL. Engines add and retire features, and each provider names them its own way: map a provider's value to one of these, or extend the scheme. A value here says what kind of block the result was shown in, never how prominent it was.",
+      "source": "xeo-graph-kit docs/learn/GRAPH-MODEL.md §2 (the kit's SERP loader) · result kinds reported in common by SERP data providers",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "ai_overview",
+          "iri": "https://xeoontology.org/schemes#serpResultType-ai_overview",
+          "label": "AI overview",
+          "definition": "A generated answer shown on the results page; its cited pages are the results",
+          "note": null
+        },
+        {
+          "code": "featured_snippet",
+          "iri": "https://xeoontology.org/schemes#serpResultType-featured_snippet",
+          "label": "Featured snippet",
+          "definition": "An extracted answer shown above the organic results, credited to one page",
+          "note": null
+        },
+        {
+          "code": "image",
+          "iri": "https://xeoontology.org/schemes#serpResultType-image",
+          "label": "Image",
+          "definition": "A result shown in an image block",
+          "note": null
+        },
+        {
+          "code": "knowledge_panel",
+          "iri": "https://xeoontology.org/schemes#serpResultType-knowledge_panel",
+          "label": "Knowledge panel",
+          "definition": "A panel about one entity, drawn from the engine's knowledge base",
+          "note": null
+        },
+        {
+          "code": "local_pack",
+          "iri": "https://xeoontology.org/schemes#serpResultType-local_pack",
+          "label": "Local pack",
+          "definition": "A map-backed block of local business listings",
+          "note": null
+        },
+        {
+          "code": "organic",
+          "iri": "https://xeoontology.org/schemes#serpResultType-organic",
+          "label": "Organic result",
+          "definition": "A standard ranked web result",
+          "note": null
+        },
+        {
+          "code": "paid",
+          "iri": "https://xeoontology.org/schemes#serpResultType-paid",
+          "label": "Paid",
+          "definition": "An advertisement",
+          "note": null
+        },
+        {
+          "code": "people_also_ask",
+          "iri": "https://xeoontology.org/schemes#serpResultType-people_also_ask",
+          "label": "People also ask",
+          "definition": "A related question shown in an expandable question box",
+          "note": null
+        },
+        {
+          "code": "related_search",
+          "iri": "https://xeoontology.org/schemes#serpResultType-related_search",
+          "label": "Related search",
+          "definition": "A query the engine suggests alongside the results",
+          "note": null
+        },
+        {
+          "code": "shopping",
+          "iri": "https://xeoontology.org/schemes#serpResultType-shopping",
+          "label": "Shopping",
+          "definition": "A product listing shown in a shopping block",
+          "note": null
+        },
+        {
+          "code": "top_stories",
+          "iri": "https://xeoontology.org/schemes#serpResultType-top_stories",
+          "label": "Top stories",
+          "definition": "A result shown in a news block",
+          "note": null
+        },
+        {
+          "code": "video",
+          "iri": "https://xeoontology.org/schemes#serpResultType-video",
+          "label": "Video",
+          "definition": "A result shown in a video block or carousel",
+          "note": null
+        }
+      ]
+    },
+    "similarityBasis": {
+      "iri": "https://xeoontology.org/schemes#similarityBasis",
+      "label": "Similarity bases",
+      "fillsSlot": "xeo:basis",
+      "description": "What was compared to produce a similarity. Carried on every similarTo edge, because two pages can be near on one basis and far on another, and a similarity that does not name its basis cannot be read. Similarities on different bases are not comparable.",
+      "source": "xeo-graph-kit docs/learn/GRAPH-MODEL.md §4",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "lexical",
+          "iri": "https://xeoontology.org/schemes#similarityBasis-lexical",
+          "label": "Lexical",
+          "definition": "Overlap in surface strings: tokens, n-grams, edit distance",
+          "note": null
+        },
+        {
+          "code": "links",
+          "iri": "https://xeoontology.org/schemes#similarityBasis-links",
+          "label": "Links",
+          "definition": "Overlap in what the two link to or are linked from",
+          "note": null
+        },
+        {
+          "code": "shared_terms",
+          "iri": "https://xeoontology.org/schemes#similarityBasis-shared_terms",
+          "label": "Shared terms",
+          "definition": "Overlap in the Terms the two rank for or belong to",
+          "note": null
+        },
+        {
+          "code": "structural_embedding",
+          "iri": "https://xeoontology.org/schemes#similarityBasis-structural_embedding",
+          "label": "Structural embedding",
+          "definition": "Distance between node embeddings computed from graph structure",
+          "note": null
+        },
+        {
+          "code": "text_embedding",
+          "iri": "https://xeoontology.org/schemes#similarityBasis-text_embedding",
+          "label": "Text embedding",
+          "definition": "Distance between embeddings of the two texts",
           "note": null
         }
       ]
