@@ -234,12 +234,12 @@ xeo:ctr a owl:DatatypeProperty ;
 xeo:periodStart a owl:DatatypeProperty ;
     rdfs:range xsd:date ;
     xeo:epistemicLayer "derivation" ;
-    dct:description "Inclusive first day of a rollup window. Carried on ranksFor and visibilityFor; never pool across windows silently." .
+    dct:description "Inclusive first day of a rollup window. Carried on ranksFor and visibilityFor, and on a MetricReading; never pool across windows silently." .
 
 xeo:periodEnd a owl:DatatypeProperty ;
     rdfs:range xsd:date ;
     xeo:epistemicLayer "derivation" ;
-    dct:description "Inclusive last day of a rollup window. Carried on ranksFor and visibilityFor." .
+    dct:description "Inclusive last day of a rollup window. Carried on ranksFor and visibilityFor, and on a MetricReading." .
 
 xeo:fetchedAt a owl:DatatypeProperty ;
     rdfs:range xsd:dateTime ;
@@ -528,3 +528,14 @@ xeo:fetchedAt rdfs:label "fetched at" .
 xeo:firstSeenAt rdfs:label "first seen at" .
 xeo:lastSeenAt rdfs:label "last seen at" .
 xeo:assignedAt rdfs:label "assigned at" .
+
+# --- v0.6.0 (metrics and CRM pipeline, 2026-11-10) --------------------------------
+# Appended at the foot, so no line above moves. One annotation property, for the
+# two research reports that landed after the kit sync. No core class or property
+# is added: the metric terms are in xeo-metrics.ttl and the pipeline terms in
+# xeo-engagement.ttl. periodStart and periodEnd (above) are reused by
+# xeo:MetricReading with the meaning they already have, an inclusive first and
+# last day; their descriptions gained that case in place.
+
+xeo:termStatus a owl:AnnotationProperty ;
+    rdfs:comment "Whether a term is part of the core every implementation is expected to support, or of the extension set: 'core' or 'extension'. Absent means core, so every term published before this annotation existed is core without being touched. An extension term is declared, stable and usable; it is marked because only some of the systems XEO maps support the idea, and a consumer may ignore it. Also carried by a concept in a reference scheme, with the same reading. Says nothing about deprecation, which is owl:deprecated." .

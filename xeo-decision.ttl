@@ -77,7 +77,7 @@ xeo:Experiment a owl:Class ;
 xeo:Outcome a owl:Class ;
     rdfs:label "Outcome" ;
     xeo:epistemicLayer "observation" ;
-    dct:description "The measured result an experiment produced (lift, delta, significance). The measurement is an observation; any claim that the tactic CAUSED it is an interpretation, carried on the Recommendation, not asserted here." .
+    dct:description "The measured result an experiment produced: the comparison of a resultReading against a baselineReading of one Metric over one scope, recorded as absoluteChange, relativeChange and result. The measurement is an observation; any claim that the tactic CAUSED it is an interpretation, carried on the Recommendation, not asserted here." .
 
 xeo:Recommendation a owl:Class ;
     rdfs:label "Recommendation" ;
@@ -183,7 +183,7 @@ xeo:approved a owl:DatatypeProperty ;
 xeo:lift a owl:DatatypeProperty ;
     rdfs:domain xeo:Outcome ; rdfs:range xsd:decimal ;
     xeo:epistemicLayer "observation" ;
-    dct:description "The measured change the experiment recorded on its target metric." .
+    dct:description "The measured change the experiment recorded on its target metric. Deprecated in 0.6.0, as advice: one number that may be points or a percentage, with nothing to say which. Write absoluteChange and relativeChange. Still valid where stored." .
 
 xeo:concludedAt a owl:DatatypeProperty ;
     rdfs:domain xeo:Experiment ; rdfs:range xsd:dateTime ;
@@ -223,7 +223,7 @@ xeo:magnitude a owl:DatatypeProperty ;
 xeo:magnitudeUnit a owl:ObjectProperty ;
     rdfs:domain xeo:Gap ; rdfs:range skos:Concept ;
     xeo:epistemicLayer "derivation" ;
-    dct:description "The unit magnitude is read in, as a slotted-in concept (impressions, clicks, referring_domains, words, ... — see xeo-schemes). A unit that names its own provenance, like sessions_estimated, is how a derived figure is kept from rendering as a measured one." .
+    dct:description "The unit magnitude is read in, as a slotted-in concept (impressions, clicks, referring_domains, words, ... — see xeo-schemes). A unit that names its own provenance, like sessions_estimated, is how a derived figure is kept from rendering as a measured one. Where the size is a value of a Metric, magnitudeMetric names it." .
 
 # --- Outcome reading -----------------------------------------------------------
 # What an Outcome says once read: did it move, and if it could not be judged,
@@ -372,3 +372,55 @@ xeo:magnitude rdfs:label "magnitude" .
 xeo:magnitudeUnit rdfs:label "magnitude unit" .
 xeo:result rdfs:label "result" .
 xeo:resultReason rdfs:label "result reason" .
+
+# --- v0.6.0 (metrics, 2026-11-10) --------------------------------------------------
+# Appended at the foot (line-stable for the consumers that cite this file by
+# line number). From the metrics and KPIs research report.
+#
+# ADDED. What makes an Outcome computable: the reading it ended on
+# (resultReading; the reading it started from is baselineReading, in
+# xeo-delivery beside baseline), and the two changes between them. "Lift" was
+# one number that could be points or a percentage, and nothing said which.
+# absoluteChange and relativeChange are both stated, signed and raw. And
+# magnitudeMetric, so a Gap's size can name the Metric it is a value of.
+#
+# DEPRECATED (advisory). xeo:lift, in favour of the pair. The term stays
+# declared, typed and valid, and existing data is unaffected: owl:deprecated
+# tells a new implementation which form to write, nothing more.
+#
+# TIGHTENED (in place, above). The descriptions of Outcome, lift and
+# magnitudeUnit, one line each.
+
+xeo:resultReading a owl:ObjectProperty ;
+    rdfs:label "result reading" ;
+    rdfs:domain xeo:Outcome ; rdfs:range xeo:MetricReading ;
+    xeo:epistemicLayer "observation" ;
+    xeo:groundedIn "The API contract of the system named in the reading's source" ;
+    xeo:canonicalStore "neo4j" ;
+    dct:description "The reading of the target's Metric over the result window, which runs from the day the change was applied for the Objective's resultsWindowDays. One per Outcome. Comparable with baselineReading only when both are readings of the same Metric over the same scope, on the same aggregationBasis, across windows of the same length." .
+
+xeo:absoluteChange a owl:DatatypeProperty ;
+    rdfs:label "absolute change" ;
+    rdfs:domain xeo:Outcome ; rdfs:range xsd:decimal ;
+    xeo:epistemicLayer "derivation" ;
+    xeo:canonicalStore "neo4j" ;
+    dct:description "The result reading's value minus the baseline reading's, in the Metric's unit. For a ratio this is points: 0.02 is two points of clickthrough rate, not two percent of it. Signed and raw: a rank that went from 6 to 3 is -3, and whether that is an improvement is read through the Metric's betterDirection. Never summed across Outcomes: an Objective is read from one objectiveReading over its whole scope, because overlapping Outcomes would count the same clicks twice." .
+
+xeo:relativeChange a owl:DatatypeProperty ;
+    rdfs:label "relative change" ;
+    rdfs:domain xeo:Outcome ; rdfs:range xsd:decimal ;
+    xeo:epistemicLayer "derivation" ;
+    xeo:canonicalStore "neo4j" ;
+    dct:description "absoluteChange divided by the baseline reading's value, as a quotient: 0.25 is a quarter more than baseline. Signed and raw, read through betterDirection like absoluteChange. Undefined, and so absent, when the baseline is zero." .
+
+xeo:magnitudeMetric a owl:ObjectProperty ;
+    rdfs:label "magnitude metric" ;
+    rdfs:domain xeo:Gap ; rdfs:range xeo:Metric ;
+    xeo:epistemicLayer "derivation" ;
+    xeo:canonicalStore "neo4j" ;
+    dct:description "Which Metric a Gap's magnitude is a value of, where the size is a measured quantity: impressions, clicks, positions. The unit and the better direction are then the Metric's. Stated beside magnitudeUnit, which stays required with magnitude; a size that is not a value of any Metric (words, internal links) carries magnitudeUnit alone." .
+
+xeo:lift owl:deprecated true ;
+    rdfs:seeAlso xeo:absoluteChange , xeo:relativeChange .
+
+xeo:magnitudeUnit rdfs:seeAlso xeo:magnitudeMetric .

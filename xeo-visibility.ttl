@@ -120,12 +120,12 @@ xeo:mentionRank a owl:DatatypeProperty ;
 
 xeo:mentionRate a owl:DatatypeProperty ;
     rdfs:range xsd:decimal ;
-    xeo:epistemicLayer "observation" ;
+    xeo:epistemicLayer "derivation" ;
     dct:description "Share of captured responses in the window that mention the brand. Carried on visibilityFor rollups." .
 
 xeo:citationRate a owl:DatatypeProperty ;
     rdfs:range xsd:decimal ;
-    xeo:epistemicLayer "observation" ;
+    xeo:epistemicLayer "derivation" ;
     dct:description "Share of captured responses in the window that cite the brand's owned URLs. Cited and mentioned diverge — a page can ground an answer that names someone else." .
 
 # --- Relationship-carried properties -----------------------------------------
@@ -220,3 +220,14 @@ xeo:text rdfs:label "text" .
 xeo:modelVersion rdfs:label "model version" .
 xeo:citationRank rdfs:label "citation rank" .
 xeo:responses rdfs:label "responses" .
+
+# --- v0.6.0 (metrics, 2026-11-10) --------------------------------------------------
+# Appended at the foot. No new terms in this module.
+#
+# FIXED (layer, in place above). mentionRate and citationRate were marked
+# observation. Each is a share somebody computed over a sample of responses,
+# from mentions a method extracted, and by XEO's own rule a computed rate is a
+# derivation. They are now marked so. Nothing about their type, range or
+# meaning changed; a consumer that filters by layer will find them one layer up.
+# The Metrics they are values of are xeos:metric-mention_rate and
+# xeos:metric-citation_rate, which state the numerator and the denominator.

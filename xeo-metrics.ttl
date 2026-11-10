@@ -1,0 +1,310 @@
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix dct:  <http://purl.org/dc/terms/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xeo:  <https://xeoontology.org/xeo#> .
+
+# XEO Metrics module — what a metric is, and what a number of one is.
+#
+# Until this module a MetricTarget named its metric with a string, the string's
+# meaning lived in one scheme's notes, and an Outcome recorded a bare "lift".
+# Nothing said what was counted, over which records, in what unit, or how two
+# numbers under one name could be compared. So a target could be set on search
+# clicks and on nothing else XEO measures, and two impact reports on the same
+# experiment could disagree and both be right.
+#
+#   Metric {metricType, aggregation, readsSlot, unit, betterDirection, additivity}   (the rule)
+#   MetricReading {readingOf, scope, periodStart, periodEnd, value, source}          (a number)
+#   MetricTarget.metric  =  the notation of a Metric                                 (the goal)
+#   Outcome {baselineReading, resultReading, absoluteChange, relativeChange}         (the comparison)
+#
+# TWO THINGS, KEPT APART. A Metric is a definition: a standing rule over a class
+# of numbers, and so a NORM. A MetricReading is the value that rule took over
+# one window, for one scope, from one source. Every semantic layer surveyed
+# (dbt MetricFlow, Cube, LookML, Malloy, OSI) keeps the same two apart. Editing
+# a definition in place silently changes what every stored reading and target
+# means, so a Metric is never edited: a changed rule is a new Metric.
+#
+# NO KPI CLASS. No vendor surveyed models "KPI" as a type. In XEO the KPI is a
+# role a target plays in its Objective, and xeo:isPrimary already says it.
+#
+# RATES ARE QUOTIENTS, ROLLED UP FROM THEIR PARTS. A ratio is stored as a 0 to 1
+# quotient, never a percentage. A rolled-up ratio is sum(numerator) divided by
+# sum(denominator), never a mean of rates, which is why a ratio reading carries
+# numeratorValue and denominatorValue. minDenominator is the floor below which
+# a ratio is not reportable.
+#
+# VENDOR NAMES ARE NOT XEO NAMES. "Visibility", "share of voice" and "session"
+# mean different things in different tools. The Metric instances published in
+# xeos:metric (xeo-schemes.ttl) are defined neutrally; each vendor's field is
+# mapped to one of them in xeo-vendor-schemes.ttl, with the exact field name, a
+# match strength and a scope note.
+#
+# CORE AND EXTENSION. Terms every surveyed standard supports are core. Terms
+# that two or three support, or that only XEO needs, carry
+# xeo:termStatus "extension": declared and usable, and not something a consumer
+# is expected to implement.
+#
+# DEPENDENCIES, declared honestly: builds on core (periodStart, periodEnd,
+# websiteId, datasetUri and confidence are reused, never redeclared), on
+# decision (method) and strategy (source), and uses SKOS: a Metric is a
+# skos:Concept, and its type, unit, direction and additivity are concept slots.
+#
+# Source: the metrics and KPIs research report of 2026-11-10 (eleven vendors
+# and standards read; none verified against live API output).
+
+xeo:metrics-module a owl:Ontology ;
+    dct:title "XEO Metrics (definitions and readings)" ;
+    dct:description "What a metric is and what a number of one is: the Metric (a named rule: what is counted, aggregated how, in what unit, which way is better) and the MetricReading (the value that rule took over one window, for one scope, from one source). Lets an Objective target any measured thing in XEO, and lets an Outcome be computed the same way every time." ;
+    dct:creator "Inbound Found" ;
+    owl:versionInfo "0.6.0" .
+
+# --- Classes ----------------------------------------------------------------
+
+xeo:Metric a owl:Class ;
+    rdfs:subClassOf skos:Concept ;
+    rdfs:label "Metric" ;
+    xeo:epistemicLayer "norm" ;
+    xeo:canonicalStore "neo4j" ;
+    dct:description "A named, reusable definition of a measured quantity: what is counted or computed, over which records, aggregated how, in what unit, and which way is better. A rule, not a number: the number is a MetricReading. One node per definition, identified by its skos:notation within its scheme (xeos:metric is the published reference scheme). Two Metrics are the same when metricType, aggregation, readsSlot or inputs, metricFilter, timeAnchor and unit all match; changing any of them makes a new Metric, never an edit, because readings and targets are anchored to the definition. Carries exactly one metricType, unit, betterDirection and additivity. A simple metric also carries aggregation and readsSlot; a ratio carries numerator and denominator and has unit ratio; a derived metric carries expression and at least one inputMetric. A skos:Concept, so a consumer adds its own metrics as instances without touching the ontology." .
+
+xeo:MetricReading a owl:Class ;
+    rdfs:label "Metric Reading" ;
+    xeo:epistemicLayer "observation" ;
+    xeo:groundedIn "The API contract of the system named in the reading's source (e.g. GSC searchAnalytics.query, GA4 runReport)" ;
+    xeo:canonicalStore "bigquery" ;
+    dct:description "The value one Metric took over one window, for one scope, from one source. One row per metric, scope, window and source: its identity is readingOf, scope, periodStart, periodEnd, source and, where the source deduplicates in more than one way, aggregationBasis. Requires value, periodStart, periodEnd and readingOf, and should carry websiteId and datasetUri; a ratio reading also carries numeratorValue and denominatorValue. An observation only when the primary API returned exactly that metric, window and scope. When the value was rolled up, recomputed, or taken from a vendor's model, the reading is a derivation and carries method and confidence. High-cardinality readings live in the column store; the graph holds the windowed readings a target, an Outcome or an Objective points at." .
+
+# --- The definition: object properties ----------------------------------------
+
+xeo:metricType a owl:ObjectProperty ;
+    rdfs:label "metric type" ;
+    rdfs:domain xeo:Metric ; rdfs:range skos:Concept ;
+    xeo:epistemicLayer "norm" ;
+    xeo:canonicalStore "neo4j" ;
+    dct:description "How a Metric is computed, as a slotted-in concept (simple, ratio, derived, cumulative, conversion — xeos:metricType is a published reference filling). Exactly one per Metric. The type decides which other properties are required: a simple metric aggregates one slot, a ratio divides one metric by another, a derived metric is arithmetic over others." .
+
+xeo:aggregation a owl:ObjectProperty ;
+    rdfs:label "aggregation" ;
+    rdfs:domain xeo:Metric ; rdfs:range skos:Concept ;
+    xeo:epistemicLayer "norm" ;
+    xeo:canonicalStore "neo4j" ;
+    dct:description "How a simple Metric reduces the values of its readsSlot in a window to one number, as a slotted-in concept (sum, count, count_distinct, mean, weighted_mean, min, max, median, percentile, last — xeos:aggregation is a published reference filling). Required on a simple metric and absent on the others. 'count' is also a unit; this slot says how the values are combined, unit says what the result is a number of." .
+
+xeo:readsSlot a owl:ObjectProperty ;
+    rdfs:label "reads slot" ;
+    rdfs:domain xeo:Metric ; rdfs:range rdf:Property ;
+    xeo:epistemicLayer "norm" ;
+    xeo:canonicalStore "neo4j" ;
+    dct:description "The XEO property a simple Metric aggregates: clicks, dealAmount, mentionRank. Required on a simple metric. If the slot is a derivation, every reading of the metric is a derivation. Where XEO declares no slot beneath the number, because the source returns it already aggregated (an analytics tool's sessions, a vendor's modelled traffic value), readsSlot is xeo:value: the metric combines the source's own readings, and the vendor scheme says which field that is." .
+
+xeo:numerator a owl:ObjectProperty ;
+    rdfs:label "numerator" ;
+    rdfs:domain xeo:Metric ; rdfs:range xeo:Metric ;
+    xeo:epistemicLayer "norm" ;
+    xeo:canonicalStore "neo4j" ;
+    dct:description "The Metric a ratio divides. Required on a ratio, with denominator. A filter on the numerator does not apply to the denominator unless it is declared there too. A ratio is rolled up as sum(numerator) divided by sum(denominator), never as a mean of ratios." .
+
+xeo:denominator a owl:ObjectProperty ;
+    rdfs:label "denominator" ;
+    rdfs:domain xeo:Metric ; rdfs:range xeo:Metric ;
+    xeo:epistemicLayer "norm" ;
+    xeo:canonicalStore "neo4j" ;
+    dct:description "The Metric a ratio divides by. Required on a ratio, with numerator. Two tools that share a metric's name and differ in its denominator are reporting two different metrics." .
+
+xeo:inputMetric a owl:ObjectProperty ;
+    rdfs:label "input metric" ;
+    rdfs:domain xeo:Metric ; rdfs:range xeo:Metric ;
+    xeo:epistemicLayer "norm" ;
+    xeo:canonicalStore "neo4j" ;
+    dct:description "A Metric a derived metric is computed from. At least one on a derived metric, each named by its notation in expression." .
+
+xeo:timeAnchor a owl:ObjectProperty ;
+    rdfs:label "time anchor" ;
+    rdfs:domain xeo:Metric ; rdfs:range rdf:Property ;
+    xeo:epistemicLayer "norm" ;
+    xeo:canonicalStore "neo4j" ;
+    dct:description "Which timestamp places a record in a window: recordCreatedAt or dealClosedAt for a deal, capturedAt for a sampled answer. Part of a Metric's identity: deals counted by create date and by close date are two metrics. Absent where the source places records itself and offers no choice." .
+
+xeo:unit a owl:ObjectProperty ;
+    rdfs:label "unit" ;
+    rdfs:domain xeo:Metric ; rdfs:range skos:Concept ;
+    xeo:epistemicLayer "norm" ;
+    xeo:canonicalStore "neo4j" ;
+    dct:description "What a reading of this Metric is a number of, as a slotted-in concept (count, ratio, rank, currency, seconds, days, score_0_100 — xeos:metricUnit is a published reference filling). Exactly one per Metric. A ratio is a 0 to 1 quotient, never a percentage. A rank is 1-based with 1 best. A currency reading carries currencyCode. Distinct from magnitudeUnit, which names the unit of a Gap's size." .
+
+xeo:betterDirection a owl:ObjectProperty ;
+    rdfs:label "better direction" ;
+    rdfs:domain xeo:Metric ; rdfs:range skos:Concept ;
+    xeo:epistemicLayer "norm" ;
+    xeo:canonicalStore "neo4j" ;
+    dct:description "Which way a change in this Metric counts as improvement, as a slotted-in concept (up, down, none — xeos:betterDirection is a published reference filling). Exactly one per Metric, declared here and nowhere else: positions and ranks are 1-based, so a shared '+20%' would ask for a rank 20% worse. A change is recorded signed and raw; whether it is an improvement is read through this. Replaces xeo:direction, which stored a copy on each target." .
+
+xeo:additivity a owl:ObjectProperty ;
+    rdfs:label "additivity" ;
+    rdfs:domain xeo:Metric ; rdfs:range skos:Concept ;
+    xeo:epistemicLayer "norm" ;
+    xeo:canonicalStore "neo4j" ;
+    dct:description "Whether readings of this Metric may be summed across windows, pages or terms, as a slotted-in concept (additive, semi_additive, non_additive — xeos:additivity is a published reference filling). Exactly one per Metric. A non-additive reading (a ratio, an average, a rank, a distinct count) is never summed: it is recomputed over the union from the column store." .
+
+# --- The definition: datatype properties ----------------------------------------
+
+xeo:expression a owl:DatatypeProperty ;
+    rdfs:label "expression" ;
+    rdfs:domain xeo:Metric ; rdfs:range xsd:string ;
+    xeo:epistemicLayer "norm" ;
+    xeo:canonicalStore "neo4j" ;
+    dct:description "On a derived Metric: the arithmetic over its inputMetrics, each named by its notation ('revenue_won / deals_won'). Required on a derived metric. On a simple Metric it may state a row-level computation applied before aggregation, where the number is not the slot's own value ('days from recordCreatedAt to dealClosedAt'). Plain arithmetic in neutral names, never a vendor's query syntax." .
+
+xeo:metricFilter a owl:DatatypeProperty ;
+    rdfs:label "metric filter" ;
+    rdfs:domain xeo:Metric ; rdfs:range xsd:string ;
+    xeo:epistemicLayer "norm" ;
+    xeo:canonicalStore "neo4j" ;
+    dct:description "A condition applied to the records before they are aggregated, over neutral names (dealOutcome = 'won'; firstTouchChannel = 'ai_assistant'). Part of the Metric's identity: sessions and sessions from AI assistants are two metrics. Distinct from scope, which belongs to a reading and restricts numerator and denominator alike; a metricFilter on a numerator restricts only that numerator." .
+
+xeo:minDenominator a owl:DatatypeProperty ;
+    rdfs:label "minimum denominator" ;
+    rdfs:domain xeo:Metric ; rdfs:range xsd:integer ;
+    xeo:epistemicLayer "norm" ;
+    xeo:canonicalStore "neo4j" ;
+    dct:description "The smallest denominatorValue at which a reading of this Metric is reportable: for a ratio the denominator, for a mean the number of values averaged. A reading below it is flagged, and an Outcome read from it is inconclusive with resultReason below_volume_floor. An XEO norm: no vendor publishes one. The values in xeos:metric are stated defaults, for a consumer to replace." .
+
+# --- The reading -----------------------------------------------------------------
+
+xeo:readingOf a owl:ObjectProperty ;
+    rdfs:label "reading of" ;
+    rdfs:domain xeo:MetricReading ; rdfs:range xeo:Metric ;
+    xeo:epistemicLayer "observation" ;
+    xeo:groundedIn "The API contract of the system named in the reading's source" ;
+    xeo:canonicalStore "bigquery" ;
+    dct:description "The Metric this reading is a value of. Exactly one per reading. Two readings are comparable only when this matches: a changed definition is a new Metric, and its readings are not continued from the old one's." .
+
+xeo:scope a owl:ObjectProperty ;
+    rdfs:label "scope" ;
+    rdfs:domain xeo:MetricReading ;
+    xeo:epistemicLayer "observation" ;
+    xeo:groundedIn "The API contract of the system named in the reading's source" ;
+    xeo:canonicalStore "bigquery" ;
+    xeo:rangeIncludes xeo:Website , xeo:URL , xeo:Term , xeo:Topic , xeo:Prompt , xeo:Brand , xeo:Campaign ;
+    dct:description "What the reading covers: a whole Website, one URL or Term, a Topic, a Prompt, a Brand, or the pages and terms of a Campaign. Many per reading where the scope is a set. Range left open across the terms listed. Restricts numerator and denominator alike, which is what separates it from metricFilter. A baseline reading and a result reading are comparable only over the same scope." .
+
+xeo:value a owl:DatatypeProperty ;
+    rdfs:label "value" ;
+    rdfs:domain xeo:MetricReading ; rdfs:range xsd:decimal ;
+    xeo:epistemicLayer "observation" ;
+    xeo:groundedIn "The API contract of the system named in the reading's source" ;
+    xeo:canonicalStore "bigquery" ;
+    dct:description "The number the Metric took over the reading's window and scope, in the Metric's unit: a ratio as a 0 to 1 quotient, a rank 1-based, a currency amount in the reading's currencyCode. Exactly one per reading. A rate the source computed itself goes here as returned; its parts, where the source gives them, go in numeratorValue and denominatorValue." .
+
+xeo:numeratorValue a owl:DatatypeProperty ;
+    rdfs:label "numerator value" ;
+    rdfs:domain xeo:MetricReading ; rdfs:range xsd:decimal ;
+    xeo:epistemicLayer "observation" ;
+    xeo:groundedIn "The API contract of the system named in the reading's source" ;
+    xeo:canonicalStore "bigquery" ;
+    dct:description "The numerator behind a ratio or mean reading: the clicks behind a clickthrough rate, the summed positions behind an average. With denominatorValue it is what lets readings be rolled up correctly, as sum(numeratorValue) divided by sum(denominatorValue)." .
+
+xeo:denominatorValue a owl:DatatypeProperty ;
+    rdfs:label "denominator value" ;
+    rdfs:domain xeo:MetricReading ; rdfs:range xsd:decimal ;
+    xeo:epistemicLayer "observation" ;
+    xeo:groundedIn "The API contract of the system named in the reading's source" ;
+    xeo:canonicalStore "bigquery" ;
+    dct:description "The denominator behind a ratio reading, or the number of values behind a mean. Compared with the Metric's minDenominator to decide whether the reading is reportable." .
+
+# --- Extension set -----------------------------------------------------------------
+# Declared and usable; not something a consumer is expected to implement. Each
+# is supported by one to three of the surveyed standards, or is an XEO norm.
+
+xeo:offsetWindow a owl:DatatypeProperty ;
+    rdfs:label "offset window" ;
+    rdfs:domain xeo:Metric ; rdfs:range xsd:duration ;
+    xeo:epistemicLayer "norm" ;
+    xeo:canonicalStore "neo4j" ;
+    xeo:termStatus "extension" ;
+    dct:description "A lag applied to the input of a derived Metric, as an ISO 8601 duration (P28D): the input is read over the window that long before the reading's own. How a period-over-period metric is defined once instead of being recomputed by each client." .
+
+xeo:cumulativeWindow a owl:DatatypeProperty ;
+    rdfs:label "cumulative window" ;
+    rdfs:domain xeo:Metric ; rdfs:range xsd:duration ;
+    xeo:epistemicLayer "norm" ;
+    xeo:canonicalStore "neo4j" ;
+    xeo:termStatus "extension" ;
+    dct:description "The trailing window a cumulative Metric accumulates over, as an ISO 8601 duration (P7D for a trailing seven days). Absent on a cumulative metric that accumulates from the start of a grain; that one carries grainToDate." .
+
+xeo:grainToDate a owl:ObjectProperty ;
+    rdfs:label "grain to date" ;
+    rdfs:domain xeo:Metric ; rdfs:range skos:Concept ;
+    xeo:epistemicLayer "norm" ;
+    xeo:canonicalStore "neo4j" ;
+    xeo:termStatus "extension" ;
+    dct:description "The grain at whose start a cumulative Metric resets, as a slotted-in concept (day, week, month, quarter, year — xeos:timeGrain is a published reference filling): month for a month-to-date total. Used instead of cumulativeWindow, never with it." .
+
+xeo:conversionEntity a owl:ObjectProperty ;
+    rdfs:label "conversion entity" ;
+    rdfs:domain xeo:Metric ; rdfs:range rdf:Property ;
+    xeo:epistemicLayer "norm" ;
+    xeo:canonicalStore "neo4j" ;
+    xeo:termStatus "extension" ;
+    dct:description "On a conversion Metric: the identity key that joins a base event to the conversion event that followed it (crmRecordRef, for a lead that became a deal). The metric is the share of that entity's base events followed by a conversion event within conversionWindow." .
+
+xeo:conversionWindow a owl:DatatypeProperty ;
+    rdfs:label "conversion window" ;
+    rdfs:domain xeo:Metric ; rdfs:range xsd:duration ;
+    xeo:epistemicLayer "norm" ;
+    xeo:canonicalStore "neo4j" ;
+    xeo:termStatus "extension" ;
+    dct:description "On a conversion Metric: how long after a base event a conversion event still counts, as an ISO 8601 duration." .
+
+xeo:baseMetric a owl:ObjectProperty ;
+    rdfs:label "base metric" ;
+    rdfs:domain xeo:Metric ; rdfs:range xeo:Metric ;
+    xeo:epistemicLayer "norm" ;
+    xeo:canonicalStore "neo4j" ;
+    xeo:termStatus "extension" ;
+    dct:description "On a conversion Metric: the Metric that counts the base events, the ones a conversion may follow." .
+
+xeo:conversionMetric a owl:ObjectProperty ;
+    rdfs:label "conversion metric" ;
+    rdfs:domain xeo:Metric ; rdfs:range xeo:Metric ;
+    xeo:epistemicLayer "norm" ;
+    xeo:canonicalStore "neo4j" ;
+    xeo:termStatus "extension" ;
+    dct:description "On a conversion Metric: the Metric that counts the conversion events." .
+
+xeo:percentileValue a owl:DatatypeProperty ;
+    rdfs:label "percentile value" ;
+    rdfs:domain xeo:Metric ; rdfs:range xsd:decimal ;
+    xeo:epistemicLayer "norm" ;
+    xeo:canonicalStore "neo4j" ;
+    xeo:termStatus "extension" ;
+    dct:description "Which percentile a Metric whose aggregation is percentile takes, from 0 to 1 (0.9 for the ninetieth). Required with that aggregation and meaningless with any other." .
+
+xeo:agentContext a owl:DatatypeProperty ;
+    rdfs:label "agent context" ;
+    rdfs:domain xeo:Metric ; rdfs:range xsd:string ;
+    xeo:epistemicLayer "norm" ;
+    xeo:canonicalStore "neo4j" ;
+    xeo:termStatus "extension" ;
+    dct:description "Guidance to an agent on when to use this Metric and when not to, in plain language: what it is commonly mistaken for, which question it answers. Read by a model choosing between metrics; it does not change how the metric is computed." .
+
+xeo:aggregationBasis a owl:ObjectProperty ;
+    rdfs:label "aggregation basis" ;
+    rdfs:domain xeo:MetricReading ; rdfs:range skos:Concept ;
+    xeo:epistemicLayer "observation" ;
+    xeo:groundedIn "Google Search Console Search Analytics API (aggregationType)" ;
+    xeo:canonicalStore "bigquery" ;
+    xeo:termStatus "extension" ;
+    dct:description "How the source deduplicated before it returned the value, as a slotted-in concept (by_property, by_page, auto — xeos:aggregationBasis is a published reference filling). One source documents it, and there it moves every search number: clicks counted by page and by property are different counts under one field name. Part of a reading's identity where the source offers the choice; two readings on different bases are not comparable. Not xeo:basis, which says what a similarity compared." .
+
+xeo:dataState a owl:ObjectProperty ;
+    rdfs:label "data state" ;
+    rdfs:domain xeo:MetricReading ; rdfs:range skos:Concept ;
+    xeo:epistemicLayer "observation" ;
+    xeo:groundedIn "Google Search Console Search Analytics API (dataState), as reported by a secondary source" ;
+    xeo:canonicalStore "bigquery" ;
+    xeo:termStatus "extension" ;
+    dct:description "Whether the source considered the reading's window complete when it answered, as a slotted-in concept (final, partial — xeos:dataState is a published reference filling). A partial reading is expected to change and should not anchor a baseline. Absent where the source does not say." .
