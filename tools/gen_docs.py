@@ -19,16 +19,18 @@ NS = "https://xeoontology.org/xeo#"
 MODULES = [
     "xeo-core.ttl", "xeo-visibility.ttl", "xeo-engagement.ttl",
     "xeo-decision.ttl", "xeo-strategy.ttl", "xeo-delivery.ttl", "xeo-analysis.ttl",
-    "xeo-align.ttl",
+    "xeo-metrics.ttl", "xeo-align.ttl",
 ]
 EPI = URIRef(NS + "epistemicLayer")
 GROUNDED = URIRef(NS + "groundedIn")
 STORE = URIRef(NS + "canonicalStore")
 DOMAIN_INCLUDES = URIRef(NS + "domainIncludes")
 RANGE_INCLUDES = URIRef(NS + "rangeIncludes")
+TERM_STATUS = URIRef(NS + "termStatus")
 
 PREFIXES = {
     NS: "xeo:",
+    "https://xeoontology.org/schemes#": "xeos:",
     "https://schema.org/": "schema:",
     "http://www.w3.org/ns/prov#": "prov:",
     "http://www.w3.org/2004/02/skos/core#": "skos:",
@@ -88,7 +90,7 @@ def render():
         sc = list(g.objects(term, RDFS.subClassOf))
         sp = list(g.objects(term, RDFS.subPropertyOf))
         cm = list(g.objects(term, URIRef("http://www.w3.org/2004/02/skos/core#closeMatch")))
-        sa = list(g.objects(term, RDFS.seeAlso))
+        sa = sorted(g.objects(term, RDFS.seeAlso), key=str)
         di = list(g.objects(term, DOMAIN_INCLUDES))
         ri = list(g.objects(term, RANGE_INCLUDES))
         gr = val(term, GROUNDED)
@@ -105,6 +107,10 @@ def render():
         if st:  rows.append(("canonical store", html.escape(st)))
         badge = (f'<span class="layer" style="--h:{LAYER_HUE[layer]}">{layer}</span>'
                  if layer in LAYER_HUE else "")
+        if val(term, TERM_STATUS) == "extension":
+            badge += ' <span class="status">extension</span>'
+        if str(g.value(term, OWL.deprecated)).lower() == "true":
+            badge += ' <span class="status dep">deprecated</span>'
         dl = "".join(f'<div class="row"><dt>{k}</dt><dd>{v}</dd></div>' for k, v in rows)
         mod = origin.get(term, "").replace(".ttl", "")
         return f'''<section id="{local(term)}" class="term">
@@ -148,7 +154,7 @@ def render():
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>XEO — the xEO family ontology (terms)</title>
-<meta name="description" content="Term reference for the XEO ontology: classes, properties, and individuals across the core, visibility, engagement, decision, strategy, delivery, and analysis modules.">
+<meta name="description" content="Term reference for the XEO ontology: classes, properties, and individuals across the core, visibility, engagement, decision, strategy, delivery, analysis, and metrics modules.">
 <link rel="alternate" type="text/turtle" href="xeo-core.ttl">
 <style>
 :root {{ color-scheme: light dark; --bg:#f7f5ef; --surface:#fffdf8; --text:#17181c;
@@ -183,6 +189,10 @@ code {{ font-family:ui-monospace,SFMono-Regular,Menlo,monospace; }}
 .layer {{ font-size:.65rem; text-transform:uppercase; letter-spacing:.04em;
   padding:.1rem .45rem; border-radius:999px; color:#fff; background:var(--h);
   font-family:system-ui; font-weight:600; }}
+.status {{ font-size:.65rem; text-transform:uppercase; letter-spacing:.04em;
+  padding:.05rem .4rem; border-radius:999px; border:1px solid var(--border);
+  color:var(--muted); font-family:system-ui; font-weight:600; }}
+.status.dep {{ text-decoration:line-through; }}
 .legend {{ display:flex; gap:.4rem; flex-wrap:wrap; margin:1rem 0 0; }}
 .lead {{ color:var(--muted); max-width:60ch; }}
 .modnote {{ background:var(--surface); border:1px solid var(--border); border-radius:8px;
@@ -199,17 +209,23 @@ generative, answer, conversational — see, cite, and serve content. Every term 
 typed by the kind of claim it makes; the strata run from durable bedrock to
 interpretive surface:</p>
 <div class="legend">{legend}</div>
+<p class="tag">A term marked <span class="status">extension</span> is declared and usable but
+not something every implementation is expected to support. A term marked
+<span class="status dep">deprecated</span> is still valid; its seeAlso names what to write instead.</p>
 <div class="modnote">Modules: <code>xeo-core</code> (substrate) ·
 <code>xeo-visibility</code> (xEO) · <code>xeo-engagement</code> (draft) ·
 <code>xeo-decision</code> (interpretation tier) · <code>xeo-strategy</code> (norms tier) ·
 <code>xeo-delivery</code> (projects, campaigns, objectives) ·
 <code>xeo-analysis</code> (derived structure) ·
+<code>xeo-metrics</code> (metric definitions and readings) ·
 <code>xeo-align</code> (schema.org / PROV-O / SKOS bridges). Machine-readable Turtle:
 <a href="xeo-core.ttl">core</a>, <a href="xeo-visibility.ttl">visibility</a>,
 <a href="xeo-engagement.ttl">engagement</a>, <a href="xeo-decision.ttl">decision</a>,
 <a href="xeo-strategy.ttl">strategy</a>, <a href="xeo-delivery.ttl">delivery</a>,
-<a href="xeo-analysis.ttl">analysis</a>, <a href="xeo-align.ttl">align</a>;
+<a href="xeo-analysis.ttl">analysis</a>, <a href="xeo-metrics.ttl">metrics</a>,
+<a href="xeo-align.ttl">align</a>;
 reference values <a href="xeo-schemes.ttl">schemes</a> (<a href="schemes.json">JSON</a>);
+vendor crosswalks <a href="xeo-vendor-schemes.ttl">vendor schemes</a>;
 JSON-LD <a href="context.jsonld">context</a>; Neo4j
 <a href="neo4j-profile.json">profile</a> and <a href="context.neo4j.jsonld">context</a>;
 SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
