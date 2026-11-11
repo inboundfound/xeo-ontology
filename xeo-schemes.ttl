@@ -754,7 +754,7 @@ xeos:objectiveMetric-ctr a skos:Concept ;
     skos:notation "ctr" ;
     skos:prefLabel "CTR"@en ;
     skos:definition "Clickthrough rate over the window"@en ;
-    skos:note "direction up · unit percent · source GSC"@en .
+    skos:note "direction up · unit ratio · source GSC"@en .
 
 xeos:objectiveMetric-position a skos:Concept ;
     skos:inScheme xeos:objectiveMetric ;
@@ -1790,7 +1790,7 @@ xeos:metric-ctr a skos:Concept , xeo:Metric ;
     xeo:additivity xeos:additivity-non_additive ;
     xeo:minDenominator 100 ;
     skos:note "reading: an observation where Search Console returned it for exactly this window and scope; a derivation when rolled up or recomputed"@en ;
-    skos:editorialNote "The unit is ratio. xeos:objectiveMetric-ctr, its earlier form, notes the unit as percent; Search Console returns a quotient (0.1078), and so does every other source read. minDenominator 100 is an inferred default, not a vendor fact."@en .
+    skos:editorialNote "The unit is ratio. xeos:objectiveMetric-ctr, its earlier form, noted the unit as percent until 0.6.0 corrected it; Search Console returns a quotient (0.1078), and so does every other source read. minDenominator 100 is an inferred default, not a vendor fact."@en .
 
 xeos:metric-position a skos:Concept , xeo:Metric ;
     skos:inScheme xeos:metric ;
@@ -2326,7 +2326,7 @@ xeos:objectiveMetric-rank_absolute skos:exactMatch xeos:metric-rank_absolute .
 xeos:objectiveMetric-mention_rate skos:exactMatch xeos:metric-mention_rate .
 xeos:objectiveMetric-citation_rate skos:exactMatch xeos:metric-citation_rate .
 xeos:objectiveMetric-ctr skos:exactMatch xeos:metric-ctr ;
-    skos:editorialNote "The note above gives the unit as percent. The sources return a 0 to 1 quotient, and xeos:metric-ctr states the unit as ratio. The note is left as published, because a consumer may have built on it; whether stored ctr targets and baselines hold 5 or 0.05 needs checking before it is corrected."@en .
+    skos:editorialNote "Until 0.6.0 the note above gave the unit as percent. The sources return a 0 to 1 quotient and xeos:metric-ctr states the unit as ratio, so the note was corrected. A consumer that built on the old note may hold 5 where this means 0.05: check stored ctr targets and baselines before reading them as ratios."@en .
 xeos:objectiveMetric-etv skos:exactMatch xeos:metric-etv ;
     skos:editorialNote "A vendor's model output, so every reading of it is a derivation. xeos:metric-etv says so; this concept's note names only the source."@en .
 
