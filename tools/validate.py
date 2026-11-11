@@ -4,7 +4,8 @@
 One command, run locally and in CI, that fails when the ontology and the files
 projected from it disagree:
 
-  1. PARSE        every xeo-*.ttl module and the SHACL shapes parse as Turtle.
+  1. PARSE        every xeo-*.ttl module, every mappings/*.ttl file and the
+                  SHACL shapes parse as Turtle.
   2. TERMS        every class and property has rdfs:label, dct:description and a
                   valid xeo:epistemicLayer; every annotation property has an
                   rdfs:comment; every xeo: term a declaration points at
@@ -12,9 +13,11 @@ projected from it disagree:
                   modules carry the same owl:versionInfo.
   3. SCHEMES      every concept has a notation, label and definition; codes are
                   unique within a scheme; every scheme fills a declared slot.
-                  In a vendor scheme (xeo-vendor-schemes.ttl) every concept
-                  instead names the slot it fills, one SKOS match, a scope
-                  note, a dated source and a mapping confidence.
+                  In a vendor scheme (one file per tool in mappings/) every
+                  concept instead names the slot it fills, one SKOS match, a
+                  scope note, a dated source and a mapping confidence. The
+                  mappings are not part of the ontology: no module may point
+                  at a mapping concept.
   3b. STATUS      xeo:termStatus is 'core' or 'extension'; a deprecated term
                   names its replacement in rdfs:seeAlso and is still declared;
                   every earlier objectiveMetric code has its Metric in
@@ -61,7 +64,7 @@ XEOSH = Namespace("https://xeoontology.org/shapes#")
 SH = Namespace("http://www.w3.org/ns/shacl#")
 LAYERS = set(gen_profile.LAYERS)
 SHAPES = os.path.join("shapes", "xeo-shapes.ttl")
-VENDOR_SCHEMES = "xeo-vendor-schemes.ttl"
+MAPPINGS = "mappings"  # per-tool vendor schemes; one key in per_module holds them all
 MATCHES = (SKOS.exactMatch, SKOS.closeMatch, SKOS.narrowMatch, SKOS.broadMatch, SKOS.relatedMatch)
 CONFIDENCES = {"documented", "inferred", "verified"}
 STATUSES = {"core", "extension"}
@@ -96,6 +99,11 @@ def modules() -> list[str]:
     return sorted(os.path.basename(p) for p in glob.glob(os.path.join(HERE, "xeo-*.ttl")))
 
 
+def mapping_files() -> list[str]:
+    """mappings/<tool>.ttl, as repo-relative paths. A leading underscore marks a template."""
+    return gen_schemes.mapping_files()
+
+
 # --- 1. parse ----------------------------------------------------------------
 
 def parse_all(report: Report):
@@ -112,8 +120,31 @@ def parse_all(report: Report):
         per_module[name] = mg
         if name != SHAPES:
             g += mg
+    n_ontology = len(g)
+    # The mappings are checked with the ontology (their concepts point into it)
+    # but are not modules: no version, no terms of their own.
+    mappings = Graph()
+    for name in mapping_files():
+        mg = Graph()
+        try:
+            mg.parse(os.path.join(HERE, name), format="turtle")
+        except Exception as exc:
+            problems.append(f"{name}: {exc}")
+            continue
+        for s in mg.subjects(RDF.type, None):
+            if in_xeo(s):
+                problems.append(f"{name} declares xeo:{local(s)}; a mapping may not declare an XEO term")
+        mappings += mg
+    # Nothing in the ontology may point at a mapping.
+    mapped = set(mappings.subjects(RDF.type, SKOS.Concept)) | set(mappings.subjects(RDF.type, SKOS.ConceptScheme))
+    for s, p, o in g:
+        if o in mapped:
+            problems.append(f"{s} points at {o}, which is a mapping; the ontology may not depend on one")
+    per_module[MAPPINGS] = mappings
+    g += mappings
     report.section("parse", problems,
-                   f"{len(modules())} modules + shapes, {len(g)} ontology triples")
+                   f"{len(modules())} modules + shapes, {n_ontology} ontology triples; "
+                   f"{len(mapping_files())} mapping files, {len(mappings)} triples")
     return g, per_module
 
 
@@ -218,7 +249,7 @@ def check_schemes(report: Report, g: Graph, terms: dict, per_module: dict) -> se
     problems = []
     concepts = set(g.subjects(RDF.type, SKOS.Concept))
     schemes = set(g.subjects(RDF.type, SKOS.ConceptScheme))
-    vendor_graph = per_module.get(VENDOR_SCHEMES, Graph())
+    vendor_graph = per_module.get(MAPPINGS, Graph())
     vendor = set(vendor_graph.subjects(RDF.type, SKOS.ConceptScheme))
     for scheme in sorted(schemes, key=str):
         for p in (SKOS.prefLabel, DCTERMS.description, DCTERMS.source):
@@ -250,7 +281,7 @@ def check_schemes(report: Report, g: Graph, terms: dict, per_module: dict) -> se
             if code is not None and local(c) != f"{local(scheme)}-{code}":
                 problems.append(f"{c} is not named <scheme>-<notation>")
             if g.value(c, XEO.mappingConfidence) is not None:
-                problems.append(f"{c} carries a mapping confidence outside {VENDOR_SCHEMES}")
+                problems.append(f"{c} carries a mapping confidence outside {MAPPINGS}/")
     for c in sorted(concepts, key=str):
         if g.value(c, SKOS.inScheme) is None:
             problems.append(f"{c} is in no scheme")
@@ -305,7 +336,7 @@ def check_status(report: Report, g: Graph, per_module: dict, terms: dict, concep
     # Every published Metric obeys the rules the shapes state.
     shapes = per_module.get(SHAPES)
     published = Graph()
-    for name in ("xeo-schemes.ttl", VENDOR_SCHEMES):
+    for name in ("xeo-schemes.ttl", MAPPINGS):
         published += per_module.get(name, Graph())
     if shapes is not None:
         conforms, results, _ = shacl_validate(published, shacl_graph=shapes, ont_graph=g,

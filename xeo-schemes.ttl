@@ -1366,7 +1366,7 @@ xeos:objectiveMetric-citation_rate a skos:Concept ;
 # Appended at the foot. The reference fillings for the slots the two research
 # reports add: what kind of thing a metric is, the Metrics themselves, and the
 # few closed lists the CRM pipeline slots need. Vendor field names are not here:
-# they are in xeo-vendor-schemes.ttl, each mapped to one of these.
+# they are in mappings/ (one file per tool), each mapped to one of these.
 #
 # Unlike the schemes lifted from production above, these come from the reports,
 # and each dct:source says so. Where a value set or a default is XEO's own
@@ -1742,7 +1742,7 @@ xeos:metric a skos:ConceptScheme ;
     skos:prefLabel "Metrics"@en ;
     xeo:fillsSlot xeo:metric ;
     dct:source "XEO metrics and KPIs research report, 2026-11-10 (starter reference scheme) · XEO CRM pipeline research report, 2026-11-10 (pipeline metrics) · the codes of xeos:objectiveMetric, kept unchanged" ;
-    dct:description "The reference scheme of XEO Metrics: each a definition with a type, a unit, a better direction and an additivity, and what it is computed from. Covers search, AI visibility, website analytics and CRM pipeline, so an Objective can target any of them and a reading means the same thing wherever it is computed. The code a MetricTarget stores in xeo:metric is the skos:notation of a concept here. The eight codes published earlier in xeos:objectiveMetric are kept exactly, each with an exactMatch from its old concept. Definitions are neutral: where vendors use one name for different ratios, the definition here states the denominator, and each vendor's field is mapped to it in xeo-vendor-schemes.ttl. Every minDenominator is a stated default inferred for XEO, not a vendor fact. A consumer adds its own Metrics as instances of xeo:Metric in a scheme of its own." .
+    dct:description "The reference scheme of XEO Metrics: each a definition with a type, a unit, a better direction and an additivity, and what it is computed from. Covers search, AI visibility, website analytics and CRM pipeline, so an Objective can target any of them and a reading means the same thing wherever it is computed. The code a MetricTarget stores in xeo:metric is the skos:notation of a concept here. The eight codes published earlier in xeos:objectiveMetric are kept exactly, each with an exactMatch from its old concept. Definitions are neutral: where vendors use one name for different ratios, the definition here states the denominator, and each vendor's field is mapped to it in mappings/. Every minDenominator is a stated default inferred for XEO, not a vendor fact. A consumer adds its own Metrics as instances of xeo:Metric in a scheme of its own." .
 
 # Search
 
@@ -1885,7 +1885,7 @@ xeos:metric-mention_rate a skos:Concept , xeo:Metric ;
     xeo:minDenominator 30 ;
     skos:altLabel "ai_mention_rate" ;
     skos:note "reading: a derivation. Whether an answer mentions or cites a brand is extracted from sampled answers, and the sample is a vendor's or a tracker's choice"@en ;
-    skos:editorialNote "The report names this ai_mention_rate. The code mention_rate was already published in xeos:objectiveMetric and stored by consumers, so it is kept, with the report's name as an altLabel. What vendors call 'visibility' or 'visibility score' maps here, and not always exactly: see xeo-vendor-schemes.ttl. minDenominator 30 is an inferred default, not a vendor fact."@en .
+    skos:editorialNote "The report names this ai_mention_rate. The code mention_rate was already published in xeos:objectiveMetric and stored by consumers, so it is kept, with the report's name as an altLabel. What vendors call 'visibility' or 'visibility score' maps here, and not always exactly: see mappings/. minDenominator 30 is an inferred default, not a vendor fact."@en .
 
 xeos:metric-ai_answers_citing_owned a skos:Concept , xeo:Metric ;
     skos:inScheme xeos:metric ;

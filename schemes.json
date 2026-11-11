@@ -1,5 +1,5 @@
 {
-  "$comment": "Generated from xeo-schemes.ttl and xeo-vendor-schemes.ttl by tools/gen_schemes.py — do not edit by hand.",
+  "$comment": "Generated from xeo-schemes.ttl and mappings/*.ttl by tools/gen_schemes.py — do not edit by hand.",
   "namespace": "https://xeoontology.org/schemes#",
   "ontology": "https://xeoontology.org/xeo#",
   "version": "0.6.0",
@@ -1343,7 +1343,7 @@
       "iri": "https://xeoontology.org/schemes#metric",
       "label": "Metrics",
       "fillsSlot": "xeo:metric",
-      "description": "The reference scheme of XEO Metrics: each a definition with a type, a unit, a better direction and an additivity, and what it is computed from. Covers search, AI visibility, website analytics and CRM pipeline, so an Objective can target any of them and a reading means the same thing wherever it is computed. The code a MetricTarget stores in xeo:metric is the skos:notation of a concept here. The eight codes published earlier in xeos:objectiveMetric are kept exactly, each with an exactMatch from its old concept. Definitions are neutral: where vendors use one name for different ratios, the definition here states the denominator, and each vendor's field is mapped to it in xeo-vendor-schemes.ttl. Every minDenominator is a stated default inferred for XEO, not a vendor fact. A consumer adds its own Metrics as instances of xeo:Metric in a scheme of its own.",
+      "description": "The reference scheme of XEO Metrics: each a definition with a type, a unit, a better direction and an additivity, and what it is computed from. Covers search, AI visibility, website analytics and CRM pipeline, so an Objective can target any of them and a reading means the same thing wherever it is computed. The code a MetricTarget stores in xeo:metric is the skos:notation of a concept here. The eight codes published earlier in xeos:objectiveMetric are kept exactly, each with an exactMatch from its old concept. Definitions are neutral: where vendors use one name for different ratios, the definition here states the denominator, and each vendor's field is mapped to it in mappings/. Every minDenominator is a stated default inferred for XEO, not a vendor fact. A consumer adds its own Metrics as instances of xeo:Metric in a scheme of its own.",
       "source": "XEO metrics and KPIs research report, 2026-11-10 (starter reference scheme) · XEO CRM pipeline research report, 2026-11-10 (pipeline metrics) · the codes of xeos:objectiveMetric, kept unchanged",
       "ordered": false,
       "concepts": [
@@ -1803,7 +1803,7 @@
           "altLabels": [
             "ai_mention_rate"
           ],
-          "editorialNote": "The report names this ai_mention_rate. The code mention_rate was already published in xeos:objectiveMetric and stored by consumers, so it is kept, with the report's name as an altLabel. What vendors call 'visibility' or 'visibility score' maps here, and not always exactly: see xeo-vendor-schemes.ttl. minDenominator 30 is an inferred default, not a vendor fact.",
+          "editorialNote": "The report names this ai_mention_rate. The code mention_rate was already published in xeos:objectiveMetric and stored by consumers, so it is kept, with the report's name as an altLabel. What vendors call 'visibility' or 'visibility score' maps here, and not always exactly: see mappings/. minDenominator 30 is an inferred default, not a vendor fact.",
           "metric": {
             "metricType": "ratio",
             "numerator": "ai_answers_mentioning",

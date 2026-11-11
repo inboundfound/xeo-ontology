@@ -39,7 +39,7 @@
 # VENDOR NAMES ARE NOT XEO NAMES. "Visibility", "share of voice" and "session"
 # mean different things in different tools. The Metric instances published in
 # xeos:metric (xeo-schemes.ttl) are defined neutrally; each vendor's field is
-# mapped to one of them in xeo-vendor-schemes.ttl, with the exact field name, a
+# mapped to one of them in mappings/ (one file per tool), with the exact field name, a
 # match strength and a scope note.
 #
 # CORE AND EXTENSION. Terms every surveyed standard supports are core. Terms

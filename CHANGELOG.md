@@ -182,7 +182,10 @@ created" and "revenue won" cannot be computed.
 `stageSlot`, `acquisitionChannel`, `conversionPointType`, `searchIntent`; and, as extensions,
 `lifecycleStageClass`, `forecastCategory`, `recordOrigin`, `valuePeriod`.
 
-**A new file, `xeo-vendor-schemes.ttl`.** Vendor field names never become XEO terms. Each is a
+**A new folder, `mappings/`, one file per tool.** It is not part of the ontology: a mapping
+declares no XEO term, no module points at one, and the validator checks both. (Before release
+these were one module, `xeo-vendor-schemes.ttl`; the split changed no triple in any scheme.
+`xeo:mappingConfidence` is now declared in core.) Vendor field names never become XEO terms. Each is a
 concept in its vendor's scheme, with the exact field name, the slot it fills, a SKOS match, a
 scope note, a dated source and `xeo:mappingConfidence`. Transcribed: HubSpot CRM, Google Search
 Console, GA4, Peec and Profound (57 fields; 53 documented, 4 inferred, none verified against

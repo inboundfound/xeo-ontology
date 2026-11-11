@@ -1,0 +1,39 @@
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dct:  <http://purl.org/dc/terms/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xeo:  <https://xeoontology.org/xeo#> .
+@prefix xeos: <https://xeoontology.org/schemes#> .
+
+# XEO mapping: <Tool name>.
+#
+# A TEMPLATE. Files whose name starts with an underscore are skipped by
+# tools/gen_schemes.py and tools/validate.py, so this one is never loaded.
+# Copy it to <tool>.ttl, replace every <placeholder>, and read mappings/README.md
+# ("Adding a tool") before you start.
+#
+# A mapping is not part of the ontology. It may not declare an xeo: term, and
+# nothing in the ontology may point at it.
+
+# One scheme per tool. The local name is a short camelCase id for the tool.
+xeos:<tool> a skos:ConceptScheme ;
+    skos:prefLabel "<Tool name and the API or export this covers>"@en ;
+    dct:source "<Where the fields were read: a documentation page, or 'a real export, values replaced'> (read <YYYY-MM-DD>)" ;
+    dct:description "<One or two sentences: which fields are mapped, and to which XEO slots or Metrics.>" .
+
+# One concept per field. Name it xeos:<tool>-<field>.
+xeos:<tool>-<field> a skos:Concept ;
+    skos:inScheme xeos:<tool> ;
+    skos:notation "<the exact column header or field name the tool sends>" ;
+    skos:prefLabel "<What an operator calls it>"@en ;
+    skos:definition "<What the vendor says the field is, paraphrased>"@en ;
+    # The XEO property the value goes into. It must already exist.
+    xeo:fillsSlot xeo:<slot> ;
+    # Exactly one match. exactMatch only when the definitions are the same thing;
+    # a ratio with a different denominator is a closeMatch. For a metric field,
+    # match the Metric it is a reading of (xeos:metric-<code>).
+    skos:exactMatch xeos:metric-<code> ;
+    skos:scopeNote "<The firing condition, formula or trap: units, time zone, what is excluded>"@en ;
+    dct:source "<The page or file this field was read from> (read <YYYY-MM-DD>)" ;
+    # documented | inferred | verified. 'verified' only after checking real output.
+    xeo:mappingConfidence "documented" .

@@ -1,0 +1,130 @@
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dct:  <http://purl.org/dc/terms/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xeo:  <https://xeoontology.org/xeo#> .
+@prefix xeos: <https://xeoontology.org/schemes#> .
+
+# XEO mapping: Profound.
+#
+# A mapping, not part of the ontology. It says which of this tool's fields
+# fills which XEO slot, and how closely. Nothing in the ontology points here.
+# How to read it, what the confidence marks mean, what was left out and how
+# to add a tool: mappings/README.md.
+
+# --- Profound ---------------------------------------------------------------
+
+xeos:profound a skos:ConceptScheme ;
+    skos:prefLabel "Profound External API (visibility and citations reports)"@en ;
+    dct:source "XEO metrics and KPIs research report, 2026-11-10, Appendix C and section 6 · https://docs.tryprofound.com/api-reference/reports/query-visibility · https://docs.tryprofound.com/api-reference/reports/query-citations (OpenAPI v0.60.2) · https://help.tryprofound.com/articles/3443229936-answer-engine-insights-overview" ;
+    dct:description "The fields of Profound's visibility and citations reports, mapped to the AI visibility Metrics. Two warnings a classifier needs. Profound's own pages disagree on the denominator of visibility_score. And share_of_voice is one field name with two meanings, depending on the report it is returned by." .
+
+xeos:profound-visibility_score a skos:Concept ;
+    skos:inScheme xeos:profound ;
+    skos:notation "visibility_score" ;
+    skos:prefLabel "Visibility score"@en ;
+    skos:definition "The share of responses that include the brand"@en ;
+    xeo:fillsSlot xeo:value ;
+    skos:closeMatch xeos:metric-mention_rate ;
+    skos:scopeNote "A raw decimal, 0 to 1; multiply by 100 to display. The denominator conflicts between Profound's own pages: the help center divides by responses that name at least one brand, the glossary example by all tracked responses. On the first reading it runs higher than mention_rate whenever few answers name any brand. closeMatch until live output settles which."@en ;
+    dct:source "https://help.tryprofound.com/articles/3443229936-answer-engine-insights-overview (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:profound-share_of_voice a skos:Concept ;
+    skos:inScheme xeos:profound ;
+    skos:notation "share_of_voice" ;
+    skos:prefLabel "Share of voice (visibility report)"@en ;
+    skos:definition "The brand's mentions as a share of all mentions"@en ;
+    xeo:fillsSlot xeo:value ;
+    skos:exactMatch xeos:metric-ai_share_of_voice ;
+    skos:scopeNote "In the visibility report only. The citations report returns a field of the same name that means something else."@en ;
+    dct:source "https://docs.tryprofound.com/api-reference/reports/query-visibility (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:profound-mentions_count a skos:Concept ;
+    skos:inScheme xeos:profound ;
+    skos:notation "mentions_count" ;
+    skos:prefLabel "Mentions count"@en ;
+    skos:definition "The number of mentions analysed"@en ;
+    xeo:fillsSlot xeo:numeratorValue ;
+    skos:closeMatch xeo:numeratorValue ;
+    skos:scopeNote "A numerator behind the visibility report's rates. The report does not say of which rate."@en ;
+    dct:source "https://docs.tryprofound.com/api-reference/reports/query-visibility (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:profound-executions a skos:Concept ;
+    skos:inScheme xeos:profound ;
+    skos:notation "executions" ;
+    skos:prefLabel "Executions"@en ;
+    skos:definition "The number of prompt runs analysed"@en ;
+    xeo:fillsSlot xeo:value ;
+    skos:closeMatch xeos:metric-ai_answers_sampled ;
+    skos:scopeNote "The sample size behind the visibility report's rates."@en ;
+    dct:source "https://docs.tryprofound.com/api-reference/reports/query-visibility (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:profound-citation_share a skos:Concept ;
+    skos:inScheme xeos:profound ;
+    skos:notation "citation_share" ;
+    skos:prefLabel "Citation share"@en ;
+    skos:definition "Citations of an item as a share of all citations"@en ;
+    xeo:fillsSlot xeo:value ;
+    skos:exactMatch xeos:metric-ai_citation_share ;
+    skos:scopeNote "In the citations report. Replaces that report's share_of_voice."@en ;
+    dct:source "https://docs.tryprofound.com/api-reference/reports/query-citations (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:profound-citations-share_of_voice a skos:Concept ;
+    skos:inScheme xeos:profound ;
+    skos:notation "share_of_voice" ;
+    skos:prefLabel "Share of voice (citations report, deprecated)"@en ;
+    skos:definition "Citations of an item as a share of all citations"@en ;
+    xeo:fillsSlot xeo:value ;
+    skos:exactMatch xeos:metric-ai_citation_share ;
+    skos:scopeNote "In the citations report, where Profound has deprecated it in favour of citation_share. Citation-based, and so not the mention-based share_of_voice of the visibility report."@en ;
+    dct:source "https://docs.tryprofound.com/api-reference/reports/query-citations (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:profound-metrics a skos:Concept ;
+    skos:inScheme xeos:profound ;
+    skos:notation "metrics" ;
+    skos:prefLabel "Metrics"@en ;
+    skos:definition "The metrics the report is asked to return"@en ;
+    xeo:fillsSlot xeo:readingOf ;
+    skos:closeMatch xeo:readingOf ;
+    skos:scopeNote "Request field: each name selects one Metric."@en ;
+    dct:source "https://docs.tryprofound.com/api-reference/reports/query-visibility (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:profound-filters a skos:Concept ;
+    skos:inScheme xeos:profound ;
+    skos:notation "filters" ;
+    skos:prefLabel "Filters"@en ;
+    skos:definition "Conditions that restrict the report"@en ;
+    xeo:fillsSlot xeo:scope ;
+    skos:closeMatch xeo:scope ;
+    skos:scopeNote "Request field."@en ;
+    dct:source "https://docs.tryprofound.com/api-reference/reports/query-visibility (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:profound-start_date a skos:Concept ;
+    skos:inScheme xeos:profound ;
+    skos:notation "start_date" ;
+    skos:prefLabel "Start date"@en ;
+    skos:definition "The first day of the requested window"@en ;
+    xeo:fillsSlot xeo:periodStart ;
+    skos:closeMatch xeo:periodStart ;
+    skos:scopeNote "Request field. Profound returns no comparison window; a change is computed by the client from two requests."@en ;
+    dct:source "https://docs.tryprofound.com/api-reference/reports/query-visibility (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:profound-end_date a skos:Concept ;
+    skos:inScheme xeos:profound ;
+    skos:notation "end_date" ;
+    skos:prefLabel "End date"@en ;
+    skos:definition "The last day of the requested window"@en ;
+    xeo:fillsSlot xeo:periodEnd ;
+    skos:closeMatch xeo:periodEnd ;
+    skos:scopeNote "Request field."@en ;
+    dct:source "https://docs.tryprofound.com/api-reference/reports/query-visibility (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .

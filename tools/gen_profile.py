@@ -35,7 +35,7 @@ without them is a current core term:
     "deprecated": true        the term carries owl:deprecated true; advisory,
                               with "replacedBy" naming what rdfs:seeAlso points at
 
-Vendor crosswalks (xeo-vendor-schemes.ttl) are not in the profile: they map a
+Vendor crosswalks (mappings/, one file per tool) are not in the profile: they map a
 vendor's field names to slots and are not values a graph stores. schemes.json
 carries them under "vendorSchemes".
 

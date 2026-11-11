@@ -225,7 +225,7 @@ not something every implementation is expected to support. A term marked
 <a href="xeo-analysis.ttl">analysis</a>, <a href="xeo-metrics.ttl">metrics</a>,
 <a href="xeo-align.ttl">align</a>;
 reference values <a href="xeo-schemes.ttl">schemes</a> (<a href="schemes.json">JSON</a>);
-vendor crosswalks <a href="xeo-vendor-schemes.ttl">vendor schemes</a>;
+vendor mappings <a href="https://github.com/inboundfound/xeo-ontology/tree/main/mappings">mappings/</a>, one file per tool, not part of the ontology;
 JSON-LD <a href="context.jsonld">context</a>; Neo4j
 <a href="neo4j-profile.json">profile</a> and <a href="context.neo4j.jsonld">context</a>;
 SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>

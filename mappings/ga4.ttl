@@ -1,0 +1,141 @@
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dct:  <http://purl.org/dc/terms/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xeo:  <https://xeoontology.org/xeo#> .
+@prefix xeos: <https://xeoontology.org/schemes#> .
+
+# XEO mapping: Google Analytics 4.
+#
+# A mapping, not part of the ontology. It says which of this tool's fields
+# fills which XEO slot, and how closely. Nothing in the ontology points here.
+# How to read it, what the confidence marks mean, what was left out and how
+# to add a tool: mappings/README.md.
+
+# --- Google Analytics 4 -----------------------------------------------------
+
+xeos:ga4 a skos:ConceptScheme ;
+    skos:prefLabel "Google Analytics 4 Data API"@en ;
+    dct:source "XEO metrics and KPIs research report, 2026-11-10, Appendix C · https://developers.google.com/analytics/devguides/reporting/data/v1 · https://docs.cloud.google.com/bigquery/docs/google-analytics-4-transformation (the api-schema page returned navigation only; metric definitions come from adjacent official pages)" ;
+    dct:description "The request and response fields of runReport, and the predefined metrics a site's readings are most often taken from, mapped to the Metrics in xeos:metric. GA4 has no native AI-assistant metric the report could confirm in Google's own documentation, so ai_assistant_sessions has no concept here." .
+
+xeos:ga4-metrics-expression a skos:Concept ;
+    skos:inScheme xeos:ga4 ;
+    skos:notation "metrics[].expression" ;
+    skos:prefLabel "Metric expression"@en ;
+    skos:definition "A mathematical expression over other metrics, defining a derived metric in the request"@en ;
+    xeo:fillsSlot xeo:expression ;
+    skos:exactMatch xeo:expression ;
+    skos:scopeNote "Request field. Its presence makes the requested metric a derived one."@en ;
+    dct:source "https://developers.google.com/analytics/devguides/reporting/data/v1 (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:ga4-dateRanges a skos:Concept ;
+    skos:inScheme xeos:ga4 ;
+    skos:notation "dateRanges" ;
+    skos:prefLabel "Date ranges"@en ;
+    skos:definition "The windows the report is run over, each with a startDate and an endDate"@en ;
+    xeo:fillsSlot xeo:periodStart , xeo:periodEnd ;
+    skos:closeMatch xeo:periodStart , xeo:periodEnd ;
+    skos:scopeNote "Request field. Two ranges in one request is how GA4 does a period-over-period comparison: the second is the baseline window."@en ;
+    dct:source "https://developers.google.com/analytics/devguides/reporting/data/v1 (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:ga4-metricHeaders-type a skos:Concept ;
+    skos:inScheme xeos:ga4 ;
+    skos:notation "metricHeaders[].type" ;
+    skos:prefLabel "Metric type"@en ;
+    skos:definition "The value type of a returned metric: TYPE_INTEGER, TYPE_FLOAT, TYPE_SECONDS, TYPE_CURRENCY and others"@en ;
+    xeo:fillsSlot xeo:unit ;
+    skos:closeMatch xeo:unit ;
+    skos:scopeNote "Response field. A value type, coarser than a unit: TYPE_FLOAT covers ratios and averages alike."@en ;
+    dct:source "https://developers.google.com/analytics/devguides/reporting/data/v1 (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:ga4-rows-metricValues-value a skos:Concept ;
+    skos:inScheme xeos:ga4 ;
+    skos:notation "rows[].metricValues[].value" ;
+    skos:prefLabel "Metric value"@en ;
+    skos:definition "The value of one metric in one row, as a string"@en ;
+    xeo:fillsSlot xeo:value ;
+    skos:exactMatch xeo:value ;
+    skos:scopeNote "Response field. A string, to be parsed as a number."@en ;
+    dct:source "https://developers.google.com/analytics/devguides/reporting/data/v1 (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:ga4-sessions a skos:Concept ;
+    skos:inScheme xeos:ga4 ;
+    skos:notation "sessions" ;
+    skos:prefLabel "Sessions"@en ;
+    skos:definition "The number of sessions that began on the site"@en ;
+    xeo:fillsSlot xeo:value ;
+    skos:closeMatch xeos:metric-sessions ;
+    skos:scopeNote "A session starts with a session_start event. closeMatch: other tools end a session by a different rule, so counts are near and not equal."@en ;
+    dct:source "https://developers.google.com/analytics/devguides/reporting/data/v1 and the adjacent official pages the report lists; the api-schema page itself returned navigation only (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:ga4-engagedSessions a skos:Concept ;
+    skos:inScheme xeos:ga4 ;
+    skos:notation "engagedSessions" ;
+    skos:prefLabel "Engaged sessions"@en ;
+    skos:definition "Sessions that lasted longer than 10 seconds, or had a key event, or had 2 or more views"@en ;
+    xeo:fillsSlot xeo:value ;
+    skos:exactMatch xeos:metric-engaged_sessions ;
+    skos:scopeNote "The engagement rule is GA4's; it is the rule the neutral metric defers to for a GA4 reading."@en ;
+    dct:source "https://developers.google.com/analytics/devguides/reporting/data/v1 and the adjacent official pages the report lists; the api-schema page itself returned navigation only (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:ga4-engagementRate a skos:Concept ;
+    skos:inScheme xeos:ga4 ;
+    skos:notation "engagementRate" ;
+    skos:prefLabel "Engagement rate"@en ;
+    skos:definition "Engaged sessions divided by sessions"@en ;
+    xeo:fillsSlot xeo:value ;
+    skos:exactMatch xeos:metric-engagement_rate ;
+    skos:scopeNote "Returned as a fraction, 0 to 1."@en ;
+    dct:source "https://docs.cloud.google.com/bigquery/docs/google-analytics-4-transformation (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:ga4-bounceRate a skos:Concept ;
+    skos:inScheme xeos:ga4 ;
+    skos:notation "bounceRate" ;
+    skos:prefLabel "Bounce rate"@en ;
+    skos:definition "Sessions that were not engaged, divided by sessions"@en ;
+    xeo:fillsSlot xeo:value ;
+    skos:relatedMatch xeos:metric-engagement_rate ;
+    skos:scopeNote "One minus engagementRate. Related, not a match: it runs the other way, and it is not what other tools call a bounce (a single-pageview visit)."@en ;
+    dct:source "https://developers.google.com/analytics/devguides/reporting/data/v1 and the adjacent official pages the report lists; the api-schema page itself returned navigation only (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:ga4-keyEvents a skos:Concept ;
+    skos:inScheme xeos:ga4 ;
+    skos:notation "keyEvents" ;
+    skos:prefLabel "Key events"@en ;
+    skos:definition "The count of events marked as key events"@en ;
+    xeo:fillsSlot xeo:value ;
+    skos:exactMatch xeos:metric-key_events ;
+    skos:scopeNote "Formerly 'conversions'; the rename is reported by a secondary source. A per-event variant is written keyEvents:<event name>."@en ;
+    dct:source "https://developers.google.com/analytics/devguides/reporting/data/v1 and the adjacent official pages the report lists; the api-schema page itself returned navigation only (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:ga4-sessionKeyEventRate a skos:Concept ;
+    skos:inScheme xeos:ga4 ;
+    skos:notation "sessionKeyEventRate" ;
+    skos:prefLabel "Session key event rate"@en ;
+    skos:definition "The share of sessions in which a key event happened"@en ;
+    xeo:fillsSlot xeo:value ;
+    skos:exactMatch xeos:metric-session_conversion_rate ;
+    skos:scopeNote "A fraction, 0 to 1."@en ;
+    dct:source "https://developers.google.com/analytics/devguides/reporting/data/v1 and the adjacent official pages the report lists; the api-schema page itself returned navigation only (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:ga4-organicGoogleSearchClicks a skos:Concept ;
+    skos:inScheme xeos:ga4 ;
+    skos:notation "organicGoogleSearchClicks" ;
+    skos:prefLabel "Organic Google Search clicks"@en ;
+    skos:definition "Search Console clicks, reported inside GA4"@en ;
+    xeo:fillsSlot xeo:value ;
+    skos:closeMatch xeos:metric-clicks ;
+    skos:scopeNote "Search Console's number seen through GA4, not a second measurement."@en ;
+    dct:source "https://developers.google.com/analytics/devguides/reporting/data/v1 and the adjacent official pages the report lists; the api-schema page itself returned navigation only (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .

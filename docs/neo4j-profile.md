@@ -83,7 +83,7 @@ with the reference schemes that fill it.
   `"deprecated": true` marks a term that still works and that XEO will not remove;
   `"replacedBy"` names what to write instead. An entry with neither is a current core term.
 - **Vendor crosswalks are not in the profile.** Which vendor field fills which slot is in
-  `xeo-vendor-schemes.ttl` and under `vendorSchemes` in `schemes.json`.
+  `mappings/` (one file per tool, not part of the ontology) and under `vendorSchemes` in `schemes.json`.
 - **Stamp `xeoLayer` from it.** `labels[label].layer` and `relationshipTypes[type].layer` are the
   values to write.
 

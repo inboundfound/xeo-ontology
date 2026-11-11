@@ -1,0 +1,108 @@
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dct:  <http://purl.org/dc/terms/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xeo:  <https://xeoontology.org/xeo#> .
+@prefix xeos: <https://xeoontology.org/schemes#> .
+
+# XEO mapping: Google Search Console.
+#
+# A mapping, not part of the ontology. It says which of this tool's fields
+# fills which XEO slot, and how closely. Nothing in the ontology points here.
+# How to read it, what the confidence marks mean, what was left out and how
+# to add a tool: mappings/README.md.
+
+# --- Google Search Console --------------------------------------------------
+
+xeos:gsc a skos:ConceptScheme ;
+    skos:prefLabel "Google Search Console Search Analytics API"@en ;
+    dct:source "XEO metrics and KPIs research report, 2026-11-10, Appendix C · https://developers.google.com/webmaster-tools/v1/how-tos/all-your-data (read from a search extract of the page, not the full page)" ;
+    dct:description "The request and response fields of searchAnalytics.query, mapped to the Metrics they are readings of and to the reading's own slots. The four response metrics are the ground truth core's ranksFor rollup is built from." .
+
+xeos:gsc-clicks a skos:Concept ;
+    skos:inScheme xeos:gsc ;
+    skos:notation "clicks" ;
+    skos:prefLabel "Clicks"@en ;
+    skos:definition "Clicks on the site's results for the row"@en ;
+    xeo:fillsSlot xeo:value ;
+    skos:exactMatch xeos:metric-clicks ;
+    skos:scopeNote "A double. The count differs by aggregationType: by page and by property are two different numbers under this one field."@en ;
+    dct:source "https://developers.google.com/webmaster-tools/v1/how-tos/all-your-data (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:gsc-impressions a skos:Concept ;
+    skos:inScheme xeos:gsc ;
+    skos:notation "impressions" ;
+    skos:prefLabel "Impressions"@en ;
+    skos:definition "Times the site's results were shown for the row"@en ;
+    xeo:fillsSlot xeo:value ;
+    skos:exactMatch xeos:metric-impressions ;
+    skos:scopeNote "A double. Differs by aggregationType, like clicks."@en ;
+    dct:source "https://developers.google.com/webmaster-tools/v1/how-tos/all-your-data (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:gsc-ctr a skos:Concept ;
+    skos:inScheme xeos:gsc ;
+    skos:notation "ctr" ;
+    skos:prefLabel "CTR"@en ;
+    skos:definition "Clicks divided by impressions for the row"@en ;
+    xeo:fillsSlot xeo:value ;
+    skos:exactMatch xeos:metric-ctr ;
+    skos:scopeNote "Returned as a 0 to 1 quotient (0.1078), not a percentage. clicks and impressions of the same row are its numeratorValue and denominatorValue."@en ;
+    dct:source "https://developers.google.com/webmaster-tools/v1/how-tos/all-your-data (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:gsc-position a skos:Concept ;
+    skos:inScheme xeos:gsc ;
+    skos:notation "position" ;
+    skos:prefLabel "Position"@en ;
+    skos:definition "The average position of the site's results for the row"@en ;
+    xeo:fillsSlot xeo:value ;
+    skos:exactMatch xeos:metric-position ;
+    skos:scopeNote "1-based, an average over impressions, and computed differently when results are grouped by page than by property. Never summed."@en ;
+    dct:source "https://developers.google.com/webmaster-tools/v1/how-tos/all-your-data (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:gsc-aggregationType a skos:Concept ;
+    skos:inScheme xeos:gsc ;
+    skos:notation "aggregationType" ;
+    skos:prefLabel "Aggregation type"@en ;
+    skos:definition "How results were deduplicated: auto, byPage or byProperty"@en ;
+    xeo:fillsSlot xeo:aggregationBasis ;
+    skos:exactMatch xeo:aggregationBasis ;
+    skos:scopeNote "auto -> auto, byPage -> by_page, byProperty -> by_property."@en ;
+    dct:source "https://developers.google.com/webmaster-tools/v1/how-tos/all-your-data (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:gsc-startDate a skos:Concept ;
+    skos:inScheme xeos:gsc ;
+    skos:notation "startDate" ;
+    skos:prefLabel "Start date"@en ;
+    skos:definition "The first day of the requested range"@en ;
+    xeo:fillsSlot xeo:periodStart ;
+    skos:closeMatch xeo:periodStart ;
+    skos:scopeNote "Request field."@en ;
+    dct:source "https://developers.google.com/webmaster-tools/v1/how-tos/all-your-data (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:gsc-endDate a skos:Concept ;
+    skos:inScheme xeos:gsc ;
+    skos:notation "endDate" ;
+    skos:prefLabel "End date"@en ;
+    skos:definition "The last day of the requested range"@en ;
+    xeo:fillsSlot xeo:periodEnd ;
+    skos:closeMatch xeo:periodEnd ;
+    skos:scopeNote "Request field."@en ;
+    dct:source "https://developers.google.com/webmaster-tools/v1/how-tos/all-your-data (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:gsc-dimensionFilterGroups a skos:Concept ;
+    skos:inScheme xeos:gsc ;
+    skos:notation "dimensionFilterGroups" ;
+    skos:prefLabel "Dimension filter groups"@en ;
+    skos:definition "Filters on page, query, country, device or search appearance applied to the request"@en ;
+    xeo:fillsSlot xeo:scope ;
+    skos:closeMatch xeo:scope ;
+    skos:scopeNote "Restricts every metric in the row alike, which makes it scope and not a metricFilter."@en ;
+    dct:source "https://developers.google.com/webmaster-tools/v1/how-tos/all-your-data (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
