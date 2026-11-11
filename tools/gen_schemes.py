@@ -12,10 +12,12 @@ stores or sends. ``label`` is skos:prefLabel, what an operator reads.
 Ordered schemes (a lifecycle, a priority ladder) come out in their
 skos:OrderedCollection order and carry ``"ordered": true``.
 
-Two files are read. xeo-schemes.ttl holds the reference fillings and comes out
-under ``"schemes"``. xeo-vendor-schemes.ttl holds the per-vendor crosswalks and
-comes out under ``"vendorSchemes"``, where each concept also carries the slot it
-fills, its match, a scope note, its source and its mapping confidence.
+Two sources are read. xeo-schemes.ttl holds the reference fillings and comes out
+under ``"schemes"``. mappings/<tool>.ttl, one file per tool, holds the per-vendor
+crosswalks and comes out under ``"vendorSchemes"``, where each concept also
+carries the slot it fills, its match, a scope note, its source and its mapping
+confidence. The mappings are not part of the ontology; a file whose name starts
+with an underscore is a template and is skipped.
 
 A concept gains further keys only where the Turtle states them, so a concept
 with nothing extra reads exactly as it always has:
@@ -29,6 +31,7 @@ with nothing extra reads exactly as it always has:
 Requires rdflib (``pip install rdflib``).
 Usage:  python tools/gen_schemes.py        # writes schemes.json
 """
+import glob
 import json
 import os
 
@@ -38,8 +41,14 @@ from rdflib.namespace import DCTERMS, OWL, SKOS
 
 HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = os.path.join(HERE, "xeo-schemes.ttl")
-VENDOR_SRC = os.path.join(HERE, "xeo-vendor-schemes.ttl")
+MAPPINGS_DIR = os.path.join(HERE, "mappings")
 DEST = os.path.join(HERE, "schemes.json")
+
+
+def mapping_files() -> list[str]:
+    """mappings/<tool>.ttl as repo-relative paths, sorted. ``_``-prefixed files are templates."""
+    names = sorted(os.path.basename(p) for p in glob.glob(os.path.join(MAPPINGS_DIR, "*.ttl")))
+    return [os.path.join("mappings", n) for n in names if not n.startswith("_")]
 
 XEO = Namespace("https://xeoontology.org/xeo#")
 XEOS = Namespace("https://xeoontology.org/schemes#")
@@ -170,14 +179,15 @@ def build() -> dict:
     g = Graph()
     g.parse(SRC, format="turtle")
     vg = Graph()
-    vg.parse(VENDOR_SRC, format="turtle")
+    for name in mapping_files():
+        vg.parse(os.path.join(HERE, name), format="turtle")
     both = g + vg
 
     module = g.value(predicate=RDF.type, object=OWL.Ontology)
     version = text(g, module, OWL.versionInfo) if module else None
 
     return {
-        "$comment": "Generated from xeo-schemes.ttl and xeo-vendor-schemes.ttl by tools/gen_schemes.py — do not edit by hand.",
+        "$comment": "Generated from xeo-schemes.ttl and mappings/*.ttl by tools/gen_schemes.py — do not edit by hand.",
         "namespace": str(XEOS),
         "ontology": str(XEO),
         "version": version,

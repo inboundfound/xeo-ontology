@@ -539,3 +539,11 @@ xeo:assignedAt rdfs:label "assigned at" .
 
 xeo:termStatus a owl:AnnotationProperty ;
     rdfs:comment "Whether a term is part of the core every implementation is expected to support, or of the extension set: 'core' or 'extension'. Absent means core, so every term published before this annotation existed is core without being touched. An extension term is declared, stable and usable; it is marked because only some of the systems XEO maps support the idea, and a consumer may ignore it. Also carried by a concept in a reference scheme, with the same reading. Says nothing about deprecation, which is owl:deprecated." .
+
+# --- v0.6.0 (mappings, 2026-11-11) -------------------------------------------------
+# Appended at the foot, so no line above moves. The per-tool mappings moved out of
+# the ontology into mappings/ before release. The one annotation they all carry is
+# an XEO term, so it is declared here. Its text is unchanged.
+
+xeo:mappingConfidence a owl:AnnotationProperty ;
+    rdfs:comment "How a vendor-field mapping is known: 'documented' (the vendor's own documentation states the field and its meaning), 'inferred' (the meaning is documented but the field name or its role rests on a secondary source or on the mapper's reading), or 'verified' (checked against live API output). Carried by every concept in a vendor scheme. No mapping published so far is verified." .

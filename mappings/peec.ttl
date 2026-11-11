@@ -1,0 +1,174 @@
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dct:  <http://purl.org/dc/terms/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xeo:  <https://xeoontology.org/xeo#> .
+@prefix xeos: <https://xeoontology.org/schemes#> .
+
+# XEO mapping: Peec AI.
+#
+# A mapping, not part of the ontology. It says which of this tool's fields
+# fills which XEO slot, and how closely. Nothing in the ontology points here.
+# How to read it, what the confidence marks mean, what was left out and how
+# to add a tool: mappings/README.md.
+
+# --- Peec AI ----------------------------------------------------------------
+
+xeos:peec a skos:ConceptScheme ;
+    skos:prefLabel "Peec AI Customer API (brands report)"@en ;
+    dct:source "XEO metrics and KPIs research report, 2026-11-10, Appendix C and section 6 · https://docs.peec.ai/api-reference/reports/get-brands-report" ;
+    dct:description "The fields of Peec's brands report, mapped to the AI visibility Metrics. Peec publishes its aggregation formulas and the components behind each rate, which is why most of these are exact. Compare with xeos:profound: the two vendors use 'visibility' for ratios with different denominators." .
+
+xeos:peec-visibility a skos:Concept ;
+    skos:inScheme xeos:peec ;
+    skos:notation "visibility" ;
+    skos:prefLabel "Visibility"@en ;
+    skos:definition "The share of chats in which the brand was mentioned"@en ;
+    xeo:fillsSlot xeo:value ;
+    skos:exactMatch xeos:metric-mention_rate ;
+    skos:scopeNote "sum(visibility_count) / sum(visibility_total), over all chats; 0 to 1. Peec's Data Studio connector has a field of the same name defined as a count of chats; that one is not this."@en ;
+    dct:source "https://docs.peec.ai/api-reference/reports/get-brands-report (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:peec-visibility_count a skos:Concept ;
+    skos:inScheme xeos:peec ;
+    skos:notation "visibility_count" ;
+    skos:prefLabel "Visibility count"@en ;
+    skos:definition "The number of chats in which the brand was mentioned"@en ;
+    xeo:fillsSlot xeo:numeratorValue ;
+    skos:exactMatch xeo:numeratorValue ;
+    skos:scopeNote "The numerator of visibility; as a count in its own right it is a reading of ai_answers_mentioning."@en ;
+    dct:source "https://docs.peec.ai/api-reference/reports/get-brands-report (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:peec-visibility_total a skos:Concept ;
+    skos:inScheme xeos:peec ;
+    skos:notation "visibility_total" ;
+    skos:prefLabel "Visibility total"@en ;
+    skos:definition "The number of chats the rate was computed over"@en ;
+    xeo:fillsSlot xeo:denominatorValue ;
+    skos:exactMatch xeo:denominatorValue ;
+    skos:scopeNote "The denominator of visibility, and of win_rate; as a count in its own right it is a reading of ai_answers_sampled."@en ;
+    dct:source "https://docs.peec.ai/api-reference/reports/get-brands-report (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:peec-share_of_voice a skos:Concept ;
+    skos:inScheme xeos:peec ;
+    skos:notation "share_of_voice" ;
+    skos:prefLabel "Share of voice"@en ;
+    skos:definition "The brand's mentions as a share of all tracked brands' mentions"@en ;
+    xeo:fillsSlot xeo:value ;
+    skos:exactMatch xeos:metric-ai_share_of_voice ;
+    skos:scopeNote "0 to 1. A pre-aggregation filter on one brand shrinks numerator and denominator together and collapses this to 1.0; filter with 'having' instead."@en ;
+    dct:source "https://docs.peec.ai/api-reference/reports/get-brands-report (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:peec-mention_count a skos:Concept ;
+    skos:inScheme xeos:peec ;
+    skos:notation "mention_count" ;
+    skos:prefLabel "Mention count"@en ;
+    skos:definition "The number of mentions of the brand"@en ;
+    xeo:fillsSlot xeo:numeratorValue ;
+    skos:closeMatch xeo:numeratorValue ;
+    skos:scopeNote "Taken as the numerator of share_of_voice. The report lists it among the rollup components and quotes no formula that uses it, so the role is a reading."@en ;
+    dct:source "https://docs.peec.ai/api-reference/reports/get-brands-report (read 2026-11-10)" ;
+    xeo:mappingConfidence "inferred" .
+
+xeos:peec-position a skos:Concept ;
+    skos:inScheme xeos:peec ;
+    skos:notation "position" ;
+    skos:prefLabel "Position"@en ;
+    skos:definition "The brand's average rank among the brands a chat names, over chats where it appears"@en ;
+    xeo:fillsSlot xeo:value ;
+    skos:exactMatch xeos:metric-ai_average_position ;
+    skos:scopeNote "sum(position_sum) / sum(position_count). Averaged only over chats where the brand appears. 1 is best."@en ;
+    dct:source "https://docs.peec.ai/api-reference/reports/get-brands-report (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:peec-position_sum a skos:Concept ;
+    skos:inScheme xeos:peec ;
+    skos:notation "position_sum" ;
+    skos:prefLabel "Position sum"@en ;
+    skos:definition "The sum of the brand's positions over the chats where it appears"@en ;
+    xeo:fillsSlot xeo:numeratorValue ;
+    skos:exactMatch xeo:numeratorValue ;
+    skos:scopeNote "The numerator of position."@en ;
+    dct:source "https://docs.peec.ai/api-reference/reports/get-brands-report (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:peec-position_count a skos:Concept ;
+    skos:inScheme xeos:peec ;
+    skos:notation "position_count" ;
+    skos:prefLabel "Position count"@en ;
+    skos:definition "The number of chats in which the brand appears with a position"@en ;
+    xeo:fillsSlot xeo:denominatorValue ;
+    skos:exactMatch xeo:denominatorValue ;
+    skos:scopeNote "The denominator of position; compare it with the Metric's minDenominator."@en ;
+    dct:source "https://docs.peec.ai/api-reference/reports/get-brands-report (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:peec-sentiment a skos:Concept ;
+    skos:inScheme xeos:peec ;
+    skos:notation "sentiment" ;
+    skos:prefLabel "Sentiment"@en ;
+    skos:definition "A model's score of the tone of the brand's mentions, 0 to 100"@en ;
+    xeo:fillsSlot xeo:value ;
+    skos:exactMatch xeos:metric-ai_sentiment ;
+    skos:scopeNote "A vendor model's output: a derivation with Peec as its method. Not xeo:sentiment, which is a four-way code on one mention."@en ;
+    dct:source "https://docs.peec.ai/api-reference/reports/get-brands-report (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:peec-start_date a skos:Concept ;
+    skos:inScheme xeos:peec ;
+    skos:notation "start_date" ;
+    skos:prefLabel "Start date"@en ;
+    skos:definition "The first day of the requested window"@en ;
+    xeo:fillsSlot xeo:periodStart ;
+    skos:closeMatch xeo:periodStart ;
+    skos:scopeNote "Request field."@en ;
+    dct:source "https://docs.peec.ai/api-reference/reports/get-brands-report (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:peec-end_date a skos:Concept ;
+    skos:inScheme xeos:peec ;
+    skos:notation "end_date" ;
+    skos:prefLabel "End date"@en ;
+    skos:definition "The last day of the requested window"@en ;
+    xeo:fillsSlot xeo:periodEnd ;
+    skos:closeMatch xeo:periodEnd ;
+    skos:scopeNote "Request field."@en ;
+    dct:source "https://docs.peec.ai/api-reference/reports/get-brands-report (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:peec-previous_start_date a skos:Concept ;
+    skos:inScheme xeos:peec ;
+    skos:notation "previous_start_date" ;
+    skos:prefLabel "Previous start date"@en ;
+    skos:definition "The first day of the comparison window"@en ;
+    xeo:fillsSlot xeo:baselineReading ;
+    skos:closeMatch xeo:baselineReading ;
+    skos:scopeNote "With previous_end_date, the window of the baseline reading. Left out, Peec uses the window of equal length immediately before start_date."@en ;
+    dct:source "https://docs.peec.ai/api-reference/reports/get-brands-report (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:peec-previous_end_date a skos:Concept ;
+    skos:inScheme xeos:peec ;
+    skos:notation "previous_end_date" ;
+    skos:prefLabel "Previous end date"@en ;
+    skos:definition "The last day of the comparison window"@en ;
+    xeo:fillsSlot xeo:baselineReading ;
+    skos:closeMatch xeo:baselineReading ;
+    skos:scopeNote "See previous_start_date."@en ;
+    dct:source "https://docs.peec.ai/api-reference/reports/get-brands-report (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:peec-filters a skos:Concept ;
+    skos:inScheme xeos:peec ;
+    skos:notation "filters" ;
+    skos:prefLabel "Filters"@en ;
+    skos:definition "Conditions applied before aggregation"@en ;
+    xeo:fillsSlot xeo:scope ;
+    skos:closeMatch xeo:scope ;
+    skos:scopeNote "Shrinks numerator and denominator alike, which is scope. The sibling request field 'having' filters after aggregation and is neither scope nor a metricFilter."@en ;
+    dct:source "https://docs.peec.ai/api-reference/reports/get-brands-report (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .

@@ -1,0 +1,174 @@
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dct:  <http://purl.org/dc/terms/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xeo:  <https://xeoontology.org/xeo#> .
+@prefix xeos: <https://xeoontology.org/schemes#> .
+
+# XEO mapping: HubSpot CRM.
+#
+# A mapping, not part of the ontology. It says which of this tool's fields
+# fills which XEO slot, and how closely. Nothing in the ontology points here.
+# How to read it, what the confidence marks mean, what was left out and how
+# to add a tool: mappings/README.md.
+
+# --- HubSpot CRM ------------------------------------------------------------
+
+xeos:hubspotCrm a skos:ConceptScheme ;
+    skos:prefLabel "HubSpot CRM properties"@en ;
+    dct:source "XEO CRM pipeline research report, 2026-11-10, Appendix B · HubSpot Knowledge Base and developer documentation as cited on each concept" ;
+    dct:description "HubSpot's deal and contact properties, by internal name, mapped to the XEO pipeline slots. Stage and pipeline ids are not here and cannot be: they are configured per portal, so the same stage has a different id in every account, and they are mapped per tenant through stageClass. Check the internal names marked inferred against GET /crm/properties/2026-09/deals and /contacts on a live portal before relying on them." .
+
+xeos:hubspotCrm-amount a skos:Concept ;
+    skos:inScheme xeos:hubspotCrm ;
+    skos:notation "amount" ;
+    skos:prefLabel "Amount"@en ;
+    skos:definition "The total value of the deal, in the deal's currency"@en ;
+    xeo:fillsSlot xeo:dealAmount ;
+    skos:exactMatch xeo:dealAmount ;
+    skos:scopeNote "The deal's own currency. Not amount_in_home_currency, which is converted, and not hs_forecast_amount, which is weighted."@en ;
+    dct:source "https://knowledge.hubspot.com/properties/hubspots-default-deal-properties (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:hubspotCrm-amount_in_home_currency a skos:Concept ;
+    skos:inScheme xeos:hubspotCrm ;
+    skos:notation "amount_in_home_currency" ;
+    skos:prefLabel "Amount in company currency"@en ;
+    skos:definition "The deal amount converted to the account's company currency"@en ;
+    xeo:fillsSlot xeo:amountInReportingCurrency ;
+    skos:closeMatch xeo:amountInReportingCurrency ;
+    skos:scopeNote "Converted at the latest account rate while the deal is open, and at the rate in effect on the close date once it is closed. The definition is documented; the internal name was confirmed only from HubSpot Community API responses."@en ;
+    dct:source "https://knowledge.hubspot.com/properties/hubspots-default-deal-properties (read 2026-11-10)" ;
+    xeo:mappingConfidence "inferred" .
+
+xeos:hubspotCrm-dealstage a skos:Concept ;
+    skos:inScheme xeos:hubspotCrm ;
+    skos:notation "dealstage" ;
+    skos:prefLabel "Deal stage"@en ;
+    skos:definition "The stage the deal is in, as the portal's internal stage id"@en ;
+    xeo:fillsSlot xeo:stageRef ;
+    skos:exactMatch xeo:stageRef ;
+    skos:scopeNote "The value is a per-portal id ('closedwon' in one account, '258551227' in another). What the stage means is read from the pipelines API's stage metadata, per tenant, and goes in stageClass."@en ;
+    dct:source "https://knowledge.hubspot.com/properties/hubspots-default-deal-properties (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:hubspotCrm-pipeline a skos:Concept ;
+    skos:inScheme xeos:hubspotCrm ;
+    skos:notation "pipeline" ;
+    skos:prefLabel "Pipeline"@en ;
+    skos:definition "The pipeline the deal is in, as the portal's internal pipeline id"@en ;
+    xeo:fillsSlot xeo:pipelineRef ;
+    skos:exactMatch xeo:pipelineRef ;
+    skos:scopeNote "A per-portal id; the report's example value is 'default'."@en ;
+    dct:source "https://knowledge.hubspot.com/properties/hubspots-default-deal-properties (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:hubspotCrm-hs_is_closed_won a skos:Concept ;
+    skos:inScheme xeos:hubspotCrm ;
+    skos:notation "hs_is_closed_won" ;
+    skos:prefLabel "Is closed won"@en ;
+    skos:definition "True when the deal is in a closed-won stage"@en ;
+    xeo:fillsSlot xeo:dealOutcome ;
+    skos:narrowMatch xeo:dealOutcome ;
+    skos:scopeNote "Answers won or not won, and nothing about lost. Lost is derived from the stage's closed flag in the pipelines metadata, with method tenant-stage-map."@en ;
+    dct:source "https://knowledge.hubspot.com/properties/hubspots-default-deal-properties (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:hubspotCrm-closedate a skos:Concept ;
+    skos:inScheme xeos:hubspotCrm ;
+    skos:notation "closedate" ;
+    skos:prefLabel "Close date"@en ;
+    skos:definition "The day the deal is expected to close, or was closed"@en ;
+    xeo:fillsSlot xeo:expectedCloseDate , xeo:dealClosedAt ;
+    skos:relatedMatch xeo:expectedCloseDate , xeo:dealClosedAt ;
+    skos:scopeNote "One field, two meanings: route by outcome. While the deal is open it is the owner's forecast (expectedCloseDate); once closed it is when it closed (dealClosedAt). HubSpot sets it to today when a deal moves into a closed stage, but not when only the stage property is updated through the API, so a closed deal can carry a stale forecast date."@en ;
+    dct:source "https://knowledge.hubspot.com/properties/hubspots-default-deal-properties (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:hubspotCrm-createdate a skos:Concept ;
+    skos:inScheme xeos:hubspotCrm ;
+    skos:notation "createdate" ;
+    skos:prefLabel "Create date"@en ;
+    skos:definition "When the deal was created"@en ;
+    xeo:fillsSlot xeo:recordCreatedAt ;
+    skos:exactMatch xeo:recordCreatedAt ;
+    skos:scopeNote "Users can edit a deal's create date by hand, so it is the CRM's record of creation and not proof of it."@en ;
+    dct:source "https://knowledge.hubspot.com/properties/hubspots-default-deal-properties (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:hubspotCrm-hubspot_owner_id a skos:Concept ;
+    skos:inScheme xeos:hubspotCrm ;
+    skos:notation "hubspot_owner_id" ;
+    skos:prefLabel "Deal owner"@en ;
+    skos:definition "The user the deal is assigned to"@en ;
+    xeo:fillsSlot xeo:ownerRef ;
+    skos:exactMatch xeo:ownerRef ;
+    skos:scopeNote "An owner id. Not the user who created the record."@en ;
+    dct:source "https://knowledge.hubspot.com/properties/hubspots-default-deal-properties (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:hubspotCrm-hs_forecast_amount a skos:Concept ;
+    skos:inScheme xeos:hubspotCrm ;
+    skos:notation "hs_forecast_amount" ;
+    skos:prefLabel "Forecast amount"@en ;
+    skos:definition "The deal amount multiplied by its forecast probability"@en ;
+    xeo:fillsSlot xeo:weightedAmount ;
+    skos:narrowMatch xeo:weightedAmount ;
+    skos:scopeNote "Weighted by the forecast probability, which is not the deal probability; HubSpot's 'Weighted amount' uses the latter and is the one it recommends. Method must name which."@en ;
+    dct:source "https://knowledge.hubspot.com/properties/hubspots-default-deal-properties (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:hubspotCrm-lifecyclestage a skos:Concept ;
+    skos:inScheme xeos:hubspotCrm ;
+    skos:notation "lifecyclestage" ;
+    skos:prefLabel "Lifecycle stage"@en ;
+    skos:definition "Where the contact or company is in the marketing and sales funnel"@en ;
+    xeo:fillsSlot xeo:lifecycleStage ;
+    skos:exactMatch xeo:lifecycleStage ;
+    skos:scopeNote "Default values subscriber, lead, marketingqualifiedlead, salesqualifiedlead, opportunity, customer, evangelist; a portal can customize the ladder, and the one the report saw had. The API moves a record forward only. What qualifies a lead for each stage is the portal's own rule."@en ;
+    dct:source "HubSpot Knowledge Base, default contact properties (knowledge.hubspot.com; the report records the page and not its URL) (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:hubspotCrm-hs_v2_date_entered a skos:Concept ;
+    skos:inScheme xeos:hubspotCrm ;
+    skos:notation "hs_v2_date_entered_" ;
+    skos:prefLabel "Date entered stage (v2)"@en ;
+    skos:definition "When the deal most recently entered a given stage; one property per stage, named by appending the stage id"@en ;
+    xeo:fillsSlot xeo:enteredAt ;
+    skos:closeMatch xeo:enteredAt ;
+    skos:scopeNote "The notation is a prefix: the property is hs_v2_date_entered_<stage id>. Holds the latest entry only, so it yields one StageTransition per stage and not the full history. Never use the legacy hs_date_entered_ properties: they cleared when a deal moved backwards and filled when it skipped a stage, and stopped being returned on 2024-11-20."@en ;
+    dct:source "HubSpot Developer Changelog, sunset of the legacy stage properties (developers.hubspot.com; the report records the page and not its URL) (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .
+
+xeos:hubspotCrm-hs_analytics_source a skos:Concept ;
+    skos:inScheme xeos:hubspotCrm ;
+    skos:notation "hs_analytics_source" ;
+    skos:prefLabel "Original traffic source"@en ;
+    skos:definition "The channel of the contact's earliest known session, as HubSpot's classifier assigned it"@en ;
+    xeo:fillsSlot xeo:firstTouchChannel ;
+    skos:exactMatch xeo:firstTouchChannel ;
+    skos:scopeNote "A vendor classifier's output: method vendor-classifier:hubspot. Values ORGANIC_SEARCH, PAID_SEARCH, EMAIL_MARKETING, SOCIAL_MEDIA, REFERRALS, OTHER_CAMPAIGNS, DIRECT_TRAFFIC, OFFLINE, PAID_SOCIAL, AI_REFERRALS; only the last is mapped to a neutral channel so far. A deal inherits it from the associated contact with the earliest activity. The definition is documented; the internal name was confirmed only from HubSpot Community API responses."@en ;
+    dct:source "HubSpot Knowledge Base, traffic source properties (knowledge.hubspot.com; the report records the page and not its URL) (read 2026-11-10)" ;
+    xeo:mappingConfidence "inferred" .
+
+xeos:hubspotCrm-hs_analytics_latest_source a skos:Concept ;
+    skos:inScheme xeos:hubspotCrm ;
+    skos:notation "hs_analytics_latest_source" ;
+    skos:prefLabel "Latest traffic source"@en ;
+    skos:definition "The channel of the contact's most recent session, as HubSpot's classifier assigned it"@en ;
+    xeo:fillsSlot xeo:latestTouchChannel ;
+    skos:exactMatch xeo:latestTouchChannel ;
+    skos:scopeNote "Same values and classifier as the original source. The definition is documented; the internal name was confirmed only from HubSpot Community API responses."@en ;
+    dct:source "HubSpot Knowledge Base, traffic source properties (knowledge.hubspot.com; the report records the page and not its URL) (read 2026-11-10)" ;
+    xeo:mappingConfidence "inferred" .
+
+xeos:hubspotCrm-value-AI_REFERRALS a skos:Concept ;
+    skos:inScheme xeos:hubspotCrm ;
+    skos:notation "AI_REFERRALS" ;
+    skos:prefLabel "AI Referrals (traffic source value)"@en ;
+    skos:definition "A visit HubSpot classified as referred by an AI platform"@en ;
+    xeo:fillsSlot xeo:firstTouchChannel , xeo:latestTouchChannel ;
+    skos:closeMatch xeos:acquisitionChannel-ai_assistant ;
+    skos:scopeNote "A value of the original and latest traffic source properties, not a property. A visit qualifies when the referring domain, or a UTM parameter, is one of the AI platform domains HubSpot recognises (chatgpt.com, claude.ai, perplexity.ai, copilot.microsoft.com, gemini.google.com, meta.ai, mistral.ai, poe.com, grok.com); HubSpot states that only AI-specific domains like gemini.google.com are categorised this way. History is not reclassified. closeMatch because another tool's list of assistants differs. A community report shows a UTM can send such a visit to OTHER_CAMPAIGNS instead."@en ;
+    dct:source "HubSpot Knowledge Base, traffic source properties (knowledge.hubspot.com; the report records the page and not its URL) (read 2026-11-10)" ;
+    xeo:mappingConfidence "documented" .

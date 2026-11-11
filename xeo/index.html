@@ -75,7 +75,7 @@ not something every implementation is expected to support. A term marked
 <a href="xeo-analysis.ttl">analysis</a>, <a href="xeo-metrics.ttl">metrics</a>,
 <a href="xeo-align.ttl">align</a>;
 reference values <a href="xeo-schemes.ttl">schemes</a> (<a href="schemes.json">JSON</a>);
-vendor crosswalks <a href="xeo-vendor-schemes.ttl">vendor schemes</a>;
+vendor mappings <a href="https://github.com/inboundfound/xeo-ontology/tree/main/mappings">mappings/</a>, one file per tool, not part of the ontology;
 JSON-LD <a href="context.jsonld">context</a>; Neo4j
 <a href="neo4j-profile.json">profile</a> and <a href="context.neo4j.jsonld">context</a>;
 SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
@@ -1942,7 +1942,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>The number of words the crawler counted in the fetched page. A derivation: tools differ on what is counted (body text only, or navigation and footer as well), so counts from different crawlers are not comparable. Carried on fetched.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div></dl>
 </section>
-<h2 id="annotation-properties">Annotation properties <span class="n">6</span></h2>
+<h2 id="annotation-properties">Annotation properties <span class="n">7</span></h2>
 <section id="canonicalStore" class="term">
   <h3>canonicalStore <span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:canonicalStore</code>
@@ -1965,6 +1965,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <h3>groundedIn <span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:groundedIn</code>
   <p>The primary standard or API contract that defines this term&#x27;s meaning.</p>
+  
+</section>
+<section id="mappingConfidence" class="term">
+  <h3>mappingConfidence <span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:mappingConfidence</code>
+  <p>How a vendor-field mapping is known: &#x27;documented&#x27; (the vendor&#x27;s own documentation states the field and its meaning), &#x27;inferred&#x27; (the meaning is documented but the field name or its role rests on a secondary source or on the mapper&#x27;s reading), or &#x27;verified&#x27; (checked against live API output). Carried by every concept in a vendor scheme. No mapping published so far is verified.</p>
   
 </section>
 <section id="rangeIncludes" class="term">
