@@ -1631,7 +1631,7 @@
           "label": "Clickthrough rate",
           "definition": "The share of impressions that were clicked: clicks divided by impressions, as a 0 to 1 quotient",
           "note": "reading: an observation where Search Console returned it for exactly this window and scope; a derivation when rolled up or recomputed",
-          "editorialNote": "The unit is ratio. xeos:objectiveMetric-ctr, its earlier form, notes the unit as percent; Search Console returns a quotient (0.1078), and so does every other source read. minDenominator 100 is an inferred default, not a vendor fact.",
+          "editorialNote": "The unit is ratio. xeos:objectiveMetric-ctr, its earlier form, noted the unit as percent until 0.6.0 corrected it; Search Console returns a quotient (0.1078), and so does every other source read. minDenominator 100 is an inferred default, not a vendor fact.",
           "metric": {
             "metricType": "ratio",
             "numerator": "clicks",
@@ -2093,13 +2093,13 @@
           "iri": "https://xeoontology.org/schemes#objectiveMetric-ctr",
           "label": "CTR",
           "definition": "Clickthrough rate over the window",
-          "note": "direction up · unit percent · source GSC",
+          "note": "direction up · unit ratio · source GSC",
           "matches": {
             "exactMatch": [
               "xeos:metric-ctr"
             ]
           },
-          "editorialNote": "The note above gives the unit as percent. The sources return a 0 to 1 quotient, and xeos:metric-ctr states the unit as ratio. The note is left as published, because a consumer may have built on it; whether stored ctr targets and baselines hold 5 or 0.05 needs checking before it is corrected."
+          "editorialNote": "Until 0.6.0 the note above gave the unit as percent. The sources return a 0 to 1 quotient and xeos:metric-ctr states the unit as ratio, so the note was corrected. A consumer that built on the old note may hold 5 where this means 0.05: check stored ctr targets and baselines before reading them as ratios."
         },
         {
           "code": "etv",

@@ -143,9 +143,11 @@ and, as extensions, `timeGrain`, `aggregationBasis`, `dataState`. `objectiveMetr
 the compatibility list: each of its eight concepts is an `exactMatch` of its Metric under the
 same code. Every `minDenominator` is an inferred default, and says so.
 
-**`ctr` unit, flagged and not changed.** The published `objectiveMetric` concept notes its unit
-as percent. Search Console returns a 0 to 1 quotient. The Metric `ctr` states ratio; the old
-note is left as published, with an editorial note, until stored values are checked.
+**`ctr` unit, corrected to ratio.** The published `objectiveMetric` concept noted its unit as
+percent. Search Console returns a 0 to 1 quotient, and the Metric `ctr` states ratio, so the old
+note now says ratio too. Stored values were not checked first: a consumer that built on the old
+note may hold 5 where this means 0.05, and should check its `ctr` targets and baselines before
+reading them as ratios. An editorial note on the concept says the same.
 
 ### CRM pipeline
 
