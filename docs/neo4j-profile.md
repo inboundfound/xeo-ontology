@@ -486,7 +486,6 @@ Generated from XEO 0.6.0. Do not edit between the markers; run `tools/gen_profil
 | `device` | `desktop` · `mobile` · `tablet` |
 | `effort` | `hours` · `days` · `weeks` · `quarter` |
 | `engagementType` | `oneoff` · `retainer` |
-| `epistemicLayer` | `entity` · `episode` · `observation` · `derivation` · `interpretation` · `norm` |
 | `execution` | `advised` · `ours` |
 | `experimentStatus` | `measuring` · `concluded` · `cancelled` · `unmeasurable` |
 | `feedbackVerdict` | `accepted` · `needs_work` · `rejected` |
@@ -520,5 +519,6 @@ Generated from XEO 0.6.0. Do not edit between the markers; run `tools/gen_profil
 | `targetKind` | `absolute` · `absolute_change` · `percent` · `relative` |
 | `timeGrain` | `day` · `month` · `quarter` · `week` · `year` |
 | `valuePeriod` | `annual` · `monthly` · `one_time` |
+| `xeoLayer` | `entity` · `episode` · `observation` · `derivation` · `interpretation` · `norm` |
 
 <!-- END GENERATED -->

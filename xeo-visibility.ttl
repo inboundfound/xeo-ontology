@@ -36,50 +36,50 @@ xeo:ConversationalAgent a owl:Class ; rdfs:subClassOf xeo:Engine ;
 
 xeo:Brand a owl:Class ;
     rdfs:label "Brand" ;
-    xeo:epistemicLayer "entity" ;
+    xeo:xeoLayer "entity" ;
     dct:description "A named market identity that engines may mention, cite, or recommend. Distinct from Website: a brand can be visible on the whole web, not only its own origin." .
 
 xeo:Prompt a owl:Class ;
     rdfs:label "Prompt" ;
-    xeo:epistemicLayer "entity" ;
+    xeo:xeoLayer "entity" ;
     dct:description "A tracked natural-language question posed to engines. Distinct from Term: a prompt is what a person asks; the engine's retrieval fans out into Terms." .
 
 xeo:LLMResponse a owl:Class ;
     rdfs:label "LLM Response" ;
-    xeo:epistemicLayer "episode" ;
+    xeo:xeoLayer "episode" ;
     dct:description "One captured response from one engine/model for one Prompt at a moment: time-bounded, source-attributed, immutable once captured. The visibility sibling of SerpSnapshot." .
 
 # --- Object properties -------------------------------------------------------
 
 xeo:tracksPrompt a owl:ObjectProperty ;
     rdfs:domain xeo:Website ; rdfs:range xeo:Prompt ;
-    xeo:epistemicLayer "entity" ;
+    xeo:xeoLayer "entity" ;
     dct:description "This tenant tracks this prompt. Tenancy is data, not schema." .
 
 xeo:hasResponse a owl:ObjectProperty ;
     rdfs:domain xeo:Prompt ; rdfs:range xeo:LLMResponse ;
-    xeo:epistemicLayer "episode" .
+    xeo:xeoLayer "episode" .
 
 xeo:cites a owl:ObjectProperty ;
     rdfs:domain xeo:LLMResponse ; rdfs:range xeo:URL ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     xeo:groundedIn "Engine response citation annotations (per-provider API contract)" ;
     dct:description "The response grounded on this URL, per the engine's own citation annotations. Carries citationRank where the engine orders its sources. The visibility sibling of hasResult." .
 
 xeo:mentions a owl:ObjectProperty ;
     rdfs:domain xeo:LLMResponse ; rdfs:range xeo:Brand ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     dct:description "The brand's name appears in the response text. Carries mentionRank (order of first appearance) — high mention counts at poor ranks are the 'named among twelve, championed never' pattern. Extraction method (string match, NER model) must be recorded; model-extracted mentions are derivations, not observations." .
 
 xeo:fansOutTo a owl:ObjectProperty ;
     rdfs:domain xeo:Prompt ; rdfs:range xeo:Term ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     xeo:groundedIn "Engine-reported retrieval queries (per-provider API contract)" ;
     dct:description "A retrieval query the engine reported issuing while answering this prompt. Fan-out queries ARE Terms — the join between the xEO layer and classic rank data. Carries the reporting engine and capture episode." .
 
 xeo:visibilityFor a owl:ObjectProperty ;
     rdfs:domain xeo:Prompt ; rdfs:range xeo:Brand ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     xeo:canonicalStore "neo4j" ;
     dct:description "Windowed rollup of response-level observations for a (prompt, brand) pair: mentionRate, citationRate, responses, periodStart, periodEnd, source, datasetUri. Mirrors the ranksFor rollup pattern — raw responses are the authoritative record; this is the traversal-friendly projection." .
 
@@ -87,22 +87,22 @@ xeo:visibilityFor a owl:ObjectProperty ;
 
 xeo:webSearchEnabled a owl:DatatypeProperty ;
     rdfs:domain xeo:LLMResponse ; rdfs:range xsd:boolean ;
-    xeo:epistemicLayer "episode" ;
+    xeo:xeoLayer "episode" ;
     dct:description "Whether the engine could search the web for this response. Citation behavior differs sharply with this flag; never pool across it silently." .
 
 xeo:mentionRank a owl:DatatypeProperty ;
     rdfs:range xsd:integer ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     dct:description "1-based order of the brand's first appearance in the response text. Carried on mentions edges." .
 
 xeo:mentionRate a owl:DatatypeProperty ;
     rdfs:range xsd:decimal ;
-    xeo:epistemicLayer "derivation" ;
+    xeo:xeoLayer "derivation" ;
     dct:description "Share of captured responses in the window that mention the brand. Carried on visibilityFor rollups." .
 
 xeo:citationRate a owl:DatatypeProperty ;
     rdfs:range xsd:decimal ;
-    xeo:epistemicLayer "derivation" ;
+    xeo:xeoLayer "derivation" ;
     dct:description "Share of captured responses in the window that cite the brand's owned URLs. Cited and mentioned diverge — a page can ground an answer that names someone else." .
 
 # --- Relationship-carried properties -----------------------------------------
@@ -110,22 +110,22 @@ xeo:citationRate a owl:DatatypeProperty ;
 
 xeo:text a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
-    xeo:epistemicLayer "entity" ;
+    xeo:xeoLayer "entity" ;
     dct:description "The natural-language body of a Prompt as posed to the engine. Part of a Prompt's identity together with websiteId." .
 
 xeo:modelVersion a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
-    xeo:epistemicLayer "episode" ;
+    xeo:xeoLayer "episode" ;
     dct:description "The model build reported at capture time, where the engine distinguishes it from the model name. Without model + modelVersion an episode is not comparable across time." .
 
 xeo:citationRank a owl:DatatypeProperty ;
     rdfs:range xsd:integer ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     dct:description "1-based order of a cited source where the engine orders its citations. Carried on cites; absent where the engine reports an unordered set." .
 
 xeo:responses a owl:DatatypeProperty ;
     rdfs:range xsd:integer ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     dct:description "How many captured responses the rollup window covers — the denominator behind mentionRate and citationRate. Carried on visibilityFor; a rate without it cannot be weighted." .
 
 # --- v0.6.0 (kit sync) ---------------------------------------------------------
@@ -150,12 +150,12 @@ xeo:responses a owl:DatatypeProperty ;
 xeo:hasWebsite a owl:ObjectProperty ;
     rdfs:label "has website" ;
     rdfs:domain xeo:Brand ; rdfs:range xeo:Website ;
-    xeo:epistemicLayer "entity" ;
+    xeo:xeoLayer "entity" ;
     dct:description "A Website this Brand owns or publishes. The join citationRate depends on: a response cites the brand when it cites a URL that is partOf one of the brand's Websites. A Brand may have several (regional sites, a documentation site); a tracked competitor Brand may have none in the graph, and its cited URLs are then matched by onDomain." .
 
 xeo:competesWith a owl:ObjectProperty ;
     rdfs:label "competes with" ;
-    xeo:epistemicLayer "interpretation" ;
+    xeo:xeoLayer "interpretation" ;
     xeo:domainIncludes xeo:Brand , xeo:Website , xeo:Domain ;
     xeo:rangeIncludes xeo:Brand , xeo:Website , xeo:Domain ;
     dct:description "The claim that two parties contest the same audience: Brand against Brand in engine answers, Website or Domain against Domain on results pages. An interpretation, and it must carry method: named by the client, inferred from shared Terms, or inferred from co-mention in responses are three different claims. Stated from the tenant's side and tenant-scoped; it is not asserted to be symmetric." .
@@ -163,15 +163,15 @@ xeo:competesWith a owl:ObjectProperty ;
 xeo:sentiment a owl:DatatypeProperty ;
     rdfs:label "sentiment" ;
     rdfs:range xsd:string ;
-    xeo:epistemicLayer "derivation" ;
+    xeo:xeoLayer "derivation" ;
     dct:description "The polarity with which a response speaks of a brand, as a code from a slotted-in scheme (positive, neutral, negative, mixed — xeos:sentiment is a published reference filling). Carried on mentions. Always a derivation: a model or a rule read the text, so the edge carries method, and confidence where the method reports one. A tool's proprietary sentiment score is a different derivation with that tool as its method, and does not belong in this slot." .
 
 # --- v0.6.0 annotation completeness -----------------------------------------------
 # The triples below add what the declarations above lacked; nothing is redefined.
 
-xeo:GenerativeEngine xeo:epistemicLayer "entity" .
-xeo:AnswerEngine xeo:epistemicLayer "entity" .
-xeo:ConversationalAgent xeo:epistemicLayer "entity" .
+xeo:GenerativeEngine xeo:xeoLayer "entity" .
+xeo:AnswerEngine xeo:xeoLayer "entity" .
+xeo:ConversationalAgent xeo:xeoLayer "entity" .
 
 xeo:hasResponse dct:description "A captured response to this Prompt." .
 
@@ -210,6 +210,6 @@ xeo:responses rdfs:label "responses" .
 
 xeo:attributedResponse a owl:ObjectProperty ;
     rdfs:domain xeo:ConversionEvent ; rdfs:range xeo:LLMResponse ;
-    xeo:epistemicLayer "interpretation" ;
+    xeo:xeoLayer "interpretation" ;
     dct:description "The claim that this conversion traces to engine visibility captured in this response episode. Multi-engine attribution is inherently inferential: this edge MUST carry method and confidence, and honest implementations will leave it sparse. Assert it only when the event's session, or the linked record's first or latest touch, has channel ai_assistant (or a declared assisted-path method applies), and the response cites a URL of the same website within a declared lookback window. Method is referral-match, citation-window or model." ;
     rdfs:label "attributed response" .

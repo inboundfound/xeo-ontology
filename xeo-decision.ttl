@@ -40,125 +40,125 @@
 
 xeo:Diagnostic a owl:Class ;
     rdfs:label "Diagnostic" ;
-    xeo:epistemicLayer "entity" ;
+    xeo:xeoLayer "entity" ;
     dct:description "A named, reusable check or framework that reads observations and reveals gaps (e.g. a waterfall-position assessment). The framework is durable; each finding it produces is a Gap." .
 
 xeo:Gap a owl:Class ;
     rdfs:label "Gap" ;
-    xeo:epistemicLayer "interpretation" ;
+    xeo:xeoLayer "interpretation" ;
     dct:description "A diagnosed deficit between current and desired visibility. First-order, but a claim: asserted by a Diagnostic from evidence, never observed directly. Its kind (gapType) is a slotted-in skos:Concept — e.g. a Citation-Waterfall stage — not a subclass baked into the ontology." .
 
 xeo:Capability a owl:Class ;
     rdfs:label "Capability" ;
-    xeo:epistemicLayer "entity" ;
+    xeo:xeoLayer "entity" ;
     dct:description "A lever or strength a party can bring to bear (content, technical, PR, brand, ...). The unit of the scope gate: a Tactic is in reach only when every Capability it requires is approved. Specific capabilities are instances, not subclasses." .
 
 xeo:Tactic a owl:Class ;
     rdfs:label "Tactic" ;
-    xeo:epistemicLayer "entity" ;
+    xeo:xeoLayer "entity" ;
     dct:description "A durable, named approach that can address gaps. Categorized by a slotted-in intervention taxonomy (inIntervention), scored on slotted-in dimensions (assessedAs -> TacticAssessment), and gated by the Capabilities it requires." .
 
 xeo:Intervention a owl:Class ;
     rdfs:subClassOf skos:Concept ;
     rdfs:label "Intervention" ;
-    xeo:epistemicLayer "entity" ;
+    xeo:xeoLayer "entity" ;
     dct:description "A category of tactic in a controlled vocabulary you bring. A skos:Concept, so a whole intervention taxonomy slots in without touching the ontology." .
 
 xeo:TacticAssessment a owl:Class ;
     rdfs:label "Tactic Assessment" ;
-    xeo:epistemicLayer "interpretation" ;
+    xeo:xeoLayer "interpretation" ;
     dct:description "A scored estimate of a tactic on ONE dimension (onDimension), carrying score, method, and confidence. The dimension set (impact / risk / time-to-value, or ICE, or your own) and how dimensions are weighted are a strategy-layer concern; this class only records that an assessment was made, on what dimension, and by what method." .
 
 xeo:Experiment a owl:Class ;
     rdfs:label "Experiment" ;
-    xeo:epistemicLayer "episode" ;
+    xeo:xeoLayer "episode" ;
     dct:description "A test of a tactic that ran over a time window: immutable once concluded, method-attributed. The precedent record the decision layer learns from." .
 
 xeo:Outcome a owl:Class ;
     rdfs:label "Outcome" ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     dct:description "The measured result an experiment produced: the comparison of a resultReading against a baselineReading of one Metric over one scope, recorded as absoluteChange, relativeChange and result. The measurement is an observation; any claim that the tactic CAUSED it is an interpretation, carried on the Recommendation, not asserted here." .
 
 xeo:Recommendation a owl:Class ;
     rdfs:label "Recommendation" ;
-    xeo:epistemicLayer "interpretation" ;
+    xeo:xeoLayer "interpretation" ;
     dct:description "The labeled claim the whole chain exists to produce: deploy this Tactic to close this Gap, supported by these Experiments, at a given priority. An interpretation — carries method, confidence, and who/what issued it." .
 
 # --- Object properties (the chain) ------------------------------------------
 
 xeo:reveals a owl:ObjectProperty ;
     rdfs:domain xeo:Diagnostic ; rdfs:range xeo:Gap ;
-    xeo:epistemicLayer "interpretation" ;
+    xeo:xeoLayer "interpretation" ;
     dct:description "A diagnostic asserts this gap. Carries the assessment method." .
 
 xeo:evidencedBy a owl:ObjectProperty ;
     rdfs:domain xeo:Gap ;
-    xeo:epistemicLayer "derivation" ;
+    xeo:xeoLayer "derivation" ;
     dct:description "The observed facts a gap was derived from — a Prompt's visibilityFor rollup, a URL's ranksFor, a SerpSnapshot. The seam tying the interpretation tier back down to the substrate. Range left open: any observation-bearing term." .
 
 xeo:gapType a owl:ObjectProperty ;
     rdfs:domain xeo:Gap ; rdfs:range skos:Concept ;
-    xeo:epistemicLayer "derivation" ;
+    xeo:xeoLayer "derivation" ;
     dct:description "The kind of gap, as a slotted-in concept (e.g. a Citation-Waterfall stage). Bring your own scheme." .
 
 xeo:addressableBy a owl:ObjectProperty ;
     rdfs:domain xeo:Gap ; rdfs:range xeo:Tactic ;
-    xeo:epistemicLayer "interpretation" ;
+    xeo:xeoLayer "interpretation" ;
     dct:description "A candidate tactic for closing this gap — a claim, made before the scope gate is applied." .
 
 xeo:inIntervention a owl:ObjectProperty ;
     rdfs:domain xeo:Tactic ; rdfs:range xeo:Intervention ;
-    xeo:epistemicLayer "derivation" ;
+    xeo:xeoLayer "derivation" ;
     dct:description "The intervention category this tactic belongs to. Parallels core's inTopic." .
 
 xeo:requiresCapability a owl:ObjectProperty ;
     rdfs:domain xeo:Tactic ; rdfs:range xeo:Capability ;
-    xeo:epistemicLayer "entity" ;
+    xeo:xeoLayer "entity" ;
     dct:description "A capability that must be approved for this tactic to be in reach. The scope-gate edge: a tactic whose required capabilities are all approved is deployable; otherwise it stays advisory." .
 
 xeo:assessedAs a owl:ObjectProperty ;
     rdfs:range xeo:TacticAssessment ;  # domain-free since v0.6.0 (was xeo:Tactic): a Recommendation is scored too.
-    xeo:epistemicLayer "interpretation" ;
+    xeo:xeoLayer "interpretation" ;
     dct:description "Links a tactic to a per-dimension scored estimate. Domain left open since v0.6.0: a Recommendation may be assessed the same way, where what is scored is the call rather than the approach." .
 
 xeo:onDimension a owl:ObjectProperty ;
     rdfs:domain xeo:TacticAssessment ; rdfs:range skos:Concept ;
-    xeo:epistemicLayer "interpretation" ;
+    xeo:xeoLayer "interpretation" ;
     dct:description "The dimension being scored, as a slotted-in concept (impact, risk, time-to-value, ICE, RICE, ...). Bring your own dimension scheme." .
 
 xeo:tests a owl:ObjectProperty ;
     rdfs:domain xeo:Experiment ; rdfs:range xeo:Tactic ;
-    xeo:epistemicLayer "episode" ;
+    xeo:xeoLayer "episode" ;
     dct:description "The tactic this experiment put to the test." .
 
 xeo:inContext a owl:ObjectProperty ;
     rdfs:domain xeo:Experiment ; rdfs:range xeo:Gap ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     dct:description "The gap the experiment was run against. The precedent-similarity key: 'has this tactic worked on a gap like mine?' is a match on gapType through this edge." .
 
 xeo:producedOutcome a owl:ObjectProperty ;
     rdfs:domain xeo:Experiment ; rdfs:range xeo:Outcome ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     dct:description "The measured result this experiment generated." .
 
 xeo:recommends a owl:ObjectProperty ;
     rdfs:domain xeo:Recommendation ; rdfs:range xeo:Tactic ;
-    xeo:epistemicLayer "interpretation" ;
+    xeo:xeoLayer "interpretation" ;
     dct:description "The tactic this recommendation puts forward." .
 
 xeo:closesGap a owl:ObjectProperty ;
     rdfs:domain xeo:Recommendation ; rdfs:range xeo:Gap ;
-    xeo:epistemicLayer "interpretation" ;
+    xeo:xeoLayer "interpretation" ;
     dct:description "The gap this recommendation aims to close." .
 
 xeo:supportedBy a owl:ObjectProperty ;
     rdfs:domain xeo:Recommendation ; rdfs:range xeo:Experiment ;
-    xeo:epistemicLayer "interpretation" ;
+    xeo:xeoLayer "interpretation" ;
     dct:description "The precedent experiments backing this recommendation — the earned trust behind the pick." .
 
 xeo:atPriority a owl:ObjectProperty ;
     rdfs:domain xeo:Recommendation ; rdfs:range skos:Concept ;
-    xeo:epistemicLayer "interpretation" ;
+    xeo:xeoLayer "interpretation" ;
     dct:description "Priority as a slotted-in concept — bring your own scheme (P0/P1/P2, now/next/later, ...)." .
 
 # --- Datatype properties -----------------------------------------------------
@@ -167,27 +167,27 @@ xeo:atPriority a owl:ObjectProperty ;
 
 xeo:method a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
-    xeo:epistemicLayer "interpretation" ;
+    xeo:xeoLayer "interpretation" ;
     dct:description "How an interpretation or derivation was produced (model, rule, human analyst). Expected on reveals, assessedAs, and every Recommendation." .
 
 xeo:score a owl:DatatypeProperty ;
     rdfs:domain xeo:TacticAssessment ; rdfs:range xsd:decimal ;
-    xeo:epistemicLayer "interpretation" ;
+    xeo:xeoLayer "interpretation" ;
     dct:description "The value assigned on the assessed dimension. Scale is defined by the dimension scheme, not fixed here." .
 
 xeo:approved a owl:DatatypeProperty ;
     rdfs:domain xeo:Capability ; rdfs:range xsd:boolean ;
-    xeo:epistemicLayer "interpretation" ;
+    xeo:xeoLayer "interpretation" ;
     dct:description "Whether this capability is approved for the engagement — the live state of the scope gate. Tenancy-scoped like everything else." .
 
 xeo:lift a owl:DatatypeProperty ;
     rdfs:domain xeo:Outcome ; rdfs:range xsd:decimal ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     dct:description "The measured change the experiment recorded on its target metric. Deprecated in 0.6.0, as advice: one number that may be points or a percentage, with nothing to say which. Write absoluteChange and relativeChange. Still valid where stored." .
 
 xeo:concludedAt a owl:DatatypeProperty ;
     rdfs:domain xeo:Experiment ; rdfs:range xsd:dateTime ;
-    xeo:epistemicLayer "episode" ;
+    xeo:xeoLayer "episode" ;
     dct:description "When the experiment concluded and its outcome became immutable." .
 
 # --- Module header ----------------------------------------------------------
@@ -212,17 +212,17 @@ xeo:decision-module a owl:Ontology ;
 
 xeo:verdict a owl:ObjectProperty ;
     rdfs:range skos:Concept ;  # domain-free since v0.6.0 (was xeo:Gap): a Feedback carries a verdict of its own.
-    xeo:epistemicLayer "interpretation" ;
+    xeo:xeoLayer "interpretation" ;
     dct:description "The operator's disposition on a diagnosed gap, as a slotted-in concept (attack, fix_first, defend, hold, ignore — see xeo-schemes). Distinct from gapType, which says what KIND of deficit it is; the verdict says what we intend to do about it. Carried by one finding per topic per analysis: it is a property of the topic's scoreboard row, not of every finding beneath it. The value vocabulary is subject-specific: on a Feedback the verdict is the operator's judgment of the claim (accepted, rejected, needs_work — xeos:feedbackVerdict), and the domain is left open for that reason." .
 
 xeo:magnitude a owl:DatatypeProperty ;
     rdfs:domain xeo:Gap ; rdfs:range xsd:decimal ;
-    xeo:epistemicLayer "derivation" ;
+    xeo:xeoLayer "derivation" ;
     dct:description "How big the gap is, where the finding IS a size. Required together with magnitudeUnit and never alone: a magnitude with no unit is an uninterpretable number, a unit with no magnitude is noise." .
 
 xeo:magnitudeUnit a owl:ObjectProperty ;
     rdfs:domain xeo:Gap ; rdfs:range skos:Concept ;
-    xeo:epistemicLayer "derivation" ;
+    xeo:xeoLayer "derivation" ;
     dct:description "The unit magnitude is read in, as a slotted-in concept (impressions, clicks, referring_domains, words, ... — see xeo-schemes). A unit that names its own provenance, like sessions_estimated, is how a derived figure is kept from rendering as a measured one. Where the size is a value of a Metric, magnitudeMetric names it." .
 
 # --- Outcome reading -----------------------------------------------------------
@@ -231,12 +231,12 @@ xeo:magnitudeUnit a owl:ObjectProperty ;
 
 xeo:result a owl:DatatypeProperty ;
     rdfs:domain xeo:Outcome ; rdfs:range xsd:string ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     dct:description "'significant', 'no_change' or 'inconclusive'. Answers DID THIS MOVE; lift's sign answers which way. A regression is significant — the value never smuggles a direction in." .
 
 xeo:resultReason a owl:DatatypeProperty ;
     rdfs:domain xeo:Outcome ; rdfs:range xsd:string ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     dct:description "Why an outcome was inconclusive, from a small controlled set (window_incomplete, co_intervention, confounded_external, baseline_unavailable, ...). The two confounder reasons differ on purpose: a co-intervention keeps its lift and shares attribution; an external confounder records none." .
 
 # --- v0.6.0 (kit sync) ---------------------------------------------------------
@@ -260,17 +260,17 @@ xeo:resultReason a owl:DatatypeProperty ;
 
 xeo:DiagnosticRun a owl:Class ;
     rdfs:label "Diagnostic Run" ;
-    xeo:epistemicLayer "episode" ;
+    xeo:xeoLayer "episode" ;
     dct:description "One execution of a Diagnostic against one scope at a time: immutable once finished, method-attributed. The Diagnostic is the durable check; the run is the occasion it was applied, and each Gap it found is revealedIn that run. Carries ranAt and websiteId. A later run supersedes an earlier one without deleting it, so a finding can always be traced to the data it was read from." .
 
 xeo:Feedback a owl:Class ;
     rdfs:label "Feedback" ;
-    xeo:epistemicLayer "interpretation" ;
+    xeo:xeoLayer "interpretation" ;
     dct:description "An operator's judgment of a machine's claim, hung off whatever it judges (feedbackOn): a diagnosed Gap, or the Recommendation issued to close one. Carries a verdict (a slotted-in concept), a statement in the operator's words, and who gave it and when. Not a TacticAssessment, which is a scored estimate of an approach on one dimension: Feedback is a person agreeing or disagreeing with a claim about one case. Never deleted: a rejected finding and the reason it was rejected are what a learned Practice is later drawn from." .
 
 xeo:ExternalEvent a owl:Class ;
     rdfs:label "External Event" ;
-    xeo:epistemicLayer "episode" ;
+    xeo:xeoLayer "episode" ;
     dct:description "Something outside the work that happened at a time and could move the metrics an experiment reads: an engine's ranking update, a site migration, an outage, a seasonal peak, a competitor's launch. Carries name and occurredAt. An episode, recorded once and shared: whether it actually affected a given result is a separate claim, carried on confoundedBy." .
 
 # --- v0.6.0 object properties ----------------------------------------------------
@@ -278,59 +278,59 @@ xeo:ExternalEvent a owl:Class ;
 xeo:runOf a owl:ObjectProperty ;
     rdfs:label "run of" ;
     rdfs:domain xeo:DiagnosticRun ; rdfs:range xeo:Diagnostic ;
-    xeo:epistemicLayer "episode" ;
+    xeo:xeoLayer "episode" ;
     dct:description "The Diagnostic this run executed. Exactly one per run." .
 
 xeo:revealedIn a owl:ObjectProperty ;
     rdfs:label "revealed in" ;
     rdfs:domain xeo:Gap ; rdfs:range xeo:DiagnosticRun ;
-    xeo:epistemicLayer "episode" ;
+    xeo:xeoLayer "episode" ;
     dct:description "The run in which this Gap was found. reveals says which Diagnostic asserts the gap; revealedIn says on which occasion, and so against which data." .
 
 xeo:feedbackOn a owl:ObjectProperty ;
     rdfs:label "feedback on" ;
     rdfs:domain xeo:Feedback ;
-    xeo:epistemicLayer "interpretation" ;
+    xeo:xeoLayer "interpretation" ;
     xeo:rangeIncludes xeo:Gap , xeo:Recommendation ;
     dct:description "The claim this Feedback judges. Exactly one per Feedback. Range left open across Gap and Recommendation, the two machine claims an operator reviews, so another reviewable claim can be judged without a new property." .
 
 xeo:relativeTo a owl:ObjectProperty ;
     rdfs:label "relative to" ;
     rdfs:domain xeo:Gap ;
-    xeo:epistemicLayer "interpretation" ;
+    xeo:xeoLayer "interpretation" ;
     xeo:rangeIncludes xeo:URL , xeo:Domain , xeo:Brand ;
     dct:description "The party a Gap is measured against: the competitor's page, their domain, or their brand. A gap is a deficit between two things, and this names the other one. Absent where the gap is against a standard rather than a rival. Range left open across the three terms listed." .
 
 xeo:suggests a owl:ObjectProperty ;
     rdfs:label "suggests" ;
     rdfs:domain xeo:Diagnostic ;
-    xeo:epistemicLayer "norm" ;
+    xeo:xeoLayer "norm" ;
     xeo:rangeIncludes xeo:Intervention , xeo:Tactic ;
     dct:description "The usual response when this check fails: a category of work (an Intervention) or a specific Tactic. A standing association authored with the Diagnostic, about a class of cases, and marked norm for that reason. Distinct from recommends, which is one Recommendation's call about one case after the scope gate, precedent and Practices have been applied; and from addressableBy, which is a candidate for one diagnosed Gap. Range left open across the two terms listed." .
 
 xeo:treats a owl:ObjectProperty ;
     rdfs:label "treats" ;
     rdfs:domain xeo:Experiment ;
-    xeo:epistemicLayer "episode" ;
+    xeo:xeoLayer "episode" ;
     xeo:rangeIncludes xeo:URL , xeo:Term ;
     dct:description "A unit the experiment changed, or measured the change on: the pages the tactic was applied to, or the terms it was aimed at. With hasControl it is the experiment's design, fixed when the experiment starts. Range left open across URL and Term." .
 
 xeo:hasControl a owl:ObjectProperty ;
     rdfs:label "has control" ;
     rdfs:domain xeo:Experiment ;
-    xeo:epistemicLayer "episode" ;
+    xeo:xeoLayer "episode" ;
     xeo:rangeIncludes xeo:URL , xeo:Term ;
     dct:description "A unit deliberately left unchanged and measured over the same window, against which the treated units are read. An experiment with no control is a before-and-after comparison, and its Outcome should be read as one. Range left open across URL and Term." .
 
 xeo:implementedAs a owl:ObjectProperty ;
     rdfs:label "implemented as" ;
     rdfs:domain xeo:Recommendation ; rdfs:range xeo:Experiment ;
-    xeo:epistemicLayer "episode" ;
+    xeo:xeoLayer "episode" ;
     dct:description "The Experiment in which this Recommendation was carried out and measured. The forward edge of the loop: supportedBy points back at the precedents that earned the call, implementedAs points at the test the call became. A Recommendation that was approved and never run has none." .
 
 xeo:confoundedBy a owl:ObjectProperty ;
     rdfs:label "confounded by" ;
-    xeo:epistemicLayer "interpretation" ;
+    xeo:xeoLayer "interpretation" ;
     xeo:domainIncludes xeo:Outcome , xeo:Experiment ;
     rdfs:range xeo:ExternalEvent ;
     dct:description "The claim that an ExternalEvent fell inside the measurement window and could account for some or all of the result. An interpretation, carrying method: the event is a fact, its effect on this result is a judgment. It is the named cause behind an Outcome whose resultReason is confounded_external. Stated on the Outcome, or on the Experiment while it is still measuring." .
@@ -394,7 +394,7 @@ xeo:resultReason rdfs:label "result reason" .
 xeo:resultReading a owl:ObjectProperty ;
     rdfs:label "result reading" ;
     rdfs:domain xeo:Outcome ; rdfs:range xeo:MetricReading ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     xeo:groundedIn "The API contract of the system named in the reading's source" ;
     xeo:canonicalStore "neo4j" ;
     dct:description "The reading of the target's Metric over the result window, which runs from the day the change was applied for the Objective's resultsWindowDays. One per Outcome. Comparable with baselineReading only when both are readings of the same Metric over the same scope, on the same aggregationBasis, across windows of the same length." .
@@ -402,21 +402,21 @@ xeo:resultReading a owl:ObjectProperty ;
 xeo:absoluteChange a owl:DatatypeProperty ;
     rdfs:label "absolute change" ;
     rdfs:domain xeo:Outcome ; rdfs:range xsd:decimal ;
-    xeo:epistemicLayer "derivation" ;
+    xeo:xeoLayer "derivation" ;
     xeo:canonicalStore "neo4j" ;
     dct:description "The result reading's value minus the baseline reading's, in the Metric's unit. For a ratio this is points: 0.02 is two points of clickthrough rate, not two percent of it. Signed and raw: a rank that went from 6 to 3 is -3, and whether that is an improvement is read through the Metric's betterDirection. Never summed across Outcomes: an Objective is read from one objectiveReading over its whole scope, because overlapping Outcomes would count the same clicks twice." .
 
 xeo:relativeChange a owl:DatatypeProperty ;
     rdfs:label "relative change" ;
     rdfs:domain xeo:Outcome ; rdfs:range xsd:decimal ;
-    xeo:epistemicLayer "derivation" ;
+    xeo:xeoLayer "derivation" ;
     xeo:canonicalStore "neo4j" ;
     dct:description "absoluteChange divided by the baseline reading's value, as a quotient: 0.25 is a quarter more than baseline. Signed and raw, read through betterDirection like absoluteChange. Undefined, and so absent, when the baseline is zero." .
 
 xeo:magnitudeMetric a owl:ObjectProperty ;
     rdfs:label "magnitude metric" ;
     rdfs:domain xeo:Gap ; rdfs:range xeo:Metric ;
-    xeo:epistemicLayer "derivation" ;
+    xeo:xeoLayer "derivation" ;
     xeo:canonicalStore "neo4j" ;
     dct:description "Which Metric a Gap's magnitude is a value of, where the size is a measured quantity: impressions, clicks, positions. The unit and the better direction are then the Metric's. Stated beside magnitudeUnit, which stays required with magnitude; a size that is not a value of any Metric (words, internal links) carries magnitudeUnit alone." .
 

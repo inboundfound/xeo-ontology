@@ -7,7 +7,7 @@ projected from it disagree:
   1. PARSE        every xeo-*.ttl module, every mappings/*.ttl file and the
                   SHACL shapes parse as Turtle.
   2. TERMS        every class and property has rdfs:label, dct:description and a
-                  valid xeo:epistemicLayer; every annotation property has an
+                  valid xeo:xeoLayer; every annotation property has an
                   rdfs:comment; every xeo: term a declaration points at
                   (domain, range, subPropertyOf, ...) is itself declared; all
                   modules carry the same owl:versionInfo.
@@ -175,11 +175,11 @@ def check_terms(report: Report, g: Graph, per_module: dict[str, Graph]) -> dict:
                 problems.append(f"{name} has no rdfs:label")
             if g.value(s, DCTERMS.description) is None:
                 problems.append(f"{name} has no dct:description")
-            layers = {str(o) for o in g.objects(s, XEO.epistemicLayer)}
+            layers = {str(o) for o in g.objects(s, XEO.xeoLayer)}
             if not layers:
-                problems.append(f"{name} has no xeo:epistemicLayer")
+                problems.append(f"{name} has no xeo:xeoLayer")
             elif len(layers) > 1 or not layers <= LAYERS:
-                problems.append(f"{name} has xeo:epistemicLayer {sorted(layers)}; expected one of {sorted(LAYERS)}")
+                problems.append(f"{name} has xeo:xeoLayer {sorted(layers)}; expected one of {sorted(LAYERS)}")
             if len(set(g.objects(s, RDFS.label))) > 1:
                 problems.append(f"{name} has more than one rdfs:label")
             if len(set(g.objects(s, DCTERMS.description))) > 1:
@@ -563,7 +563,7 @@ def main() -> int:
     check_examples(report, g, per_module, terms, concepts)
     # Not a failure: observation terms the ontology has not yet grounded.
     ungrounded = sorted(local(s) for s, k in terms.items() if k in TERM_KINDS
-                        and str(g.value(s, XEO.epistemicLayer)) == "observation"
+                        and str(g.value(s, XEO.xeoLayer)) == "observation"
                         and g.value(s, XEO.groundedIn) is None)
     if ungrounded:
         print(f"note  {len(ungrounded)} observation terms name no xeo:groundedIn: {', '.join(ungrounded)}")

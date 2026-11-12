@@ -18,7 +18,8 @@ reports three things:
     python tools/term_list.py --against v0.6 --rename epistemicLayer=xeoLayer
     python tools/term_list.py --against v0.6 --terms-only   # terms, not triples
 
---rename old=new treats xeo:old on the other side as xeo:new on this side, so a
+--rename old=new treats xeo:old on the other side as xeo:new on this side (and
+xeos:old and xeos:old-* likewise, for the scheme named after it), so a
 deliberate rename is not reported as one term removed and another added.
 --terms-only skips the triple comparison, for a change that edits what a term
 says but neither adds nor removes a term.
@@ -39,6 +40,7 @@ from rdflib.compare import graph_diff, to_isomorphic
 
 HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 XEO = "https://xeoontology.org/xeo#"
+XEOS = "https://xeoontology.org/schemes#"
 
 
 def sources_here() -> dict[str, str]:
@@ -62,11 +64,20 @@ def sources_at(ref: str) -> dict[str, str]:
 
 
 def renamer(renames: dict[str, str]):
+    """Rewrite renamed IRIs, in the ontology and the schemes namespace alike.
+
+    A scheme named after a slot shares its name, and its concepts take it as a
+    prefix (xeos:xeoLayer-entity), so old=new also renames xeos:old and xeos:old-*.
+    """
     def fix(t):
-        if isinstance(t, URIRef) and str(t).startswith(XEO):
-            local = str(t)[len(XEO):]
-            if local in renames:
-                return URIRef(XEO + renames[local])
+        if not isinstance(t, URIRef):
+            return t
+        for ns in (XEO, XEOS):
+            if str(t).startswith(ns):
+                local = str(t)[len(ns):]
+                for old, new in renames.items():
+                    if local == old or local.startswith(old + "-"):
+                        return URIRef(ns + new + local[len(old):])
         return t
     return fix
 

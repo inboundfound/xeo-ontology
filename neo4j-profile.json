@@ -124,7 +124,7 @@
       "module": "core"
     },
     "Entity": {
-      "definition": "A real-world thing or concept that content is about — a product, a place, a person, a material, a method — identified by a reference into a public knowledge base (entityRef) where one exists, otherwise by name. Distinct from Topic, which is a site-scoped grouping somebody derived, and from Brand, which is a market identity engines mention: an Entity is the thing itself, shared across sites. Not tenant-scoped. Named for the knowledge-graph sense of the word; not to be confused with the epistemic layer 'entity', which Website, URL and Term also occupy.",
+      "definition": "A real-world thing or concept that content is about — a product, a place, a person, a material, a method — identified by a reference into a public knowledge base (entityRef) where one exists, otherwise by name. Distinct from Topic, which is a site-scoped grouping somebody derived, and from Brand, which is a market identity engines mention: an Entity is the thing itself, shared across sites. Not tenant-scoped. Named for the knowledge-graph sense of the word; not to be confused with the layer 'entity', which Website, URL and Term also occupy.",
       "iri": "https://xeoontology.org/xeo#Entity",
       "layer": "entity",
       "module": "core"
@@ -3363,14 +3363,6 @@
       "oneoff",
       "retainer"
     ],
-    "epistemicLayer": [
-      "entity",
-      "episode",
-      "observation",
-      "derivation",
-      "interpretation",
-      "norm"
-    ],
     "execution": [
       "advised",
       "ours"
@@ -3636,6 +3628,14 @@
       "annual",
       "monthly",
       "one_time"
+    ],
+    "xeoLayer": [
+      "entity",
+      "episode",
+      "observation",
+      "derivation",
+      "interpretation",
+      "norm"
     ]
   },
   "schemesNamespace": "https://xeoontology.org/schemes#",

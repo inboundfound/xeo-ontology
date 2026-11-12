@@ -11,7 +11,7 @@ projects the ontology onto the three names Neo4j has, by one rule:
 and writes three files:
 
     neo4j-profile.json      every label, relationship type and property key with
-                            its IRI, epistemic layer and module; the reference
+                            its IRI, layer and module; the reference
                             schemes as plain code lists. What a consumer vendors
                             and checks its own graph against.
     context.neo4j.jsonld    a JSON-LD @context keyed the way Neo4j names things
@@ -179,7 +179,7 @@ def build():
     for c in terms(OWL.Class):
         entry = {
             "iri": str(c),
-            "layer": text(c, XEO.epistemicLayer),
+            "layer": text(c, XEO.xeoLayer),
             "module": origin[c],
             "definition": text(c, DCTERMS.description),
         }
@@ -197,7 +197,7 @@ def build():
         entry = {
             "iri": str(p),
             "term": name,
-            "layer": text(p, XEO.epistemicLayer),
+            "layer": text(p, XEO.xeoLayer),
             "module": origin[p],
             "domain": classes_of(p, RDFS.domain, XEO.domainIncludes),
             "range": rng,
@@ -230,7 +230,7 @@ def build():
         rng = g.value(p, RDFS.range)
         entry = {
             "iri": str(p),
-            "layer": text(p, XEO.epistemicLayer),
+            "layer": text(p, XEO.xeoLayer),
             "module": origin[p],
             "datatype": short(rng) if rng is not None else None,
         }
