@@ -167,7 +167,7 @@ xeo:resultsWindowDays a owl:DatatypeProperty ;
 xeo:metric a owl:DatatypeProperty ;
     rdfs:domain xeo:MetricTarget ; rdfs:range xsd:string ;
     xeo:epistemicLayer "interpretation" ;
-    dct:description "Which metric the target is set on, as a code: the skos:notation of an xeo:Metric — clicks, ctr, position, mention_rate, sessions, pipeline_created, ... The code resolves in xeos:metric, the reference scheme of Metrics, which states each one's type, unit, better direction and additivity; a consumer may add Metrics of its own. Stays a string in 0.6: the Metric is found by its notation. xeos:objectiveMetric is the earlier list of codes, kept for compatibility." .
+    dct:description "Which metric the target is set on, as a code: the skos:notation of an xeo:Metric — clicks, ctr, position, ai_mention_rate, sessions, pipeline_created, ... The code resolves in xeos:metric, the reference scheme of Metrics, which states each one's type, unit, better direction and additivity; a consumer may add Metrics of its own. Stays a string in 0.6: the Metric is found by its notation. xeos:objectiveMetric is the earlier list of codes, kept for compatibility." .
 
 xeo:direction a owl:DatatypeProperty ;
     rdfs:domain xeo:MetricTarget ; rdfs:range xsd:string ;

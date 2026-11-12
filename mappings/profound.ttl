@@ -25,8 +25,8 @@ xeos:profound-visibility_score a skos:Concept ;
     skos:prefLabel "Visibility score"@en ;
     skos:definition "The share of responses that include the brand"@en ;
     xeo:fillsSlot xeo:value ;
-    skos:closeMatch xeos:metric-mention_rate ;
-    skos:scopeNote "A raw decimal, 0 to 1; multiply by 100 to display. The denominator conflicts between Profound's own pages: the help center divides by responses that name at least one brand, the glossary example by all tracked responses. On the first reading it runs higher than mention_rate whenever few answers name any brand. closeMatch until live output settles which."@en ;
+    skos:closeMatch xeos:metric-ai_mention_rate ;
+    skos:scopeNote "A raw decimal, 0 to 1; multiply by 100 to display. The denominator conflicts between Profound's own pages: the help center divides by responses that name at least one brand, the glossary example by all tracked responses. On the first reading it runs higher than ai_mention_rate whenever few answers name any brand. closeMatch until live output settles which."@en ;
     dct:source "https://help.tryprofound.com/articles/3443229936-answer-engine-insights-overview (read 2026-11-10)" ;
     xeo:mappingConfidence "documented" .
 

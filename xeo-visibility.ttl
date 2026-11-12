@@ -229,5 +229,5 @@ xeo:responses rdfs:label "responses" .
 # from mentions a method extracted, and by XEO's own rule a computed rate is a
 # derivation. They are now marked so. Nothing about their type, range or
 # meaning changed; a consumer that filters by layer will find them one layer up.
-# The Metrics they are values of are xeos:metric-mention_rate and
-# xeos:metric-citation_rate, which state the numerator and the denominator.
+# The Metrics they are values of are xeos:metric-ai_mention_rate and
+# xeos:metric-ai_citation_rate, which state the numerator and the denominator.

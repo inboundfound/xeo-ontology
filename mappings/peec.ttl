@@ -25,7 +25,7 @@ xeos:peec-visibility a skos:Concept ;
     skos:prefLabel "Visibility"@en ;
     skos:definition "The share of chats in which the brand was mentioned"@en ;
     xeo:fillsSlot xeo:value ;
-    skos:exactMatch xeos:metric-mention_rate ;
+    skos:exactMatch xeos:metric-ai_mention_rate ;
     skos:scopeNote "sum(visibility_count) / sum(visibility_total), over all chats; 0 to 1. Peec's Data Studio connector has a field of the same name defined as a count of chats; that one is not this."@en ;
     dct:source "https://docs.peec.ai/api-reference/reports/get-brands-report (read 2026-11-10)" ;
     xeo:mappingConfidence "documented" .

@@ -19,7 +19,9 @@ projected from it disagree:
                   mappings are not part of the ontology: no module may point
                   at a mapping concept.
   3b. STATUS      xeo:termStatus is 'core' or 'extension'; a deprecated term
-                  names its replacement in rdfs:seeAlso and is still declared;
+                  or concept names its replacement in rdfs:seeAlso and is
+                  still declared (removal comes in a later release, never by
+                  deprecation alone);
                   every earlier objectiveMetric code has its Metric in
                   xeos:metric under the same code; every Metric in the
                   reference schemes conforms to the shapes.
@@ -310,8 +312,8 @@ def check_status(report: Report, g: Graph, per_module: dict, terms: dict, concep
     deprecated = sorted(s for s in g.subjects(OWL.deprecated, None)
                         if str(g.value(s, OWL.deprecated)).lower() == "true")
     for s in deprecated:
-        if s not in terms:
-            problems.append(f"{s} is deprecated but no longer declared; deprecation never removes a term")
+        if s not in terms and s not in concepts:
+            problems.append(f"{s} is deprecated but no longer declared; deprecation alone never removes a term")
         targets = list(g.objects(s, RDFS.seeAlso))
         if not targets:
             problems.append(f"{s} is deprecated and names no replacement in rdfs:seeAlso")
