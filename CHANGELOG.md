@@ -129,6 +129,8 @@ could be set on search clicks and on nothing else XEO measures.
 - `MetricReading`: the value a Metric took over one window, for one scope, from one source.
   `readingOf`, `scope`, `value`, `numeratorValue`, `denominatorValue`. *Why:* a bare decimal
   cannot be recomputed or rolled up. A ratio is rolled up from its parts, never averaged.
+- The window is core's `periodStart` and `periodEnd`, reworded (decided 2026-11-12): calendar
+  dates, both days included, in the source's own time zone. No new window pair.
 - No KPI class. *Why:* no system surveyed models one as a type. The role is `isPrimary`, which
   gained the alt label "KPI".
 - Extension set (marked `xeo:termStatus "extension"`): `offsetWindow`, `cumulativeWindow`,

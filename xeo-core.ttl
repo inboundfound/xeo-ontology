@@ -234,12 +234,12 @@ xeo:ctr a owl:DatatypeProperty ;
 xeo:periodStart a owl:DatatypeProperty ;
     rdfs:range xsd:date ;
     xeo:epistemicLayer "derivation" ;
-    dct:description "Inclusive first day of a rollup window. Carried on ranksFor and visibilityFor, and on a MetricReading; never pool across windows silently." .
+    dct:description "First day of a rollup window: a calendar date, in the source's own time zone. The window runs from periodStart to periodEnd with both days included. Carried on ranksFor and visibilityFor, and on a MetricReading; never pool across windows silently." .
 
 xeo:periodEnd a owl:DatatypeProperty ;
     rdfs:range xsd:date ;
     xeo:epistemicLayer "derivation" ;
-    dct:description "Inclusive last day of a rollup window. Carried on ranksFor and visibilityFor, and on a MetricReading." .
+    dct:description "Last day of a rollup window: a calendar date, in the source's own time zone. The window runs from periodStart to periodEnd with both days included, so a one-day window has periodStart equal to periodEnd. Carried on ranksFor and visibilityFor, and on a MetricReading." .
 
 xeo:fetchedAt a owl:DatatypeProperty ;
     rdfs:range xsd:dateTime ;
