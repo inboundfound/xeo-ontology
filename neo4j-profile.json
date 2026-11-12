@@ -100,6 +100,12 @@
       "layer": "episode",
       "module": "core"
     },
+    "CrmRecord": {
+      "definition": "A pointer to one record in the CRM that runs a website's pipeline: a person, an organization, a lead or a deal. Its only identity is crmRecordRef. It exists so the neutral pipeline properties have a node to sit on and so one query can read records from any CRM; it does not model the CRM's own schema. crmSystem says which CRM holds the record and crmObjectType which kind of record it is. An implementation may add the vendor's own label beside this one on the same node; a vendor label is that implementation's convention and never an XEO term.",
+      "iri": "https://xeoontology.org/xeo#CrmRecord",
+      "layer": "entity",
+      "module": "engagement"
+    },
     "Diagnostic": {
       "definition": "A named, reusable check or framework that reads observations and reveals gaps (e.g. a waterfall-position assessment). The framework is durable; each finding it produces is a Gap.",
       "iri": "https://xeoontology.org/xeo#Diagnostic",
@@ -447,6 +453,9 @@
     },
     "amountInReportingCurrency": {
       "datatype": "xsd:decimal",
+      "domain": [
+        "CrmRecord"
+      ],
       "iri": "https://xeoontology.org/xeo#amountInReportingCurrency",
       "layer": "derivation",
       "module": "engagement",
@@ -649,6 +658,9 @@
     },
     "convertedAt": {
       "datatype": "xsd:dateTime",
+      "domain": [
+        "CrmRecord"
+      ],
       "iri": "https://xeoontology.org/xeo#convertedAt",
       "layer": "episode",
       "module": "engagement",
@@ -656,6 +668,9 @@
     },
     "convertedTo": {
       "datatype": "xsd:string",
+      "domain": [
+        "CrmRecord"
+      ],
       "iri": "https://xeoontology.org/xeo#convertedTo",
       "layer": "episode",
       "module": "engagement",
@@ -675,6 +690,9 @@
     },
     "crmObjectType": {
       "datatype": "xsd:string",
+      "domain": [
+        "CrmRecord"
+      ],
       "iri": "https://xeoontology.org/xeo#crmObjectType",
       "layer": "entity",
       "module": "engagement",
@@ -684,12 +702,18 @@
     },
     "crmRecordRef": {
       "datatype": "xsd:string",
+      "domain": [
+        "CrmRecord"
+      ],
       "iri": "https://xeoontology.org/xeo#crmRecordRef",
       "layer": "entity",
       "module": "engagement"
     },
     "crmSystem": {
       "datatype": "xsd:string",
+      "domain": [
+        "CrmRecord"
+      ],
       "iri": "https://xeoontology.org/xeo#crmSystem",
       "layer": "entity",
       "module": "engagement",
@@ -715,6 +739,9 @@
     },
     "currencyCode": {
       "datatype": "xsd:string",
+      "domain": [
+        "CrmRecord"
+      ],
       "iri": "https://xeoontology.org/xeo#currencyCode",
       "layer": "observation",
       "module": "engagement"
@@ -738,18 +765,27 @@
     },
     "dealAmount": {
       "datatype": "xsd:decimal",
+      "domain": [
+        "CrmRecord"
+      ],
       "iri": "https://xeoontology.org/xeo#dealAmount",
       "layer": "observation",
       "module": "engagement"
     },
     "dealClosedAt": {
       "datatype": "xsd:dateTime",
+      "domain": [
+        "CrmRecord"
+      ],
       "iri": "https://xeoontology.org/xeo#dealClosedAt",
       "layer": "observation",
       "module": "engagement"
     },
     "dealOutcome": {
       "datatype": "xsd:string",
+      "domain": [
+        "CrmRecord"
+      ],
       "iri": "https://xeoontology.org/xeo#dealOutcome",
       "layer": "observation",
       "module": "engagement",
@@ -759,6 +795,9 @@
     },
     "dealProbability": {
       "datatype": "xsd:decimal",
+      "domain": [
+        "CrmRecord"
+      ],
       "iri": "https://xeoontology.org/xeo#dealProbability",
       "layer": "interpretation",
       "module": "engagement",
@@ -904,6 +943,9 @@
     },
     "expectedCloseDate": {
       "datatype": "xsd:date",
+      "domain": [
+        "CrmRecord"
+      ],
       "iri": "https://xeoontology.org/xeo#expectedCloseDate",
       "layer": "interpretation",
       "module": "engagement"
@@ -937,6 +979,9 @@
     },
     "firstTouchChannel": {
       "datatype": "xsd:string",
+      "domain": [
+        "CrmRecord"
+      ],
       "iri": "https://xeoontology.org/xeo#firstTouchChannel",
       "layer": "derivation",
       "module": "engagement",
@@ -946,6 +991,9 @@
     },
     "forecastCategory": {
       "datatype": "xsd:string",
+      "domain": [
+        "CrmRecord"
+      ],
       "iri": "https://xeoontology.org/xeo#forecastCategory",
       "layer": "interpretation",
       "module": "engagement",
@@ -1061,6 +1109,9 @@
     },
     "latestTouchChannel": {
       "datatype": "xsd:string",
+      "domain": [
+        "CrmRecord"
+      ],
       "iri": "https://xeoontology.org/xeo#latestTouchChannel",
       "layer": "derivation",
       "module": "engagement",
@@ -1068,6 +1119,9 @@
     },
     "leadStatus": {
       "datatype": "xsd:string",
+      "domain": [
+        "CrmRecord"
+      ],
       "iri": "https://xeoontology.org/xeo#leadStatus",
       "layer": "interpretation",
       "module": "engagement",
@@ -1075,6 +1129,9 @@
     },
     "lifecycleStage": {
       "datatype": "xsd:string",
+      "domain": [
+        "CrmRecord"
+      ],
       "iri": "https://xeoontology.org/xeo#lifecycleStage",
       "layer": "interpretation",
       "module": "engagement",
@@ -1114,6 +1171,9 @@
     },
     "lostReason": {
       "datatype": "xsd:string",
+      "domain": [
+        "CrmRecord"
+      ],
       "iri": "https://xeoontology.org/xeo#lostReason",
       "layer": "interpretation",
       "module": "engagement",
@@ -1140,6 +1200,9 @@
     },
     "marketingCampaignRef": {
       "datatype": "xsd:string",
+      "domain": [
+        "CrmRecord"
+      ],
       "iri": "https://xeoontology.org/xeo#marketingCampaignRef",
       "layer": "entity",
       "module": "engagement",
@@ -1282,6 +1345,9 @@
     },
     "ownerRef": {
       "datatype": "xsd:string",
+      "domain": [
+        "CrmRecord"
+      ],
       "iri": "https://xeoontology.org/xeo#ownerRef",
       "layer": "entity",
       "module": "engagement"
@@ -1325,6 +1391,9 @@
     },
     "pipelineRef": {
       "datatype": "xsd:string",
+      "domain": [
+        "CrmRecord"
+      ],
       "iri": "https://xeoontology.org/xeo#pipelineRef",
       "layer": "entity",
       "module": "engagement"
@@ -1382,12 +1451,18 @@
     },
     "recordCreatedAt": {
       "datatype": "xsd:dateTime",
+      "domain": [
+        "CrmRecord"
+      ],
       "iri": "https://xeoontology.org/xeo#recordCreatedAt",
       "layer": "observation",
       "module": "engagement"
     },
     "recordOrigin": {
       "datatype": "xsd:string",
+      "domain": [
+        "CrmRecord"
+      ],
       "iri": "https://xeoontology.org/xeo#recordOrigin",
       "layer": "observation",
       "module": "engagement",
@@ -1398,6 +1473,9 @@
     },
     "recurringValue": {
       "datatype": "xsd:decimal",
+      "domain": [
+        "CrmRecord"
+      ],
       "iri": "https://xeoontology.org/xeo#recurringValue",
       "layer": "observation",
       "module": "engagement",
@@ -1405,6 +1483,9 @@
     },
     "referringPlatform": {
       "datatype": "xsd:string",
+      "domain": [
+        "CrmRecord"
+      ],
       "iri": "https://xeoontology.org/xeo#referringPlatform",
       "layer": "derivation",
       "module": "engagement"
@@ -1522,6 +1603,9 @@
     },
     "stageClass": {
       "datatype": "xsd:string",
+      "domain": [
+        "CrmRecord"
+      ],
       "iri": "https://xeoontology.org/xeo#stageClass",
       "layer": "norm",
       "module": "engagement",
@@ -1547,6 +1631,9 @@
     },
     "stageRef": {
       "datatype": "xsd:string",
+      "domain": [
+        "CrmRecord"
+      ],
       "iri": "https://xeoontology.org/xeo#stageRef",
       "layer": "entity",
       "module": "engagement"
@@ -1686,6 +1773,9 @@
     },
     "valuePeriod": {
       "datatype": "xsd:string",
+      "domain": [
+        "CrmRecord"
+      ],
       "iri": "https://xeoontology.org/xeo#valuePeriod",
       "layer": "observation",
       "module": "engagement",
@@ -1722,6 +1812,9 @@
     },
     "weightedAmount": {
       "datatype": "xsd:decimal",
+      "domain": [
+        "CrmRecord"
+      ],
       "iri": "https://xeoontology.org/xeo#weightedAmount",
       "layer": "derivation",
       "module": "engagement",
@@ -3241,6 +3334,7 @@
   "schemes": {
     "acquisitionChannel": [
       "ai_assistant",
+      "ai_overview",
       "direct",
       "email",
       "offline",

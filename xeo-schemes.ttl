@@ -2581,7 +2581,7 @@ xeos:acquisitionChannel a skos:ConceptScheme ;
     skos:prefLabel "Acquisition channels"@en ;
     xeo:fillsSlot xeo:firstTouchChannel ;
     dct:source "XEO CRM pipeline research report, 2026-11-10 · ai_assistant is evidenced by two vendors' classifiers (one CRM's traffic-source value, one analytics tool's default channel). The other values are a neutral set inferred for XEO from the channel lists those classifiers publish; no vendor's list is adopted" ;
-    dct:description "Where a person came from, as a classifier or a person recorded it. Fills firstTouchChannel and latestTouchChannel, and is the set a session-grain channel should reuse. Deliberately coarse. ai_assistant is the value the set exists for: a visit referred by an AI assistant's own domain. A search engine's AI overview is not one, and stays organic_search. Every vendor draws these lines its own way, so a mapped value is a derivation and says whose rule made it." .
+    dct:description "Where a person came from, as a classifier or a person recorded it. Fills firstTouchChannel and latestTouchChannel, and is the set a session-grain channel should reuse. Deliberately coarse. ai_assistant is the value the set exists for: a visit referred by an AI assistant's own domain. A search engine's AI overview is not one either: the visit comes from a results page, so it has its own value, ai_overview, which no source fills yet. Every vendor draws these lines its own way, so a mapped value is a derivation and says whose rule made it." .
 
 xeos:acquisitionChannel-organic_search a skos:Concept ;
     skos:inScheme xeos:acquisitionChannel ;
@@ -2603,6 +2603,15 @@ xeos:acquisitionChannel-ai_assistant a skos:Concept ;
     skos:notation "ai_assistant" ;
     skos:prefLabel "AI assistant"@en ;
     skos:definition "Arrived from an AI assistant's own domain or app: a chat or answer product, not a search engine's results page"@en .
+
+xeos:acquisitionChannel-ai_overview a skos:Concept ;
+    skos:inScheme xeos:acquisitionChannel ;
+    skos:topConceptOf xeos:acquisitionChannel ;
+    skos:notation "ai_overview" ;
+    skos:prefLabel "AI overview"@en ;
+    skos:definition "Arrived from an AI-generated overview on a search engine's results page"@en ;
+    xeo:termStatus "extension" ;
+    skos:editorialNote "Kept apart from ai_assistant and from organic_search by decision (2026-11-11): the visit comes from a results page, so it is not an assistant's, and it was sent by a generated answer, so it is not an ordinary result. No source read reports it separately, and no vendor field in mappings/ carries it, so the value has no filling yet. It is declared so that it has a home when a tool reports it."@en .
 
 xeos:acquisitionChannel-referral a skos:Concept ;
     skos:inScheme xeos:acquisitionChannel ;

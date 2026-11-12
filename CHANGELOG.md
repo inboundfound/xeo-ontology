@@ -19,8 +19,8 @@ and the CRM pipeline. They are the **Metrics** and **CRM pipeline** sections bel
 landed without a breaking change: where a report asked for an existing term to be renamed,
 retyped or removed, the new form was added beside it and the old one deprecated as advice.
 
-Counts: 36 → 50 classes, 61 → 113 object properties, 65 → 147 datatype properties,
-20 → 50 reference schemes, 93 → 281 concepts; 5 vendor schemes mapping 57 fields.
+Counts: 36 → 51 classes, 61 → 113 object properties, 65 → 147 datatype properties,
+20 → 50 reference schemes, 93 → 282 concepts; 5 vendor schemes mapping 57 fields.
 (After the kit sync alone: 45, 91, 95, 29, 146.)
 
 ### Added
@@ -169,7 +169,14 @@ created" and "revenue won" cannot be computed.
   `amountAtTransition`.
 - `firstTouchChannel` and `referringPlatform`, both derivations. *Why:* "original source" is a
   classifier's output or a salesperson's picklist, not a measurement. The `acquisitionChannel`
-  scheme includes `ai_assistant`.
+  scheme includes `ai_assistant`, and `ai_overview` (extension) for a visit sent by an AI
+  overview on a search engine's results page. *Why:* that visit is neither an assistant's nor an
+  ordinary result. No source reports it separately yet, so nothing fills it.
+- `CrmRecord`, a pointer class whose only identity is `crmRecordRef`. The record-level pipeline
+  properties point at it with `domainIncludes` hints, not domains. *Why:* those properties had no
+  class to sit on, so a property graph had no label for them. It models no CRM schema. An
+  implementation may put the vendor's own label beside it (`CrmRecord` and `HUBSPOT_Contact`);
+  that label is the implementation's, never an XEO term.
 - `PipelineRollup`, a `MetricReading` of a pipeline Metric.
 - `conversionPointType`.
 - Extension set: `latestTouchChannel`, `lifecycleStage`, `leadStatus`,

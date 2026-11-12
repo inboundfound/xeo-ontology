@@ -115,7 +115,7 @@ same kind of graph written against the camelCase `context.jsonld`.
 
 Generated from XEO 0.6.0. Do not edit between the markers; run `tools/gen_profile.py`.
 
-### Node labels (50)
+### Node labels (51)
 
 | Label | XEO class | Layer | Module |
 |---|---|---|---|
@@ -129,6 +129,7 @@ Generated from XEO 0.6.0. Do not edit between the markers; run `tools/gen_profil
 | `ConversionEvent` | `xeo:ConversionEvent` | episode | engagement |
 | `ConversionPoint` | `xeo:ConversionPoint` | entity | engagement |
 | `Crawl` | `xeo:Crawl` | episode | core |
+| `CrmRecord` | `xeo:CrmRecord` | entity | engagement |
 | `Diagnostic` | `xeo:Diagnostic` | entity | decision |
 | `DiagnosticRun` | `xeo:DiagnosticRun` | episode | decision |
 | `Domain` | `xeo:Domain` | entity | core |
@@ -468,7 +469,7 @@ Generated from XEO 0.6.0. Do not edit between the markers; run `tools/gen_profil
 
 | Scheme | Codes |
 |---|---|
-| `acquisitionChannel` | `ai_assistant` · `direct` · `email` · `offline` · `organic_search` · `organic_social` · `other` · `paid_search` · `paid_social` · `referral` |
+| `acquisitionChannel` | `ai_assistant` · `ai_overview` · `direct` · `email` · `offline` · `organic_search` · `organic_social` · `other` · `paid_search` · `paid_social` · `referral` |
 | `additivity` | `additive` · `non_additive` · `semi_additive` |
 | `aggregation` | `count` · `count_distinct` · `last` · `max` · `mean` · `median` · `min` · `percentile` · `sum` · `weighted_mean` |
 | `aggregationBasis` | `auto` · `by_page` · `by_property` |
