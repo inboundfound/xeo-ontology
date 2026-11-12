@@ -532,8 +532,8 @@ xeo:assignedAt rdfs:label "assigned at" .
 # --- v0.6.0 (metrics and CRM pipeline, 2026-11-10) --------------------------------
 # Appended at the foot, so no line above moves. One annotation property, for the
 # two research reports that landed after the kit sync. No core class or property
-# is added: the metric terms are in xeo-metrics.ttl and the pipeline terms in
-# xeo-engagement.ttl. periodStart and periodEnd (above) are reused by
+# is added: the metric terms were in xeo-metrics.ttl (core since 0.7) and the
+# pipeline terms in xeo-engagement.ttl (xeo-sales.ttl since 0.7). periodStart and periodEnd (above) are reused by
 # xeo:MetricReading with the meaning they already have, an inclusive first and
 # last day; their descriptions gained that case in place.
 
@@ -554,7 +554,7 @@ xeo:mappingConfidence a owl:AnnotationProperty ;
 # points at it the same way.
 #
 # MOVED. Organization, owns and organizationKind were added in 0.6.0 to
-# xeo-delivery.ttl. They were never published, so they move here unchanged in
+# xeo-delivery.ttl (now xeo-work.ttl). They were never published, so they move here unchanged in
 # name; clientOf and holdsCapability stay in delivery (agency and scope terms).
 #
 # ADDED. Person, the canonical person, and refersTo, the edge from a system's
@@ -578,7 +578,7 @@ xeo:mappingConfidence a owl:AnnotationProperty ;
 xeo:Organization a owl:Class ;
     rdfs:label "Organization" ;
     xeo:xeoLayer "entity" ;
-    dct:description "The canonical organization: one node per real organization (an agency, a brand's company, an in-house team, a customer's company), which every system's record of it (a CRM company, an ad account's owner, a billing customer) points at with refersTo. Identified by name. The owner of Websites and Brands (owns), the holder of Capabilities and the client of another Organization (holdsCapability and clientOf, in xeo-delivery), and a tenancy node that activates Frameworks and Playbooks. It copies no vendor's fields: what a CRM knows about the company stays on the CRM's record, which refers to this node. Its kind is a slotted-in concept (organizationKind), never a subclass." .
+    dct:description "The canonical organization: one node per real organization (an agency, a brand's company, an in-house team, a customer's company), which every system's record of it (a CRM company, an ad account's owner, a billing customer) points at with refersTo. Identified by name. The owner of Websites and Brands (owns), the holder of Capabilities and the client of another Organization (holdsCapability and clientOf, in xeo-work), and a tenancy node that activates Frameworks and Playbooks. It copies no vendor's fields: what a CRM knows about the company stays on the CRM's record, which refers to this node. Its kind is a slotted-in concept (organizationKind), never a subclass." .
 
 xeo:Person a owl:Class ;
     rdfs:label "Person" ;

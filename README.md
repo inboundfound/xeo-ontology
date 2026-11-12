@@ -33,7 +33,7 @@ acronyms.
    cites the spec or API contract that defines it — HTTP (RFC 9110), WHATWG
    HTML/URL, RFC 6596, the GSC Search Analytics API, per-provider response
    annotations. No dependency on any third-party SEO vocabulary.
-2. **Epistemic layering.** Every term is typed by the kind of claim it makes:
+2. **Layering.** Every term is typed by the kind of claim it makes (`xeoLayer`):
    `entity` (durable identity) · `episode` (happened at a time, immutable) ·
    `observation` (measured fact) · `derivation` (model output — carries method,
    model, confidence) · `interpretation` (a strategist's claim, labeled as one) ·
@@ -51,17 +51,18 @@ acronyms.
 
 ## Modules
 
-| File | Layer | Contents |
+Every module needs only core; load core and the add-ons you use. A link between two add-ons (a practice constraining a recommendation, a recommendation issued for a campaign) works when both are loaded. `tools/validate.py` checks that core loads alone and lists those links.
+
+| File | Role | Contents |
 |---|---|---|
-| `xeo-core.ttl` | the SEO substrate | `Website`, `URL`, `Domain` (the registrable domain any URL sits on, tracked or not), `Term`, `Crawl`, `SerpSnapshot`, `Topic`, `Entity`, `SearchPerformanceFact`; `Person` and `Organization` (the canonical parties: one node per real person or organization, which every system's record of it points at with `REFERS_TO`; an Organization `owns` websites and brands); `FETCHED`, `LINKS_TO`, `REDIRECTS_TO`, `HAS_CANONICAL`, `ON_DOMAIN`, `RANKS_FOR` (windowed rollups with `datasetUri` provenance), `HAS_RESULT`, `RELATED_TERM`, `IN_TOPIC`, `ABOUT` |
-| `xeo-visibility.ttl` | the xEO layer | `Engine` (+ `SearchEngine` / `GenerativeEngine` / `AnswerEngine` / `ConversationalAgent`), `Brand`, `Prompt`, `LLMResponse`; `CITES`, `MENTIONS {mentionRank, sentiment}`, `FANS_OUT_TO` (fan-out queries **are** Terms — the join back to rank data), `VISIBILITY_FOR` rollups (`mentionRate`, `citationRate`), `HAS_WEBSITE`, `COMPETES_WITH` |
-| `xeo-engagement.ttl` | draft v0 | `SearchIntent` (Broder 2002, extended), `ConversionPoint` with a `conversionPointType`, `ConversionEvent`, `attributedResponse` (pre-click attribution — a labeled interpretation). **The CRM seam:** `crmRecordRef` (the join key, typed by `crmSystem` and `crmObjectType`) and the few neutral slots that make pipeline numbers computable without mirroring any CRM — `dealAmount` + `currencyCode`, `dealOutcome`, `stageRef` / `pipelineRef` with a neutral `stageClass`, `ownerRef`, `recordCreatedAt`, `dealClosedAt`, `firstTouchChannel` (with an `ai_assistant` channel), `StageTransition`, `PipelineRollup`. Lifecycle stage, probabilities, weighted and converted amounts are an extension set. |
-| `xeo-decision.ttl` | the interpretation tier | `Diagnostic` (and its episode, `DiagnosticRun`), `Gap`, `Tactic`, `Capability`, `Experiment`, `Outcome`, `ExternalEvent`, `Recommendation`, `Feedback`; the chain `reveals`→`addressableBy`→`requiresCapability` (scope gate)→`tests`/`inContext`→`recommends`/`supportedBy`. Classes, never values — `gapType`/`inIntervention`/`onDimension`/`atPriority` are `skos:Concept` slots you fill. |
-| `xeo-strategy.ttl` | the norms tier | `Practice` (a standing rule: `guardrail` vetoes a candidate, `preference` reorders it, `guidance` caveats it), `Playbook` (a reusable discipline bundle); `constrains`, `appliesToConcept`, `appliedPractice` (the audit edge — why a candidate was blocked), `supersedes` (revisable, never deleted), `hasRole` (page roles as a derivation, not regexes), `appliesAtScope` (the tenancy specificity ladder); `Framework` and `Stage` (a named method as data: stages, ordered or not, with diagnostics and tactics placed `atStage`); `learnedFrom` and `evaluatedPractice {fired}`. Governs **how** a `Recommendation` is allowed to be made. |
-| `xeo-delivery.ttl` | the delivery layer | `Project` (the contract — `engagementType`, `interventionQuota`, `cadence`/`durationDays`, what's `inScope`), `Campaign` (a body of work `aboutTopic`, covering URLs and Terms), `Objective` → `MetricTarget` (the intent, as targets a later `Outcome` is read against). `Recommendation` `issuedFor` a campaign; `Experiment` `measures` a target. An `Organization` (core) is `clientOf` another and `holdsCapability`. The layer the decision and norms tiers left open. |
+| `xeo-core.ttl` | the substrate every module needs | `Website`, `URL`, `Domain` (the registrable domain any URL sits on, tracked or not), `Term`, `Crawl`, `SerpSnapshot`, `Topic`, `Entity`, `SearchPerformanceFact`; `Person` and `Organization` (the canonical parties: one node per real person or organization, which every system's record of it points at with `REFERS_TO`; an Organization `owns` websites and brands); `FETCHED`, `LINKS_TO`, `REDIRECTS_TO`, `HAS_CANONICAL`, `ON_DOMAIN`, `RANKS_FOR` (windowed rollups with `datasetUri` provenance), `HAS_RESULT`, `RELATED_TERM`, `IN_TOPIC`, `ABOUT`; `Engine` and `SearchEngine`; `SearchIntent`; website conversions (`ConversionPoint` with a `conversionPointType`, `ConversionEvent`); the money terms (`currencyCode`, `recurringValue`, `amountInReportingCurrency`); and metrics: `Metric` (a named rule: `metricType`, `aggregation`, `readsSlot` or `numerator` / `denominator`, `unit`, `betterDirection`, `additivity`, `minDenominator`) and `MetricReading` (the value that rule took over one window, for one `scope`, from one source). No KPI class: that is `isPrimary`. |
+| `xeo-visibility.ttl` | AI answers | `GenerativeEngine` / `AnswerEngine` / `ConversationalAgent` (kinds of core's `Engine`), `Brand`, `Prompt`, `LLMResponse`; `CITES`, `MENTIONS {mentionRank, sentiment}`, `FANS_OUT_TO` (fan-out queries **are** Terms — the join back to rank data), `VISIBILITY_FOR` rollups (`mentionRate`, `citationRate`), `HAS_WEBSITE`, `COMPETES_WITH`, `attributedResponse` (pre-click attribution — a labeled interpretation) |
 | `xeo-analysis.ttl` | derived structure | What algorithms and models add to the graph: `AlgorithmRun` (algorithm, parameters, projection), `COMPUTED_BY`, `SIMILAR_TO {similarity, basis}`, `PRECEDENT_FOR`, and the node scores `pageRank`, `betweenness`, `degree`, `communityId`. All derivations. Similarity and centrality nominate candidates; they decide nothing, and a score is meaningless without the projection it was computed on. |
-| `xeo-metrics.ttl` | metric definitions and readings | `Metric` (a named rule: `metricType`, `aggregation`, `readsSlot` or `numerator` / `denominator`, `unit`, `betterDirection`, `additivity`, `minDenominator`) and `MetricReading` (the value that rule took over one window, for one `scope`, from one source). A `MetricTarget`'s `metric` is the code of a Metric; an `Outcome` compares a `baselineReading` with a `resultReading` and records `absoluteChange` and `relativeChange`. No KPI class: that is `isPrimary`. |
-| `xeo-schemes.ttl` · `schemes.json` | reference values | **The slots, filled.** SKOS concept schemes for every `skos:Concept` slot and controlled string in the ontology — 50 schemes, ~280 concepts: gap types, verdicts, priority, the intervention catalogue, lifecycles, **the Metrics themselves** (`xeos:metric`: search, AI visibility, analytics, CRM pipeline), metric types and units, deal outcomes, acquisition channels, SERP result types, link positions, algorithms, epistemic layers. Every scheme names its source. `schemes.json` is the generated projection for anything that builds an enum at boot. |
+| `xeo-sales.ttl` | the CRM side | **The CRM seam:** `crmRecordRef` (the join key, typed by `crmSystem` and `crmObjectType`) and the few neutral slots that make pipeline numbers computable without mirroring any CRM — `dealAmount` (with core's `currencyCode`), `dealOutcome`, `stageRef` / `pipelineRef` with a neutral `stageClass`, `ownerRef`, `recordCreatedAt`, `dealClosedAt`, `firstTouchChannel` (with an `ai_assistant` channel), `StageTransition`, `PipelineRollup`. Lifecycle stage, probabilities and weighted amounts are an extension set. Was the CRM half of `xeo-engagement` until 0.7. |
+| `xeo-work.ttl` | clients and delivery | `Project` (the contract — `engagementType`, `interventionQuota`, `cadence`/`durationDays`, what's `inScope`), `Campaign` (a body of work `aboutTopic`, covering URLs and Terms), `Objective` → `MetricTarget` (the intent, as targets a later `Outcome` is read against). `Recommendation` `issuedFor` a campaign; `Experiment` `measures` a target. An `Organization` (core) is `clientOf` another and `holdsCapability`. Was `xeo-delivery` until 0.7. |
+| `xeo-decision.ttl` | gaps to recommendations | `Diagnostic` (and its episode, `DiagnosticRun`), `Gap`, `Tactic`, `Capability`, `Experiment`, `Outcome`, `ExternalEvent`, `Recommendation`, `Feedback`; the chain `reveals`→`addressableBy`→`requiresCapability` (scope gate)→`tests`/`inContext`→`recommends`/`supportedBy`. Classes, never values — `gapType`/`inIntervention`/`onDimension`/`atPriority` are `skos:Concept` slots you fill. |
+| `xeo-strategy.ttl` | the standing rules | `Practice` (a standing rule: `guardrail` vetoes a candidate, `preference` reorders it, `guidance` caveats it), `Playbook` (a reusable discipline bundle); `constrains`, `appliesToConcept`, `appliedPractice` (the audit edge — why a candidate was blocked), `supersedes` (revisable, never deleted), `hasRole` (page roles as a derivation, not regexes), `appliesAtScope` (the tenancy specificity ladder); `Framework` and `Stage` (a named method as data: stages, ordered or not, with diagnostics and tactics placed `atStage`); `learnedFrom` and `evaluatedPractice {fired}`. Governs **how** a `Recommendation` is allowed to be made. |
+| `xeo-schemes.ttl` · `schemes.json` | reference values | **The slots, filled.** SKOS concept schemes for every `skos:Concept` slot and controlled string in the ontology — 50 schemes, ~280 concepts: gap types, verdicts, priority, the intervention catalogue, lifecycles, **the Metrics themselves** (`xeos:metric`: search, AI visibility, analytics, CRM pipeline), metric types and units, deal outcomes, acquisition channels, SERP result types, link positions, algorithms, layers. Every scheme names its source. `schemes.json` is the generated projection for anything that builds an enum at boot. |
 | [`mappings/`](mappings/README.md) | vendor mappings, **not part of the ontology** | **Where a vendor's field meets a slot.** One file and one SKOS scheme per tool; each concept holds the vendor's exact field name (`skos:notation`), the slot it fills, a SKOS match, a scope note, a dated source and an `xeo:mappingConfidence`. Transcribed so far: HubSpot CRM, Google Search Console, GA4, Peec, Profound. From documentation only: nothing is verified against live API output yet, and each file says which mappings are inferred. Nothing in the ontology points at a mapping, and the folder has a template for adding a tool. |
 | `xeo-align.ttl` | interoperability | Optional bridges — schema.org (`WebSite`, `WebPage`, `Brand`, `Observation`), PROV-O (`Crawl`→`Activity`, `Engine`→`SoftwareAgent`, `LLMResponse`→`Entity`), SKOS (`Topic`→`Concept`, `childOf`→`broader`). **Alignments, not dependencies.** |
 | `context.jsonld` | interoperability | A JSON-LD `@context` mapping graph labels/relationships/properties to IRIs — turns a Neo4j export into valid RDF/JSON-LD in one pass. |
@@ -81,14 +82,17 @@ engine-side data has been missing.
 ```
                         entities (durable)          episodes (immutable)
   core        Website · URL · Term · Topic     Crawl · SerpSnapshot
-              Person · Organization
-  visibility  Engine · Brand · Prompt          LLMResponse
-  engagement  ConversionPoint · SearchIntent   ConversionEvent
+              Person · Organization · Engine   ConversionEvent
+              ConversionPoint · SearchIntent   MetricReading (the number, over a window)
+              Metric (a rule, not a number)
+  visibility  Brand · Prompt                   LLMResponse
+  analysis    (scores and similarity edges)    AlgorithmRun
+  sales       (CRM records, by pointer)        StageTransition · OwnerChange
+  work        Project · Campaign                (Objective → MetricTarget: the intent)
   decision    Gap · Tactic · Capability        Experiment (→ Outcome)
   strategy    Practice · Playbook               (norms — rules, not events)
-  delivery    Project · Campaign                (Objective → MetricTarget: the intent)
-  analysis    (scores and similarity edges)    AlgorithmRun
-  metrics     Metric (a rule, not a number)    MetricReading (the number, over a window)
+
+  every add-on needs only core
 
   observations attach facts to entities/episodes (FETCHED, CITES, MENTIONS…)
   derivations carry method/model/confidence (IN_TOPIC, embeddingRef…)
@@ -130,7 +134,7 @@ MATCH (p:Prompt)-[:FANS_OUT_TO]->(t:Term)<-[rf:RANKS_FOR]-(u:URL)
 WHERE rf.avgPosition <= 10
 RETURN p.text, t.name, u.address, rf.avgPosition;
 
-// Pre-click to pipeline (engagement draft): visibility windows around a conversion
+// Pre-click to pipeline: visibility windows around a conversion
 MATCH (e:ConversionEvent)-[:CAPTURED_BY]->(cp:ConversionPoint)<-[:HAS_CONVERSION_POINT]-(u:URL)
 MATCH (r:LLMResponse)-[:CITES]->(u)
 WHERE r.capturedAt < e.occurredAt <= r.capturedAt + duration('P7D')
@@ -181,7 +185,7 @@ is the right base for the "bring your own scheme" layer.)
 
 ## Interoperability — stands alone, bridges out
 
-XEO has **no hard dependency**: core, visibility, and engagement load and reason
+XEO has **no hard dependency**: core and every add-on load and reason
 with zero external vocabularies present. It grounds its own terms in primary
 standards (HTTP, WHATWG, the GSC API) rather than borrowing another SEO ontology.
 
@@ -194,7 +198,7 @@ is an **optional crosswalk** — alignments, not imports:
   (not an equivalence) to `schema:WebPage`, because XEO deliberately keeps the
   address (entity) separate from the page's rendered state (a Fetch observation);
   metrics map to `schema:Observation`, never a reified score class.
-- **PROV-O** (the provenance spine): XEO's epistemic layering *is* provenance.
+- **PROV-O** (the provenance spine): XEO's layering *is* provenance.
   `Crawl` is a `prov:Activity`, `Engine` a `prov:SoftwareAgent`, a captured
   `LLMResponse` a `prov:Entity` attributed (`onEngine`→`prov:wasAttributedTo`) to
   the engine that generated it. The decision layer extends the same spine — an
@@ -253,7 +257,7 @@ slot is what XEO defines; a scheme is one answer.
 | `recommendationStatus` · `experimentStatus` · `practiceStatus` | `xeo:status` | the three lifecycles |
 | `practiceKind` · `practiceSource` · `practiceOutcome` | the norms tier | how a rule acts, where it came from, what it did |
 | `outcomeResult` · `outcomeResultReason` | `xeo:result` · `xeo:resultReason` | did it move, and why it couldn't be judged |
-| `objectiveMetric` · `targetKind` · `engagementType` · `cadence` · `effort` · `execution` | the delivery layer | `objectiveMetric` is the earlier list of metric codes, kept for compatibility; each is an exactMatch of its Metric in `metric` |
+| `objectiveMetric` · `targetKind` · `engagementType` · `cadence` · `effort` · `execution` | the work module | `objectiveMetric` is the earlier list of metric codes, kept for compatibility; each is an exactMatch of its Metric in `metric` |
 | `metric` | `xeo:metric` | 35 — **the Metrics**: each an `xeo:Metric` with a type, unit, better direction and additivity. Search, AI visibility, analytics, CRM pipeline |
 | `metricType` · `aggregation` · `metricUnit` · `betterDirection` · `additivity` | the Metric's own slots | how a metric is computed, in what unit, which way is better, whether it sums |
 | `crmSystem` · `crmObjectType` · `dealOutcome` · `dealStageClass` · `stageSlot` · `acquisitionChannel` · `conversionPointType` · `searchIntent` | the CRM seam | the few closed lists the pipeline slots need; `acquisitionChannel` includes `ai_assistant` |
@@ -263,7 +267,7 @@ slot is what XEO defines; a scheme is one answer.
 | `sentiment` | `xeo:sentiment` | 4 — positive · neutral · negative · mixed |
 | `algorithm` · `similarityBasis` | `xeo:algorithm` · `xeo:basis` | what ran, and what was compared |
 | `frameworkKind` · `organizationKind` · `feedbackVerdict` | `xeo:frameworkKind` · `xeo:organizationKind` · `xeo:verdict` | the method, party and feedback slots added in 0.6 |
-| `epistemicLayer` | `xeo:epistemicLayer` | the six kinds of claim, one IRI each |
+| `xeoLayer` | `xeo:xeoLayer` | the six kinds of claim, one IRI each |
 
 **Core, extension, deprecated.** A term or scheme marked `xeo:termStatus "extension"` is
 declared and usable, and is not something every implementation is expected to support;
@@ -300,7 +304,7 @@ rule maps XEO onto them:
 
 Tenancy is the `websiteId` property, never a label. `neo4j-profile.json` is that
 mapping written out for software: every label, relationship type and property
-key with its IRI, epistemic layer, module, and expected domain and range, plus
+key with its IRI, layer, module, and expected domain and range, plus
 the reference schemes as plain code lists. Vendor it, and check the names your
 loaders write against it. `context.neo4j.jsonld` is the same mapping as a
 JSON-LD context, so a Neo4j export lifts back to RDF.
@@ -316,11 +320,10 @@ mapping table are in [`docs/neo4j-profile.md`](docs/neo4j-profile.md).
 cat schema.cypher | cypher-shell -u neo4j -p <password>
 ```
 
-The TTL files are plain OWL — load `xeo-core`, `xeo-visibility`,
-`xeo-engagement`, `xeo-decision`, `xeo-strategy`, `xeo-delivery`,
-`xeo-analysis`, `xeo-metrics`, and (if you want the crosswalk) `xeo-align` into any triple
-store or ontology editor. Decision builds on core; strategy, delivery and
-analysis build on decision; metrics builds on core, decision and delivery; the rest stand alone. `xeo-schemes` is SKOS data, not ontology — load it where you want the
+The TTL files are plain OWL — load `xeo-core` and whichever add-ons you use
+(`xeo-visibility`, `xeo-analysis`, `xeo-sales`, `xeo-work`, `xeo-decision`,
+`xeo-strategy`), and (if you want the crosswalk) `xeo-align`, into any triple
+store or ontology editor. Every add-on needs only core. `xeo-schemes` is SKOS data, not ontology — load it where you want the
 reference values, and the file for your tool from `mappings/` where a loader needs to know which
 vendor field fills which slot. To publish graph data as linked data, serve your
 Neo4j export under `context.jsonld` and it validates as RDF/JSON-LD.

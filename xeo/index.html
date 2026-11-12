@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>XEO — the xEO family ontology (terms)</title>
-<meta name="description" content="Term reference for the XEO ontology: classes, properties, and individuals across the core, visibility, engagement, decision, strategy, delivery, analysis, and metrics modules.">
+<meta name="description" content="Term reference for the XEO ontology: classes, properties, and individuals across the core, visibility, analysis, sales, work, decision and strategy modules.">
 <link rel="alternate" type="text/turtle" href="xeo-core.ttl">
 <style>
 :root { color-scheme: light dark; --bg:#f7f5ef; --surface:#fffdf8; --text:#17181c;
@@ -257,7 +257,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 <section id="Organization" class="term">
   <h3>Organization <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:Organization</code>
-  <p>The canonical organization: one node per real organization (an agency, a brand&#x27;s company, an in-house team, a customer&#x27;s company), which every system&#x27;s record of it (a CRM company, an ad account&#x27;s owner, a billing customer) points at with refersTo. Identified by name. The owner of Websites and Brands (owns), the holder of Capabilities and the client of another Organization (holdsCapability and clientOf, in xeo-delivery), and a tenancy node that activates Frameworks and Playbooks. It copies no vendor&#x27;s fields: what a CRM knows about the company stays on the CRM&#x27;s record, which refers to this node. Its kind is a slotted-in concept (organizationKind), never a subclass.</p>
+  <p>The canonical organization: one node per real organization (an agency, a brand&#x27;s company, an in-house team, a customer&#x27;s company), which every system&#x27;s record of it (a CRM company, an ad account&#x27;s owner, a billing customer) points at with refersTo. Identified by name. The owner of Websites and Brands (owns), the holder of Capabilities and the client of another Organization (holdsCapability and clientOf, in xeo-work), and a tenancy node that activates Frameworks and Playbooks. It copies no vendor&#x27;s fields: what a CRM knows about the company stays on the CRM&#x27;s record, which refers to this node. Its kind is a slotted-in concept (organizationKind), never a subclass.</p>
   
 </section>
 <section id="Outcome" class="term">
