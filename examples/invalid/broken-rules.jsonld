@@ -16,9 +16,12 @@
     { "id": "ex:bad-domain", "type": "Domain", "expect": "DomainShape" },
     { "id": "ex:bad-serp", "type": "SerpSnapshot", "locale": "en-GB", "expect": "SerpSnapshotShape" },
     { "id": "ex:bad-response", "type": "LLMResponse", "capturedAt": "2026-06-03T09:05:00Z", "expect": "LLMResponseShape" },
-    { "id": "ex:bad-target", "type": "MetricTarget", "metric": "position", "direction": "better", "expect": "MetricTargetShape" },
-    { "id": "ex:bad-outcome", "type": "Outcome", "lift": "0.15", "expect": "OutcomeShape" },
+    { "id": "ex:bad-target", "type": "MetricTarget", "targetValue": "0.40", "expect": "MetricTargetShape" },
+    { "id": "ex:bad-outcome", "type": "Outcome", "absoluteChange": "0.15", "expect": "OutcomeShape" },
     { "id": "ex:bad-practice", "type": "Practice", "statement": "A rule with no kind and no status.", "expect": "PracticeShape" },
+    { "id": "ex:bad-consent", "type": "Consent", "consentPurpose": "ad_personalization", "consentStatus": "GRANTED", "consentRecordedAt": "2026-11-01T10:00:00Z", "expect": "ConsentShape" },
+    { "id": "ex:bad-credit", "type": "AttributedCredit", "creditShare": "0.5", "expect": "AttributedNumberNamesItsModel" },
+    { "id": "ex:bad-share", "creditShare": "1.4", "expect": "CreditShareIsAShare" },
     { "id": "ex:bad-stage", "type": "Stage", "name": "Ranked", "stageOrder": "second", "expect": "StageShape" },
     { "id": "ex:bad-run", "type": "AlgorithmRun", "algorithm": "xeos:algorithm-pagerank", "expect": "AlgorithmRunShape" },
     { "id": "ex:bad-gap", "type": "Gap", "magnitude": "120", "expect": "MagnitudeNeedsUnit" },
@@ -69,7 +72,7 @@
     },
     {
       "id": "ex:bad-currency-target", "type": "MetricTarget",
-      "metric": "revenue_won", "targetValue": "40000", "expect": "CurrencyTargetNeedsCurrency"
+      "targetMetric": "xeos:metric-revenue_won", "targetValue": "40000", "expect": "CurrencyTargetNeedsCurrency"
     },
     { "id": "ex:bad-deal", "crmRecordRef": "hubspot:12345:deal:1", "dealAmount": "42000", "expect": "DealAmountNeedsCurrency" },
     {

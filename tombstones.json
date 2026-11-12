@@ -1,0 +1,25 @@
+{
+  "$comment": "Terms and files removed from XEO, and what to use instead. tools/gen_site.py writes these as tombstones on xeoontology.org (decision W5); tools/validate.py checks that no removed term is still declared and that every replacement is. Add an entry in the release that removes something; never delete one.",
+  "terms": [
+    {"term": "lift", "removedIn": "0.7.0", "useInstead": ["absoluteChange", "relativeChange"]},
+    {"term": "direction", "removedIn": "0.7.0", "useInstead": ["betterDirection"]},
+    {"term": "Informational", "removedIn": "0.7.0", "useInstead": [], "note": "Use the xeos:searchIntent concept informational."},
+    {"term": "Navigational", "removedIn": "0.7.0", "useInstead": [], "note": "Use the xeos:searchIntent concept navigational."},
+    {"term": "CommercialInvestigation", "removedIn": "0.7.0", "useInstead": [], "note": "Use the xeos:searchIntent concept commercial_investigation."},
+    {"term": "Transactional", "removedIn": "0.7.0", "useInstead": [], "note": "Use the xeos:searchIntent concept transactional."},
+    {"term": "CallToAction", "removedIn": "0.7.0", "useInstead": ["conversionPointType"], "note": "With the code cta."},
+    {"term": "LeadCaptureForm", "removedIn": "0.7.0", "useInstead": ["conversionPointType"], "note": "With the code lead_form."},
+    {"term": "GatedAsset", "removedIn": "0.7.0", "useInstead": ["conversionPointType"], "note": "With the code gated_asset."},
+    {"term": "campaignInfluenceShare", "removedIn": "0.7.0", "useInstead": ["creditShare"], "note": "On an AttributedCredit, which names its AttributionModel."},
+    {"term": "GenerativeEngine", "removedIn": "0.7.0", "useInstead": ["GenerativeOverview"], "note": "A rename."},
+    {"term": "ConversationalAgent", "removedIn": "0.7.0", "useInstead": ["AnswerEngine"]},
+    {"term": "metric", "removedIn": "0.7.0", "useInstead": ["targetMetric"], "note": "A link to the Metric node instead of its code."},
+    {"term": "valuePeriod", "removedIn": "0.7.0", "useInstead": ["billingInterval", "billingIntervalCount"], "note": "The scheme xeos:valuePeriod is removed with it."}
+  ],
+  "files": [
+    {"file": "xeo-engagement.ttl", "removedIn": "0.7.0", "note": "Split in 0.7: search intent, website conversions and the money terms are in xeo-core.ttl; the CRM side is xeo-sales.ttl; attributedResponse is in xeo-visibility.ttl."},
+    {"file": "xeo-delivery.ttl", "removedIn": "0.7.0", "note": "Renamed xeo-work.ttl in 0.7, unchanged."},
+    {"file": "xeo-metrics.ttl", "removedIn": "0.7.0", "note": "Folded into xeo-core.ttl in 0.7, unchanged."},
+    {"file": "xeo-strategy.ttl", "removedIn": "0.7.0", "note": "Merged into xeo-decision.ttl in 0.7, unchanged: appended at its foot."}
+  ]
+}

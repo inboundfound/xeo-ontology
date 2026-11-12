@@ -1,0 +1,27 @@
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix dct:  <http://purl.org/dc/terms/> .
+@prefix xeo:  <https://xeoontology.org/xeo#> .
+
+# XEO Attribution x Sales bridge. Load it only with both attribution and sales:
+# it lets a B2B attribution model read the CRM's deal stages. Ecommerce users
+# never load it.
+
+xeo:attribution-sales-module a owl:Ontology ;
+    dct:title "XEO Attribution x Sales (bridge)" ;
+    dct:description "The two terms a B2B attribution model needs from the CRM: an anchor fixed at a tenant's stage, and credit given to a deal record." ;
+    dct:creator "Inbound Found" ;
+    owl:versionInfo "0.7.0" .
+
+xeo:anchorStageRef a owl:DatatypeProperty ;
+    rdfs:label "anchor stage reference" ;
+    rdfs:domain xeo:CreditAnchor ; rdfs:range xsd:string ;
+    xeo:xeoLayer "norm" ;
+    dct:description "The tenant's stage id (as stageRef holds it) that marks a CreditAnchor's position: which stage counts as opportunity_created or qualified in this CRM. Per tenant, never a published value." .
+
+xeo:creditForDeal a owl:DatatypeProperty ;
+    rdfs:label "credit for deal" ;
+    rdfs:domain xeo:AttributedCredit ; rdfs:range xsd:string ;
+    xeo:xeoLayer "derivation" ;
+    dct:description "The crmRecordRef of the deal an AttributedCredit is a share of, where the credited conversion is a CRM deal rather than a ConversionEvent or RevenueEvent." .

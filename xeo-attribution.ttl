@@ -1,0 +1,483 @@
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix dct:  <http://purl.org/dc/terms/> .
+@prefix xeo:  <https://xeoontology.org/xeo#> .
+
+# XEO Attribution module: which touches get credit for which conversions.
+#
+# New in 0.7. Needs core only, so an online seller with no CRM loads core and
+# this, and nothing else. A B2B model that reads deal stages loads the bridge
+# file xeo-attribution-sales.ttl with sales as well.
+#
+#   Person|Organization <- journeyOf - Journey - hasTouchpoint -> Touchpoint
+#   ConversionEvent - viaTouchpoint -> Touchpoint           (Call, BookedMeeting are ConversionEvents)
+#   RevenueEvent (Order, Payment, Refund, Chargeback), Subscription
+#   SpendRollup {spendAmount, impressions, clicks} per campaign, ad set or ad
+#   AttributionModel {creditRule, CreditAnchors, lookbackWindow, ...}       (a norm)
+#   AttributedCredit {creditedTouchpoint, creditFor, creditShare} usesAttributionModel
+#   AttributionRollup (a MetricReading) usesAttributionModel
+#
+# MODELS ARE DESCRIBED, NOT NAMED. Two vendors' "U-shaped" can give the second
+# 40% to different touches, and one vendor's "data-driven" can be a window
+# switch. An AttributionModel states its structure; vendor names are mapped in
+# mappings/ and never trusted as a definition.
+#
+# EVERY ATTRIBUTED NUMBER NAMES ITS MODEL. usesAttributionModel is required on
+# an AttributedCredit and an AttributionRollup (a shape checks it).
+#
+# Sources: the XEO attribution research and its 11 November follow-up (Hyros'
+# API docs; Dreamdata, HockeyStack, Factors.ai, Rockerbox, CallRail, Invoca,
+# WhatConverts), as summarised in the 0.7 plan of record. None verified against
+# live output.
+
+xeo:attribution-module a owl:Ontology ;
+    dct:title "XEO Attribution (touches, journeys, revenue, spend, attribution models)" ;
+    dct:description "Which touches get credit for which conversions, and on what rule: Touchpoints and Journeys, identity links, calls and booked meetings, revenue with no pipeline (orders, payments, refunds, subscriptions), ad spend, attribution models described by their structure, and the credits and rollups they produce, each naming its model." ;
+    dct:creator "Inbound Found" ;
+    owl:versionInfo "0.7.0" .
+
+# --- Touches, journeys, identity ------------------------------------------------------
+
+xeo:Touchpoint a owl:Class ;
+    rdfs:label "Touchpoint" ;
+    xeo:xeoLayer "episode" ;
+    dct:description "One interaction a person or organization had with your marketing at a time: an ad click or view, a visit, an email or an email open, a text message, a call, a form, a meeting. Immutable once recorded. Carries touchType, occurredAt, touchChannel, and what the source gives: the UTM fields, clickIdentifier, adCampaignRef, adSetRef, adRef, referringPlatform, touchLandingUrl. Belongs to a Journey." .
+
+xeo:touchType a owl:DatatypeProperty ;
+    rdfs:label "touch type" ;
+    rdfs:domain xeo:Touchpoint ; rdfs:range xsd:string ;
+    xeo:xeoLayer "observation" ;
+    xeo:groundedIn "The ad platform's or store's reporting API contract (per-vendor, mapped in mappings/)" ;
+    dct:description "What kind of interaction a Touchpoint was, as a code from a slotted-in scheme (ad_click, ad_view, visit, email, email_open, text_message, call, form, chat, meeting, offline, other — xeos:touchType is a published reference filling). One per Touchpoint. An email_open is not eligible for credit unless a model says so." .
+
+xeo:touchChannel a owl:DatatypeProperty ;
+    rdfs:label "touch channel" ;
+    rdfs:domain xeo:Touchpoint ; rdfs:range xsd:string ;
+    xeo:xeoLayer "derivation" ;
+    dct:description "The acquisition channel of one Touchpoint, as a code from xeos:acquisitionChannel. A derivation: a classifier read the source, medium, referrer or click id and decided, so it carries method naming that classifier (a vendor's rule or your own). One per Touchpoint." .
+
+xeo:touchLandingUrl a owl:ObjectProperty ;
+    rdfs:label "touch landing URL" ;
+    rdfs:domain xeo:Touchpoint ; rdfs:range xeo:URL ;
+    xeo:xeoLayer "observation" ;
+    xeo:groundedIn "The landing URL's query string, by the UTM convention (utm_source, utm_medium, utm_campaign, utm_term, utm_content)" ;
+    dct:description "The page the Touchpoint landed on, where it was a visit or a click." .
+
+xeo:utmSource a owl:DatatypeProperty ;
+    rdfs:label "UTM source" ;
+    rdfs:domain xeo:Touchpoint ; rdfs:range xsd:string ;
+    xeo:xeoLayer "observation" ;
+    xeo:groundedIn "The landing URL's query string, by the UTM convention (utm_source, utm_medium, utm_campaign, utm_term, utm_content)" ;
+    dct:description "utm_source: the referrer as the link's author named it (google, newsletter). As written in the landing URL, unnormalized: what it means is the touchChannel's derivation." .
+
+xeo:utmMedium a owl:DatatypeProperty ;
+    rdfs:label "UTM medium" ;
+    rdfs:domain xeo:Touchpoint ; rdfs:range xsd:string ;
+    xeo:xeoLayer "observation" ;
+    xeo:groundedIn "The landing URL's query string, by the UTM convention (utm_source, utm_medium, utm_campaign, utm_term, utm_content)" ;
+    dct:description "utm_medium: the marketing medium as the link's author named it (cpc, email). As written in the landing URL, unnormalized: what it means is the touchChannel's derivation." .
+
+xeo:utmCampaign a owl:DatatypeProperty ;
+    rdfs:label "UTM campaign" ;
+    rdfs:domain xeo:Touchpoint ; rdfs:range xsd:string ;
+    xeo:xeoLayer "observation" ;
+    xeo:groundedIn "The landing URL's query string, by the UTM convention (utm_source, utm_medium, utm_campaign, utm_term, utm_content)" ;
+    dct:description "utm_campaign: the campaign name as the link's author wrote it. As written in the landing URL, unnormalized: what it means is the touchChannel's derivation." .
+
+xeo:utmTerm a owl:DatatypeProperty ;
+    rdfs:label "UTM term" ;
+    rdfs:domain xeo:Touchpoint ; rdfs:range xsd:string ;
+    xeo:xeoLayer "observation" ;
+    xeo:groundedIn "The landing URL's query string, by the UTM convention (utm_source, utm_medium, utm_campaign, utm_term, utm_content)" ;
+    dct:description "utm_term: the paid keyword, where the link's author set it. As written in the landing URL, unnormalized: what it means is the touchChannel's derivation." .
+
+xeo:utmContent a owl:DatatypeProperty ;
+    rdfs:label "UTM content" ;
+    rdfs:domain xeo:Touchpoint ; rdfs:range xsd:string ;
+    xeo:xeoLayer "observation" ;
+    xeo:groundedIn "The landing URL's query string, by the UTM convention (utm_source, utm_medium, utm_campaign, utm_term, utm_content)" ;
+    dct:description "utm_content: which ad or link, where the link's author set it. As written in the landing URL, unnormalized: what it means is the touchChannel's derivation." .
+
+xeo:clickIdentifier a owl:DatatypeProperty ;
+    rdfs:label "click identifier" ;
+    rdfs:domain xeo:Touchpoint ; rdfs:range xsd:string ;
+    xeo:xeoLayer "observation" ;
+    xeo:groundedIn "The ad platform's click-id URL parameter (gclid, fbclid, msclkid, ...)" ;
+    dct:description "The ad platform's click id carried on the landing URL, written parameter=value (gclid=..., fbclid=..., msclkid=...), so the platform is known. The strongest key from a touch to the ad that caused it." .
+
+xeo:adCampaignRef a owl:DatatypeProperty ;
+    rdfs:label "ad campaign reference" ;
+    rdfs:range xsd:string ;
+    xeo:domainIncludes xeo:Touchpoint , xeo:SpendRollup ;
+    xeo:xeoLayer "entity" ;
+    dct:description "Identity-key pointer to an ad campaign in the ad platform, written platform:accountId:id. A pointer and nothing more: the ad platform's own objects are not mirrored. Carried by a Touchpoint and a SpendRollup. Not a CRM marketing campaign (marketingCampaignRef, sales) and not an xeo:Campaign (work)." .
+
+xeo:adSetRef a owl:DatatypeProperty ;
+    rdfs:label "ad set reference" ;
+    rdfs:range xsd:string ;
+    xeo:domainIncludes xeo:Touchpoint , xeo:SpendRollup ;
+    xeo:xeoLayer "entity" ;
+    dct:description "Identity-key pointer to an ad set or ad group in the ad platform, written platform:accountId:id. A pointer and nothing more: the ad platform's own objects are not mirrored. Carried by a Touchpoint and a SpendRollup. Not a CRM marketing campaign (marketingCampaignRef, sales) and not an xeo:Campaign (work)." .
+
+xeo:adRef a owl:DatatypeProperty ;
+    rdfs:label "ad reference" ;
+    rdfs:range xsd:string ;
+    xeo:domainIncludes xeo:Touchpoint , xeo:SpendRollup ;
+    xeo:xeoLayer "entity" ;
+    dct:description "Identity-key pointer to one ad in the ad platform, written platform:accountId:id. A pointer and nothing more: the ad platform's own objects are not mirrored. Carried by a Touchpoint and a SpendRollup. Not a CRM marketing campaign (marketingCampaignRef, sales) and not an xeo:Campaign (work)." .
+
+xeo:Journey a owl:Class ;
+    rdfs:label "Journey" ;
+    xeo:xeoLayer "derivation" ;
+    dct:description "The ordered Touchpoints of one Person or Organization (journeyOf) leading to their conversions. A derivation: stitching touches to one party is a resolution, so it carries method, and the IdentityLinks it used. Account-level journeys (an Organization's) and person-level ones are both journeys." .
+
+xeo:journeyOf a owl:ObjectProperty ;
+    rdfs:label "journey of" ;
+    rdfs:domain xeo:Journey ;
+    xeo:rangeIncludes xeo:Person , xeo:Organization ;
+    xeo:xeoLayer "derivation" ;
+    dct:description "The Person or Organization a Journey belongs to. One per Journey." .
+
+xeo:hasTouchpoint a owl:ObjectProperty ;
+    rdfs:label "has touchpoint" ;
+    rdfs:domain xeo:Journey ; rdfs:range xeo:Touchpoint ;
+    xeo:xeoLayer "derivation" ;
+    dct:description "A Touchpoint stitched into this Journey." .
+
+xeo:IdentityLink a owl:Class ;
+    rdfs:label "Identity Link" ;
+    xeo:xeoLayer "derivation" ;
+    dct:description "The claim that an identifier (a cookie id, a device id, an email hash, a click id, an IP address) belongs to a Person or Organization. Carries linkedIdentifier, identityResolvesTo, identityMethod and confidence. A derivation, because two resolvers can link the same identifier differently." .
+
+xeo:linkedIdentifier a owl:DatatypeProperty ;
+    rdfs:label "linked identifier" ;
+    rdfs:domain xeo:IdentityLink ; rdfs:range xsd:string ;
+    xeo:xeoLayer "observation" ;
+    xeo:groundedIn "The ad platform's or store's reporting API contract (per-vendor, mapped in mappings/)" ;
+    dct:description "The identifier an IdentityLink resolves, written type:value (cookie:..., email_sha256:..., ip:...)." .
+
+xeo:identityResolvesTo a owl:ObjectProperty ;
+    rdfs:label "identity resolves to" ;
+    rdfs:domain xeo:IdentityLink ;
+    xeo:rangeIncludes xeo:Person , xeo:Organization ;
+    xeo:xeoLayer "derivation" ;
+    dct:description "The Person or Organization an IdentityLink says the identifier belongs to." .
+
+xeo:identityMethod a owl:DatatypeProperty ;
+    rdfs:label "identity method" ;
+    rdfs:domain xeo:IdentityLink ; rdfs:range xsd:string ;
+    xeo:xeoLayer "derivation" ;
+    dct:description "How an IdentityLink was made, as a code from a slotted-in scheme (login, form_fill, email_match, click_id, fingerprint, ip_to_company, vendor_graph — xeos:identityMethod is a published reference filling). ip_to_company resolves to an Organization only." .
+
+xeo:viaTouchpoint a owl:ObjectProperty ;
+    rdfs:label "via touchpoint" ;
+    rdfs:domain xeo:ConversionEvent ; rdfs:range xeo:Touchpoint ;
+    xeo:xeoLayer "derivation" ;
+    dct:description "The Touchpoint a ConversionEvent came through, where it is known: matched by click id, session or time. A derivation carrying method." .
+
+xeo:conversionRole a owl:DatatypeProperty ;
+    rdfs:label "conversion role" ;
+    rdfs:range xsd:string ;
+    xeo:domainIncludes xeo:ConversionEvent , xeo:RevenueEvent ;
+    xeo:xeoLayer "interpretation" ;
+    dct:description "What a conversion counts as for attribution, as a code from a slotted-in scheme (lead, qualified_lead, opportunity, sale, other — xeos:conversionRole is a published reference filling). The tenant's mapping from its own events, so an interpretation." .
+
+xeo:Call a owl:Class ;
+    rdfs:label "Call" ;
+    rdfs:subClassOf xeo:ConversionEvent ;
+    xeo:xeoLayer "episode" ;
+    dct:description "A phone call that happened: a kind of ConversionEvent, captured by a call-tracking system. Carries occurredAt and, once judged, callOutcome." .
+
+xeo:BookedMeeting a owl:Class ;
+    rdfs:label "Booked Meeting" ;
+    rdfs:subClassOf xeo:ConversionEvent ;
+    xeo:xeoLayer "episode" ;
+    dct:description "A meeting booked through a scheduler or by a salesperson: a kind of ConversionEvent. Its outcome (held, no-show) is callOutcome." .
+
+xeo:callOutcome a owl:DatatypeProperty ;
+    rdfs:label "call outcome" ;
+    rdfs:range xsd:string ;
+    xeo:domainIncludes xeo:Call , xeo:BookedMeeting ;
+    xeo:xeoLayer "interpretation" ;
+    dct:description "What a call or meeting came to, as a code from a slotted-in scheme (qualified, unqualified, cancelled, no_show, good_lead, not_a_lead, previously_marked_good_lead — xeos:callOutcome is a published reference filling). Someone judged it, after the fact, so an interpretation; outcomeJudgedBy says who." .
+
+xeo:outcomeJudgedBy a owl:DatatypeProperty ;
+    rdfs:label "outcome judged by" ;
+    rdfs:range xsd:string ;
+    xeo:domainIncludes xeo:Call , xeo:BookedMeeting ;
+    xeo:xeoLayer "interpretation" ;
+    dct:description "Who judged a callOutcome: person, rule or ai (xeos:outcomeJudgedBy)." .
+
+xeo:RevenueEvent a owl:Class ;
+    rdfs:label "Revenue Event" ;
+    xeo:xeoLayer "episode" ;
+    dct:description "Money moving at a time, recorded by a store or a payment processor: the parent of Order, Payment, Refund and Chargeback. Immutable once recorded. Carries occurredAt, currencyCode, the amounts that apply, revenueSubject and, where known, customerStatus." .
+
+xeo:Order a owl:Class ;
+    rdfs:label "Order" ;
+    rdfs:subClassOf xeo:RevenueEvent ;
+    xeo:xeoLayer "episode" ;
+    dct:description "A purchase placed: what was bought, for how much, before payment settles. Carries grossAmount, discountAmount, taxAmount, shippingAmount and, once paid, paidAmount." .
+
+xeo:Payment a owl:Class ;
+    rdfs:label "Payment" ;
+    rdfs:subClassOf xeo:RevenueEvent ;
+    xeo:xeoLayer "episode" ;
+    dct:description "Money received against an Order or a Subscription. Carries paidAmount." .
+
+xeo:Refund a owl:Class ;
+    rdfs:label "Refund" ;
+    rdfs:subClassOf xeo:RevenueEvent ;
+    xeo:xeoLayer "episode" ;
+    dct:description "Money returned to the buyer against an Order (refundsOrder). Carries refundedAmount." .
+
+xeo:Chargeback a owl:Class ;
+    rdfs:label "Chargeback" ;
+    rdfs:subClassOf xeo:RevenueEvent ;
+    xeo:xeoLayer "episode" ;
+    dct:description "A payment reversed by the buyer's bank against an Order (refundsOrder). Carries refundedAmount. Its grounding is provisional: chargeback records differ most between processors." .
+
+xeo:Subscription a owl:Class ;
+    rdfs:label "Subscription" ;
+    xeo:xeoLayer "entity" ;
+    dct:description "An agreement to pay a recurringValue every billing period (billingInterval and billingIntervalCount), from a start date until cancelled. Its Payments are RevenueEvents." .
+
+xeo:revenueSubject a owl:ObjectProperty ;
+    rdfs:label "revenue subject" ;
+    xeo:domainIncludes xeo:RevenueEvent , xeo:Subscription ;
+    xeo:rangeIncludes xeo:Person , xeo:Organization ;
+    xeo:xeoLayer "observation" ;
+    xeo:groundedIn "The store's or payment processor's order and payment API contract (per-vendor)" ;
+    dct:description "The Person or Organization who paid, or was refunded. One per RevenueEvent or Subscription." .
+
+xeo:refundsOrder a owl:ObjectProperty ;
+    rdfs:label "refunds order" ;
+    rdfs:range xeo:Order ;
+    xeo:domainIncludes xeo:Refund , xeo:Chargeback ;
+    xeo:xeoLayer "observation" ;
+    xeo:groundedIn "The store's or payment processor's order and payment API contract (per-vendor)" ;
+    dct:description "The Order a Refund or Chargeback reverses, in whole or part." .
+
+xeo:grossAmount a owl:DatatypeProperty ;
+    rdfs:label "gross amount" ;
+    rdfs:range xsd:decimal ;
+    xeo:domainIncludes xeo:RevenueEvent ;
+    xeo:xeoLayer "observation" ;
+    xeo:groundedIn "The store's or payment processor's order and payment API contract (per-vendor)" ;
+    dct:description "The order's total before discounts, in its currencyCode. Always travels with currencyCode." .
+
+xeo:paidAmount a owl:DatatypeProperty ;
+    rdfs:label "paid amount" ;
+    rdfs:range xsd:decimal ;
+    xeo:domainIncludes xeo:RevenueEvent ;
+    xeo:xeoLayer "observation" ;
+    xeo:groundedIn "The store's or payment processor's order and payment API contract (per-vendor)" ;
+    dct:description "What was actually paid, in its currencyCode. Always travels with currencyCode." .
+
+xeo:discountAmount a owl:DatatypeProperty ;
+    rdfs:label "discount amount" ;
+    rdfs:range xsd:decimal ;
+    xeo:domainIncludes xeo:RevenueEvent ;
+    xeo:xeoLayer "observation" ;
+    xeo:groundedIn "The store's or payment processor's order and payment API contract (per-vendor)" ;
+    dct:description "The discount applied, as a positive number, in its currencyCode. Always travels with currencyCode." .
+
+xeo:taxAmount a owl:DatatypeProperty ;
+    rdfs:label "tax amount" ;
+    rdfs:range xsd:decimal ;
+    xeo:domainIncludes xeo:RevenueEvent ;
+    xeo:xeoLayer "observation" ;
+    xeo:groundedIn "The store's or payment processor's order and payment API contract (per-vendor)" ;
+    dct:description "The tax charged, in its currencyCode. Always travels with currencyCode." .
+
+xeo:shippingAmount a owl:DatatypeProperty ;
+    rdfs:label "shipping amount" ;
+    rdfs:range xsd:decimal ;
+    xeo:domainIncludes xeo:RevenueEvent ;
+    xeo:xeoLayer "observation" ;
+    xeo:groundedIn "The store's or payment processor's order and payment API contract (per-vendor)" ;
+    dct:description "The shipping charged, in its currencyCode. Always travels with currencyCode." .
+
+xeo:refundedAmount a owl:DatatypeProperty ;
+    rdfs:label "refunded amount" ;
+    rdfs:range xsd:decimal ;
+    xeo:domainIncludes xeo:RevenueEvent ;
+    xeo:xeoLayer "observation" ;
+    xeo:groundedIn "The store's or payment processor's order and payment API contract (per-vendor)" ;
+    dct:description "The amount returned, as a positive number, in its currencyCode. Always travels with currencyCode." .
+
+xeo:quoteValue a owl:DatatypeProperty ;
+    rdfs:label "quote value" ;
+    rdfs:range xsd:decimal ;
+    xeo:xeoLayer "interpretation" ;
+    dct:description "The value a salesperson quoted on a lead or a call, beside and never added to what was sold: a person's estimate, so an interpretation. In the record's currencyCode." .
+
+xeo:customerStatus a owl:DatatypeProperty ;
+    rdfs:label "customer status" ;
+    rdfs:range xsd:string ;
+    xeo:domainIncludes xeo:RevenueEvent , xeo:ConversionEvent ;
+    xeo:xeoLayer "derivation" ;
+    dct:description "Whether the buyer was new or repeat at the time of an order or conversion (xeos:customerStatus). A derivation: it depends on how far back the history reaches and how buyers are matched, so it carries method." .
+
+xeo:SpendRollup a owl:Class ;
+    rdfs:label "Spend Rollup" ;
+    xeo:xeoLayer "observation" ;
+    xeo:groundedIn "The ad platform's or store's reporting API contract (per-vendor, mapped in mappings/)" ;
+    dct:description "What an ad platform reports for one campaign, ad set or ad (spendLevel and its pointer) over one window: spendAmount in currencyCode, impressions and clicks, with periodStart, periodEnd and source. The column store keeps the daily rows; the graph keeps windowed rollups." .
+
+xeo:spendAmount a owl:DatatypeProperty ;
+    rdfs:label "spend amount" ;
+    rdfs:domain xeo:SpendRollup ; rdfs:range xsd:decimal ;
+    xeo:xeoLayer "observation" ;
+    xeo:groundedIn "The ad platform's or store's reporting API contract (per-vendor, mapped in mappings/)" ;
+    dct:description "What was spent over the rollup's window, in its currencyCode." .
+
+xeo:spendLevel a owl:DatatypeProperty ;
+    rdfs:label "spend level" ;
+    rdfs:domain xeo:SpendRollup ; rdfs:range xsd:string ;
+    xeo:xeoLayer "observation" ;
+    xeo:groundedIn "The ad platform's or store's reporting API contract (per-vendor, mapped in mappings/)" ;
+    dct:description "Which level a SpendRollup is reported at: campaign, ad_set or ad (xeos:spendLevel)." .
+
+xeo:AttributionModel a owl:Class ;
+    rdfs:label "Attribution Model" ;
+    xeo:xeoLayer "norm" ;
+    dct:description "A rule for giving conversions' credit to touches, described by its structure, not its name: creditRule, its CreditAnchors (positions and weights), lookbackWindow, the touch types eligible, deduplicationRule, dateBasis and revenueBasis. Vendor names such as 'U-shaped' are mapped in mappings/, not trusted: two vendors' U-shaped can put the remaining credit on different touches. A rule, so a norm; a changed rule is a new AttributionModel." .
+
+xeo:creditRule a owl:DatatypeProperty ;
+    rdfs:label "credit rule" ;
+    rdfs:domain xeo:AttributionModel ; rdfs:range xsd:string ;
+    xeo:xeoLayer "norm" ;
+    dct:description "How credit is split, as a code from a slotted-in scheme (first_touch, last_touch, linear, time_decay, position_based, full_credit_each, algorithmic, custom — xeos:creditRule is a published reference filling). full_credit_each is what vendors report as 'influenced'. One per AttributionModel." .
+
+xeo:CreditAnchor a owl:Class ;
+    rdfs:label "Credit Anchor" ;
+    xeo:xeoLayer "norm" ;
+    dct:description "One fixed position a position-based model gives a share to, and the share: anchorPosition and anchorWeight. A U-shaped model has two (first_touch 0.4, lead_created 0.4); the rest is spread by the model's rule." .
+
+xeo:hasCreditAnchor a owl:ObjectProperty ;
+    rdfs:label "has credit anchor" ;
+    rdfs:domain xeo:AttributionModel ; rdfs:range xeo:CreditAnchor ;
+    xeo:xeoLayer "norm" ;
+    dct:description "A CreditAnchor of this AttributionModel." .
+
+xeo:anchorPosition a owl:DatatypeProperty ;
+    rdfs:label "anchor position" ;
+    rdfs:domain xeo:CreditAnchor ; rdfs:range xsd:string ;
+    xeo:xeoLayer "norm" ;
+    dct:description "Which touch an anchor is, as a code from a slotted-in scheme (first_touch, lead_created, qualified, opportunity_created, customer_close, last_touch — xeos:anchorPosition is a published reference filling)." .
+
+xeo:anchorWeight a owl:DatatypeProperty ;
+    rdfs:label "anchor weight" ;
+    rdfs:domain xeo:CreditAnchor ; rdfs:range xsd:decimal ;
+    xeo:xeoLayer "norm" ;
+    dct:description "The share of credit an anchor receives, from 0 to 1. The anchors of one model sum to 1 or less." .
+
+xeo:lookbackWindow a owl:DatatypeProperty ;
+    rdfs:label "lookback window" ;
+    rdfs:domain xeo:AttributionModel ; rdfs:range xsd:duration ;
+    xeo:xeoLayer "norm" ;
+    dct:description "How far before a conversion a touch may be and still get credit, as a duration (P30D). Absent means no limit." .
+
+xeo:eligibleTouchType a owl:DatatypeProperty ;
+    rdfs:label "eligible touch type" ;
+    rdfs:domain xeo:AttributionModel ; rdfs:range xsd:string ;
+    xeo:xeoLayer "norm" ;
+    dct:description "A touchType this model gives credit to; one value per type. Absent means every type except email_open." .
+
+xeo:deduplicationRule a owl:DatatypeProperty ;
+    rdfs:label "deduplication rule" ;
+    rdfs:domain xeo:AttributionModel ; rdfs:range xsd:string ;
+    xeo:xeoLayer "norm" ;
+    dct:description "How repeated touches are collapsed before credit is given, in the model's own words (one per channel per day; one per session). Free text: vendors' rules have no common set yet." .
+
+xeo:dateBasis a owl:DatatypeProperty ;
+    rdfs:label "date basis" ;
+    rdfs:domain xeo:AttributionModel ; rdfs:range xsd:string ;
+    xeo:xeoLayer "norm" ;
+    dct:description "Which date a credited conversion is counted on: touch_date or conversion_date (xeos:dateBasis). The same credit lands in different months under each." .
+
+xeo:revenueBasis a owl:DatatypeProperty ;
+    rdfs:label "revenue basis" ;
+    rdfs:domain xeo:AttributionModel ; rdfs:range xsd:string ;
+    xeo:xeoLayer "norm" ;
+    dct:description "Which amount is credited: gross, paid or net_of_refunds (xeos:revenueBasis)." .
+
+xeo:usesAttributionModel a owl:ObjectProperty ;
+    rdfs:label "uses attribution model" ;
+    rdfs:range xeo:AttributionModel ;
+    xeo:domainIncludes xeo:AttributedCredit , xeo:AttributionRollup ;
+    xeo:xeoLayer "derivation" ;
+    dct:description "The AttributionModel an attributed number was computed under. Required on every AttributedCredit and AttributionRollup (a shape checks it): a credited number without its model cannot be read or compared." .
+
+xeo:AttributedCredit a owl:Class ;
+    rdfs:label "Attributed Credit" ;
+    xeo:xeoLayer "derivation" ;
+    dct:description "One touch's credit for one conversion under one model: creditedTouchpoint, creditFor, usesAttributionModel, creditShare, and attributedRevenue and attributedConversions where they apply. The credits of one conversion under one model sum to 1 (or, for full_credit_each, each is 1)." .
+
+xeo:creditedTouchpoint a owl:ObjectProperty ;
+    rdfs:label "credited touchpoint" ;
+    rdfs:domain xeo:AttributedCredit ; rdfs:range xeo:Touchpoint ;
+    xeo:xeoLayer "derivation" ;
+    dct:description "The Touchpoint an AttributedCredit credits." .
+
+xeo:creditFor a owl:ObjectProperty ;
+    rdfs:label "credit for" ;
+    rdfs:domain xeo:AttributedCredit ;
+    xeo:rangeIncludes xeo:ConversionEvent , xeo:RevenueEvent ;
+    xeo:xeoLayer "derivation" ;
+    dct:description "The conversion or revenue event an AttributedCredit is a share of." .
+
+xeo:creditShare a owl:DatatypeProperty ;
+    rdfs:label "credit share" ;
+    rdfs:domain xeo:AttributedCredit ; rdfs:range xsd:decimal ;
+    xeo:xeoLayer "derivation" ;
+    dct:description "The share of the conversion this credit carries, from 0 to 1. Replaces campaignInfluenceShare (removed in 0.7)." .
+
+xeo:attributedRevenue a owl:DatatypeProperty ;
+    rdfs:label "attributed revenue" ;
+    rdfs:range xsd:decimal ;
+    xeo:domainIncludes xeo:AttributedCredit , xeo:AttributionRollup ;
+    xeo:xeoLayer "derivation" ;
+    dct:description "Revenue credited under one model: on an AttributedCredit, its share of the conversion's revenue (per the model's revenueBasis); on an AttributionRollup, the sum. In currencyCode." .
+
+xeo:attributedConversions a owl:DatatypeProperty ;
+    rdfs:label "attributed conversions" ;
+    rdfs:range xsd:decimal ;
+    xeo:domainIncludes xeo:AttributedCredit , xeo:AttributionRollup ;
+    xeo:xeoLayer "derivation" ;
+    dct:description "Conversions credited under one model: on an AttributedCredit, its share (equal to creditShare); on an AttributionRollup, the sum, so a fraction is normal." .
+
+xeo:AttributionRollup a owl:Class ;
+    rdfs:label "Attribution Rollup" ;
+    rdfs:subClassOf xeo:MetricReading ;
+    xeo:xeoLayer "derivation" ;
+    dct:description "Credited totals for one channel, campaign, ad set or ad over one window under one model: attributedRevenue and attributedConversions, with periodStart, periodEnd, usesAttributionModel and method. A MetricReading of an attribution Metric. The graph keeps rollups; the per-touch credits may live in the column store." .
+
+# --- Moved from sales (0.7) -------------------------------------------------------------
+# Channel derivations on a record, which name their model. referringPlatform now
+# sits on a Touchpoint too.
+
+xeo:firstTouchChannel a owl:DatatypeProperty ;
+    rdfs:label "first-touch channel" ;
+    rdfs:range xsd:string ;
+    xeo:xeoLayer "derivation" ;
+    xeo:canonicalStore "crm" ;
+    dct:description "Since 0.7 a derivation that names its model: method is the AttributionModel or the vendor classifier that chose the touch. The acquisition channel of the earliest known interaction the CRM attributes to a record, as a code from a slotted-in scheme (organic_search, referral, ai_assistant, ... — xeos:acquisitionChannel is a published reference filling). A derivation, never an observation: a classifier or a person decided it, so it carries method, either vendor-classifier:<vendor> or manual-entry. One per record. A deal usually inherits it from a contact, by a rule that is the vendor's." .
+
+xeo:latestTouchChannel a owl:DatatypeProperty ;
+    rdfs:label "latest-touch channel" ;
+    rdfs:range xsd:string ;
+    xeo:xeoLayer "derivation" ;
+    xeo:canonicalStore "crm" ;
+    xeo:termStatus "extension" ;
+    dct:description "Since 0.7 a derivation that names its model: method is the AttributionModel or the vendor classifier that chose the touch. The acquisition channel of the most recent known interaction the CRM attributes to a record, as a code from xeos:acquisitionChannel. A derivation carrying method, like firstTouchChannel. One CRM of the seven read keeps it." .
+
+xeo:referringPlatform a owl:DatatypeProperty ;
+    rdfs:label "referring platform" ;
+    rdfs:range xsd:string ;
+    xeo:domainIncludes xeo:Touchpoint ;
+    xeo:xeoLayer "derivation" ;
+    xeo:canonicalStore "crm" ;
+    dct:description "The host of the platform behind a touch, in lower case (chatgpt.com, perplexity.ai). Says which assistant or site, where the channel says only what kind. A derivation by the same classifier that set the channel. Read beside touchChannel on a Touchpoint (since 0.7), or beside firstTouchChannel or latestTouchChannel on a record." .

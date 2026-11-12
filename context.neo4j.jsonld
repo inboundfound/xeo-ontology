@@ -9,6 +9,10 @@
       "@id": "xeo:aboutTopic",
       "@type": "@id"
     },
+    "ACQUIRED_BY_TACTIC": {
+      "@id": "xeo:acquiredByTactic",
+      "@type": "@id"
+    },
     "ACTIVATES": {
       "@id": "xeo:activates",
       "@type": "@id"
@@ -71,6 +75,9 @@
     },
     "AlgorithmRun": "xeo:AlgorithmRun",
     "AnswerEngine": "xeo:AnswerEngine",
+    "AttributedCredit": "xeo:AttributedCredit",
+    "AttributionModel": "xeo:AttributionModel",
+    "AttributionRollup": "xeo:AttributionRollup",
     "BASELINE_READING": {
       "@id": "xeo:baselineReading",
       "@type": "@id"
@@ -87,6 +94,7 @@
       "@id": "xeo:betterDirection",
       "@type": "@id"
     },
+    "BookedMeeting": "xeo:BookedMeeting",
     "Brand": "xeo:Brand",
     "CAPTURED_BY": {
       "@id": "xeo:capturedBy",
@@ -120,6 +128,10 @@
       "@id": "xeo:confoundedBy",
       "@type": "@id"
     },
+    "CONSENT_SUBJECT": {
+      "@id": "xeo:consentSubject",
+      "@type": "@id"
+    },
     "CONSTRAINS": {
       "@id": "xeo:constrains",
       "@type": "@id"
@@ -140,13 +152,23 @@
       "@id": "xeo:coversUrl",
       "@type": "@id"
     },
-    "CallToAction": "xeo:CallToAction",
+    "CREDITED_TOUCHPOINT": {
+      "@id": "xeo:creditedTouchpoint",
+      "@type": "@id"
+    },
+    "CREDIT_FOR": {
+      "@id": "xeo:creditFor",
+      "@type": "@id"
+    },
+    "Call": "xeo:Call",
     "Campaign": "xeo:Campaign",
     "Capability": "xeo:Capability",
-    "ConversationalAgent": "xeo:ConversationalAgent",
+    "Chargeback": "xeo:Chargeback",
+    "Consent": "xeo:Consent",
     "ConversionEvent": "xeo:ConversionEvent",
     "ConversionPoint": "xeo:ConversionPoint",
     "Crawl": "xeo:Crawl",
+    "CreditAnchor": "xeo:CreditAnchor",
     "DATA_STATE": {
       "@id": "xeo:dataState",
       "@type": "@id"
@@ -206,8 +228,7 @@
       "@type": "@id"
     },
     "Gap": "xeo:Gap",
-    "GatedAsset": "xeo:GatedAsset",
-    "GenerativeEngine": "xeo:GenerativeEngine",
+    "GenerativeOverview": "xeo:GenerativeOverview",
     "HAS_CAMPAIGN": {
       "@id": "xeo:hasCampaign",
       "@type": "@id"
@@ -226,6 +247,10 @@
     },
     "HAS_CRAWL": {
       "@id": "xeo:hasCrawl",
+      "@type": "@id"
+    },
+    "HAS_CREDIT_ANCHOR": {
+      "@id": "xeo:hasCreditAnchor",
       "@type": "@id"
     },
     "HAS_OBJECTIVE": {
@@ -260,12 +285,20 @@
       "@id": "xeo:hasTarget",
       "@type": "@id"
     },
+    "HAS_TOUCHPOINT": {
+      "@id": "xeo:hasTouchpoint",
+      "@type": "@id"
+    },
     "HAS_WEBSITE": {
       "@id": "xeo:hasWebsite",
       "@type": "@id"
     },
     "HOLDS_CAPABILITY": {
       "@id": "xeo:holdsCapability",
+      "@type": "@id"
+    },
+    "IDENTITY_RESOLVES_TO": {
+      "@id": "xeo:identityResolvesTo",
       "@type": "@id"
     },
     "IMPLEMENTED_AS": {
@@ -300,7 +333,14 @@
       "@id": "xeo:issuedFor",
       "@type": "@id"
     },
+    "IdentityLink": "xeo:IdentityLink",
+    "InboundReference": "xeo:InboundReference",
     "Intervention": "xeo:Intervention",
+    "JOURNEY_OF": {
+      "@id": "xeo:journeyOf",
+      "@type": "@id"
+    },
+    "Journey": "xeo:Journey",
     "LEARNED_FROM": {
       "@id": "xeo:learnedFrom",
       "@type": "@id"
@@ -310,7 +350,6 @@
       "@type": "@id"
     },
     "LLMResponse": "xeo:LLMResponse",
-    "LeadCaptureForm": "xeo:LeadCaptureForm",
     "MAGNITUDE_METRIC": {
       "@id": "xeo:magnitudeMetric",
       "@type": "@id"
@@ -334,6 +373,7 @@
     "Metric": "xeo:Metric",
     "MetricReading": "xeo:MetricReading",
     "MetricTarget": "xeo:MetricTarget",
+    "Model": "xeo:Model",
     "NEXT_STAGE": {
       "@id": "xeo:nextStage",
       "@type": "@id"
@@ -367,6 +407,7 @@
       "@type": "@id"
     },
     "Objective": "xeo:Objective",
+    "Order": "xeo:Order",
     "Organization": "xeo:Organization",
     "Outcome": "xeo:Outcome",
     "OwnerChange": "xeo:OwnerChange",
@@ -378,10 +419,15 @@
       "@id": "xeo:precedentFor",
       "@type": "@id"
     },
+    "PRODUCED_BY_MODEL": {
+      "@id": "xeo:producedByModel",
+      "@type": "@id"
+    },
     "PRODUCED_OUTCOME": {
       "@id": "xeo:producedOutcome",
       "@type": "@id"
     },
+    "Payment": "xeo:Payment",
     "Person": "xeo:Person",
     "PipelineRollup": "xeo:PipelineRollup",
     "Playbook": "xeo:Playbook",
@@ -408,8 +454,20 @@
       "@id": "xeo:redirectsTo",
       "@type": "@id"
     },
+    "REFERENCE_TARGET": {
+      "@id": "xeo:referenceTarget",
+      "@type": "@id"
+    },
+    "REFERENCING_URL": {
+      "@id": "xeo:referencingUrl",
+      "@type": "@id"
+    },
     "REFERS_TO": {
       "@id": "xeo:refersTo",
+      "@type": "@id"
+    },
+    "REFUNDS_ORDER": {
+      "@id": "xeo:refundsOrder",
       "@type": "@id"
     },
     "RELATED_TERM": {
@@ -436,17 +494,27 @@
       "@id": "xeo:reveals",
       "@type": "@id"
     },
+    "REVENUE_SUBJECT": {
+      "@id": "xeo:revenueSubject",
+      "@type": "@id"
+    },
     "RUN_OF": {
       "@id": "xeo:runOf",
       "@type": "@id"
     },
     "Recommendation": "xeo:Recommendation",
+    "Refund": "xeo:Refund",
+    "RevenueEvent": "xeo:RevenueEvent",
     "SCOPE": {
       "@id": "xeo:scope",
       "@type": "@id"
     },
     "SCOPED_TO": {
       "@id": "xeo:scopedTo",
+      "@type": "@id"
+    },
+    "SHOWN_ON_SEARCH_ENGINE": {
+      "@id": "xeo:shownOnSearchEngine",
       "@type": "@id"
     },
     "SIMILAR_TO": {
@@ -469,10 +537,16 @@
     "SearchIntent": "xeo:SearchIntent",
     "SearchPerformanceFact": "xeo:SearchPerformanceFact",
     "SerpSnapshot": "xeo:SerpSnapshot",
+    "SpendRollup": "xeo:SpendRollup",
     "Stage": "xeo:Stage",
     "StageTransition": "xeo:StageTransition",
+    "Subscription": "xeo:Subscription",
     "TARGETS_INTENT": {
       "@id": "xeo:targetsIntent",
+      "@type": "@id"
+    },
+    "TARGET_METRIC": {
+      "@id": "xeo:targetMetric",
       "@type": "@id"
     },
     "TESTS": {
@@ -481,6 +555,10 @@
     },
     "TIME_ANCHOR": {
       "@id": "xeo:timeAnchor",
+      "@type": "@id"
+    },
+    "TOUCH_LANDING_URL": {
+      "@id": "xeo:touchLandingUrl",
       "@type": "@id"
     },
     "TRACKS_PROMPT": {
@@ -495,13 +573,22 @@
     "TacticAssessment": "xeo:TacticAssessment",
     "Term": "xeo:Term",
     "Topic": "xeo:Topic",
+    "Touchpoint": "xeo:Touchpoint",
     "UNIT": {
       "@id": "xeo:unit",
       "@type": "@id"
     },
     "URL": "xeo:URL",
+    "USES_ATTRIBUTION_MODEL": {
+      "@id": "xeo:usesAttributionModel",
+      "@type": "@id"
+    },
     "VERDICT": {
       "@id": "xeo:verdict",
+      "@type": "@id"
+    },
+    "VIA_TOUCHPOINT": {
+      "@id": "xeo:viaTouchpoint",
       "@type": "@id"
     },
     "VISIBILITY_FOR": {
@@ -513,6 +600,9 @@
       "@id": "xeo:absoluteChange",
       "@type": "xsd:decimal"
     },
+    "adCampaignRef": "xeo:adCampaignRef",
+    "adRef": "xeo:adRef",
+    "adSetRef": "xeo:adSetRef",
     "additivity": {
       "@context": {
         "@vocab": "https://xeoontology.org/schemes#additivity-"
@@ -551,7 +641,13 @@
       "@id": "xeo:amountInReportingCurrency",
       "@type": "xsd:decimal"
     },
+    "anchorPosition": "xeo:anchorPosition",
+    "anchorStageRef": "xeo:anchorStageRef",
     "anchorText": "xeo:anchorText",
+    "anchorWeight": {
+      "@id": "xeo:anchorWeight",
+      "@type": "xsd:decimal"
+    },
     "appliesAtScope": {
       "@id": "xeo:appliesAtScope",
       "@type": "@id"
@@ -574,6 +670,14 @@
       },
       "@id": "xeo:atPriority",
       "@type": "@vocab"
+    },
+    "attributedConversions": {
+      "@id": "xeo:attributedConversions",
+      "@type": "xsd:decimal"
+    },
+    "attributedRevenue": {
+      "@id": "xeo:attributedRevenue",
+      "@type": "xsd:decimal"
     },
     "avgPosition": {
       "@id": "xeo:avgPosition",
@@ -605,11 +709,13 @@
       "@id": "xeo:betweenness",
       "@type": "xsd:decimal"
     },
-    "cadence": "xeo:cadence",
-    "campaignInfluenceShare": {
-      "@id": "xeo:campaignInfluenceShare",
-      "@type": "xsd:decimal"
+    "billingInterval": "xeo:billingInterval",
+    "billingIntervalCount": {
+      "@id": "xeo:billingIntervalCount",
+      "@type": "xsd:positiveInteger"
     },
+    "cadence": "xeo:cadence",
+    "callOutcome": "xeo:callOutcome",
     "capturedAt": {
       "@id": "xeo:capturedAt",
       "@type": "xsd:dateTime"
@@ -622,6 +728,7 @@
       "@id": "xeo:citationRate",
       "@type": "xsd:decimal"
     },
+    "clickIdentifier": "xeo:clickIdentifier",
     "clicks": {
       "@id": "xeo:clicks",
       "@type": "xsd:integer"
@@ -638,9 +745,18 @@
       "@id": "xeo:confidence",
       "@type": "xsd:decimal"
     },
+    "consentCapturedBy": "xeo:consentCapturedBy",
+    "consentPurpose": "xeo:consentPurpose",
+    "consentRecordedAt": {
+      "@id": "xeo:consentRecordedAt",
+      "@type": "xsd:dateTime"
+    },
+    "consentSource": "xeo:consentSource",
+    "consentStatus": "xeo:consentStatus",
     "contentHash": "xeo:contentHash",
     "contentType": "xeo:contentType",
     "conversionPointType": "xeo:conversionPointType",
+    "conversionRole": "xeo:conversionRole",
     "conversionWindow": {
       "@id": "xeo:conversionWindow",
       "@type": "xsd:duration"
@@ -655,6 +771,12 @@
       "@type": "xsd:integer"
     },
     "crawler": "xeo:crawler",
+    "creditForDeal": "xeo:creditForDeal",
+    "creditRule": "xeo:creditRule",
+    "creditShare": {
+      "@id": "xeo:creditShare",
+      "@type": "xsd:decimal"
+    },
     "crmObjectType": "xeo:crmObjectType",
     "crmRecordRef": "xeo:crmRecordRef",
     "crmSystem": "xeo:crmSystem",
@@ -667,6 +789,7 @@
       "@type": "xsd:duration"
     },
     "currencyCode": "xeo:currencyCode",
+    "customerStatus": "xeo:customerStatus",
     "dataState": {
       "@context": {
         "@vocab": "https://xeoontology.org/schemes#dataState-"
@@ -675,6 +798,7 @@
       "@type": "@vocab"
     },
     "datasetUri": "xeo:datasetUri",
+    "dateBasis": "xeo:dateBasis",
     "dealAmount": {
       "@id": "xeo:dealAmount",
       "@type": "xsd:decimal"
@@ -688,6 +812,7 @@
       "@id": "xeo:dealProbability",
       "@type": "xsd:decimal"
     },
+    "deduplicationRule": "xeo:deduplicationRule",
     "degree": {
       "@id": "xeo:degree",
       "@type": "xsd:integer"
@@ -701,7 +826,10 @@
       "@type": "xsd:decimal"
     },
     "device": "xeo:device",
-    "direction": "xeo:direction",
+    "discountAmount": {
+      "@id": "xeo:discountAmount",
+      "@type": "xsd:decimal"
+    },
     "durationDays": {
       "@id": "xeo:durationDays",
       "@type": "xsd:integer"
@@ -717,6 +845,7 @@
       "@id": "xeo:effortEstimate",
       "@type": "@vocab"
     },
+    "eligibleTouchType": "xeo:eligibleTouchType",
     "embeddedAt": {
       "@id": "xeo:embeddedAt",
       "@type": "xsd:dateTime"
@@ -793,6 +922,10 @@
       "@id": "xeo:grainToDate",
       "@type": "@vocab"
     },
+    "grossAmount": {
+      "@id": "xeo:grossAmount",
+      "@type": "xsd:decimal"
+    },
     "h1": "xeo:h1",
     "halfLife": {
       "@id": "xeo:halfLife",
@@ -803,6 +936,7 @@
       "@type": "@id"
     },
     "id": "@id",
+    "identityMethod": "xeo:identityMethod",
     "impressions": {
       "@id": "xeo:impressions",
       "@type": "xsd:integer"
@@ -827,12 +961,13 @@
     "latestTouchChannel": "xeo:latestTouchChannel",
     "leadStatus": "xeo:leadStatus",
     "lifecycleStage": "xeo:lifecycleStage",
-    "lift": {
-      "@id": "xeo:lift",
-      "@type": "xsd:decimal"
-    },
     "linkPosition": "xeo:linkPosition",
+    "linkedIdentifier": "xeo:linkedIdentifier",
     "locale": "xeo:locale",
+    "lookbackWindow": {
+      "@id": "xeo:lookbackWindow",
+      "@type": "xsd:duration"
+    },
     "lostReason": "xeo:lostReason",
     "magnitude": {
       "@id": "xeo:magnitude",
@@ -856,7 +991,6 @@
     },
     "metaDescription": "xeo:metaDescription",
     "method": "xeo:method",
-    "metric": "xeo:metric",
     "metricFilter": "xeo:metricFilter",
     "metricType": {
       "@context": {
@@ -870,6 +1004,8 @@
       "@type": "xsd:integer"
     },
     "model": "xeo:model",
+    "modelFamily": "xeo:modelFamily",
+    "modelKind": "xeo:modelKind",
     "modelVersion": "xeo:modelVersion",
     "name": "xeo:name",
     "numeratorValue": {
@@ -896,9 +1032,14 @@
       "@type": "@vocab"
     },
     "origin": "xeo:origin",
+    "outcomeJudgedBy": "xeo:outcomeJudgedBy",
     "ownerRef": "xeo:ownerRef",
     "pageRank": {
       "@id": "xeo:pageRank",
+      "@type": "xsd:decimal"
+    },
+    "paidAmount": {
+      "@id": "xeo:paidAmount",
       "@type": "xsd:decimal"
     },
     "parameters": "xeo:parameters",
@@ -922,6 +1063,10 @@
     "practiceKind": "xeo:practiceKind",
     "practiceOutcome": "xeo:practiceOutcome",
     "projection": "xeo:projection",
+    "quoteValue": {
+      "@id": "xeo:quoteValue",
+      "@type": "xsd:decimal"
+    },
     "ranAt": {
       "@id": "xeo:ranAt",
       "@type": "xsd:dateTime"
@@ -937,7 +1082,12 @@
       "@id": "xeo:recurringValue",
       "@type": "xsd:decimal"
     },
+    "referenceKind": "xeo:referenceKind",
     "referringPlatform": "xeo:referringPlatform",
+    "refundedAmount": {
+      "@id": "xeo:refundedAmount",
+      "@type": "xsd:decimal"
+    },
     "rel": "xeo:rel",
     "relativeChange": {
       "@id": "xeo:relativeChange",
@@ -958,17 +1108,27 @@
       "@id": "xeo:resultsWindowStart",
       "@type": "xsd:date"
     },
+    "revenueBasis": "xeo:revenueBasis",
     "robotsMeta": "xeo:robotsMeta",
     "score": {
       "@id": "xeo:score",
       "@type": "xsd:decimal"
     },
     "sentiment": "xeo:sentiment",
+    "shippingAmount": {
+      "@id": "xeo:shippingAmount",
+      "@type": "xsd:decimal"
+    },
     "similarity": {
       "@id": "xeo:similarity",
       "@type": "xsd:decimal"
     },
     "source": "xeo:source",
+    "spendAmount": {
+      "@id": "xeo:spendAmount",
+      "@type": "xsd:decimal"
+    },
+    "spendLevel": "xeo:spendLevel",
     "stageClass": "xeo:stageClass",
     "stageDefaultProbability": {
       "@id": "xeo:stageDefaultProbability",
@@ -1004,10 +1164,16 @@
       "@id": "xeo:targetValue",
       "@type": "xsd:decimal"
     },
+    "taxAmount": {
+      "@id": "xeo:taxAmount",
+      "@type": "xsd:decimal"
+    },
     "test": "xeo:test",
     "text": "xeo:text",
     "title": "xeo:title",
     "toStageRef": "xeo:toStageRef",
+    "touchChannel": "xeo:touchChannel",
+    "touchType": "xeo:touchType",
     "type": "@type",
     "unit": {
       "@context": {
@@ -1016,11 +1182,15 @@
       "@id": "xeo:unit",
       "@type": "@vocab"
     },
+    "utmCampaign": "xeo:utmCampaign",
+    "utmContent": "xeo:utmContent",
+    "utmMedium": "xeo:utmMedium",
+    "utmSource": "xeo:utmSource",
+    "utmTerm": "xeo:utmTerm",
     "value": {
       "@id": "xeo:value",
       "@type": "xsd:decimal"
     },
-    "valuePeriod": "xeo:valuePeriod",
     "verdict": {
       "@id": "xeo:verdict",
       "@type": "@id"

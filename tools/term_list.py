@@ -24,6 +24,10 @@ deliberate rename is not reported as one term removed and another added.
 --terms-only skips the triple comparison, for a change that edits what a term
 says but neither adds nor removes a term.
 
+--removed A,B and --added C,D declare the terms a change deletes or adds on
+purpose. The check then passes only if exactly those went and came, and skips the
+statement comparison (statements change with every added or removed term).
+
 Exits non-zero when the terms differ, or (without --terms-only) the triples do.
 Requires rdflib.
 """
@@ -125,6 +129,10 @@ def main() -> int:
     ap.add_argument("--rename", action="append", default=[], metavar="OLD=NEW",
                     help="a deliberate rename of a term (repeatable)")
     ap.add_argument("--terms-only", action="store_true", help="compare the term list only")
+    ap.add_argument("--removed", default="", metavar="A,B",
+                    help="terms this change deletes on purpose (local names, comma-separated)")
+    ap.add_argument("--added", default="", metavar="A,B",
+                    help="terms this change adds on purpose (local names, comma-separated)")
     a = ap.parse_args()
 
     here_graph, here_kinds, here_home = load(sources_here(), {})
@@ -140,6 +148,25 @@ def main() -> int:
     # TERMS
     here_lines, there_lines = set(term_lines(here_kinds)), set(term_lines(there_kinds))
     gone, new = sorted(there_lines - here_lines), sorted(here_lines - there_lines)
+    want_gone = {x for x in a.removed.split(",") if x}
+    want_new = {x for x in a.added.split(",") if x}
+    name = lambda line: line.split()[0][len("xeo:"):]
+    if want_gone or want_new:
+        got_gone = {name(l) for l in gone}
+        got_new = {name(l) for l in new}
+        if got_gone == want_gone and got_new == want_new:
+            print(f"ok    terms: {len(got_gone)} removed and {len(got_new)} added, exactly as declared")
+            gone, new = [], []
+            a.terms_only = True    # statements change with every added or removed term
+        else:
+            for x in sorted(want_gone - got_gone):
+                print(f"        declared removed but still here: xeo:{x}")
+            for x in sorted(want_new - got_new):
+                print(f"        declared added but not found: xeo:{x}")
+            gone = [l for l in gone if name(l) not in want_gone]
+            new = [l for l in new if name(l) not in want_new]
+            if not gone and not new:
+                gone = ["(see above)"]
     if gone or new:
         failures += 1
         print(f"FAIL  terms: {len(gone)} only at {a.against}, {len(new)} only here")
@@ -147,7 +174,7 @@ def main() -> int:
             print(f"        - {line}")
         for line in new:
             print(f"        + {line}")
-    else:
+    elif not (want_gone or want_new):
         print(f"ok    terms: the same {len(here_lines)} terms as {a.against}"
               + (f", after renaming {', '.join(a.rename)}" if a.rename else ""))
 

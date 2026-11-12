@@ -35,7 +35,7 @@ xeosh: a owl:Ontology ;
     dct:title "XEO Shapes" ;
     dct:description "SHACL shapes for the rules the XEO ontology states in prose. Conservative: each shape checks one rule a term's description already makes, and none closes a class." ;
     dct:creator "Inbound Found" ;
-    owl:versionInfo "0.6.0" .
+    owl:versionInfo "0.7.0" .
 
 # --- Values in range ---------------------------------------------------------
 
@@ -145,21 +145,12 @@ xeosh:LLMResponseShape a sh:NodeShape ;
     ] .
 
 xeosh:MetricTargetShape a sh:NodeShape ;
-    rdfs:label "a metric target names its metric; a direction, where one is kept, is up or down" ;
+    rdfs:label "a metric target names its metric" ;
     sh:targetClass xeo:MetricTarget ;
     sh:property [
-        sh:path xeo:metric ;
-        sh:minCount 1 ; sh:maxCount 1 ;
-        sh:message "A xeo:MetricTarget requires exactly one xeo:metric."
-    ] ;
-    sh:property [
-        # xeo:direction is deprecated in favour of xeo:betterDirection on the
-        # Metric (advisory), so it is no longer required. A stored copy is
-        # still checked.
-        sh:path xeo:direction ;
-        sh:maxCount 1 ;
-        sh:in ( "up" "down" ) ;
-        sh:message "xeo:direction, where a xeo:MetricTarget carries one, is a single 'up' or 'down'."
+        sh:path xeo:targetMetric ;
+        sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:IRI ;
+        sh:message "A xeo:MetricTarget requires exactly one xeo:targetMetric, a link to its Metric."
     ] .
 
 xeosh:OutcomeShape a sh:NodeShape ;
@@ -332,11 +323,11 @@ xeosh:CurrencyTargetNeedsCurrency a sh:NodeShape ;
     rdfs:label "a pipeline currency target says which currency" ;
     rdfs:seeAlso xeo:targetCurrency ;
     sh:targetClass xeo:MetricTarget ;
-    # xeo:metric is a code, so the currency metrics are listed. Only the two
-    # read from deal amounts: etv was targetable before targetCurrency existed
-    # and its currency is the vendor's, so it is left alone.
+    # The currency metrics are listed by their Metric. Only the two read from
+    # deal amounts: etv was targetable before targetCurrency existed and its
+    # currency is the vendor's, so it is left alone.
     sh:or (
-        [ sh:not [ sh:path xeo:metric ; sh:minCount 1 ; sh:in ( "pipeline_created" "revenue_won" ) ] ]
+        [ sh:not [ sh:path xeo:targetMetric ; sh:minCount 1 ; sh:in ( xeos:metric-pipeline_created xeos:metric-revenue_won ) ] ]
         [ sh:path xeo:targetCurrency ; sh:minCount 1 ; sh:maxCount 1 ]
     ) ;
     sh:message "A xeo:MetricTarget on pipeline_created or revenue_won requires one xeo:targetCurrency." .
@@ -391,4 +382,47 @@ xeosh:StageTransitionShape a sh:NodeShape ;
         sh:path xeo:enteredAt ;
         sh:minCount 1 ; sh:maxCount 1 ;
         sh:message "A xeo:StageTransition requires exactly one xeo:enteredAt."
+    ] .
+
+# --- Consent (0.7) ---------------------------------------------------------------
+
+xeosh:ConsentShape a sh:NodeShape ;
+    rdfs:label "a consent names one subject, purpose, status and time" ;
+    sh:targetClass xeo:Consent ;
+    sh:property [
+        sh:path xeo:consentSubject ; sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "A xeo:Consent requires exactly one xeo:consentSubject."
+    ] ;
+    sh:property [
+        sh:path xeo:consentPurpose ; sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "A xeo:Consent requires exactly one xeo:consentPurpose."
+    ] ;
+    sh:property [
+        sh:path xeo:consentStatus ; sh:minCount 1 ; sh:maxCount 1 ;
+        sh:in ( "granted" "denied" "unspecified" ) ;
+        sh:message "A xeo:Consent requires one xeo:consentStatus: granted, denied or unspecified."
+    ] ;
+    sh:property [
+        sh:path xeo:consentRecordedAt ; sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "A xeo:Consent requires exactly one xeo:consentRecordedAt."
+    ] .
+
+# --- Attribution (0.7) -----------------------------------------------------------
+
+xeosh:AttributedNumberNamesItsModel a sh:NodeShape ;
+    rdfs:label "an attributed number names its attribution model" ;
+    rdfs:seeAlso xeo:usesAttributionModel ;
+    sh:targetClass xeo:AttributedCredit , xeo:AttributionRollup ;
+    sh:property [
+        sh:path xeo:usesAttributionModel ; sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "An xeo:AttributedCredit or xeo:AttributionRollup requires exactly one xeo:usesAttributionModel: a credited number without its model cannot be read."
+    ] .
+
+xeosh:CreditShareIsAShare a sh:NodeShape ;
+    rdfs:label "a credit share is between 0 and 1" ;
+    sh:targetSubjectsOf xeo:creditShare ;
+    sh:property [
+        sh:path xeo:creditShare ; sh:maxCount 1 ;
+        sh:minInclusive 0 ; sh:maxInclusive 1 ;
+        sh:message "xeo:creditShare is one number from 0 to 1."
     ] .

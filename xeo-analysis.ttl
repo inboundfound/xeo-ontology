@@ -49,7 +49,7 @@ xeo:analysis-module a owl:Ontology ;
     dct:title "XEO Analysis (derived structure)" ;
     dct:description "What algorithms and models add to the graph: the AlgorithmRun that computed something, the similarity edges and node scores it wrote, and the audit edge back from each output to its run. Every term is a derivation or the episode that produced one. Structural similarity and centrality are candidate generators, not deciders." ;
     dct:creator "Inbound Found" ;
-    owl:versionInfo "0.6.0" .
+    owl:versionInfo "0.7.0" .
 
 # --- Classes ----------------------------------------------------------------
 

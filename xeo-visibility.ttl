@@ -18,21 +18,21 @@ xeo:visibility-module a owl:Ontology ;
     dct:title "XEO Visibility (the xEO layer)" ;
     dct:description "Extends XEO Core with the terms needed once the engine stops being a results page and starts being an answer: engines, prompts, captured responses, citations, mentions, and the visibility rollups over them." ;
     dct:creator "Inbound Found" ;
-    owl:versionInfo "0.6.0" .
+    owl:versionInfo "0.7.0" .
 
 # --- Classes ----------------------------------------------------------------
 
-xeo:GenerativeEngine a owl:Class ; rdfs:subClassOf xeo:Engine ;
-    rdfs:label "Generative Engine" ;
-    dct:description "Search-integrated generated answers — AI overviews and AI modes (the GEO surface)." .
+# Removed in 0.7: xeo:GenerativeEngine. Use GenerativeOverview.
+
+
 
 xeo:AnswerEngine a owl:Class ; rdfs:subClassOf xeo:Engine ;
     rdfs:label "Answer Engine" ;
-    dct:description "Assistants that answer with web search and citations (the AEO surface)." .
+    dct:description "An assistant that answers a person in its own interface, with or without web search and citations: ChatGPT, Perplexity, Claude, and multi-turn agents and voice surfaces acting for a user (ConversationalAgent until 0.7). The AEO surface." .
 
-xeo:ConversationalAgent a owl:Class ; rdfs:subClassOf xeo:Engine ;
-    rdfs:label "Conversational Agent" ;
-    dct:description "Multi-turn agents and voice surfaces acting on a user's behalf." .
+# Removed in 0.7: xeo:ConversationalAgent. Use AnswerEngine.
+
+
 
 xeo:Brand a owl:Class ;
     rdfs:label "Brand" ;
@@ -113,10 +113,10 @@ xeo:text a owl:DatatypeProperty ;
     xeo:xeoLayer "entity" ;
     dct:description "The natural-language body of a Prompt as posed to the engine. Part of a Prompt's identity together with websiteId." .
 
-xeo:modelVersion a owl:DatatypeProperty ;
-    rdfs:range xsd:string ;
-    xeo:xeoLayer "episode" ;
-    dct:description "The model build reported at capture time, where the engine distinguishes it from the model name. Without model + modelVersion an episode is not comparable across time." .
+# modelVersion moved to core in 0.7, redefined as the dated build of a Model.
+
+
+
 
 xeo:citationRank a owl:DatatypeProperty ;
     rdfs:range xsd:integer ;
@@ -169,9 +169,9 @@ xeo:sentiment a owl:DatatypeProperty ;
 # --- v0.6.0 annotation completeness -----------------------------------------------
 # The triples below add what the declarations above lacked; nothing is redefined.
 
-xeo:GenerativeEngine xeo:xeoLayer "entity" .
+
 xeo:AnswerEngine xeo:xeoLayer "entity" .
-xeo:ConversationalAgent xeo:xeoLayer "entity" .
+
 
 xeo:hasResponse dct:description "A captured response to this Prompt." .
 
@@ -188,7 +188,7 @@ xeo:mentionRank rdfs:label "mention rank" .
 xeo:mentionRate rdfs:label "mention rate" .
 xeo:citationRate rdfs:label "citation rate" .
 xeo:text rdfs:label "text" .
-xeo:modelVersion rdfs:label "model version" .
+
 xeo:citationRank rdfs:label "citation rank" .
 xeo:responses rdfs:label "responses" .
 
@@ -223,3 +223,20 @@ xeo:mentionRank xeo:groundedIn "The response text as captured (per-provider API 
 xeo:citationRank xeo:groundedIn "Engine response citation annotations (per-provider API contract)" .
 xeo:responses xeo:groundedIn "The captured LLMResponses the rollup window covers (per-provider API contract)" .
 xeo:visibilityFor xeo:groundedIn "The captured LLMResponses the rollup window covers: their text and citation annotations (per-provider API contract)" .
+
+# --- v0.7.0 (engines, 2026-11-12) ---------------------------------------------------
+# C3: GenerativeOverview renames GenerativeEngine (the generated answer on a
+# results page, tied to its search engine); ConversationalAgent folded into
+# AnswerEngine. Both old names are removed.
+
+xeo:GenerativeOverview a owl:Class ;
+    rdfs:label "Generative Overview" ;
+    rdfs:subClassOf xeo:Engine ;
+    xeo:xeoLayer "entity" ;
+    dct:description "A search engine's generated answer on its own results page: Google's AI Overviews and AI Mode, Bing's generated answers. Tied to the SearchEngine it appears on (shownOnSearchEngine). The GEO surface. Was GenerativeEngine until 0.7." .
+
+xeo:shownOnSearchEngine a owl:ObjectProperty ;
+    rdfs:label "shown on search engine" ;
+    rdfs:domain xeo:GenerativeOverview ; rdfs:range xeo:SearchEngine ;
+    xeo:xeoLayer "entity" ;
+    dct:description "The SearchEngine whose results pages a GenerativeOverview appears on. One per GenerativeOverview." .

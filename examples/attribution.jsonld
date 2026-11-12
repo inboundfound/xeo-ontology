@@ -1,0 +1,72 @@
+{
+  "@context": [
+    "../context.jsonld",
+    { "ex": "https://example.com/graph/" }
+  ],
+  "@graph": [
+    { "id": "ex:shop", "type": "Website", "origin": "https://shop.example.com", "websiteId": "shop-example" },
+    { "id": "ex:buyer", "type": "Person" },
+
+    {
+      "id": "ex:touch-ad", "type": "Touchpoint", "touchType": "ad_click",
+      "occurredAt": "2026-10-01T09:00:00Z", "touchChannel": "paid_social",
+      "utmSource": "meta", "utmMedium": "cpc", "utmCampaign": "autumn",
+      "clickIdentifier": "fbclid=IwAR0example", "adRef": "meta:123:ad-9",
+      "touchLandingUrl": "ex:landing"
+    },
+    { "id": "ex:landing", "type": "URL", "address": "https://shop.example.com/autumn", "websiteId": "shop-example" },
+    {
+      "id": "ex:touch-email", "type": "Touchpoint", "touchType": "email",
+      "occurredAt": "2026-10-05T18:30:00Z", "touchChannel": "email"
+    },
+    {
+      "id": "ex:journey", "type": "Journey", "journeyOf": "ex:buyer",
+      "hasTouchpoint": ["ex:touch-ad", "ex:touch-email"]
+    },
+    {
+      "id": "ex:link", "type": "IdentityLink", "linkedIdentifier": "email_sha256:3f1example",
+      "identityResolvesTo": "ex:buyer", "identityMethod": "form_fill"
+    },
+
+    {
+      "id": "ex:order", "type": "Order", "occurredAt": "2026-10-05T18:41:00Z",
+      "revenueSubject": "ex:buyer", "currencyCode": "GBP",
+      "grossAmount": "120.00", "discountAmount": "20.00", "taxAmount": "16.67",
+      "shippingAmount": "4.95", "paidAmount": "104.95", "customerStatus": "new"
+    },
+
+    {
+      "id": "ex:model-linear", "type": "AttributionModel", "creditRule": "linear",
+      "lookbackWindow": "P30D", "dateBasis": "conversion_date", "revenueBasis": "paid"
+    },
+    {
+      "id": "ex:model-u", "type": "AttributionModel", "creditRule": "position_based",
+      "hasCreditAnchor": ["ex:anchor-first", "ex:anchor-last"]
+    },
+    { "id": "ex:anchor-first", "type": "CreditAnchor", "anchorPosition": "first_touch", "anchorWeight": "0.4" },
+    { "id": "ex:anchor-last", "type": "CreditAnchor", "anchorPosition": "customer_close", "anchorWeight": "0.4" },
+
+    {
+      "id": "ex:credit-ad", "type": "AttributedCredit", "usesAttributionModel": "ex:model-linear",
+      "creditedTouchpoint": "ex:touch-ad", "creditFor": "ex:order",
+      "creditShare": "0.5", "attributedRevenue": "52.48", "attributedConversions": "0.5", "currencyCode": "GBP"
+    },
+    {
+      "id": "ex:credit-email", "type": "AttributedCredit", "usesAttributionModel": "ex:model-linear",
+      "creditedTouchpoint": "ex:touch-email", "creditFor": "ex:order",
+      "creditShare": "0.5", "attributedRevenue": "52.47", "attributedConversions": "0.5", "currencyCode": "GBP"
+    },
+
+    {
+      "id": "ex:spend", "type": "SpendRollup", "spendLevel": "ad", "adRef": "meta:123:ad-9",
+      "spendAmount": "310.00", "currencyCode": "GBP", "impressions": 41000, "clicks": 620,
+      "periodStart": "2026-10-01", "periodEnd": "2026-10-31"
+    },
+
+    {
+      "id": "ex:consent", "type": "Consent", "consentSubject": "ex:buyer",
+      "consentPurpose": "ad_personalization", "consentStatus": "granted",
+      "consentRecordedAt": "2026-10-01T09:00:05Z", "consentCapturedBy": "shop-cmp", "consentSource": "banner"
+    }
+  ]
+}
