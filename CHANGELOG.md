@@ -1,8 +1,9 @@
 # Changelog
 
-What changed in XEO, newest first. The rule since 0.3: **no breaking changes**. A term IRI,
-once published, is never renamed or removed, and a domain or range is never narrowed. A
-release may add terms, widen a domain or range, and correct prose.
+What changed in XEO, newest first. **Until 1.0, deprecated terms may be removed in the next
+release. From 1.0, nothing is removed.** A term is deprecated, with `rdfs:seeAlso` naming its
+replacement, before it is removed. Otherwise a release adds terms, widens a domain or range,
+and corrects prose; a domain or range is not narrowed.
 
 Versions before 0.6.0 are reconstructed from the git history.
 
@@ -222,9 +223,9 @@ to a Metric, and that every published Metric conforms to the shapes.
 
 ### Deprecated (advisory)
 
-`owl:deprecated true` with an `rdfs:seeAlso` to the replacement. Every one of these stays
-declared, typed and valid, and none will be removed. The flag says which form a new
-implementation should write.
+`owl:deprecated true` with an `rdfs:seeAlso` to the replacement. In 0.6 every one of these
+stays declared, typed and valid. Until 1.0, deprecated terms may be removed in the next
+release, so these may go in 0.7. The flag says which form a new implementation should write.
 
 | Term | Write instead |
 |---|---|

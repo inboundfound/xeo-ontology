@@ -1712,7 +1712,7 @@ xeos:dataState-partial a skos:Concept ;
 
 # --- Target kinds: two more -------------------------------------------------
 # Two more concepts in xeos:targetKind (declared above). The report asks for
-# 'percent' to be renamed 'relative'. A published code is never renamed, so
+# 'percent' to be renamed 'relative'. A stored code is not renamed in place, so
 # 'relative' is added beside it, and 'percent' stays valid.
 
 xeos:targetKind-relative a skos:Concept ;

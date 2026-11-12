@@ -254,7 +254,7 @@ slot is what XEO defines; a scheme is one answer.
 | `practiceKind` · `practiceSource` · `practiceOutcome` | the norms tier | how a rule acts, where it came from, what it did |
 | `outcomeResult` · `outcomeResultReason` | `xeo:result` · `xeo:resultReason` | did it move, and why it couldn't be judged |
 | `objectiveMetric` · `targetKind` · `engagementType` · `cadence` · `effort` · `execution` | the delivery layer | `objectiveMetric` is the earlier list of metric codes, kept for compatibility; each is an exactMatch of its Metric in `metric` |
-| `metric` | `xeo:metric` | 35 — **the Metrics**: each an `xeo:Metric` with a type, unit, better direction and additivity. Search, AI visibility, analytics, CRM pipeline |
+| `metric` | `xeo:metric` | 37 — **the Metrics**: each an `xeo:Metric` with a type, unit, better direction and additivity. Search, AI visibility, analytics, CRM pipeline |
 | `metricType` · `aggregation` · `metricUnit` · `betterDirection` · `additivity` | the Metric's own slots | how a metric is computed, in what unit, which way is better, whether it sums |
 | `crmSystem` · `crmObjectType` · `dealOutcome` · `dealStageClass` · `stageSlot` · `acquisitionChannel` · `conversionPointType` · `searchIntent` | the CRM seam | the few closed lists the pipeline slots need; `acquisitionChannel` includes `ai_assistant` |
 | `timeGrain` · `aggregationBasis` · `dataState` · `lifecycleStageClass` · `forecastCategory` · `recordOrigin` · `valuePeriod` | extension slots | marked `xeo:termStatus "extension"` |
@@ -268,7 +268,8 @@ slot is what XEO defines; a scheme is one answer.
 **Core, extension, deprecated.** A term or scheme marked `xeo:termStatus "extension"` is
 declared and usable, and is not something every implementation is expected to support;
 a term with no status is core. A term marked `owl:deprecated true` is still declared and
-still valid: its `rdfs:seeAlso` names what to write instead, and XEO never removes it.
+still valid: its `rdfs:seeAlso` names what to write instead. Until 1.0, deprecated terms may be
+removed in the next release. From 1.0, nothing is removed.
 Both markers are carried into `neo4j-profile.json` and the term docs.
 
 Two conventions make them consumable by software: `skos:notation` on every
@@ -327,9 +328,8 @@ Neo4j export under `context.jsonld` and it validates as RDF/JSON-LD.
 **Namespace.** Terms resolve at **xeoontology.org**
 (`https://xeoontology.org/xeo#`), which serves the term docs as HTML. Content
 negotiation, so the same IRI returns Turtle to a client that asks for it, is
-intended and not yet in place. Local term names never change, so a
-w3id.org-style redirect can front the host later without breaking any published
-IRI.
+intended and not yet in place. The namespace does not name the host, so a
+w3id.org-style redirect can front it later without changing any term IRI.
 
 **Checking a change.** One command validates the repository: every term is
 labelled, described and layered; `context.jsonld` covers every term; the
