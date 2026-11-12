@@ -2234,7 +2234,7 @@
       "label": "Practice kinds",
       "fillsSlot": "xeo:practiceKind",
       "description": "How a Practice acts on a candidate recommendation. Kept as a small controlled value rather than a subclass.",
-      "source": "xeo-strategy.ttl (xeo:practiceKind) · if-control-center PRACTICE_KINDS",
+      "source": "xeo-decision.ttl (xeo:practiceKind) · if-control-center PRACTICE_KINDS",
       "ordered": false,
       "concepts": [
         {
@@ -2296,7 +2296,7 @@
       "label": "Practice provenance",
       "fillsSlot": "xeo:source",
       "description": "Where a Practice came from — the confidence ratchet. authored stands on a human's authority; claimed ships low-confidence with a halfLife and decays unless experiments promote it; learned is earned from the experiment ledger, and its confidence ratchets with Outcomes. One class holds a firm SOP and a fragile claim without conflating their trust.",
-      "source": "xeo-strategy.ttl (xeo:source, on a Practice) · if-control-center PRACTICE_SOURCES",
+      "source": "xeo-decision.ttl (xeo:source, on a Practice) · if-control-center PRACTICE_SOURCES",
       "ordered": false,
       "concepts": [
         {
@@ -2327,7 +2327,7 @@
       "label": "Practice lifecycle",
       "fillsSlot": "xeo:status",
       "description": "Lifecycle of a Practice, as xeo:status on that node. A proposed Practice is visible but does not fire; superseding one deprecates it — retired, never deleted, so the record of what it vetoed survives.",
-      "source": "xeo-strategy.ttl (xeo:status, on a Practice) · if-control-center PRACTICE_STATUSES",
+      "source": "xeo-decision.ttl (xeo:status, on a Practice) · if-control-center PRACTICE_STATUSES",
       "ordered": true,
       "concepts": [
         {

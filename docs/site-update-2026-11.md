@@ -130,7 +130,7 @@ Some of these modules don't exist yet (`attribution`, `experiments`, `agentic-en
 
 **Module names.** Strip the `xeo-` prefix for display. Order them as `xeo-release.json` lists them: core first, then the add-ons. Leave out `xeo-schemes` and `xeo-align`: one holds reference values and the other alignments, and neither declares terms a graph would carry.
 - **For 0.6** that's core, visibility, engagement, decision, strategy, delivery, analysis, metrics.
-- **For 0.7** it's core, visibility, analysis, sales, work, decision, strategy (attribution comes later).
+- **For 0.7** it's core, visibility, analysis, sales, attribution, work, decision.
 
 The map must work for both releases with no code change.
 

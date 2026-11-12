@@ -58,7 +58,7 @@ XEOS = "https://xeoontology.org/schemes#"
 # only adds triples about an older term (align, a deprecation) never claims it.
 MODULE_ORDER = [
     "xeo-core", "xeo-visibility", "xeo-analysis", "xeo-sales", "xeo-work",
-    "xeo-decision", "xeo-strategy", "xeo-schemes", "xeo-align",
+    "xeo-decision", "xeo-schemes", "xeo-align",
 ]
 
 # Files and folders copied into public/ as-is, if the release has them.

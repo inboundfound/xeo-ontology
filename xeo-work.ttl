@@ -141,7 +141,7 @@ xeo:execution a owl:ObjectProperty ;
 # xeo:status on a Recommendation is its execution lifecycle (pending, in_progress,
 # blocked, cancelled, completed); on an Experiment it is measuring, concluded,
 # cancelled, unmeasurable. Both value sets are published in xeo-schemes.ttl. The
-# property is declared domain-free in xeo-strategy for exactly this reason.
+# property is declared domain-free in xeo-decision for exactly this reason.
 
 xeo:engagementType a owl:DatatypeProperty ;
     rdfs:domain xeo:Project ; rdfs:range xsd:string ;
@@ -205,7 +205,7 @@ xeo:isPrimary a owl:DatatypeProperty ;
 xeo:deletedAt a owl:DatatypeProperty ;
     rdfs:range xsd:dateTime ;
     xeo:xeoLayer "entity" ;
-    dct:description "Soft-delete stamp. XEO never destroys a node something else was derived from — xeo-strategy states the rule for a Practice (destroying it destroys the record of what it vetoed) and it holds here for a Project, a Campaign, or a MetricTarget that measured history hangs off. Absent on a live node; domain left open so any revisable term can carry it." .
+    dct:description "Soft-delete stamp. XEO never destroys a node something else was derived from — xeo-decision states the rule for a Practice (destroying it destroys the record of what it vetoed) and it holds here for a Project, a Campaign, or a MetricTarget that measured history hangs off. Absent on a live node; domain left open so any revisable term can carry it." .
 
 # --- v0.6.0 (kit sync) ---------------------------------------------------------
 # Appended at the foot, so no line above moves.
