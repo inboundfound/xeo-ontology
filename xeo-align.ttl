@@ -54,7 +54,7 @@ xeo:inTopic skos:closeMatch schema:about ;
     rdfs:comment "A Term being in a Topic is a (provenance-carrying) 'aboutness' assertion." .
 
 # ===========================================================================
-# PROV-O — the provenance spine. XEO's epistemic layering (entity / episode /
+# PROV-O — the provenance spine. XEO's layering (entity / episode /
 # observation / derivation / interpretation / norm) maps onto PROV as follows:
 #   episode      -> in PROV terms this splits into the Activity that ran
 #                   (Crawl) and the Entity it produced (LLMResponse, SerpSnapshot)

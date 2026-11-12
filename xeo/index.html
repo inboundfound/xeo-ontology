@@ -167,7 +167,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 <section id="Entity" class="term">
   <h3>Entity <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:Entity</code>
-  <p>A real-world thing or concept that content is about — a product, a place, a person, a material, a method — identified by a reference into a public knowledge base (entityRef) where one exists, otherwise by name. Distinct from Topic, which is a site-scoped grouping somebody derived, and from Brand, which is a market identity engines mention: an Entity is the thing itself, shared across sites. Not tenant-scoped. Named for the knowledge-graph sense of the word; not to be confused with the epistemic layer &#x27;entity&#x27;, which Website, URL and Term also occupy.</p>
+  <p>A real-world thing or concept that content is about — a product, a place, a person, a material, a method — identified by a reference into a public knowledge base (entityRef) where one exists, otherwise by name. Distinct from Topic, which is a site-scoped grouping somebody derived, and from Brand, which is a market identity engines mention: an Entity is the thing itself, shared across sites. Not tenant-scoped. Named for the knowledge-graph sense of the word; not to be confused with the layer &#x27;entity&#x27;, which Website, URL and Term also occupy.</p>
   <dl><div class="row"><dt>closeMatch</dt><dd><a href="https://schema.org/Thing" class="ext">schema:Thing</a></dd></div></dl>
 </section>
 <section id="Experiment" class="term">
@@ -1967,12 +1967,6 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>A class this property is expected on, where rdfs:domain is deliberately left open or would be too narrow. A hint for documentation, the Neo4j profile and SHACL shapes — never an entailment, so a value on some other class is unlisted, not wrong. Same reading as schema.org&#x27;s domainIncludes.</p>
   
 </section>
-<section id="epistemicLayer" class="term">
-  <h3>epistemicLayer <span class="mod">xeo-core</span></h3>
-  <code class="iri">xeo:epistemicLayer</code>
-  <p>One of: entity, episode, observation, derivation, interpretation, norm. Types every term by the kind of claim it makes. Core terms stay at entity/episode/observation/derivation; extension modules may introduce interpretation- or norm-layer terms and must mark them.</p>
-  
-</section>
 <section id="groundedIn" class="term">
   <h3>groundedIn <span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:groundedIn</code>
@@ -1995,6 +1989,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <h3>termStatus <span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:termStatus</code>
   <p>Whether a term is part of the core every implementation is expected to support, or of the extension set: &#x27;core&#x27; or &#x27;extension&#x27;. Absent means core, so every term published before this annotation existed is core without being touched. An extension term is declared, stable and usable; it is marked because only some of the systems XEO maps support the idea, and a consumer may ignore it. Also carried by a concept in a reference scheme, with the same reading. Says nothing about deprecation, which is owl:deprecated.</p>
+  
+</section>
+<section id="xeoLayer" class="term">
+  <h3>xeoLayer <span class="mod">xeo-core</span></h3>
+  <code class="iri">xeo:xeoLayer</code>
+  <p>One of: entity, episode, observation, derivation, interpretation, norm. Types every term by the kind of claim it makes; every term carries exactly one. A layer is a kind of claim, not a file: the files are modules, and any module may hold terms of any layer. A graph that stamps instances with their layer uses the same name and values. Named epistemicLayer until 0.7.</p>
   
 </section>
 <h2 id="individuals">Individuals <span class="n">4</span></h2>

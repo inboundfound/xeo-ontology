@@ -54,83 +54,83 @@ xeo:delivery-module a owl:Ontology ;
 
 xeo:Project a owl:Class ;
     rdfs:label "Project" ;
-    xeo:epistemicLayer "entity" ;
+    xeo:xeoLayer "entity" ;
     dct:description "The contractual container for a body of work on one Website. Declares its engagementType (retainer or one-off), an interventionQuota (a scope of work with no ceiling is not a scope), a cadence the quota resets over (retainer) or a durationDays it runs for (one-off), and the Interventions and Tactics inScope under the contract. Never destroyed: its campaigns, objectives and targets are the substrate the end-of-campaign report and the experiment loop read, so it is stamped deletedAt and filtered, not deleted." .
 
 xeo:Campaign a owl:Class ;
     rdfs:label "Campaign" ;
-    xeo:epistemicLayer "entity" ;
+    xeo:xeoLayer "entity" ;
     dct:description "A body of work inside a Project against one Topic: the URLs and Terms it covers, and the single Objective it is measured by. Recommendations are issuedFor a campaign, and it is the unit an operator plans a cycle around. Soft-deleted like its Project." .
 
 xeo:Objective a owl:Class ;
     rdfs:label "Objective" ;
-    xeo:epistemicLayer "interpretation" ;
+    xeo:xeoLayer "interpretation" ;
     dct:description "What a Campaign intends to move: an operator-written statement in prose (carried verbatim — the recommendation agent reads it as the goal), a resultsWindowDays every target is measured over, and one or more MetricTargets of which exactly one isPrimary. An intent set at creation. A campaign has one reporting horizon, distinct from the Project's work window: a two-month engagement can carry a six-month results window. The window starts on resultsWindowStart, and the objective-level result is one objectiveReading per target over the campaign's deduplicated scope, never a sum of Outcomes." .
 
 xeo:MetricTarget a owl:Class ;
     rdfs:label "Metric Target" ;
-    xeo:epistemicLayer "interpretation" ;
+    xeo:xeoLayer "interpretation" ;
     dct:description "One measurable target of an Objective: the Metric it is set on (metric, the code of a Metric in xeos:metric), the targetValue to reach, read per targetKind as an absolute value or as a change from a captured baseline (baselineReading), and whether it isPrimary. Unit and better direction come from its Metric. Named a target and never a key result: xeo:Outcome is 'the measured result an experiment produced', an observation, and a goal must not share a name with a reading. Each target is its own node so the experiment loop can hang observations off it; a target dropped on edit is stamped deletedAt, never destroyed, because its id is what measured history is anchored to." .
 
 # --- Object properties -------------------------------------------------------
 
 xeo:hasProject a owl:ObjectProperty ;
     rdfs:domain xeo:Website ; rdfs:range xeo:Project ;
-    xeo:epistemicLayer "entity" ;
+    xeo:xeoLayer "entity" ;
     dct:description "The projects contracted against this website. Tenancy rides on websiteId, as everywhere." .
 
 xeo:hasCampaign a owl:ObjectProperty ;
     rdfs:domain xeo:Project ; rdfs:range xeo:Campaign ;
-    xeo:epistemicLayer "entity" .
+    xeo:xeoLayer "entity" .
 
 xeo:inScope a owl:ObjectProperty ;
     rdfs:domain xeo:Project ;
-    xeo:epistemicLayer "entity" ;
+    xeo:xeoLayer "entity" ;
     dct:description "What the contract covers: an Intervention (a whole category of work, including tactics added to the catalogue later) or a specific Tactic within one. Range left open across those two terms. The contractual half of the scope gate — requiresCapability + approved asks whether the lever exists; this asks whether it was bought." .
 
 xeo:aboutTopic a owl:ObjectProperty ;
     rdfs:domain xeo:Campaign ; rdfs:range xeo:Topic ;
-    xeo:epistemicLayer "entity" ;
+    xeo:xeoLayer "entity" ;
     dct:description "The topic cluster this campaign works. Topics are site-scoped derivations in core; a campaign binds to one." .
 
 xeo:coversUrl a owl:ObjectProperty ;
     rdfs:domain xeo:Campaign ; rdfs:range xeo:URL ;
-    xeo:epistemicLayer "entity" ;
+    xeo:xeoLayer "entity" ;
     dct:description "A page inside the campaign's cluster. May carry a priority flag marking the pages the campaign is really about." .
 
 xeo:coversTerm a owl:ObjectProperty ;
     rdfs:domain xeo:Campaign ; rdfs:range xeo:Term ;
-    xeo:epistemicLayer "entity" ;
+    xeo:xeoLayer "entity" ;
     dct:description "A term inside the campaign's cluster — the queries its objective is measured against." .
 
 xeo:hasObjective a owl:ObjectProperty ;
     rdfs:domain xeo:Campaign ; rdfs:range xeo:Objective ;
-    xeo:epistemicLayer "interpretation" ;
+    xeo:xeoLayer "interpretation" ;
     dct:description "Exactly one per campaign." .
 
 xeo:hasTarget a owl:ObjectProperty ;
     rdfs:domain xeo:Objective ; rdfs:range xeo:MetricTarget ;
-    xeo:epistemicLayer "interpretation" ;
+    xeo:xeoLayer "interpretation" ;
     dct:description "The objective's measurable targets. Non-empty; exactly one target isPrimary — what the recommendation agent optimises for. The rest are the secondary metrics an impact-radius check widens to." .
 
 xeo:issuedFor a owl:ObjectProperty ;
     rdfs:domain xeo:Recommendation ; rdfs:range xeo:Campaign ;
-    xeo:epistemicLayer "interpretation" ;
+    xeo:xeoLayer "interpretation" ;
     dct:description "The campaign a recommendation was issued into. Its execution lifecycle (xeo:status), effortEstimate and execution live here: a recommendation is a decision-tier call until it lands in a campaign, and delivery state from then on." .
 
 xeo:measures a owl:ObjectProperty ;
     rdfs:domain xeo:Experiment ; rdfs:range xeo:MetricTarget ;
-    xeo:epistemicLayer "episode" ;
+    xeo:xeoLayer "episode" ;
     dct:description "The target an experiment's Outcome is read against. Carries a role — primary or secondary — matching the target's standing in its objective, and a basis saying which pages were measured (the ones the recommendation applied to, the gap's evidence, or the pages actually changed)." .
 
 xeo:effortEstimate a owl:ObjectProperty ;
     rdfs:domain xeo:Recommendation ; rdfs:range skos:Concept ;
-    xeo:epistemicLayer "interpretation" ;
+    xeo:xeoLayer "interpretation" ;
     dct:description "How long executing the recommendation is expected to take, as a slotted-in concept (hours, days, weeks, a quarter — see xeo-schemes). A categorical horizon for planning a cycle, not a scored dimension: impact, risk and time-to-value belong on a TacticAssessment via onDimension." .
 
 xeo:execution a owl:ObjectProperty ;
     rdfs:domain xeo:Recommendation ; rdfs:range skos:Concept ;
-    xeo:epistemicLayer "interpretation" ;
+    xeo:xeoLayer "interpretation" ;
     dct:description "Who does the work, as a slotted-in concept: ours (spends the project's intervention allowance) or advised (the client executes; not agency capacity). The half of the scope gate that says whose hours a recommendation costs." .
 
 # --- Datatype properties -----------------------------------------------------
@@ -141,66 +141,66 @@ xeo:execution a owl:ObjectProperty ;
 
 xeo:engagementType a owl:DatatypeProperty ;
     rdfs:domain xeo:Project ; rdfs:range xsd:string ;
-    xeo:epistemicLayer "entity" ;
+    xeo:xeoLayer "entity" ;
     dct:description "'retainer' or 'oneoff' — the discriminator for how scope is expressed. A retainer caps interventions per cadence period; a one-off caps them over durationDays. Sending both cadence and durationDays is a contradiction and is rejected at the edge." .
 
 xeo:interventionQuota a owl:DatatypeProperty ;
     rdfs:domain xeo:Project ; rdfs:range xsd:integer ;
-    xeo:epistemicLayer "entity" ;
+    xeo:xeoLayer "entity" ;
     dct:description "Ceiling on interventions this project may deploy per period (retainer) or in total (one-off). Always present. Recommendations in an open status — pending, in_progress, blocked — consume it; advised work does not." .
 
 xeo:cadence a owl:DatatypeProperty ;
     rdfs:domain xeo:Project ; rdfs:range xsd:string ;
-    xeo:epistemicLayer "entity" ;
+    xeo:xeoLayer "entity" ;
     dct:description "'monthly' or 'quarterly' — the period a retainer's quota resets over. Set for retainer, absent for one-off." .
 
 xeo:durationDays a owl:DatatypeProperty ;
     rdfs:domain xeo:Project ; rdfs:range xsd:integer ;
-    xeo:epistemicLayer "entity" ;
+    xeo:xeoLayer "entity" ;
     dct:description "Fixed run length of a one-off project. Set for oneoff, absent for retainer." .
 
 xeo:resultsWindowDays a owl:DatatypeProperty ;
     rdfs:domain xeo:Objective ; rdfs:range xsd:integer ;
-    xeo:epistemicLayer "interpretation" ;
+    xeo:xeoLayer "interpretation" ;
     dct:description "The measurement window every target in this objective is read over. One horizon per campaign; per-target windows are deliberately not modelled. Counted in days from resultsWindowStart, that day included." .
 
 xeo:metric a owl:DatatypeProperty ;
     rdfs:domain xeo:MetricTarget ; rdfs:range xsd:string ;
-    xeo:epistemicLayer "interpretation" ;
+    xeo:xeoLayer "interpretation" ;
     dct:description "Which metric the target is set on, as a code: the skos:notation of an xeo:Metric — clicks, ctr, position, ai_mention_rate, sessions, pipeline_created, ... The code resolves in xeos:metric, the reference scheme of Metrics, which states each one's type, unit, better direction and additivity; a consumer may add Metrics of its own. Stays a string in 0.6: the Metric is found by its notation. xeos:objectiveMetric is the earlier list of codes, kept for compatibility." .
 
 xeo:direction a owl:DatatypeProperty ;
     rdfs:domain xeo:MetricTarget ; rdfs:range xsd:string ;
-    xeo:epistemicLayer "interpretation" ;
+    xeo:xeoLayer "interpretation" ;
     dct:description "'up' or 'down' — which way is better for this metric. DERIVED from metric, never client input: position and rank are 1-based, so a shared '+20%' would silently ask for a rank 20% worse. Deprecated in 0.6.0, as advice: the direction is now stated once, on the Metric, as betterDirection, and a copy here is a cache of it that can drift. Still valid where stored." .
 
 xeo:targetKind a owl:DatatypeProperty ;
     rdfs:domain xeo:MetricTarget ; rdfs:range xsd:string ;
-    xeo:epistemicLayer "interpretation" ;
+    xeo:xeoLayer "interpretation" ;
     dct:description "'absolute' (targetValue is a value of the metric) or 'percent' (a relative change from baseline in the metric's better direction). xeos:targetKind also publishes 'relative' (the same change as a quotient) and 'absolute_change' (a change from baseline in the metric's unit, which for a ratio is points), because '+2 on ctr' is otherwise ambiguous." .
 
 xeo:targetValue a owl:DatatypeProperty ;
     rdfs:domain xeo:MetricTarget ; rdfs:range xsd:decimal ;
-    xeo:epistemicLayer "interpretation" ;
+    xeo:xeoLayer "interpretation" ;
     dct:description "The value the metric should reach, interpreted per targetKind. Bounded per metric and kind at the edge — a percentage, a count, a rank and a currency do not share a range. In the Metric's unit, a ratio as a 0 to 1 quotient; a currency target also states targetCurrency." .
 
 xeo:baseline a owl:DatatypeProperty ;
     rdfs:domain xeo:MetricTarget ; rdfs:range xsd:decimal ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     dct:description "The metric's value when the target was set — the anchor 'how far beyond target' is measured from. An observation captured onto an interpretation; baselineCapturedAt says when, because it is not the same instant as the target's creation. The cached value of baselineReading, which carries the window, scope and source a bare number cannot." .
 
 xeo:baselineCapturedAt a owl:DatatypeProperty ;
     rdfs:domain xeo:MetricTarget ; rdfs:range xsd:dateTime ;
-    xeo:epistemicLayer "observation" .
+    xeo:xeoLayer "observation" .
 
 xeo:isPrimary a owl:DatatypeProperty ;
     rdfs:domain xeo:MetricTarget ; rdfs:range xsd:boolean ;
-    xeo:epistemicLayer "interpretation" ;
+    xeo:xeoLayer "interpretation" ;
     dct:description "Exactly one target per objective. The one the agent optimises for." .
 
 xeo:deletedAt a owl:DatatypeProperty ;
     rdfs:range xsd:dateTime ;
-    xeo:epistemicLayer "entity" ;
+    xeo:xeoLayer "entity" ;
     dct:description "Soft-delete stamp. XEO never destroys a node something else was derived from — xeo-strategy states the rule for a Practice (destroying it destroys the record of what it vetoed) and it holds here for a Project, a Campaign, or a MetricTarget that measured history hangs off. Absent on a live node; domain left open so any revisable term can carry it." .
 
 # --- v0.6.0 (kit sync) ---------------------------------------------------------
@@ -215,13 +215,13 @@ xeo:deletedAt a owl:DatatypeProperty ;
 xeo:clientOf a owl:ObjectProperty ;
     rdfs:label "client of" ;
     rdfs:domain xeo:Organization ; rdfs:range xeo:Organization ;
-    xeo:epistemicLayer "entity" ;
+    xeo:xeoLayer "entity" ;
     dct:description "This Organization is served by that one: a brand is the client of an agency. The contract itself is a Project on the client's Website; this edge says only who works for whom." .
 
 xeo:holdsCapability a owl:ObjectProperty ;
     rdfs:label "holds capability" ;
     rdfs:domain xeo:Organization ; rdfs:range xeo:Capability ;
-    xeo:epistemicLayer "entity" ;
+    xeo:xeoLayer "entity" ;
     dct:description "A Capability this Organization is able to bring: the lever exists in this team. A third question beside the two the scope gate already asks. holdsCapability says the party can do it; approved says the lever is cleared for this engagement; inScope says the contract covers it." .
 
 # --- v0.6.0 annotation completeness -----------------------------------------------
@@ -290,7 +290,7 @@ xeo:deletedAt rdfs:label "deleted at" .
 xeo:baselineReading a owl:ObjectProperty ;
     rdfs:label "baseline reading" ;
     rdfs:range xeo:MetricReading ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     xeo:groundedIn "The API contract of the system named in the reading's source" ;
     xeo:canonicalStore "neo4j" ;
     xeo:domainIncludes xeo:MetricTarget , xeo:Outcome ;
@@ -299,21 +299,21 @@ xeo:baselineReading a owl:ObjectProperty ;
 xeo:resultsWindowStart a owl:DatatypeProperty ;
     rdfs:label "results window start" ;
     rdfs:domain xeo:Objective ; rdfs:range xsd:date ;
-    xeo:epistemicLayer "interpretation" ;
+    xeo:xeoLayer "interpretation" ;
     xeo:canonicalStore "neo4j" ;
     dct:description "The first day of the window an Objective's targets are read over. The window runs for resultsWindowDays from this day, which is counted. One per Objective. Without it resultsWindowDays is a length with nowhere to start." .
 
 xeo:targetCurrency a owl:DatatypeProperty ;
     rdfs:label "target currency" ;
     rdfs:domain xeo:MetricTarget ; rdfs:range xsd:string ;
-    xeo:epistemicLayer "interpretation" ;
+    xeo:xeoLayer "interpretation" ;
     xeo:canonicalStore "neo4j" ;
     dct:description "The ISO 4217 code (three upper-case letters) a currency target is expressed in. Required when the target's Metric has unit currency and is read from deal amounts (pipeline_created, revenue_won); amounts in other currencies are converted before they are compared, and the conversion is a derivation. Absent on any other target." .
 
 xeo:objectiveReading a owl:ObjectProperty ;
     rdfs:label "objective reading" ;
     rdfs:domain xeo:Objective ; rdfs:range xeo:MetricReading ;
-    xeo:epistemicLayer "derivation" ;
+    xeo:xeoLayer "derivation" ;
     xeo:canonicalStore "neo4j" ;
     xeo:termStatus "extension" ;
     dct:description "The reading an Objective is judged on, one per target: the target's Metric over the deduplicated union of the campaign's coversUrl and coversTerm, across the results window, computed from the column store. Which target a reading belongs to is read from readingOf. The objective-level result is this reading against the target's baselineReading. It is never the sum of the campaign's Outcomes: overlapping scopes would be counted twice, and a non-additive metric cannot be summed at all." .

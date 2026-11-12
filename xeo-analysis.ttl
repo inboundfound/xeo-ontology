@@ -55,7 +55,7 @@ xeo:analysis-module a owl:Ontology ;
 
 xeo:AlgorithmRun a owl:Class ;
     rdfs:label "Algorithm Run" ;
-    xeo:epistemicLayer "episode" ;
+    xeo:xeoLayer "episode" ;
     dct:description "One execution of one algorithm over one projection of the graph at a time: immutable once finished. Carries algorithm (which method), parameters (as run), projection (what it ran on) and ranAt. The provenance record for every score and derived edge it wrote: outputs point back with computedBy, or name the run in their method. Re-running with a different projection or parameters is a new run, never an update to an old one." .
 
 # --- Object properties -------------------------------------------------------
@@ -63,19 +63,19 @@ xeo:AlgorithmRun a owl:Class ;
 xeo:algorithm a owl:ObjectProperty ;
     rdfs:label "algorithm" ;
     rdfs:domain xeo:AlgorithmRun ; rdfs:range skos:Concept ;
-    xeo:epistemicLayer "episode" ;
+    xeo:xeoLayer "episode" ;
     dct:description "Which method a run executed, as a slotted-in concept (pagerank, louvain, node_similarity, ... — xeos:algorithm is a published reference filling). Exactly one per run. The concept names the published algorithm; the library and version that implemented it belong in parameters." .
 
 xeo:computedBy a owl:ObjectProperty ;
     rdfs:label "computed by" ;
     rdfs:range xeo:AlgorithmRun ;
-    xeo:epistemicLayer "derivation" ;
+    xeo:xeoLayer "derivation" ;
     xeo:domainIncludes xeo:URL , xeo:Term , xeo:Prompt , xeo:Topic , xeo:Experiment ;
     dct:description "The run that wrote a derived value or edge onto this subject. Domain left open: any node that carries a score, and any derived edge (on an edge, the run's id is carried as a property, since an edge cannot be the start of another). Optional but recommended: where it is absent, method must still say what computed the value. A node scored by several runs points to each." .
 
 xeo:similarTo a owl:ObjectProperty ;
     rdfs:label "similar to" ;
-    xeo:epistemicLayer "derivation" ;
+    xeo:xeoLayer "derivation" ;
     xeo:domainIncludes xeo:URL , xeo:Term , xeo:Prompt , xeo:Topic , xeo:Experiment ;
     xeo:rangeIncludes xeo:URL , xeo:Term , xeo:Prompt , xeo:Topic , xeo:Experiment ;
     dct:description "Two things of the same kind were computed to be alike: two URLs, two Terms, two Prompts, two Topics, two Experiments. Domain and range left open, and both ends are the same class. Carries similarity (0 to 1), basis (what was compared) and method (what compared it), and may carry computedBy. A derivation and only that: it nominates a candidate (a page to consolidate, a precedent to read) and decides nothing. Not asserted symmetric — a nearest-neighbour edge runs one way — so write both directions where both hold." .
@@ -84,13 +84,13 @@ xeo:precedentFor a owl:ObjectProperty ;
     rdfs:subPropertyOf xeo:similarTo ;
     rdfs:label "precedent for" ;
     rdfs:domain xeo:Experiment ; rdfs:range xeo:Experiment ;
-    xeo:epistemicLayer "derivation" ;
+    xeo:xeoLayer "derivation" ;
     dct:description "An earlier Experiment judged close enough to a later one to be read as its precedent: the same tactic against a gap of the same kind, on a comparable page. Points from the earlier experiment to the later. Carries similarity and method like any similarTo edge. A candidate for supportedBy, not a substitute for it: a Recommendation that leans on a precedent says so itself, and answers for it." .
 
 xeo:basis a owl:ObjectProperty ;
     rdfs:label "basis" ;
     rdfs:range skos:Concept ;
-    xeo:epistemicLayer "derivation" ;
+    xeo:xeoLayer "derivation" ;
     dct:description "What was compared to produce a similarity, as a slotted-in concept (shared_terms, links, text_embedding, structural_embedding, lexical — xeos:similarityBasis is a published reference filling). Carried on a similarTo edge, as the concept's code where the edge is stored in a property graph. Two similarities on different bases are not comparable and must not be averaged. Domain left open because it rides on the edge." .
 
 # --- Datatype properties -----------------------------------------------------
@@ -99,47 +99,47 @@ xeo:basis a owl:ObjectProperty ;
 xeo:parameters a owl:DatatypeProperty ;
     rdfs:label "parameters" ;
     rdfs:domain xeo:AlgorithmRun ; rdfs:range xsd:string ;
-    xeo:epistemicLayer "episode" ;
+    xeo:xeoLayer "episode" ;
     dct:description "The settings a run was executed with, serialized as one JSON object: damping factor, iteration limit, resolution, top-k, similarity cutoff, random seed, and the implementing library and version. Recorded as run, including defaults, so the run can be repeated." .
 
 xeo:projection a owl:DatatypeProperty ;
     rdfs:label "projection" ;
     rdfs:domain xeo:AlgorithmRun ; rdfs:range xsd:string ;
-    xeo:epistemicLayer "episode" ;
+    xeo:xeoLayer "episode" ;
     dct:description "What the algorithm ran on, stated so the subgraph can be rebuilt: which node classes, which relationship types and in which orientation, any weight property, any filter (one websiteId, internal links only, linkPosition = content), and the crawl or window the data was taken from. Free text or a serialized JSON object. The part of a run a score is least meaningful without." .
 
 xeo:ranAt a owl:DatatypeProperty ;
     rdfs:label "ran at" ;
     rdfs:range xsd:dateTime ;
-    xeo:epistemicLayer "episode" ;
+    xeo:xeoLayer "episode" ;
     dct:description "When a run finished and its outputs were written: an AlgorithmRun, a DiagnosticRun. Domain left open so any run episode can carry it." .
 
 xeo:similarity a owl:DatatypeProperty ;
     rdfs:label "similarity" ;
     rdfs:range xsd:decimal ;
-    xeo:epistemicLayer "derivation" ;
+    xeo:xeoLayer "derivation" ;
     dct:description "How alike the two ends of a similarTo edge were computed to be, from 0 (nothing shared) to 1 (identical on the stated basis). Carried on the edge. Comparable only between edges with the same basis and method. Not a confidence: a similarity of 0.9 measured by a poor method is still a poor measurement, and confidence is where that is said." .
 
 xeo:pageRank a owl:DatatypeProperty ;
     rdfs:label "PageRank" ;
     rdfs:range xsd:decimal ;
-    xeo:epistemicLayer "derivation" ;
+    xeo:xeoLayer "derivation" ;
     dct:description "A node's PageRank score over a stated projection: the share of a random walk over the projected edges that comes to rest on it. Carried on the node, typically a URL. Meaningless without the projection it was computed on — internal links only and all links give different numbers — and comparable only within one run. The node's computedBy edge or its method says which AlgorithmRun wrote it. This is a score computed on your own graph; it is not any engine's ranking signal." .
 
 xeo:betweenness a owl:DatatypeProperty ;
     rdfs:label "betweenness" ;
     rdfs:range xsd:decimal ;
-    xeo:epistemicLayer "derivation" ;
+    xeo:xeoLayer "derivation" ;
     dct:description "A node's betweenness centrality over a stated projection: how many shortest paths between other nodes pass through it. Carried on the node. Meaningless without the projection it was computed on, and whether the value is raw or normalized is a parameter of the run. The node's computedBy edge or its method says which AlgorithmRun wrote it." .
 
 xeo:degree a owl:DatatypeProperty ;
     rdfs:label "degree" ;
     rdfs:range xsd:integer ;
-    xeo:epistemicLayer "derivation" ;
+    xeo:xeoLayer "derivation" ;
     dct:description "A node's degree over a stated projection: the count of projected edges that touch it, in the orientation the run used (in, out, or both). Carried on the node. Meaningless without the projection it was computed on: inbound internal links and all links are different counts. The node's computedBy edge or its method says which AlgorithmRun wrote it." .
 
 xeo:communityId a owl:DatatypeProperty ;
     rdfs:label "community id" ;
     rdfs:range xsd:integer ;
-    xeo:epistemicLayer "derivation" ;
+    xeo:xeoLayer "derivation" ;
     dct:description "The community a detection algorithm placed a node in, as that run's own integer label. Carried on the node. Meaningless without the projection it was computed on, and more so than a score: the number is an arbitrary label, so it identifies a community only within one AlgorithmRun, and the same id in two runs is a coincidence. The node's computedBy edge or its method says which run wrote it. A community someone has named and kept is a Topic." .
