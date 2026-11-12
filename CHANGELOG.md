@@ -21,7 +21,7 @@ landed without a breaking change: where a report asked for an existing term to b
 retyped or removed, the new form was added beside it and the old one deprecated as advice.
 
 Counts: 36 → 51 classes, 61 → 114 object properties, 65 → 147 datatype properties,
-20 → 50 reference schemes, 93 → 286 concepts; 5 vendor schemes mapping 57 fields.
+20 → 50 reference schemes, 93 → 282 concepts; 5 vendor schemes mapping 57 fields.
 (After the kit sync alone: 45, 91, 95, 29, 146.)
 
 ### Added
@@ -98,8 +98,9 @@ nowhere to hang.
 **Reference schemes.** `serpResultType`, `linkPosition`, `similarityBasis`, `algorithm`,
 `frameworkKind`, `organizationKind`, `sentiment`, `device`, `feedbackVerdict`; and
 `ai_mention_rate` and `ai_citation_rate` in `objectiveMetric`, so a campaign can target AI
-visibility. (Drafts of this branch added them as `mention_rate` and `citation_rate`; those two
-codes are kept and deprecated, see **Deprecated**.)
+visibility. The AI rate codes are `ai_mention_rate` and `ai_citation_rate` (decided 2026-11-12,
+so every AI visibility code carries the `ai_` prefix); the properties `mentionRate` and
+`citationRate` keep their names.
 
 **Tooling and interop.**
 
@@ -150,7 +151,7 @@ over its deduplicated scope, never on the sum of its Outcomes.
 **`metric` stays a string.** Its code is now defined as the `skos:notation` of a Metric in
 `xeos:metric`. Nothing a consumer stores changes.
 
-**Reference schemes.** `metric` (37 Metrics across search, AI visibility, website analytics and
+**Reference schemes.** `metric` (35 Metrics across search, AI visibility, website analytics and
 CRM pipeline, each with its type, unit, direction and additivity), `metricType`, `aggregation`,
 `metricUnit`, `betterDirection`, `additivity`; `relative` and `absolute_change` in `targetKind`;
 and, as extensions, `timeGrain`, `aggregationBasis`, `dataState`. `objectiveMetric` is kept as
@@ -234,11 +235,6 @@ release, so these may go in 0.7. The flag says which form a new implementation s
 | `direction` | `betterDirection`, on the Metric |
 | `CallToAction`, `LeadCaptureForm`, `GatedAsset` | `conversionPointType` |
 | `Informational`, `Navigational`, `CommercialInvestigation`, `Transactional` | the `xeos:searchIntent` concepts |
-| the codes `mention_rate`, `citation_rate` (in `metric` and `objectiveMetric`) | `ai_mention_rate`, `ai_citation_rate` |
-
-The two codes take the `ai_` prefix (decided 2026-11-12) so every AI visibility code carries it.
-The properties `mentionRate` and `citationRate` keep their names. The old codes still resolve to
-a Metric, so a stored target still validates.
 
 `MetricTargetShape` no longer requires `direction`; a stored one is still checked.
 

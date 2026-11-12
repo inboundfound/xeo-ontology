@@ -3477,7 +3477,6 @@
       "ai_sentiment",
       "ai_share_of_voice",
       "ai_tracked_brand_mentions",
-      "citation_rate",
       "clicks",
       "converting_sessions",
       "ctr",
@@ -3490,7 +3489,6 @@
       "impressions",
       "key_events",
       "leads_created",
-      "mention_rate",
       "pipeline_created",
       "position",
       "rank_absolute",
@@ -3519,12 +3517,10 @@
     "objectiveMetric": [
       "ai_citation_rate",
       "ai_mention_rate",
-      "citation_rate",
       "clicks",
       "ctr",
       "etv",
       "impressions",
-      "mention_rate",
       "position",
       "rank_absolute"
     ],
