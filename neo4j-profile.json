@@ -32,7 +32,7 @@
       "module": "analysis"
     },
     "AnswerEngine": {
-      "definition": "Assistants that answer with web search and citations (the AEO surface).",
+      "definition": "An assistant that answers a person in its own interface, with or without web search and citations: ChatGPT, Perplexity, Claude, and multi-turn agents and voice surfaces acting for a user (ConversationalAgent until 0.7). The AEO surface.",
       "iri": "https://xeoontology.org/xeo#AnswerEngine",
       "layer": "entity",
       "module": "visibility",
@@ -58,14 +58,11 @@
       "layer": "entity",
       "module": "decision"
     },
-    "ConversationalAgent": {
-      "definition": "Multi-turn agents and voice surfaces acting on a user's behalf.",
-      "iri": "https://xeoontology.org/xeo#ConversationalAgent",
-      "layer": "entity",
-      "module": "visibility",
-      "subClassOf": [
-        "Engine"
-      ]
+    "Consent": {
+      "definition": "One recorded consent choice, for one purpose (consentPurpose), by one subject (consentSubject), as one system captured it (consentCapturedBy), with its status and when it was recorded. A new choice is a new Consent, never an edit; the current status for a subject and purpose is the latest. Company-level choices, such as not using a company's data to train models, sit on the Organization. Validity under any law is an interpretation made elsewhere, not part of this record.",
+      "iri": "https://xeoontology.org/xeo#Consent",
+      "layer": "observation",
+      "module": "core"
     },
     "ConversionEvent": {
       "definition": "A submission/click/unlock that happened at a time: a visitor's action on a ConversionPoint, recorded by the capturing system. Immutable once recorded. Identified by the capturing system and its submission id; one per submission. Not the creation of a CRM record, which may follow, be merged into an existing record, or never happen: events are not leads.",
@@ -104,7 +101,7 @@
       "module": "core"
     },
     "Engine": {
-      "definition": "A system that mediates between a person's question and web content. The taxonomy below is operational, not doctrinal — subclass as engines evolve.",
+      "definition": "A system that mediates between a person's question and web content. A parent class only: every engine node is one of its subtypes, SearchEngine (here), or GenerativeOverview or AnswerEngine (visibility).",
       "iri": "https://xeoontology.org/xeo#Engine",
       "layer": "entity",
       "module": "core"
@@ -145,14 +142,20 @@
       "layer": "interpretation",
       "module": "decision"
     },
-    "GenerativeEngine": {
-      "definition": "Search-integrated generated answers — AI overviews and AI modes (the GEO surface).",
-      "iri": "https://xeoontology.org/xeo#GenerativeEngine",
+    "GenerativeOverview": {
+      "definition": "A search engine's generated answer on its own results page: Google's AI Overviews and AI Mode, Bing's generated answers. Tied to the SearchEngine it appears on (shownOnSearchEngine). The GEO surface. Was GenerativeEngine until 0.7.",
+      "iri": "https://xeoontology.org/xeo#GenerativeOverview",
       "layer": "entity",
       "module": "visibility",
       "subClassOf": [
         "Engine"
       ]
+    },
+    "InboundReference": {
+      "definition": "A page on another site that links to or mentions you: your URL, Website, Brand or Organization. Observed, however it came about. Carries referencingUrl (the page), referenceTarget (what it points at or names), referenceKind (link or mention), and firstSeenAt and lastSeenAt; anchorText where it is a link. How it came about is not part of it: a placement, a pitch or a link magnet is a Tactic, linked from decision with acquiredByTactic, and an organic reference has none. A link between two pages of sites you crawl is linksTo; this is the record of a reference to you, kept whether or not you crawl the other site.",
+      "iri": "https://xeoontology.org/xeo#InboundReference",
+      "layer": "observation",
+      "module": "core"
     },
     "Intervention": {
       "definition": "A category of tactic in a controlled vocabulary you bring. A skos:Concept, so a whole intervention taxonomy slots in without touching the ontology.",
@@ -179,10 +182,16 @@
       "module": "core"
     },
     "MetricTarget": {
-      "definition": "One measurable target of an Objective: the Metric it is set on (metric, the code of a Metric in xeos:metric), the targetValue to reach, read per targetKind as an absolute value or as a change from a captured baseline (baselineReading), and whether it isPrimary. Unit and better direction come from its Metric. Named a target and never a key result: xeo:Outcome is 'the measured result an experiment produced', an observation, and a goal must not share a name with a reading. Each target is its own node so the experiment loop can hang observations off it; a target dropped on edit is stamped deletedAt, never destroyed, because its id is what measured history is anchored to.",
+      "definition": "One measurable target of an Objective: the Metric it is set on (targetMetric, a link to the Metric node), the targetValue to reach, read per targetKind as an absolute value or as a change from a captured baseline (baselineReading), and whether it isPrimary. Unit and better direction come from its Metric. Named a target and never a key result: xeo:Outcome is 'the measured result an experiment produced', an observation, and a goal must not share a name with a reading. Each target is its own node so the experiment loop can hang observations off it; a target dropped on edit is stamped deletedAt, never destroyed, because its id is what measured history is anchored to.",
       "iri": "https://xeoontology.org/xeo#MetricTarget",
       "layer": "interpretation",
       "module": "work"
+    },
+    "Model": {
+      "definition": "A machine-learning model as a durable thing: one node per build (claude-opus-5-5 as of a given date, a BERT checkpoint, a ranking model). Carries modelFamily, modelVersion and modelKind; optionally its architecture, size and where it runs. An AI answer or a model call points at the Model that produced it with producedByModel. Distinct from the plain model text field, which only names one.",
+      "iri": "https://xeoontology.org/xeo#Model",
+      "layer": "entity",
+      "module": "core"
     },
     "Objective": {
       "definition": "What a Campaign intends to move: an operator-written statement in prose (carried verbatim — the recommendation agent reads it as the goal), a resultsWindowDays every target is measured over, and one or more MetricTargets of which exactly one isPrimary. An intent set at creation. A campaign has one reporting horizon, distinct from the Project's work window: a two-month engagement can carry a six-month results window. The window starts on resultsWindowStart, and the objective-level result is one objectiveReading per target over the campaign's deduplicated scope, never a sum of Outcomes.",
@@ -514,6 +523,21 @@
       "layer": "derivation",
       "module": "analysis"
     },
+    "billingInterval": {
+      "datatype": "xsd:string",
+      "iri": "https://xeoontology.org/xeo#billingInterval",
+      "layer": "observation",
+      "module": "core",
+      "schemes": [
+        "billingInterval"
+      ]
+    },
+    "billingIntervalCount": {
+      "datatype": "xsd:positiveInteger",
+      "iri": "https://xeoontology.org/xeo#billingIntervalCount",
+      "layer": "observation",
+      "module": "core"
+    },
     "cadence": {
       "datatype": "xsd:string",
       "domain": [
@@ -570,6 +594,60 @@
       "iri": "https://xeoontology.org/xeo#confidence",
       "layer": "derivation",
       "module": "core"
+    },
+    "consentCapturedBy": {
+      "datatype": "xsd:string",
+      "domain": [
+        "Consent"
+      ],
+      "iri": "https://xeoontology.org/xeo#consentCapturedBy",
+      "layer": "observation",
+      "module": "core"
+    },
+    "consentPurpose": {
+      "datatype": "xsd:string",
+      "domain": [
+        "Consent"
+      ],
+      "iri": "https://xeoontology.org/xeo#consentPurpose",
+      "layer": "observation",
+      "module": "core",
+      "schemes": [
+        "consentPurpose"
+      ]
+    },
+    "consentRecordedAt": {
+      "datatype": "xsd:dateTime",
+      "domain": [
+        "Consent"
+      ],
+      "iri": "https://xeoontology.org/xeo#consentRecordedAt",
+      "layer": "observation",
+      "module": "core"
+    },
+    "consentSource": {
+      "datatype": "xsd:string",
+      "domain": [
+        "Consent"
+      ],
+      "iri": "https://xeoontology.org/xeo#consentSource",
+      "layer": "observation",
+      "module": "core",
+      "schemes": [
+        "consentSource"
+      ]
+    },
+    "consentStatus": {
+      "datatype": "xsd:string",
+      "domain": [
+        "Consent"
+      ],
+      "iri": "https://xeoontology.org/xeo#consentStatus",
+      "layer": "observation",
+      "module": "core",
+      "schemes": [
+        "consentStatus"
+      ]
     },
     "contentHash": {
       "datatype": "xsd:string",
@@ -1100,19 +1178,6 @@
       "layer": "interpretation",
       "module": "decision"
     },
-    "metric": {
-      "datatype": "xsd:string",
-      "domain": [
-        "MetricTarget"
-      ],
-      "iri": "https://xeoontology.org/xeo#metric",
-      "layer": "interpretation",
-      "module": "work",
-      "schemes": [
-        "metric",
-        "objectiveMetric"
-      ]
-    },
     "metricFilter": {
       "datatype": "xsd:string",
       "domain": [
@@ -1147,11 +1212,35 @@
       "layer": "episode",
       "module": "core"
     },
+    "modelFamily": {
+      "datatype": "xsd:string",
+      "domain": [
+        "Model"
+      ],
+      "iri": "https://xeoontology.org/xeo#modelFamily",
+      "layer": "entity",
+      "module": "core"
+    },
+    "modelKind": {
+      "datatype": "xsd:string",
+      "domain": [
+        "Model"
+      ],
+      "iri": "https://xeoontology.org/xeo#modelKind",
+      "layer": "entity",
+      "module": "core",
+      "schemes": [
+        "modelKind"
+      ]
+    },
     "modelVersion": {
       "datatype": "xsd:string",
+      "domain": [
+        "Model"
+      ],
       "iri": "https://xeoontology.org/xeo#modelVersion",
-      "layer": "episode",
-      "module": "visibility"
+      "layer": "entity",
+      "module": "core"
     },
     "name": {
       "datatype": "xsd:string",
@@ -1333,6 +1422,18 @@
       "layer": "observation",
       "module": "core",
       "status": "extension"
+    },
+    "referenceKind": {
+      "datatype": "xsd:string",
+      "domain": [
+        "InboundReference"
+      ],
+      "iri": "https://xeoontology.org/xeo#referenceKind",
+      "layer": "observation",
+      "module": "core",
+      "schemes": [
+        "referenceKind"
+      ]
     },
     "referringPlatform": {
       "datatype": "xsd:string",
@@ -1615,16 +1716,6 @@
       "layer": "observation",
       "module": "core"
     },
-    "valuePeriod": {
-      "datatype": "xsd:string",
-      "iri": "https://xeoontology.org/xeo#valuePeriod",
-      "layer": "observation",
-      "module": "core",
-      "schemes": [
-        "valuePeriod"
-      ],
-      "status": "extension"
-    },
     "verdict": {
       "conceptSlot": true,
       "datatype": "xsd:string",
@@ -1692,6 +1783,18 @@
         "Topic"
       ],
       "term": "aboutTopic"
+    },
+    "ACQUIRED_BY_TACTIC": {
+      "domain": [
+        "InboundReference"
+      ],
+      "iri": "https://xeoontology.org/xeo#acquiredByTactic",
+      "layer": "interpretation",
+      "module": "decision",
+      "range": [
+        "Tactic"
+      ],
+      "term": "acquiredByTactic"
     },
     "ACTIVATES": {
       "domain": [
@@ -2069,6 +2172,19 @@
         "ExternalEvent"
       ],
       "term": "confoundedBy"
+    },
+    "CONSENT_SUBJECT": {
+      "domain": [
+        "Consent"
+      ],
+      "iri": "https://xeoontology.org/xeo#consentSubject",
+      "layer": "observation",
+      "module": "core",
+      "range": [
+        "Organization",
+        "Person"
+      ],
+      "term": "consentSubject"
     },
     "CONSTRAINS": {
       "domain": [
@@ -2815,6 +2931,16 @@
       ],
       "term": "precedentFor"
     },
+    "PRODUCED_BY_MODEL": {
+      "domain": [],
+      "iri": "https://xeoontology.org/xeo#producedByModel",
+      "layer": "observation",
+      "module": "core",
+      "range": [
+        "Model"
+      ],
+      "term": "producedByModel"
+    },
     "PRODUCED_OUTCOME": {
       "domain": [
         "Experiment"
@@ -2886,6 +3012,33 @@
         "URL"
       ],
       "term": "redirectsTo"
+    },
+    "REFERENCE_TARGET": {
+      "domain": [
+        "InboundReference"
+      ],
+      "iri": "https://xeoontology.org/xeo#referenceTarget",
+      "layer": "observation",
+      "module": "core",
+      "range": [
+        "Brand",
+        "Organization",
+        "URL",
+        "Website"
+      ],
+      "term": "referenceTarget"
+    },
+    "REFERENCING_URL": {
+      "domain": [
+        "InboundReference"
+      ],
+      "iri": "https://xeoontology.org/xeo#referencingUrl",
+      "layer": "observation",
+      "module": "core",
+      "range": [
+        "URL"
+      ],
+      "term": "referencingUrl"
     },
     "REFERS_TO": {
       "domain": [],
@@ -3014,6 +3167,18 @@
       ],
       "term": "scopedTo"
     },
+    "SHOWN_ON_SEARCH_ENGINE": {
+      "domain": [
+        "GenerativeOverview"
+      ],
+      "iri": "https://xeoontology.org/xeo#shownOnSearchEngine",
+      "layer": "entity",
+      "module": "visibility",
+      "range": [
+        "SearchEngine"
+      ],
+      "term": "shownOnSearchEngine"
+    },
     "SIMILAR_TO": {
       "domain": [
         "Experiment",
@@ -3083,6 +3248,22 @@
         "searchIntent"
       ],
       "term": "targetsIntent"
+    },
+    "TARGET_METRIC": {
+      "domain": [
+        "MetricTarget"
+      ],
+      "iri": "https://xeoontology.org/xeo#targetMetric",
+      "layer": "interpretation",
+      "module": "work",
+      "range": [
+        "Metric"
+      ],
+      "schemes": [
+        "metric",
+        "objectiveMetric"
+      ],
+      "term": "targetMetric"
     },
     "TESTS": {
       "domain": [
@@ -3182,9 +3363,11 @@
   },
   "schemes": {
     "acquisitionChannel": [
+      "affiliate",
       "ai_assistant",
       "ai_overview",
       "direct",
+      "display",
       "email",
       "offline",
       "organic_search",
@@ -3192,6 +3375,7 @@
       "other",
       "paid_search",
       "paid_social",
+      "programmatic",
       "referral"
     ],
     "additivity": [
@@ -3234,9 +3418,37 @@
       "none",
       "up"
     ],
+    "billingInterval": [
+      "day",
+      "month",
+      "week",
+      "year"
+    ],
     "cadence": [
       "monthly",
       "quarterly"
+    ],
+    "consentPurpose": [
+      "ad_personalization",
+      "ad_storage",
+      "ad_user_data",
+      "ai_data_use",
+      "analytics_cookies",
+      "email_marketing",
+      "model_training",
+      "other"
+    ],
+    "consentSource": [
+      "api",
+      "banner",
+      "contract",
+      "form",
+      "inferred_default"
+    ],
+    "consentStatus": [
+      "denied",
+      "granted",
+      "unspecified"
     ],
     "conversionPointType": [
       "chat",
@@ -3431,6 +3643,14 @@
       "score_0_100",
       "seconds"
     ],
+    "modelKind": [
+      "classifier",
+      "decision",
+      "embedding",
+      "image",
+      "language",
+      "reranker"
+    ],
     "objectiveMetric": [
       "ai_citation_rate",
       "ai_mention_rate",
@@ -3499,6 +3719,10 @@
       "integration",
       "manual"
     ],
+    "referenceKind": [
+      "link",
+      "mention"
+    ],
     "searchIntent": [
       "commercial_investigation",
       "informational",
@@ -3549,11 +3773,6 @@
       "quarter",
       "week",
       "year"
-    ],
-    "valuePeriod": [
-      "annual",
-      "monthly",
-      "one_time"
     ],
     "xeoLayer": [
       "entity",

@@ -718,3 +718,12 @@ xeo:status rdfs:label "status" .
 xeo:rationale rdfs:label "rationale" .
 xeo:halfLife rdfs:label "half life" .
 xeo:practiceOutcome rdfs:label "practice outcome" .
+
+# --- v0.7.0 (how a reference came about, 2026-11-12) ----------------------------------
+# C6: an InboundReference (core) is observed; how it came about is a Tactic.
+
+xeo:acquiredByTactic a owl:ObjectProperty ;
+    rdfs:label "acquired by tactic" ;
+    rdfs:domain xeo:InboundReference ; rdfs:range xeo:Tactic ;
+    xeo:xeoLayer "interpretation" ;
+    dct:description "The Tactic that produced an InboundReference: a placement, a pitch, a link magnet. A claim about how it came about, so an interpretation, and absent for an organic reference. Where an Experiment paid for it, the Experiment tests that Tactic." .

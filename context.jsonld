@@ -20,9 +20,7 @@
     "SearchPerformanceFact": "xeo:SearchPerformanceFact",
     "Engine": "xeo:Engine",
     "SearchEngine": "xeo:SearchEngine",
-    "GenerativeEngine": "xeo:GenerativeEngine",
     "AnswerEngine": "xeo:AnswerEngine",
-    "ConversationalAgent": "xeo:ConversationalAgent",
     "Brand": "xeo:Brand",
     "Prompt": "xeo:Prompt",
     "LLMResponse": "xeo:LLMResponse",
@@ -175,7 +173,6 @@
     "resultReason": "xeo:resultReason",
     "engagementType": "xeo:engagementType",
     "cadence": "xeo:cadence",
-    "metric": "xeo:metric",
     "targetKind": "xeo:targetKind",
     "contentType": "xeo:contentType",
     "robotsMeta": "xeo:robotsMeta",
@@ -302,7 +299,6 @@
     "stageSlot": "xeo:stageSlot",
     "targetCurrency": "xeo:targetCurrency",
     "toStageRef": "xeo:toStageRef",
-    "valuePeriod": "xeo:valuePeriod",
 
     "minDenominator": { "@id": "xeo:minDenominator", "@type": "xsd:integer" },
 
@@ -331,6 +327,28 @@
 
     "conversionWindow": { "@id": "xeo:conversionWindow", "@type": "xsd:duration" },
     "cumulativeWindow": { "@id": "xeo:cumulativeWindow", "@type": "xsd:duration" },
-    "offsetWindow": { "@id": "xeo:offsetWindow", "@type": "xsd:duration" }
+    "offsetWindow": { "@id": "xeo:offsetWindow", "@type": "xsd:duration" },
+
+    "GenerativeOverview": "xeo:GenerativeOverview",
+    "Model": "xeo:Model",
+    "Consent": "xeo:Consent",
+    "InboundReference": "xeo:InboundReference",
+    "shownOnSearchEngine": { "@id": "xeo:shownOnSearchEngine", "@type": "@id" },
+    "producedByModel": { "@id": "xeo:producedByModel", "@type": "@id" },
+    "consentSubject": { "@id": "xeo:consentSubject", "@type": "@id" },
+    "referencingUrl": { "@id": "xeo:referencingUrl", "@type": "@id" },
+    "referenceTarget": { "@id": "xeo:referenceTarget", "@type": "@id" },
+    "acquiredByTactic": { "@id": "xeo:acquiredByTactic", "@type": "@id" },
+    "targetMetric": { "@id": "xeo:targetMetric", "@type": "@id" },
+    "modelFamily": "xeo:modelFamily",
+    "modelKind": "xeo:modelKind",
+    "consentPurpose": "xeo:consentPurpose",
+    "consentStatus": "xeo:consentStatus",
+    "consentRecordedAt": { "@id": "xeo:consentRecordedAt", "@type": "xsd:dateTime" },
+    "consentCapturedBy": "xeo:consentCapturedBy",
+    "consentSource": "xeo:consentSource",
+    "billingInterval": "xeo:billingInterval",
+    "billingIntervalCount": { "@id": "xeo:billingIntervalCount", "@type": "xsd:positiveInteger" },
+    "referenceKind": "xeo:referenceKind"
   }
 }

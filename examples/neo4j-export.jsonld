@@ -51,7 +51,7 @@
     },
     {
       "id": "ex:target-1", "type": "MetricTarget", "layer": "interpretation",
-      "metric": "clicks", "targetKind": "absolute", "targetValue": "400",
+      "TARGET_METRIC": "xeos:metric-clicks", "targetKind": "absolute", "targetValue": "400",
       "BASELINE_READING": "ex:reading-1"
     }
   ]

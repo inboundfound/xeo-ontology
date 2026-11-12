@@ -74,7 +74,7 @@ xeo:Objective a owl:Class ;
 xeo:MetricTarget a owl:Class ;
     rdfs:label "Metric Target" ;
     xeo:xeoLayer "interpretation" ;
-    dct:description "One measurable target of an Objective: the Metric it is set on (metric, the code of a Metric in xeos:metric), the targetValue to reach, read per targetKind as an absolute value or as a change from a captured baseline (baselineReading), and whether it isPrimary. Unit and better direction come from its Metric. Named a target and never a key result: xeo:Outcome is 'the measured result an experiment produced', an observation, and a goal must not share a name with a reading. Each target is its own node so the experiment loop can hang observations off it; a target dropped on edit is stamped deletedAt, never destroyed, because its id is what measured history is anchored to." .
+    dct:description "One measurable target of an Objective: the Metric it is set on (targetMetric, a link to the Metric node), the targetValue to reach, read per targetKind as an absolute value or as a change from a captured baseline (baselineReading), and whether it isPrimary. Unit and better direction come from its Metric. Named a target and never a key result: xeo:Outcome is 'the measured result an experiment produced', an observation, and a goal must not share a name with a reading. Each target is its own node so the experiment loop can hang observations off it; a target dropped on edit is stamped deletedAt, never destroyed, because its id is what measured history is anchored to." .
 
 # --- Object properties -------------------------------------------------------
 
@@ -168,10 +168,10 @@ xeo:resultsWindowDays a owl:DatatypeProperty ;
     xeo:xeoLayer "interpretation" ;
     dct:description "The measurement window every target in this objective is read over. One horizon per campaign; per-target windows are deliberately not modelled. Counted in days from resultsWindowStart, that day included." .
 
-xeo:metric a owl:DatatypeProperty ;
-    rdfs:domain xeo:MetricTarget ; rdfs:range xsd:string ;
-    xeo:xeoLayer "interpretation" ;
-    dct:description "Which metric the target is set on, as a code: the skos:notation of an xeo:Metric — clicks, ctr, position, ai_mention_rate, sessions, pipeline_created, ... The code resolves in xeos:metric, the reference scheme of Metrics, which states each one's type, unit, better direction and additivity; a consumer may add Metrics of its own. Stays a string in 0.6: the Metric is found by its notation. xeos:objectiveMetric is the earlier list of codes, kept for compatibility." .
+# Removed in 0.7: xeo:metric. Use targetMetric, which links to the Metric node.
+
+
+
 
 # Removed in 0.7: xeo:direction. Use betterDirection, stated once on the Metric.
 
@@ -256,7 +256,7 @@ xeo:interventionQuota rdfs:label "intervention quota" .
 xeo:cadence rdfs:label "cadence" .
 xeo:durationDays rdfs:label "duration days" .
 xeo:resultsWindowDays rdfs:label "results window days" .
-xeo:metric rdfs:label "metric" .
+
 
 xeo:targetKind rdfs:label "target kind" .
 xeo:targetValue rdfs:label "target value" .
@@ -336,3 +336,12 @@ xeo:isPrimary skos:altLabel "KPI" ;
 
 xeo:baseline xeo:groundedIn "The API contract of the system named in the source of the target's baselineReading" .
 xeo:baselineCapturedAt xeo:groundedIn "The API contract of the system named in the source of the target's baselineReading" .
+
+# --- v0.7.0 (target to Metric, 2026-11-12) ---------------------------------------------
+# C5: a target links to its Metric node. The text code (metric) is removed.
+
+xeo:targetMetric a owl:ObjectProperty ;
+    rdfs:label "target metric" ;
+    rdfs:domain xeo:MetricTarget ; rdfs:range xeo:Metric ;
+    xeo:xeoLayer "interpretation" ;
+    dct:description "The Metric a MetricTarget is set on: a link to the Metric node (xeos:metric-ctr, xeos:metric-pipeline_created, or a Metric of your own). Exactly one per MetricTarget. Its type, unit, better direction and additivity are the Metric's. Replaces the text code metric (0.7)." .

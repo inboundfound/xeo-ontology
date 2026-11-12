@@ -9,6 +9,10 @@
       "@id": "xeo:aboutTopic",
       "@type": "@id"
     },
+    "ACQUIRED_BY_TACTIC": {
+      "@id": "xeo:acquiredByTactic",
+      "@type": "@id"
+    },
     "ACTIVATES": {
       "@id": "xeo:activates",
       "@type": "@id"
@@ -120,6 +124,10 @@
       "@id": "xeo:confoundedBy",
       "@type": "@id"
     },
+    "CONSENT_SUBJECT": {
+      "@id": "xeo:consentSubject",
+      "@type": "@id"
+    },
     "CONSTRAINS": {
       "@id": "xeo:constrains",
       "@type": "@id"
@@ -142,7 +150,7 @@
     },
     "Campaign": "xeo:Campaign",
     "Capability": "xeo:Capability",
-    "ConversationalAgent": "xeo:ConversationalAgent",
+    "Consent": "xeo:Consent",
     "ConversionEvent": "xeo:ConversionEvent",
     "ConversionPoint": "xeo:ConversionPoint",
     "Crawl": "xeo:Crawl",
@@ -205,7 +213,7 @@
       "@type": "@id"
     },
     "Gap": "xeo:Gap",
-    "GenerativeEngine": "xeo:GenerativeEngine",
+    "GenerativeOverview": "xeo:GenerativeOverview",
     "HAS_CAMPAIGN": {
       "@id": "xeo:hasCampaign",
       "@type": "@id"
@@ -298,6 +306,7 @@
       "@id": "xeo:issuedFor",
       "@type": "@id"
     },
+    "InboundReference": "xeo:InboundReference",
     "Intervention": "xeo:Intervention",
     "LEARNED_FROM": {
       "@id": "xeo:learnedFrom",
@@ -331,6 +340,7 @@
     "Metric": "xeo:Metric",
     "MetricReading": "xeo:MetricReading",
     "MetricTarget": "xeo:MetricTarget",
+    "Model": "xeo:Model",
     "NEXT_STAGE": {
       "@id": "xeo:nextStage",
       "@type": "@id"
@@ -375,6 +385,10 @@
       "@id": "xeo:precedentFor",
       "@type": "@id"
     },
+    "PRODUCED_BY_MODEL": {
+      "@id": "xeo:producedByModel",
+      "@type": "@id"
+    },
     "PRODUCED_OUTCOME": {
       "@id": "xeo:producedOutcome",
       "@type": "@id"
@@ -403,6 +417,14 @@
     },
     "REDIRECTS_TO": {
       "@id": "xeo:redirectsTo",
+      "@type": "@id"
+    },
+    "REFERENCE_TARGET": {
+      "@id": "xeo:referenceTarget",
+      "@type": "@id"
+    },
+    "REFERENCING_URL": {
+      "@id": "xeo:referencingUrl",
       "@type": "@id"
     },
     "REFERS_TO": {
@@ -446,6 +468,10 @@
       "@id": "xeo:scopedTo",
       "@type": "@id"
     },
+    "SHOWN_ON_SEARCH_ENGINE": {
+      "@id": "xeo:shownOnSearchEngine",
+      "@type": "@id"
+    },
     "SIMILAR_TO": {
       "@id": "xeo:similarTo",
       "@type": "@id"
@@ -470,6 +496,10 @@
     "StageTransition": "xeo:StageTransition",
     "TARGETS_INTENT": {
       "@id": "xeo:targetsIntent",
+      "@type": "@id"
+    },
+    "TARGET_METRIC": {
+      "@id": "xeo:targetMetric",
       "@type": "@id"
     },
     "TESTS": {
@@ -602,6 +632,11 @@
       "@id": "xeo:betweenness",
       "@type": "xsd:decimal"
     },
+    "billingInterval": "xeo:billingInterval",
+    "billingIntervalCount": {
+      "@id": "xeo:billingIntervalCount",
+      "@type": "xsd:positiveInteger"
+    },
     "cadence": "xeo:cadence",
     "capturedAt": {
       "@id": "xeo:capturedAt",
@@ -631,6 +666,14 @@
       "@id": "xeo:confidence",
       "@type": "xsd:decimal"
     },
+    "consentCapturedBy": "xeo:consentCapturedBy",
+    "consentPurpose": "xeo:consentPurpose",
+    "consentRecordedAt": {
+      "@id": "xeo:consentRecordedAt",
+      "@type": "xsd:dateTime"
+    },
+    "consentSource": "xeo:consentSource",
+    "consentStatus": "xeo:consentStatus",
     "contentHash": "xeo:contentHash",
     "contentType": "xeo:contentType",
     "conversionPointType": "xeo:conversionPointType",
@@ -844,7 +887,6 @@
     },
     "metaDescription": "xeo:metaDescription",
     "method": "xeo:method",
-    "metric": "xeo:metric",
     "metricFilter": "xeo:metricFilter",
     "metricType": {
       "@context": {
@@ -858,6 +900,8 @@
       "@type": "xsd:integer"
     },
     "model": "xeo:model",
+    "modelFamily": "xeo:modelFamily",
+    "modelKind": "xeo:modelKind",
     "modelVersion": "xeo:modelVersion",
     "name": "xeo:name",
     "numeratorValue": {
@@ -925,6 +969,7 @@
       "@id": "xeo:recurringValue",
       "@type": "xsd:decimal"
     },
+    "referenceKind": "xeo:referenceKind",
     "referringPlatform": "xeo:referringPlatform",
     "rel": "xeo:rel",
     "relativeChange": {
@@ -1008,7 +1053,6 @@
       "@id": "xeo:value",
       "@type": "xsd:decimal"
     },
-    "valuePeriod": "xeo:valuePeriod",
     "verdict": {
       "@id": "xeo:verdict",
       "@type": "@id"
