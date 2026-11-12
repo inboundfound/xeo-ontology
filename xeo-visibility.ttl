@@ -22,15 +22,6 @@ xeo:visibility-module a owl:Ontology ;
 
 # --- Classes ----------------------------------------------------------------
 
-xeo:Engine a owl:Class ;
-    rdfs:label "Engine" ;
-    xeo:epistemicLayer "entity" ;
-    dct:description "A system that mediates between a person's question and web content. The taxonomy below is operational, not doctrinal — subclass as engines evolve." .
-
-xeo:SearchEngine a owl:Class ; rdfs:subClassOf xeo:Engine ;
-    rdfs:label "Search Engine" ;
-    dct:description "Classic ranked-results retrieval (the SEO surface)." .
-
 xeo:GenerativeEngine a owl:Class ; rdfs:subClassOf xeo:Engine ;
     rdfs:label "Generative Engine" ;
     dct:description "Search-integrated generated answers — AI overviews and AI modes (the GEO surface)." .
@@ -69,11 +60,6 @@ xeo:hasResponse a owl:ObjectProperty ;
     rdfs:domain xeo:Prompt ; rdfs:range xeo:LLMResponse ;
     xeo:epistemicLayer "episode" .
 
-xeo:onEngine a owl:ObjectProperty ;
-    rdfs:range xeo:Engine ;  # domain-free since v0.6.0 (was xeo:LLMResponse): a SerpSnapshot is on an engine too.
-    xeo:epistemicLayer "episode" ;
-    dct:description "Which engine (and, via model/modelVersion properties, which model) produced this response — or, on a SerpSnapshot, served this results page." .
-
 xeo:cites a owl:ObjectProperty ;
     rdfs:domain xeo:LLMResponse ; rdfs:range xeo:URL ;
     xeo:epistemicLayer "observation" ;
@@ -98,15 +84,6 @@ xeo:visibilityFor a owl:ObjectProperty ;
     dct:description "Windowed rollup of response-level observations for a (prompt, brand) pair: mentionRate, citationRate, responses, periodStart, periodEnd, source, datasetUri. Mirrors the ranksFor rollup pattern — raw responses are the authoritative record; this is the traversal-friendly projection." .
 
 # --- Datatype properties ------------------------------------------------------
-
-xeo:capturedAt a owl:DatatypeProperty ;
-    rdfs:range xsd:dateTime ;  # domain-free since v0.6.0 (was xeo:LLMResponse): SerpSnapshot carries it, and the domain typed every snapshot as a response.
-    xeo:epistemicLayer "episode" .
-
-xeo:model a owl:DatatypeProperty ;
-    rdfs:range xsd:string ;  # domain-free since v0.6.0 (was xeo:LLMResponse): inTopic and other derivation edges carry it.
-    xeo:epistemicLayer "episode" ;
-    dct:description "Model identifier + version as reported at capture time. Without this the episode is not comparable across time. Also carried on derivation edges (inTopic, about) to name the model that produced the assignment." .
 
 xeo:webSearchEnabled a owl:DatatypeProperty ;
     rdfs:domain xeo:LLMResponse ; rdfs:range xsd:boolean ;
@@ -192,26 +169,20 @@ xeo:sentiment a owl:DatatypeProperty ;
 # --- v0.6.0 annotation completeness -----------------------------------------------
 # The triples below add what the declarations above lacked; nothing is redefined.
 
-xeo:SearchEngine xeo:epistemicLayer "entity" .
 xeo:GenerativeEngine xeo:epistemicLayer "entity" .
 xeo:AnswerEngine xeo:epistemicLayer "entity" .
 xeo:ConversationalAgent xeo:epistemicLayer "entity" .
 
 xeo:hasResponse dct:description "A captured response to this Prompt." .
 
-xeo:capturedAt dct:description "When a capture episode was taken: an LLMResponse or a SerpSnapshot. The instant the record was made, after which it is immutable." .
-
 # Labels for the properties declared above, which carried none.
 
 xeo:tracksPrompt rdfs:label "tracks prompt" .
 xeo:hasResponse rdfs:label "has response" .
-xeo:onEngine rdfs:label "on engine" .
 xeo:cites rdfs:label "cites" .
 xeo:mentions rdfs:label "mentions" .
 xeo:fansOutTo rdfs:label "fans out to" .
 xeo:visibilityFor rdfs:label "visibility for" .
-xeo:capturedAt rdfs:label "captured at" .
-xeo:model rdfs:label "model" .
 xeo:webSearchEnabled rdfs:label "web search enabled" .
 xeo:mentionRank rdfs:label "mention rank" .
 xeo:mentionRate rdfs:label "mention rate" .
@@ -231,3 +202,14 @@ xeo:responses rdfs:label "responses" .
 # meaning changed; a consumer that filters by layer will find them one layer up.
 # The Metrics they are values of are xeos:metric-ai_mention_rate and
 # xeos:metric-ai_citation_rate, which state the numerator and the denominator.
+
+# --- v0.7.0 (modules, 2026-11-12) ---------------------------------------------------
+# Engine, SearchEngine, onEngine, capturedAt and model moved to core, which a
+# SerpSnapshot needs without this module. attributedResponse moved here from
+# xeo-engagement.ttl: it points at an LLMResponse, so it belongs with it.
+
+xeo:attributedResponse a owl:ObjectProperty ;
+    rdfs:domain xeo:ConversionEvent ; rdfs:range xeo:LLMResponse ;
+    xeo:epistemicLayer "interpretation" ;
+    dct:description "The claim that this conversion traces to engine visibility captured in this response episode. Multi-engine attribution is inherently inferential: this edge MUST carry method and confidence, and honest implementations will leave it sparse. Assert it only when the event's session, or the linked record's first or latest touch, has channel ai_assistant (or a declared assisted-path method applies), and the response cites a URL of the same website within a declared lookback window. Method is referral-match, citation-window or model." ;
+    rdfs:label "attributed response" .

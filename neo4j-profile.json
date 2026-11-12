@@ -18,12 +18,11 @@
   "generatedFrom": [
     "xeo-core.ttl",
     "xeo-visibility.ttl",
-    "xeo-engagement.ttl",
+    "xeo-analysis.ttl",
+    "xeo-sales.ttl",
+    "xeo-work.ttl",
     "xeo-decision.ttl",
     "xeo-strategy.ttl",
-    "xeo-delivery.ttl",
-    "xeo-analysis.ttl",
-    "xeo-metrics.ttl",
     "xeo-schemes.ttl"
   ],
   "labels": {
@@ -53,7 +52,7 @@
       "deprecated": true,
       "iri": "https://xeoontology.org/xeo#CallToAction",
       "layer": "entity",
-      "module": "engagement",
+      "module": "core",
       "replacedBy": [
         "conversionPointType"
       ],
@@ -65,7 +64,7 @@
       "definition": "A body of work inside a Project against one Topic: the URLs and Terms it covers, and the single Objective it is measured by. Recommendations are issuedFor a campaign, and it is the unit an operator plans a cycle around. Soft-deleted like its Project.",
       "iri": "https://xeoontology.org/xeo#Campaign",
       "layer": "entity",
-      "module": "delivery"
+      "module": "work"
     },
     "Capability": {
       "definition": "A lever or strength a party can bring to bear (content, technical, PR, brand, ...). The unit of the scope gate: a Tactic is in reach only when every Capability it requires is approved. Specific capabilities are instances, not subclasses.",
@@ -86,13 +85,13 @@
       "definition": "A submission/click/unlock that happened at a time: a visitor's action on a ConversionPoint, recorded by the capturing system. Immutable once recorded. Identified by the capturing system and its submission id; one per submission. Not the creation of a CRM record, which may follow, be merged into an existing record, or never happen: events are not leads.",
       "iri": "https://xeoontology.org/xeo#ConversionEvent",
       "layer": "episode",
-      "module": "engagement"
+      "module": "core"
     },
     "ConversionPoint": {
       "definition": "A durable on-page mechanism that turns attention into a pipeline event. Identified by the URL it sits on and its form id or selector. Its kind is conversionPointType.",
       "iri": "https://xeoontology.org/xeo#ConversionPoint",
       "layer": "entity",
-      "module": "engagement"
+      "module": "core"
     },
     "Crawl": {
       "definition": "One crawl run over one Website: time-bounded, agent-attributed, immutable once finished.",
@@ -122,7 +121,7 @@
       "definition": "A system that mediates between a person's question and web content. The taxonomy below is operational, not doctrinal — subclass as engines evolve.",
       "iri": "https://xeoontology.org/xeo#Engine",
       "layer": "entity",
-      "module": "visibility"
+      "module": "core"
     },
     "Entity": {
       "definition": "A real-world thing or concept that content is about — a product, a place, a person, a material, a method — identified by a reference into a public knowledge base (entityRef) where one exists, otherwise by name. Distinct from Topic, which is a site-scoped grouping somebody derived, and from Brand, which is a market identity engines mention: an Entity is the thing itself, shared across sites. Not tenant-scoped. Named for the knowledge-graph sense of the word; not to be confused with the epistemic layer 'entity', which Website, URL and Term also occupy.",
@@ -165,7 +164,7 @@
       "deprecated": true,
       "iri": "https://xeoontology.org/xeo#GatedAsset",
       "layer": "entity",
-      "module": "engagement",
+      "module": "core",
       "replacedBy": [
         "conversionPointType"
       ],
@@ -199,7 +198,7 @@
       "deprecated": true,
       "iri": "https://xeoontology.org/xeo#LeadCaptureForm",
       "layer": "entity",
-      "module": "engagement",
+      "module": "core",
       "replacedBy": [
         "conversionPointType"
       ],
@@ -211,25 +210,25 @@
       "definition": "A named, reusable definition of a measured quantity: what is counted or computed, over which records, aggregated how, in what unit, and which way is better. A rule, not a number: the number is a MetricReading. One node per definition, identified by its skos:notation within its scheme (xeos:metric is the published reference scheme). Two Metrics are the same when metricType, aggregation, readsSlot or inputs, metricFilter, timeAnchor and unit all match; changing any of them makes a new Metric, never an edit, because readings and targets are anchored to the definition. Carries exactly one metricType, unit, betterDirection and additivity. A simple metric also carries aggregation and readsSlot; a ratio carries numerator and denominator and has unit ratio; a derived metric carries expression and at least one inputMetric. A skos:Concept, so a consumer adds its own metrics as instances without touching the ontology.",
       "iri": "https://xeoontology.org/xeo#Metric",
       "layer": "norm",
-      "module": "metrics"
+      "module": "core"
     },
     "MetricReading": {
       "definition": "The value one Metric took over one window, for one scope, from one source. One row per metric, scope, window and source: its identity is readingOf, scope, periodStart, periodEnd, source and, where the source deduplicates in more than one way, aggregationBasis. Requires value, periodStart, periodEnd and readingOf, and should carry websiteId and datasetUri; a ratio reading also carries numeratorValue and denominatorValue. An observation only when the primary API returned exactly that metric, window and scope. When the value was rolled up, recomputed, or taken from a vendor's model, the reading is a derivation and carries method and confidence. High-cardinality readings live in the column store; the graph holds the windowed readings a target, an Outcome or an Objective points at.",
       "iri": "https://xeoontology.org/xeo#MetricReading",
       "layer": "observation",
-      "module": "metrics"
+      "module": "core"
     },
     "MetricTarget": {
       "definition": "One measurable target of an Objective: the Metric it is set on (metric, the code of a Metric in xeos:metric), the targetValue to reach, read per targetKind as an absolute value or as a change from a captured baseline (baselineReading), and whether it isPrimary. Unit and better direction come from its Metric. Named a target and never a key result: xeo:Outcome is 'the measured result an experiment produced', an observation, and a goal must not share a name with a reading. Each target is its own node so the experiment loop can hang observations off it; a target dropped on edit is stamped deletedAt, never destroyed, because its id is what measured history is anchored to.",
       "iri": "https://xeoontology.org/xeo#MetricTarget",
       "layer": "interpretation",
-      "module": "delivery"
+      "module": "work"
     },
     "Objective": {
       "definition": "What a Campaign intends to move: an operator-written statement in prose (carried verbatim — the recommendation agent reads it as the goal), a resultsWindowDays every target is measured over, and one or more MetricTargets of which exactly one isPrimary. An intent set at creation. A campaign has one reporting horizon, distinct from the Project's work window: a two-month engagement can carry a six-month results window. The window starts on resultsWindowStart, and the objective-level result is one objectiveReading per target over the campaign's deduplicated scope, never a sum of Outcomes.",
       "iri": "https://xeoontology.org/xeo#Objective",
       "layer": "interpretation",
-      "module": "delivery"
+      "module": "work"
     },
     "Organization": {
       "definition": "The canonical organization: one node per real organization (an agency, a brand's company, an in-house team, a customer's company), which every system's record of it (a CRM company, an ad account's owner, a billing customer) points at with refersTo. Identified by name. The owner of Websites and Brands (owns), the holder of Capabilities and the client of another Organization (holdsCapability and clientOf, in xeo-delivery), and a tenancy node that activates Frameworks and Playbooks. It copies no vendor's fields: what a CRM knows about the company stays on the CRM's record, which refers to this node. Its kind is a slotted-in concept (organizationKind), never a subclass.",
@@ -247,7 +246,7 @@
       "definition": "A CRM record being reassigned from one owner to another: happened at a time, immutable once recorded. Carries crmRecordRef, ownerRef (the owner it was assigned to), occurredAt, and method saying how the row was obtained, as on a StageTransition. One row per reassignment. Read from the CRM's history, so every CRM can fill it and none states it as a field.",
       "iri": "https://xeoontology.org/xeo#OwnerChange",
       "layer": "episode",
-      "module": "engagement",
+      "module": "sales",
       "status": "extension"
     },
     "Person": {
@@ -260,7 +259,7 @@
       "definition": "A MetricReading of a pipeline Metric (leads_created, pipeline_created, deals_won, revenue_won, ...) for one website over one window, computed from CRM records. Always a derivation: the records are observed, the windowed number is XEO's computation over them, so it carries method. Requires what any reading does (readingOf, value, periodStart, periodEnd) with datasetUri pointing at the authoritative table, and currencyCode when its Metric's unit is currency. The graph keeps this rollup; the rows it was computed from stay in the column store.",
       "iri": "https://xeoontology.org/xeo#PipelineRollup",
       "layer": "derivation",
-      "module": "engagement",
+      "module": "sales",
       "subClassOf": [
         "MetricReading"
       ]
@@ -281,7 +280,7 @@
       "definition": "The contractual container for a body of work on one Website. Declares its engagementType (retainer or one-off), an interventionQuota (a scope of work with no ceiling is not a scope), a cadence the quota resets over (retainer) or a durationDays it runs for (one-off), and the Interventions and Tactics inScope under the contract. Never destroyed: its campaigns, objectives and targets are the substrate the end-of-campaign report and the experiment loop read, so it is stamped deletedAt and filtered, not deleted.",
       "iri": "https://xeoontology.org/xeo#Project",
       "layer": "entity",
-      "module": "delivery"
+      "module": "work"
     },
     "Prompt": {
       "definition": "A tracked natural-language question posed to engines. Distinct from Term: a prompt is what a person asks; the engine's retrieval fans out into Terms.",
@@ -299,7 +298,7 @@
       "definition": "Classic ranked-results retrieval (the SEO surface).",
       "iri": "https://xeoontology.org/xeo#SearchEngine",
       "layer": "entity",
-      "module": "visibility",
+      "module": "core",
       "subClassOf": [
         "Engine"
       ]
@@ -308,7 +307,7 @@
       "definition": "Why the person is asking. Modeled as named individuals, not free strings. Since 0.6.0 the same four values are also published as concepts in xeos:searchIntent, each a SearchIntent, which is the form to write.",
       "iri": "https://xeoontology.org/xeo#SearchIntent",
       "layer": "entity",
-      "module": "engagement"
+      "module": "core"
     },
     "SearchPerformanceFact": {
       "definition": "The atomic ground-truth metric row for one (websiteId, address, term, date [, device, country]) tuple. Never instantiated as graph relationships; the graph carries windowed ranksFor rollups whose datasetUri points back to the authoritative table.",
@@ -332,7 +331,7 @@
       "definition": "A CRM record entering a stage: happened at a time, immutable once recorded. Identified by crmRecordRef, stageSlot, toStageRef and enteredAt. One row per entry, and a record that returns to a stage enters it again as a new row. Carries fromStageRef where the previous stage is known, exitedAt once it has left, amountAtTransition, datasetUri, and method saying how the row was obtained: vendor-history (the CRM's own history rows), vendor-calculated-property (a per-stage entry timestamp the CRM maintains), or snapshot-diff (two reads compared). High-cardinality, so it lives in the column store and the graph holds rollups. A calculated property that is cleared when a record moves backwards, or filled when it skips a stage, is not a record of what happened and never fills this.",
       "iri": "https://xeoontology.org/xeo#StageTransition",
       "layer": "episode",
-      "module": "engagement"
+      "module": "sales"
     },
     "Tactic": {
       "definition": "A durable, named approach that can address gaps. Categorized by a slotted-in intervention taxonomy (inIntervention), scored on slotted-in dimensions (assessedAs -> TacticAssessment), and gated by the Capabilities it requires.",
@@ -387,7 +386,7 @@
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#additivity",
       "layer": "norm",
-      "module": "metrics",
+      "module": "core",
       "schemes": [
         "additivity"
       ]
@@ -408,7 +407,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#agentContext",
       "layer": "norm",
-      "module": "metrics",
+      "module": "core",
       "status": "extension"
     },
     "aggregation": {
@@ -416,7 +415,7 @@
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#aggregation",
       "layer": "norm",
-      "module": "metrics",
+      "module": "core",
       "schemes": [
         "aggregation"
       ]
@@ -426,7 +425,7 @@
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#aggregationBasis",
       "layer": "observation",
-      "module": "metrics",
+      "module": "core",
       "schemes": [
         "aggregationBasis"
       ],
@@ -449,13 +448,13 @@
       ],
       "iri": "https://xeoontology.org/xeo#amountAtTransition",
       "layer": "episode",
-      "module": "engagement"
+      "module": "sales"
     },
     "amountInReportingCurrency": {
       "datatype": "xsd:decimal",
       "iri": "https://xeoontology.org/xeo#amountInReportingCurrency",
       "layer": "derivation",
-      "module": "engagement",
+      "module": "core",
       "status": "extension"
     },
     "anchorText": {
@@ -518,7 +517,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#baseline",
       "layer": "observation",
-      "module": "delivery"
+      "module": "work"
     },
     "baselineCapturedAt": {
       "datatype": "xsd:dateTime",
@@ -527,7 +526,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#baselineCapturedAt",
       "layer": "observation",
-      "module": "delivery"
+      "module": "work"
     },
     "basis": {
       "conceptSlot": true,
@@ -544,7 +543,7 @@
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#betterDirection",
       "layer": "norm",
-      "module": "metrics",
+      "module": "core",
       "schemes": [
         "betterDirection"
       ]
@@ -562,7 +561,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#cadence",
       "layer": "entity",
-      "module": "delivery",
+      "module": "work",
       "schemes": [
         "cadence"
       ]
@@ -571,14 +570,14 @@
       "datatype": "xsd:decimal",
       "iri": "https://xeoontology.org/xeo#campaignInfluenceShare",
       "layer": "derivation",
-      "module": "engagement",
+      "module": "sales",
       "status": "extension"
     },
     "capturedAt": {
       "datatype": "xsd:dateTime",
       "iri": "https://xeoontology.org/xeo#capturedAt",
       "layer": "episode",
-      "module": "visibility"
+      "module": "core"
     },
     "citationRank": {
       "datatype": "xsd:integer",
@@ -638,7 +637,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#conversionPointType",
       "layer": "entity",
-      "module": "engagement",
+      "module": "core",
       "schemes": [
         "conversionPointType"
       ]
@@ -650,21 +649,21 @@
       ],
       "iri": "https://xeoontology.org/xeo#conversionWindow",
       "layer": "norm",
-      "module": "metrics",
+      "module": "core",
       "status": "extension"
     },
     "convertedAt": {
       "datatype": "xsd:dateTime",
       "iri": "https://xeoontology.org/xeo#convertedAt",
       "layer": "episode",
-      "module": "engagement",
+      "module": "sales",
       "status": "extension"
     },
     "convertedTo": {
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#convertedTo",
       "layer": "episode",
-      "module": "engagement",
+      "module": "sales",
       "status": "extension"
     },
     "crawlDepth": {
@@ -683,7 +682,7 @@
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#crmObjectType",
       "layer": "entity",
-      "module": "engagement",
+      "module": "sales",
       "schemes": [
         "crmObjectType"
       ]
@@ -692,13 +691,13 @@
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#crmRecordRef",
       "layer": "entity",
-      "module": "engagement"
+      "module": "sales"
     },
     "crmSystem": {
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#crmSystem",
       "layer": "entity",
-      "module": "engagement",
+      "module": "sales",
       "schemes": [
         "crmSystem"
       ]
@@ -716,21 +715,21 @@
       ],
       "iri": "https://xeoontology.org/xeo#cumulativeWindow",
       "layer": "norm",
-      "module": "metrics",
+      "module": "core",
       "status": "extension"
     },
     "currencyCode": {
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#currencyCode",
       "layer": "observation",
-      "module": "engagement"
+      "module": "core"
     },
     "dataState": {
       "conceptSlot": true,
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#dataState",
       "layer": "observation",
-      "module": "metrics",
+      "module": "core",
       "schemes": [
         "dataState"
       ],
@@ -746,19 +745,19 @@
       "datatype": "xsd:decimal",
       "iri": "https://xeoontology.org/xeo#dealAmount",
       "layer": "observation",
-      "module": "engagement"
+      "module": "sales"
     },
     "dealClosedAt": {
       "datatype": "xsd:dateTime",
       "iri": "https://xeoontology.org/xeo#dealClosedAt",
       "layer": "observation",
-      "module": "engagement"
+      "module": "sales"
     },
     "dealOutcome": {
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#dealOutcome",
       "layer": "observation",
-      "module": "engagement",
+      "module": "sales",
       "schemes": [
         "dealOutcome"
       ]
@@ -767,7 +766,7 @@
       "datatype": "xsd:decimal",
       "iri": "https://xeoontology.org/xeo#dealProbability",
       "layer": "interpretation",
-      "module": "engagement",
+      "module": "sales",
       "status": "extension"
     },
     "degree": {
@@ -780,7 +779,7 @@
       "datatype": "xsd:dateTime",
       "iri": "https://xeoontology.org/xeo#deletedAt",
       "layer": "entity",
-      "module": "delivery"
+      "module": "work"
     },
     "denominatorValue": {
       "datatype": "xsd:decimal",
@@ -789,7 +788,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#denominatorValue",
       "layer": "observation",
-      "module": "metrics"
+      "module": "core"
     },
     "device": {
       "datatype": "xsd:string",
@@ -808,7 +807,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#direction",
       "layer": "interpretation",
-      "module": "delivery",
+      "module": "work",
       "replacedBy": [
         "betterDirection"
       ]
@@ -820,14 +819,14 @@
       ],
       "iri": "https://xeoontology.org/xeo#durationDays",
       "layer": "entity",
-      "module": "delivery"
+      "module": "work"
     },
     "effortEstimate": {
       "conceptSlot": true,
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#effortEstimate",
       "layer": "interpretation",
-      "module": "delivery",
+      "module": "work",
       "schemes": [
         "effort"
       ]
@@ -869,7 +868,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#engagementType",
       "layer": "entity",
-      "module": "delivery",
+      "module": "work",
       "schemes": [
         "engagementType"
       ]
@@ -881,7 +880,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#enteredAt",
       "layer": "episode",
-      "module": "engagement"
+      "module": "sales"
     },
     "entityRef": {
       "datatype": "xsd:string",
@@ -894,7 +893,7 @@
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#execution",
       "layer": "interpretation",
-      "module": "delivery",
+      "module": "work",
       "schemes": [
         "execution"
       ]
@@ -906,13 +905,13 @@
       ],
       "iri": "https://xeoontology.org/xeo#exitedAt",
       "layer": "episode",
-      "module": "engagement"
+      "module": "sales"
     },
     "expectedCloseDate": {
       "datatype": "xsd:date",
       "iri": "https://xeoontology.org/xeo#expectedCloseDate",
       "layer": "interpretation",
-      "module": "engagement"
+      "module": "sales"
     },
     "expression": {
       "datatype": "xsd:string",
@@ -921,7 +920,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#expression",
       "layer": "norm",
-      "module": "metrics"
+      "module": "core"
     },
     "fetchedAt": {
       "datatype": "xsd:dateTime",
@@ -945,7 +944,7 @@
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#firstTouchChannel",
       "layer": "derivation",
-      "module": "engagement",
+      "module": "sales",
       "schemes": [
         "acquisitionChannel"
       ]
@@ -954,7 +953,7 @@
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#forecastCategory",
       "layer": "interpretation",
-      "module": "engagement",
+      "module": "sales",
       "schemes": [
         "forecastCategory"
       ],
@@ -977,7 +976,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#fromStageRef",
       "layer": "episode",
-      "module": "engagement"
+      "module": "sales"
     },
     "gapType": {
       "conceptSlot": true,
@@ -994,7 +993,7 @@
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#grainToDate",
       "layer": "norm",
-      "module": "metrics",
+      "module": "core",
       "schemes": [
         "timeGrain"
       ],
@@ -1042,7 +1041,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#interventionQuota",
       "layer": "entity",
-      "module": "delivery"
+      "module": "work"
     },
     "isPrimary": {
       "datatype": "xsd:boolean",
@@ -1051,7 +1050,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#isPrimary",
       "layer": "interpretation",
-      "module": "delivery"
+      "module": "work"
     },
     "lastSeenAt": {
       "datatype": "xsd:dateTime",
@@ -1069,21 +1068,21 @@
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#latestTouchChannel",
       "layer": "derivation",
-      "module": "engagement",
+      "module": "sales",
       "status": "extension"
     },
     "leadStatus": {
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#leadStatus",
       "layer": "interpretation",
-      "module": "engagement",
+      "module": "sales",
       "status": "extension"
     },
     "lifecycleStage": {
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#lifecycleStage",
       "layer": "interpretation",
-      "module": "engagement",
+      "module": "sales",
       "schemes": [
         "lifecycleStageClass"
       ],
@@ -1122,7 +1121,7 @@
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#lostReason",
       "layer": "interpretation",
-      "module": "engagement",
+      "module": "sales",
       "status": "extension"
     },
     "magnitude": {
@@ -1148,7 +1147,7 @@
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#marketingCampaignRef",
       "layer": "entity",
-      "module": "engagement",
+      "module": "sales",
       "status": "extension"
     },
     "mentionRank": {
@@ -1182,7 +1181,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#metric",
       "layer": "interpretation",
-      "module": "delivery",
+      "module": "work",
       "schemes": [
         "metric",
         "objectiveMetric"
@@ -1195,14 +1194,14 @@
       ],
       "iri": "https://xeoontology.org/xeo#metricFilter",
       "layer": "norm",
-      "module": "metrics"
+      "module": "core"
     },
     "metricType": {
       "conceptSlot": true,
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#metricType",
       "layer": "norm",
-      "module": "metrics",
+      "module": "core",
       "schemes": [
         "metricType"
       ]
@@ -1214,13 +1213,13 @@
       ],
       "iri": "https://xeoontology.org/xeo#minDenominator",
       "layer": "norm",
-      "module": "metrics"
+      "module": "core"
     },
     "model": {
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#model",
       "layer": "episode",
-      "module": "visibility"
+      "module": "core"
     },
     "modelVersion": {
       "datatype": "xsd:string",
@@ -1241,13 +1240,13 @@
       ],
       "iri": "https://xeoontology.org/xeo#numeratorValue",
       "layer": "observation",
-      "module": "metrics"
+      "module": "core"
     },
     "occurredAt": {
       "datatype": "xsd:dateTime",
       "iri": "https://xeoontology.org/xeo#occurredAt",
       "layer": "episode",
-      "module": "engagement"
+      "module": "core"
     },
     "offsetWindow": {
       "datatype": "xsd:duration",
@@ -1256,7 +1255,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#offsetWindow",
       "layer": "norm",
-      "module": "metrics",
+      "module": "core",
       "status": "extension"
     },
     "onDimension": {
@@ -1290,7 +1289,7 @@
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#ownerRef",
       "layer": "entity",
-      "module": "engagement"
+      "module": "sales"
     },
     "pageRank": {
       "datatype": "xsd:decimal",
@@ -1314,7 +1313,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#percentileValue",
       "layer": "norm",
-      "module": "metrics",
+      "module": "core",
       "status": "extension"
     },
     "periodEnd": {
@@ -1333,7 +1332,7 @@
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#pipelineRef",
       "layer": "entity",
-      "module": "engagement"
+      "module": "sales"
     },
     "position": {
       "datatype": "xsd:integer",
@@ -1390,13 +1389,13 @@
       "datatype": "xsd:dateTime",
       "iri": "https://xeoontology.org/xeo#recordCreatedAt",
       "layer": "observation",
-      "module": "engagement"
+      "module": "sales"
     },
     "recordOrigin": {
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#recordOrigin",
       "layer": "observation",
-      "module": "engagement",
+      "module": "sales",
       "schemes": [
         "recordOrigin"
       ],
@@ -1406,14 +1405,14 @@
       "datatype": "xsd:decimal",
       "iri": "https://xeoontology.org/xeo#recurringValue",
       "layer": "observation",
-      "module": "engagement",
+      "module": "core",
       "status": "extension"
     },
     "referringPlatform": {
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#referringPlatform",
       "layer": "derivation",
-      "module": "engagement"
+      "module": "sales"
     },
     "rel": {
       "datatype": "xsd:string",
@@ -1476,7 +1475,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#resultsWindowDays",
       "layer": "interpretation",
-      "module": "delivery"
+      "module": "work"
     },
     "resultsWindowStart": {
       "datatype": "xsd:date",
@@ -1485,7 +1484,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#resultsWindowStart",
       "layer": "interpretation",
-      "module": "delivery"
+      "module": "work"
     },
     "robotsMeta": {
       "datatype": "xsd:string",
@@ -1530,7 +1529,7 @@
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#stageClass",
       "layer": "norm",
-      "module": "engagement",
+      "module": "sales",
       "schemes": [
         "dealStageClass"
       ]
@@ -1539,7 +1538,7 @@
       "datatype": "xsd:decimal",
       "iri": "https://xeoontology.org/xeo#stageDefaultProbability",
       "layer": "norm",
-      "module": "engagement",
+      "module": "sales",
       "status": "extension"
     },
     "stageOrder": {
@@ -1555,7 +1554,7 @@
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#stageRef",
       "layer": "entity",
-      "module": "engagement"
+      "module": "sales"
     },
     "stageSlot": {
       "datatype": "xsd:string",
@@ -1564,7 +1563,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#stageSlot",
       "layer": "episode",
-      "module": "engagement",
+      "module": "sales",
       "schemes": [
         "stageSlot"
       ]
@@ -1618,7 +1617,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#targetCurrency",
       "layer": "interpretation",
-      "module": "delivery"
+      "module": "work"
     },
     "targetKind": {
       "datatype": "xsd:string",
@@ -1627,7 +1626,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#targetKind",
       "layer": "interpretation",
-      "module": "delivery",
+      "module": "work",
       "schemes": [
         "targetKind"
       ]
@@ -1639,7 +1638,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#targetValue",
       "layer": "interpretation",
-      "module": "delivery"
+      "module": "work"
     },
     "test": {
       "datatype": "xsd:string",
@@ -1669,14 +1668,14 @@
       ],
       "iri": "https://xeoontology.org/xeo#toStageRef",
       "layer": "episode",
-      "module": "engagement"
+      "module": "sales"
     },
     "unit": {
       "conceptSlot": true,
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#unit",
       "layer": "norm",
-      "module": "metrics",
+      "module": "core",
       "schemes": [
         "metricUnit"
       ]
@@ -1688,13 +1687,13 @@
       ],
       "iri": "https://xeoontology.org/xeo#value",
       "layer": "observation",
-      "module": "metrics"
+      "module": "core"
     },
     "valuePeriod": {
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#valuePeriod",
       "layer": "observation",
-      "module": "engagement",
+      "module": "core",
       "schemes": [
         "valuePeriod"
       ],
@@ -1730,7 +1729,7 @@
       "datatype": "xsd:decimal",
       "iri": "https://xeoontology.org/xeo#weightedAmount",
       "layer": "derivation",
-      "module": "engagement",
+      "module": "sales",
       "status": "extension"
     },
     "wordCount": {
@@ -1762,7 +1761,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#aboutTopic",
       "layer": "entity",
-      "module": "delivery",
+      "module": "work",
       "range": [
         "Topic"
       ],
@@ -1790,7 +1789,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#additivity",
       "layer": "norm",
-      "module": "metrics",
+      "module": "core",
       "range": [
         "skos:Concept"
       ],
@@ -1818,7 +1817,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#aggregation",
       "layer": "norm",
-      "module": "metrics",
+      "module": "core",
       "range": [
         "skos:Concept"
       ],
@@ -1834,7 +1833,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#aggregationBasis",
       "layer": "observation",
-      "module": "metrics",
+      "module": "core",
       "range": [
         "skos:Concept"
       ],
@@ -1938,7 +1937,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#attributedResponse",
       "layer": "interpretation",
-      "module": "engagement",
+      "module": "visibility",
       "range": [
         "LLMResponse"
       ],
@@ -1991,7 +1990,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#baselineReading",
       "layer": "observation",
-      "module": "delivery",
+      "module": "work",
       "range": [
         "MetricReading"
       ],
@@ -2003,7 +2002,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#baseMetric",
       "layer": "norm",
-      "module": "metrics",
+      "module": "core",
       "range": [
         "Metric"
       ],
@@ -2031,7 +2030,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#betterDirection",
       "layer": "norm",
-      "module": "metrics",
+      "module": "core",
       "range": [
         "skos:Concept"
       ],
@@ -2046,7 +2045,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#capturedBy",
       "layer": "observation",
-      "module": "engagement",
+      "module": "core",
       "range": [
         "ConversionPoint"
       ],
@@ -2082,7 +2081,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#clientOf",
       "layer": "entity",
-      "module": "delivery",
+      "module": "work",
       "range": [
         "Organization"
       ],
@@ -2163,7 +2162,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#conversionEntity",
       "layer": "norm",
-      "module": "metrics",
+      "module": "core",
       "range": [
         "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
       ],
@@ -2176,7 +2175,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#conversionMetric",
       "layer": "norm",
-      "module": "metrics",
+      "module": "core",
       "range": [
         "Metric"
       ],
@@ -2189,7 +2188,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#coversTerm",
       "layer": "entity",
-      "module": "delivery",
+      "module": "work",
       "range": [
         "Term"
       ],
@@ -2201,7 +2200,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#coversUrl",
       "layer": "entity",
-      "module": "delivery",
+      "module": "work",
       "range": [
         "URL"
       ],
@@ -2214,7 +2213,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#dataState",
       "layer": "observation",
-      "module": "metrics",
+      "module": "core",
       "range": [
         "skos:Concept"
       ],
@@ -2230,7 +2229,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#denominator",
       "layer": "norm",
-      "module": "metrics",
+      "module": "core",
       "range": [
         "Metric"
       ],
@@ -2243,7 +2242,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#effortEstimate",
       "layer": "interpretation",
-      "module": "delivery",
+      "module": "work",
       "range": [
         "skos:Concept"
       ],
@@ -2287,7 +2286,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#execution",
       "layer": "interpretation",
-      "module": "delivery",
+      "module": "work",
       "range": [
         "skos:Concept"
       ],
@@ -2372,7 +2371,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#grainToDate",
       "layer": "norm",
-      "module": "metrics",
+      "module": "core",
       "range": [
         "skos:Concept"
       ],
@@ -2388,7 +2387,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#hasCampaign",
       "layer": "entity",
-      "module": "delivery",
+      "module": "work",
       "range": [
         "Campaign"
       ],
@@ -2425,7 +2424,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#hasConversionPoint",
       "layer": "observation",
-      "module": "engagement",
+      "module": "core",
       "range": [
         "ConversionPoint"
       ],
@@ -2449,7 +2448,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#hasObjective",
       "layer": "interpretation",
-      "module": "delivery",
+      "module": "work",
       "range": [
         "Objective"
       ],
@@ -2461,7 +2460,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#hasProject",
       "layer": "entity",
-      "module": "delivery",
+      "module": "work",
       "range": [
         "Project"
       ],
@@ -2535,7 +2534,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#hasTarget",
       "layer": "interpretation",
-      "module": "delivery",
+      "module": "work",
       "range": [
         "MetricTarget"
       ],
@@ -2559,7 +2558,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#holdsCapability",
       "layer": "entity",
-      "module": "delivery",
+      "module": "work",
       "range": [
         "Capability"
       ],
@@ -2598,7 +2597,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#inputMetric",
       "layer": "norm",
-      "module": "metrics",
+      "module": "core",
       "range": [
         "Metric"
       ],
@@ -2637,7 +2636,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#inScope",
       "layer": "entity",
-      "module": "delivery",
+      "module": "work",
       "range": [
         "Intervention",
         "Tactic"
@@ -2662,7 +2661,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#issuedFor",
       "layer": "interpretation",
-      "module": "delivery",
+      "module": "work",
       "range": [
         "Campaign"
       ],
@@ -2727,7 +2726,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#measures",
       "layer": "episode",
-      "module": "delivery",
+      "module": "work",
       "range": [
         "MetricTarget"
       ],
@@ -2752,7 +2751,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#metricType",
       "layer": "norm",
-      "module": "metrics",
+      "module": "core",
       "range": [
         "skos:Concept"
       ],
@@ -2779,7 +2778,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#numerator",
       "layer": "norm",
-      "module": "metrics",
+      "module": "core",
       "range": [
         "Metric"
       ],
@@ -2791,7 +2790,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#objectiveReading",
       "layer": "derivation",
-      "module": "delivery",
+      "module": "work",
       "range": [
         "MetricReading"
       ],
@@ -2828,7 +2827,7 @@
       "domain": [],
       "iri": "https://xeoontology.org/xeo#onEngine",
       "layer": "episode",
-      "module": "visibility",
+      "module": "core",
       "range": [
         "Engine"
       ],
@@ -2920,7 +2919,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#readingOf",
       "layer": "observation",
-      "module": "metrics",
+      "module": "core",
       "range": [
         "Metric"
       ],
@@ -2932,7 +2931,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#readsSlot",
       "layer": "norm",
-      "module": "metrics",
+      "module": "core",
       "range": [
         "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
       ],
@@ -3065,7 +3064,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#scope",
       "layer": "observation",
-      "module": "metrics",
+      "module": "core",
       "range": [
         "Brand",
         "Campaign",
@@ -3150,7 +3149,7 @@
       "domain": [],
       "iri": "https://xeoontology.org/xeo#targetsIntent",
       "layer": "interpretation",
-      "module": "engagement",
+      "module": "core",
       "range": [
         "SearchIntent"
       ],
@@ -3177,7 +3176,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#timeAnchor",
       "layer": "norm",
-      "module": "metrics",
+      "module": "core",
       "range": [
         "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
       ],
@@ -3215,7 +3214,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#unit",
       "layer": "norm",
-      "module": "metrics",
+      "module": "core",
       "range": [
         "skos:Concept"
       ],
