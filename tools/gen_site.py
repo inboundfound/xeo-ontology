@@ -68,7 +68,7 @@ PUBLIC_FILES = [
     os.path.join("shapes", "xeo-shapes.ttl"),
 ]
 
-EPI = URIRef(NS + "epistemicLayer")
+EPI = URIRef(NS + "xeoLayer")
 GROUNDED = URIRef(NS + "groundedIn")
 STORE = URIRef(NS + "canonicalStore")
 DOMAIN_INCLUDES = URIRef(NS + "domainIncludes")

@@ -715,58 +715,6 @@
         }
       ]
     },
-    "epistemicLayer": {
-      "iri": "https://xeoontology.org/schemes#epistemicLayer",
-      "label": "Epistemic layers",
-      "fillsSlot": "xeo:epistemicLayer",
-      "description": "The six kinds of claim an XEO term can make, in order from bedrock to governance. The annotation property types TERMS; publishing the six here as a scheme gives a consumer tagging INSTANCES the same six values under one IRI each. Whether XEO itself should own an instance-level layer property is a separate decision this scheme does not make.",
-      "source": "xeo-core.ttl (xeo:epistemicLayer)",
-      "ordered": true,
-      "concepts": [
-        {
-          "code": "entity",
-          "iri": "https://xeoontology.org/schemes#epistemicLayer-entity",
-          "label": "Entity",
-          "definition": "A durable identity — a website, a page, a term, a brand",
-          "note": null
-        },
-        {
-          "code": "episode",
-          "iri": "https://xeoontology.org/schemes#epistemicLayer-episode",
-          "label": "Episode",
-          "definition": "Something that happened at a time; immutable once finished — a crawl, a captured response, an experiment",
-          "note": null
-        },
-        {
-          "code": "observation",
-          "iri": "https://xeoontology.org/schemes#epistemicLayer-observation",
-          "label": "Observation",
-          "definition": "A measured fact, grounded in a standard or an API contract",
-          "note": null
-        },
-        {
-          "code": "derivation",
-          "iri": "https://xeoontology.org/schemes#epistemicLayer-derivation",
-          "label": "Derivation",
-          "definition": "Model or algorithm output; carries method, model and confidence",
-          "note": null
-        },
-        {
-          "code": "interpretation",
-          "iri": "https://xeoontology.org/schemes#epistemicLayer-interpretation",
-          "label": "Interpretation",
-          "definition": "A labeled claim — a diagnosed gap, a recommendation, an objective",
-          "note": null
-        },
-        {
-          "code": "norm",
-          "iri": "https://xeoontology.org/schemes#epistemicLayer-norm",
-          "label": "Norm",
-          "definition": "A standing rule about a class of cases — a Practice",
-          "note": null
-        }
-      ]
-    },
     "execution": {
       "iri": "https://xeoontology.org/schemes#execution",
       "label": "Who executes",
@@ -2914,6 +2862,58 @@
         }
       ],
       "status": "extension"
+    },
+    "xeoLayer": {
+      "iri": "https://xeoontology.org/schemes#xeoLayer",
+      "label": "Layers",
+      "fillsSlot": "xeo:xeoLayer",
+      "description": "The six kinds of claim an XEO term can make, in order from bedrock to governance. The annotation property types TERMS; publishing the six here as a scheme gives a consumer tagging INSTANCES the same six values under one IRI each. A graph that stamps instances with their layer uses the same name, xeoLayer, and these six values. Named epistemicLayer until 0.7.",
+      "source": "xeo-core.ttl (xeo:xeoLayer)",
+      "ordered": true,
+      "concepts": [
+        {
+          "code": "entity",
+          "iri": "https://xeoontology.org/schemes#xeoLayer-entity",
+          "label": "Entity",
+          "definition": "A durable identity — a website, a page, a term, a brand",
+          "note": null
+        },
+        {
+          "code": "episode",
+          "iri": "https://xeoontology.org/schemes#xeoLayer-episode",
+          "label": "Episode",
+          "definition": "Something that happened at a time; immutable once finished — a crawl, a captured response, an experiment",
+          "note": null
+        },
+        {
+          "code": "observation",
+          "iri": "https://xeoontology.org/schemes#xeoLayer-observation",
+          "label": "Observation",
+          "definition": "A measured fact, grounded in a standard or an API contract",
+          "note": null
+        },
+        {
+          "code": "derivation",
+          "iri": "https://xeoontology.org/schemes#xeoLayer-derivation",
+          "label": "Derivation",
+          "definition": "Model or algorithm output; carries method, model and confidence",
+          "note": null
+        },
+        {
+          "code": "interpretation",
+          "iri": "https://xeoontology.org/schemes#xeoLayer-interpretation",
+          "label": "Interpretation",
+          "definition": "A labeled claim — a diagnosed gap, a recommendation, an objective",
+          "note": null
+        },
+        {
+          "code": "norm",
+          "iri": "https://xeoontology.org/schemes#xeoLayer-norm",
+          "label": "Norm",
+          "definition": "A standing rule about a class of cases — a Practice",
+          "note": null
+        }
+      ]
     }
   },
   "vendorSchemes": {

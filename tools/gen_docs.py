@@ -20,7 +20,7 @@ MODULES = [
     "xeo-core.ttl", "xeo-visibility.ttl", "xeo-analysis.ttl", "xeo-sales.ttl",
     "xeo-work.ttl", "xeo-decision.ttl", "xeo-strategy.ttl", "xeo-align.ttl",
 ]
-EPI = URIRef(NS + "epistemicLayer")
+EPI = URIRef(NS + "xeoLayer")
 GROUNDED = URIRef(NS + "groundedIn")
 STORE = URIRef(NS + "canonicalStore")
 DOMAIN_INCLUDES = URIRef(NS + "domainIncludes")

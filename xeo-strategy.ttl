@@ -26,7 +26,7 @@
 # choice — reusable across cases, authored by a person or earned from
 # experiments, and revisable. It stands above a single decision: one
 # Recommendation is a call about one case; a Practice is a norm about a class of
-# cases. This is a new epistemic stratum, and core's epistemicLayer annotation
+# cases. This is a new layer, and core's xeoLayer annotation
 # already lists it — extension modules introducing norm terms must mark them.
 #
 # DISCIPLINE (unchanged from decision): this module ships CLASSES, never VALUES.
@@ -46,59 +46,59 @@
 
 xeo:Practice a owl:Class ;
     rdfs:label "Practice" ;
-    xeo:epistemicLayer "norm" ;
+    xeo:xeoLayer "norm" ;
     dct:description "A standing rule that governs how recommendations are made under stated conditions. Best-practices, SOPs, and lessons-learned are all Practices, distinguished by source, not by class. A Practice does one of three things (practiceKind): veto a candidate (guardrail), reorder it (preference), or attach a caveat (guidance). Revisable and versioned (supersedes); scoped to the concepts it appliesToConcept; audited on the recommendations it fired on (appliedPractice)." .
 
 xeo:Playbook a owl:Class ;
     rdfs:label "Playbook" ;
-    xeo:epistemicLayer "entity" ;
+    xeo:xeoLayer "entity" ;
     dct:description "A reusable, discipline-scoped bundle of Diagnostics, Tactics, and Practices — an 'SEO playbook', an 'AEO playbook', a 'local playbook'. Durable and named, like a Diagnostic. Its scope is the DISCIPLINE, not the account: a Playbook is authored once (by the community or an agency) and reused across every client. What varies per client or campaign is which Playbooks a tenancy activates and which Practices it overrides — never the Playbook itself." .
 
 # --- Object properties -------------------------------------------------------
 
 xeo:constrains a owl:ObjectProperty ;
     rdfs:domain xeo:Practice ; rdfs:range xeo:Recommendation ;
-    xeo:epistemicLayer "norm" ;
+    xeo:xeoLayer "norm" ;
     dct:description "The Practice governs recommendations matching its conditions — vetoing, reordering, or caveating per its practiceKind. Which recommendations 'match' is set by appliesToConcept." .
 
 xeo:appliesToConcept a owl:ObjectProperty ;
     rdfs:domain xeo:Practice ; rdfs:range skos:Concept ;
-    xeo:epistemicLayer "norm" ;
+    xeo:xeoLayer "norm" ;
     dct:description "Binds a Practice to the slotted-in concepts it applies to — a page role (hasRole), an Intervention, a gapType, a Capability. Bring your own schemes; the Practice fires only where a candidate carries a matching concept." .
 
 xeo:appliedPractice a owl:ObjectProperty ;
     rdfs:domain xeo:Recommendation ; rdfs:range xeo:Practice ;
-    xeo:epistemicLayer "derivation" ;
+    xeo:xeoLayer "derivation" ;
     dct:description "Audit edge: this Practice was evaluated against this recommendation and fired. Carries method and confidence — the application is a computed derivation, not itself a norm. The transparent record of why a candidate was blocked, demoted, or flagged." .
 
 xeo:supersedes a owl:ObjectProperty ;
     rdfs:domain xeo:Practice ; rdfs:range xeo:Practice ;
-    xeo:epistemicLayer "norm" ;
+    xeo:xeoLayer "norm" ;
     dct:description "This Practice replaces an earlier version. Editing a rule mints a new Practice that supersedes the old (retired to status 'deprecated', never deleted) — the version chain that makes the norms layer revisable and auditable." .
 
 xeo:includes a owl:ObjectProperty ;
     # rdfs:domain xeo:Playbook removed in v0.6.0: a Framework includes the same three kinds. Domain left open.
-    xeo:epistemicLayer "entity" ;
+    xeo:xeoLayer "entity" ;
     dct:description "A Diagnostic, Tactic, or Practice bundled into this Playbook or Framework. Domain and range left open: the two bundles on one side, the three decision/norm terms they may hold on the other." .
 
 xeo:activates a owl:ObjectProperty ;
     # rdfs:range xeo:Playbook removed in v0.6.0: a Framework is activated the same way. Range left open.
-    xeo:epistemicLayer "norm" ;
+    xeo:xeoLayer "norm" ;
     dct:description "A tenancy context puts a Playbook or Framework into effect for a body of work. Domain left open: model your own tenancy node (an Organization, a client, an engagement, a campaign) and point it here — this module stays agnostic about the account hierarchy, which is expressed through appliesAtScope." .
 
 xeo:hasRole a owl:ObjectProperty ;
     rdfs:domain xeo:URL ; rdfs:range skos:Concept ;
-    xeo:epistemicLayer "derivation" ;
+    xeo:xeoLayer "derivation" ;
     dct:description "The structural role a URL plays on its site, as a slotted-in concept. A recommended starter scheme is coarse and purpose-based: brand-core (home, about), commercial (services, products, sales), content (articles, marketing), infrastructure (pagination, archives, tag and category indexes). Assignment is a DERIVATION from graph and crawl structure — inbound link_position, index-vs-leaf link patterns, template similarity — not URL-string matching; it carries method and confidence, and 'unknown' is a valid, conservative state. Parallels core's inTopic. Norms bind to these roles via appliesToConcept, so 'never redirect an infrastructure page for ranking' is a rule over a role, not a growing list of regexes." .
 
 xeo:authoredBy a owl:ObjectProperty ;
     rdfs:domain xeo:Practice ;
-    xeo:epistemicLayer "norm" ;
+    xeo:xeoLayer "norm" ;
     dct:description "The party that authored a Practice (or an activation or override). Range left open — a person, an agency, the system, or a prov:Agent in your own graph. One half of the customization axis: with appliesAtScope, it decides whose rule wins." .
 
 xeo:appliesAtScope a owl:ObjectProperty ;
     rdfs:range skos:Concept ;
-    xeo:epistemicLayer "norm" ;
+    xeo:xeoLayer "norm" ;
     dct:description "The tenancy level at which a Practice (or activation or override) applies, as a slotted-in concept. A recommended hierarchy is default < agency < client < engagement < campaign < user. Domain left open so it can annotate any strategy-layer assertion. Resolution is most-specific-wins: a client-level Practice overrides an agency default, which overrides the shipped default. This is the 'customization' axis — not a lens, a specificity ladder." .
 
 # --- Datatype properties -----------------------------------------------------
@@ -106,32 +106,32 @@ xeo:appliesAtScope a owl:ObjectProperty ;
 
 xeo:statement a owl:DatatypeProperty ;
     rdfs:range xsd:string ;  # domain-free since v0.6.0 (was xeo:Practice): Gap, Recommendation, Objective and Feedback carry a statement.
-    xeo:epistemicLayer "norm" ;
+    xeo:xeoLayer "norm" ;
     dct:description "The rule in plain language, as a human authored or confirmed it — e.g. 'Never 301 a paginated archive URL for ranking purposes.' The canonical human-facing form; the structural fields (practiceKind, appliesToConcept, constrains) make it executable." .
 
 xeo:practiceKind a owl:DatatypeProperty ;
     rdfs:domain xeo:Practice ; rdfs:range xsd:string ;
-    xeo:epistemicLayer "norm" ;
+    xeo:xeoLayer "norm" ;
     dct:description "How the Practice acts: 'guardrail' (veto a matching candidate), 'preference' (reorder it), or 'guidance' (attach a caveat, change nothing). The mechanism, kept as a small controlled string rather than a subclass." .
 
 xeo:source a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
-    xeo:epistemicLayer "norm" ;
+    xeo:xeoLayer "norm" ;
     dct:description "Provenance of an assertion. The value vocabulary is subject-specific. On a Practice: 'authored' (a human SOP or best-practice — high standing, durable), 'learned' (earned from the experiment ledger — confidence ratchets with Outcomes), or 'claimed' (an unproven assertion, e.g. a current answer-engine tactic — ships low-confidence with a halfLife and decays unless experiments promote it); this lets one class hold a firm SOP and a fragile claim without conflating their trust. On a ranksFor or visibilityFor rollup: the data source the window was built from. DOMAIN LEFT OPEN deliberately — rdfs:domain is an entailment rule, not a constraint, so naming xeo:Practice here would silently type every rollup edge carrying a source as a Practice." .
 
 xeo:status a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
-    xeo:epistemicLayer "norm" ;
+    xeo:xeoLayer "norm" ;
     dct:description "Lifecycle state of a revisable term. The value vocabulary is subject-specific. On a Practice: 'proposed', 'active', or 'deprecated' — a proposed Practice is visible but does not fire, and superseding one deprecates it. DOMAIN LEFT OPEN deliberately, so another revisable term (the execution lifecycle of a Recommendation, say) can carry a lifecycle without being entailed a Practice." .
 
 xeo:rationale a owl:DatatypeProperty ;
     rdfs:domain xeo:Practice ; rdfs:range xsd:string ;
-    xeo:epistemicLayer "norm" ;
+    xeo:xeoLayer "norm" ;
     dct:description "Why the rule exists — surfaced to a user when the Practice fires, so a veto or demotion is explained, never silent." .
 
 xeo:halfLife a owl:DatatypeProperty ;
     rdfs:domain xeo:Practice ; rdfs:range xsd:duration ;
-    xeo:epistemicLayer "norm" ;
+    xeo:xeoLayer "norm" ;
     dct:description "Optional decay window for a Practice whose source is 'claimed': how long the assertion is trusted absent supporting Outcomes. Encodes the reality that today's answer-engine tactics may not survive the year — a claim nobody's experiments confirm ages out on its own." .
 
 # --- Module header ----------------------------------------------------------
@@ -151,7 +151,7 @@ xeo:strategy-module a owl:Ontology ;
 
 xeo:practiceOutcome a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
-    xeo:epistemicLayer "derivation" ;
+    xeo:xeoLayer "derivation" ;
     dct:description "Carried on an appliedPractice edge: 'vetoed' (a guardrail removed the candidate), 'reranked' (a preference moved it), or 'caveated' (guidance flagged it and changed nothing). One value per practiceKind. Domain left open because it rides on the edge, not on a node." .
 
 # --- v0.6.0 (kit sync) ---------------------------------------------------------
@@ -177,12 +177,12 @@ xeo:practiceOutcome a owl:DatatypeProperty ;
 
 xeo:Framework a owl:Class ;
     rdfs:label "Framework" ;
-    xeo:epistemicLayer "norm" ;
+    xeo:xeoLayer "norm" ;
     dct:description "A named method: a set of Stages, ordered or not, with the Diagnostics, Tactics and Practices hung on them. An optimization waterfall (ordered stages, each with a test, a subject placed at the first stage it fails), a tactic matrix, a launch checklist and a discipline playbook are all Frameworks, told apart by frameworkKind and never by subclass. A norm: it says how the work should be approached, it is authored and revisable, and it is identified by name within its author's scope. Distinct from Playbook, which is the unordered bundle a discipline reuses; a Framework adds the structure, and may include what a Playbook includes. The method is the instance you author. XEO ships the frame and none of the stages." .
 
 xeo:Stage a owl:Class ;
     rdfs:label "Stage" ;
-    xeo:epistemicLayer "norm" ;
+    xeo:xeoLayer "norm" ;
     dct:description "One step or cell of a Framework: a named position that Diagnostics, Tactics and Gaps are placed at (atStage). Carries name, an optional stageOrder, and an optional test — the question a subject must pass to move on. Belongs to exactly one Framework (hasStage) and is identified by name within it. In an ordered Framework, nextStage links each stage to the one after." .
 
 # --- v0.6.0 object properties ----------------------------------------------------
@@ -190,46 +190,46 @@ xeo:Stage a owl:Class ;
 xeo:hasStage a owl:ObjectProperty ;
     rdfs:label "has stage" ;
     rdfs:domain xeo:Framework ; rdfs:range xeo:Stage ;
-    xeo:epistemicLayer "norm" ;
+    xeo:xeoLayer "norm" ;
     dct:description "A Stage of this Framework. A Stage belongs to exactly one Framework." .
 
 xeo:nextStage a owl:ObjectProperty ;
     rdfs:label "next stage" ;
     rdfs:domain xeo:Stage ; rdfs:range xeo:Stage ;
-    xeo:epistemicLayer "norm" ;
+    xeo:xeoLayer "norm" ;
     dct:description "The stage that follows this one in an ordered Framework. Both stages belong to the same Framework. Says the same as stageOrder, as an edge a traversal can walk; where both are present they must agree." .
 
 xeo:atStage a owl:ObjectProperty ;
     rdfs:label "at stage" ;
     rdfs:range xeo:Stage ;
-    xeo:epistemicLayer "norm" ;
+    xeo:xeoLayer "norm" ;
     xeo:domainIncludes xeo:Diagnostic , xeo:Tactic , xeo:Gap ;
     dct:description "Places a Diagnostic, a Tactic or a Gap at a Stage of a Framework. For a Diagnostic or a Tactic the placement is the method author's standing claim about where it belongs. For a Gap it is inherited from the Diagnostic that revealed it and carries method. Domain left open across the three terms listed." .
 
 xeo:frameworkKind a owl:ObjectProperty ;
     rdfs:label "framework kind" ;
     rdfs:domain xeo:Framework ; rdfs:range skos:Concept ;
-    xeo:epistemicLayer "norm" ;
+    xeo:xeoLayer "norm" ;
     dct:description "What shape of method a Framework is, as a slotted-in concept (diagnostic, tactic_matrix, checklist, playbook — xeos:frameworkKind is a published reference filling). One per Framework. The kind says how the stages are read: in order with a test at each, as cells of a grid, as items to tick, or as a bundle." .
 
 xeo:learnedFrom a owl:ObjectProperty ;
     rdfs:label "learned from" ;
     rdfs:domain xeo:Practice ;
-    xeo:epistemicLayer "derivation" ;
+    xeo:xeoLayer "derivation" ;
     xeo:rangeIncludes xeo:Experiment , xeo:Outcome ;
     dct:description "The Experiments or Outcomes a Practice was earned from. Expected on every Practice whose source is 'learned', and it is what makes that word checkable: a learned rule with no learnedFrom is a claimed one. Carries method (who or what drew the lesson) and confidence. Range left open across Experiment and Outcome." .
 
 xeo:appliesTo a owl:ObjectProperty ;
     rdfs:label "applies to" ;
     rdfs:domain xeo:Practice ;
-    xeo:epistemicLayer "norm" ;
+    xeo:xeoLayer "norm" ;
     xeo:rangeIncludes xeo:Tactic , xeo:Intervention , xeo:URL , skos:Concept ;
     dct:description "What a Practice is scoped to: a Tactic, an Intervention, a single URL, or any slotted-in concept. The Practice fires only where a candidate matches. appliesToConcept is its narrower form, for the case where the target is a concept; this is the general edge, for a rule about one tactic or one page. Range left open across the terms listed." .
 
 xeo:evaluatedPractice a owl:ObjectProperty ;
     rdfs:label "evaluated practice" ;
     rdfs:domain xeo:Recommendation ; rdfs:range xeo:Practice ;
-    xeo:epistemicLayer "derivation" ;
+    xeo:xeoLayer "derivation" ;
     dct:description "Audit edge: this Practice was evaluated against this recommendation, whether or not it fired. Carries fired, method and confidence, and should carry what the evaluation matched on. The whole record, of which appliedPractice is the fired half: without the negative half, a rule that never fires cannot be told from a rule that was never checked." .
 
 # --- v0.6.0 datatype properties ---------------------------------------------------
@@ -237,19 +237,19 @@ xeo:evaluatedPractice a owl:ObjectProperty ;
 xeo:stageOrder a owl:DatatypeProperty ;
     rdfs:label "stage order" ;
     rdfs:domain xeo:Stage ; rdfs:range xsd:integer ;
-    xeo:epistemicLayer "norm" ;
+    xeo:xeoLayer "norm" ;
     dct:description "The position of a Stage within its Framework, as an integer, lower first. Unique within a Framework. Absent in an unordered Framework." .
 
 xeo:test a owl:DatatypeProperty ;
     rdfs:label "test" ;
     rdfs:domain xeo:Stage ; rdfs:range xsd:string ;
-    xeo:epistemicLayer "norm" ;
+    xeo:xeoLayer "norm" ;
     dct:description "The question a subject must pass at this Stage, in plain language ('Is the page indexed?'). The human-facing form; the Diagnostics placed atStage are what make it executable." .
 
 xeo:fired a owl:DatatypeProperty ;
     rdfs:label "fired" ;
     rdfs:range xsd:boolean ;
-    xeo:epistemicLayer "derivation" ;
+    xeo:xeoLayer "derivation" ;
     dct:description "Carried on an evaluatedPractice edge: true when the Practice matched the candidate and acted (and an appliedPractice edge records what it did), false when it was evaluated and did not match. Domain left open because it rides on the edge, not on a node." .
 
 # --- v0.6.0 additions to existing terms -------------------------------------------

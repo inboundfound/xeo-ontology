@@ -851,60 +851,60 @@ xeos:targetKind-percent a skos:Concept ;
     skos:prefLabel "Percent lift"@en ;
     skos:definition "targetValue is a relative change from baseline, in the metric's better direction"@en .
 
-# --- Epistemic layers ----------------------------------------------------------
+# --- Layers (xeoLayer) ----------------------------------------------------------
 
-xeos:epistemicLayer a skos:ConceptScheme ;
-    skos:prefLabel "Epistemic layers"@en ;
-    xeo:fillsSlot xeo:epistemicLayer ;
-    dct:source "xeo-core.ttl (xeo:epistemicLayer)" ;
-    dct:description "The six kinds of claim an XEO term can make, in order from bedrock to governance. The annotation property types TERMS; publishing the six here as a scheme gives a consumer tagging INSTANCES the same six values under one IRI each. Whether XEO itself should own an instance-level layer property is a separate decision this scheme does not make." .
+xeos:xeoLayer a skos:ConceptScheme ;
+    skos:prefLabel "Layers"@en ;
+    xeo:fillsSlot xeo:xeoLayer ;
+    dct:source "xeo-core.ttl (xeo:xeoLayer)" ;
+    dct:description "The six kinds of claim an XEO term can make, in order from bedrock to governance. The annotation property types TERMS; publishing the six here as a scheme gives a consumer tagging INSTANCES the same six values under one IRI each. A graph that stamps instances with their layer uses the same name, xeoLayer, and these six values. Named epistemicLayer until 0.7." .
 
-xeos:epistemicLayer-entity a skos:Concept ;
-    skos:inScheme xeos:epistemicLayer ;
-    skos:topConceptOf xeos:epistemicLayer ;
+xeos:xeoLayer-entity a skos:Concept ;
+    skos:inScheme xeos:xeoLayer ;
+    skos:topConceptOf xeos:xeoLayer ;
     skos:notation "entity" ;
     skos:prefLabel "Entity"@en ;
     skos:definition "A durable identity — a website, a page, a term, a brand"@en .
 
-xeos:epistemicLayer-episode a skos:Concept ;
-    skos:inScheme xeos:epistemicLayer ;
-    skos:topConceptOf xeos:epistemicLayer ;
+xeos:xeoLayer-episode a skos:Concept ;
+    skos:inScheme xeos:xeoLayer ;
+    skos:topConceptOf xeos:xeoLayer ;
     skos:notation "episode" ;
     skos:prefLabel "Episode"@en ;
     skos:definition "Something that happened at a time; immutable once finished — a crawl, a captured response, an experiment"@en .
 
-xeos:epistemicLayer-observation a skos:Concept ;
-    skos:inScheme xeos:epistemicLayer ;
-    skos:topConceptOf xeos:epistemicLayer ;
+xeos:xeoLayer-observation a skos:Concept ;
+    skos:inScheme xeos:xeoLayer ;
+    skos:topConceptOf xeos:xeoLayer ;
     skos:notation "observation" ;
     skos:prefLabel "Observation"@en ;
     skos:definition "A measured fact, grounded in a standard or an API contract"@en .
 
-xeos:epistemicLayer-derivation a skos:Concept ;
-    skos:inScheme xeos:epistemicLayer ;
-    skos:topConceptOf xeos:epistemicLayer ;
+xeos:xeoLayer-derivation a skos:Concept ;
+    skos:inScheme xeos:xeoLayer ;
+    skos:topConceptOf xeos:xeoLayer ;
     skos:notation "derivation" ;
     skos:prefLabel "Derivation"@en ;
     skos:definition "Model or algorithm output; carries method, model and confidence"@en .
 
-xeos:epistemicLayer-interpretation a skos:Concept ;
-    skos:inScheme xeos:epistemicLayer ;
-    skos:topConceptOf xeos:epistemicLayer ;
+xeos:xeoLayer-interpretation a skos:Concept ;
+    skos:inScheme xeos:xeoLayer ;
+    skos:topConceptOf xeos:xeoLayer ;
     skos:notation "interpretation" ;
     skos:prefLabel "Interpretation"@en ;
     skos:definition "A labeled claim — a diagnosed gap, a recommendation, an objective"@en .
 
-xeos:epistemicLayer-norm a skos:Concept ;
-    skos:inScheme xeos:epistemicLayer ;
-    skos:topConceptOf xeos:epistemicLayer ;
+xeos:xeoLayer-norm a skos:Concept ;
+    skos:inScheme xeos:xeoLayer ;
+    skos:topConceptOf xeos:xeoLayer ;
     skos:notation "norm" ;
     skos:prefLabel "Norm"@en ;
     skos:definition "A standing rule about a class of cases — a Practice"@en .
 
-xeos:epistemicLayer-order a skos:OrderedCollection ;
-    skos:prefLabel "Epistemic layers (ordered)"@en ;
-    skos:inScheme xeos:epistemicLayer ;
-    skos:memberList ( xeos:epistemicLayer-entity xeos:epistemicLayer-episode xeos:epistemicLayer-observation xeos:epistemicLayer-derivation xeos:epistemicLayer-interpretation xeos:epistemicLayer-norm ) .
+xeos:xeoLayer-order a skos:OrderedCollection ;
+    skos:prefLabel "Layers (ordered)"@en ;
+    skos:inScheme xeos:xeoLayer ;
+    skos:memberList ( xeos:xeoLayer-entity xeos:xeoLayer-episode xeos:xeoLayer-observation xeos:xeoLayer-derivation xeos:xeoLayer-interpretation xeos:xeoLayer-norm ) .
 
 # --- v0.6.0 (kit sync) ---------------------------------------------------------
 # Appended at the foot. Nine new schemes for the slots v0.6.0 adds, and two new
