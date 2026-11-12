@@ -180,10 +180,10 @@ xeo:approved a owl:DatatypeProperty ;
     xeo:xeoLayer "interpretation" ;
     dct:description "Whether this capability is approved for the engagement — the live state of the scope gate. Tenancy-scoped like everything else." .
 
-xeo:lift a owl:DatatypeProperty ;
-    rdfs:domain xeo:Outcome ; rdfs:range xsd:decimal ;
-    xeo:xeoLayer "observation" ;
-    dct:description "The measured change the experiment recorded on its target metric. Deprecated in 0.6.0, as advice: one number that may be points or a percentage, with nothing to say which. Write absoluteChange and relativeChange. Still valid where stored." .
+# Removed in 0.7: xeo:lift. Use absoluteChange and relativeChange on the Outcome.
+
+
+
 
 xeo:concludedAt a owl:DatatypeProperty ;
     rdfs:domain xeo:Experiment ; rdfs:range xsd:dateTime ;
@@ -232,12 +232,12 @@ xeo:magnitudeUnit a owl:ObjectProperty ;
 xeo:result a owl:DatatypeProperty ;
     rdfs:domain xeo:Outcome ; rdfs:range xsd:string ;
     xeo:xeoLayer "observation" ;
-    dct:description "'significant', 'no_change' or 'inconclusive'. Answers DID THIS MOVE; lift's sign answers which way. A regression is significant — the value never smuggles a direction in." .
+    dct:description "'significant', 'no_change' or 'inconclusive'. Answers DID THIS MOVE; the sign of absoluteChange answers which way. A regression is significant — the value never smuggles a direction in." .
 
 xeo:resultReason a owl:DatatypeProperty ;
     rdfs:domain xeo:Outcome ; rdfs:range xsd:string ;
     xeo:xeoLayer "observation" ;
-    dct:description "Why an outcome was inconclusive, from a small controlled set (window_incomplete, co_intervention, confounded_external, baseline_unavailable, ...). The two confounder reasons differ on purpose: a co-intervention keeps its lift and shares attribution; an external confounder records none." .
+    dct:description "Why an outcome was inconclusive, from a small controlled set (window_incomplete, co_intervention, confounded_external, baseline_unavailable, ...). The two confounder reasons differ on purpose: a co-intervention keeps its measured change and shares attribution; an external confounder records none." .
 
 # --- v0.6.0 (kit sync) ---------------------------------------------------------
 # Appended at the foot (line-stable for the consumers that cite this file by
@@ -365,7 +365,7 @@ xeo:atPriority rdfs:label "at priority" .
 xeo:method rdfs:label "method" .
 xeo:score rdfs:label "score" .
 xeo:approved rdfs:label "approved" .
-xeo:lift rdfs:label "lift" .
+
 xeo:concludedAt rdfs:label "concluded at" .
 xeo:verdict rdfs:label "verdict" .
 xeo:magnitude rdfs:label "magnitude" .
@@ -420,8 +420,8 @@ xeo:magnitudeMetric a owl:ObjectProperty ;
     xeo:canonicalStore "neo4j" ;
     dct:description "Which Metric a Gap's magnitude is a value of, where the size is a measured quantity: impressions, clicks, positions. The unit and the better direction are then the Metric's. Stated beside magnitudeUnit, which stays required with magnitude; a size that is not a value of any Metric (words, internal links) carries magnitudeUnit alone." .
 
-xeo:lift owl:deprecated true ;
-    rdfs:seeAlso xeo:absoluteChange , xeo:relativeChange .
+
+
 
 xeo:magnitudeUnit rdfs:seeAlso xeo:magnitudeMetric .
 
@@ -430,7 +430,7 @@ xeo:magnitudeUnit rdfs:seeAlso xeo:magnitudeMetric .
 # is grounded in; these 6 did not. Nothing else about them changes.
 
 xeo:Outcome xeo:groundedIn "The two MetricReadings it compares, each grounded in the API contract of the system named in its source" .
-xeo:lift xeo:groundedIn "The two MetricReadings its Outcome compares, each grounded in the API contract of the system named in its source" .
+
 xeo:result xeo:groundedIn "The two MetricReadings its Outcome compares, read with the test its method names" .
 xeo:resultReason xeo:groundedIn "The experiment's run record: its window, and the co-interventions and ExternalEvents logged against it" .
 xeo:producedOutcome xeo:groundedIn "The experiment's run record" .

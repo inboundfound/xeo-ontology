@@ -644,7 +644,7 @@ xeos:outcomeResult a skos:ConceptScheme ;
     skos:prefLabel "Outcome results"@en ;
     xeo:fillsSlot xeo:result ;
     dct:source "if-control-center packages/contracts/src/recommendation.ts (OUTCOME_RESULTS)" ;
-    dct:description "Whether an Outcome moved. A regression IS significant: result answers did this move, and the lift's sign answers which way. The labels must not smuggle a direction in." .
+    dct:description "Whether an Outcome moved. A regression IS significant: result answers did this move, and the sign of absoluteChange answers which way. The labels must not smuggle a direction in." .
 
 xeos:outcomeResult-significant a skos:Concept ;
     skos:inScheme xeos:outcomeResult ;
@@ -673,7 +673,7 @@ xeos:outcomeResultReason a skos:ConceptScheme ;
     skos:prefLabel "Why an outcome was inconclusive"@en ;
     xeo:fillsSlot xeo:resultReason ;
     dct:source "if-control-center packages/contracts/src/recommendation.ts (OUTCOME_RESULT_REASONS)" ;
-    dct:description "Why an Outcome could not be read cleanly. The two confounder reasons read differently on purpose: co_intervention keeps its lift and names the rows it shares attribution with; confounded_external records none. below_volume_floor and no_page_data are not the same sentence — the second asserts an absence, the first says there is data and not yet enough of it." .
+    dct:description "Why an Outcome could not be read cleanly. The two confounder reasons read differently on purpose: co_intervention keeps its measured change and names the rows it shares attribution with; confounded_external records none. below_volume_floor and no_page_data are not the same sentence — the second asserts an absence, the first says there is data and not yet enough of it." .
 
 xeos:outcomeResultReason-no_qualifying_snapshot a skos:Concept ;
     skos:inScheme xeos:outcomeResultReason ;
@@ -694,14 +694,14 @@ xeos:outcomeResultReason-co_intervention a skos:Concept ;
     skos:topConceptOf xeos:outcomeResultReason ;
     skos:notation "co_intervention" ;
     skos:prefLabel "Shared with other work of ours"@en ;
-    skos:definition "Another of our interventions touched the same pages in the window; lift is kept and attribution is shared"@en .
+    skos:definition "Another of our interventions touched the same pages in the window; the change is kept and attribution is shared"@en .
 
 xeos:outcomeResultReason-confounded_external a skos:Concept ;
     skos:inScheme xeos:outcomeResultReason ;
     skos:topConceptOf xeos:outcomeResultReason ;
     skos:notation "confounded_external" ;
     skos:prefLabel "Something outside our work changed the page"@en ;
-    skos:definition "An external event confounds the window; no lift is recorded"@en .
+    skos:definition "An external event confounds the window; no change is recorded"@en .
 
 xeos:outcomeResultReason-baseline_unavailable a skos:Concept ;
     skos:inScheme xeos:outcomeResultReason ;
@@ -1562,7 +1562,7 @@ xeos:betterDirection a skos:ConceptScheme ;
     skos:prefLabel "Better directions"@en ;
     xeo:fillsSlot xeo:betterDirection ;
     dct:source "XEO metrics and KPIs research report, 2026-11-10 · if-control-center packages/contracts/src/objective-metric.ts (METRIC_DIRECTIONS), which this generalises" ;
-    dct:description "Which way a change in a Metric counts as improvement. Stated once, on the Metric. 'up' and 'down' are the two values xeo:direction took on a target; 'none' is new, for a quantity that is neither good nor bad to have more of." .
+    dct:description "Which way a change in a Metric counts as improvement. Stated once, on the Metric. 'up' and 'down' are the two values a target's direction took until 0.7, when that property was removed; 'none' is new, for a quantity that is neither good nor bad to have more of." .
 
 xeos:betterDirection-up a skos:Concept ;
     skos:inScheme xeos:betterDirection ;
@@ -2658,31 +2658,28 @@ xeos:conversionPointType a skos:ConceptScheme ;
     skos:prefLabel "Conversion point types"@en ;
     xeo:fillsSlot xeo:conversionPointType ;
     dct:source "XEO CRM pipeline research report, 2026-11-10 · the three ConversionPoint subclasses (xeo-engagement until 0.7, now core), as codes, with two kinds the report adds" ;
-    dct:description "The kind of mechanism a ConversionPoint is. The first three say with a code what the CallToAction, LeadCaptureForm and GatedAsset subclasses say with a class; the list was growing, and a growing list is a scheme." .
+    dct:description "The kind of mechanism a ConversionPoint is. The first three say with a code what the CallToAction, LeadCaptureForm and GatedAsset subclasses said with a class until 0.7; the list was growing, and a growing list is a scheme." .
 
 xeos:conversionPointType-cta a skos:Concept ;
     skos:inScheme xeos:conversionPointType ;
     skos:topConceptOf xeos:conversionPointType ;
     skos:notation "cta" ;
     skos:prefLabel "Call to action"@en ;
-    skos:definition "A button or link that asks the visitor to take the next step"@en ;
-    skos:exactMatch xeo:CallToAction .
+    skos:definition "A button or link that asks the visitor to take the next step"@en .
 
 xeos:conversionPointType-lead_form a skos:Concept ;
     skos:inScheme xeos:conversionPointType ;
     skos:topConceptOf xeos:conversionPointType ;
     skos:notation "lead_form" ;
     skos:prefLabel "Lead capture form"@en ;
-    skos:definition "A form that exchanges contact details for a response, a quote or a booking"@en ;
-    skos:exactMatch xeo:LeadCaptureForm .
+    skos:definition "A form that exchanges contact details for a response, a quote or a booking"@en .
 
 xeos:conversionPointType-gated_asset a skos:Concept ;
     skos:inScheme xeos:conversionPointType ;
     skos:topConceptOf xeos:conversionPointType ;
     skos:notation "gated_asset" ;
     skos:prefLabel "Gated asset"@en ;
-    skos:definition "Content exchanged for contact information"@en ;
-    skos:exactMatch xeo:GatedAsset .
+    skos:definition "Content exchanged for contact information"@en .
 
 xeos:conversionPointType-meeting_booker a skos:Concept ;
     skos:inScheme xeos:conversionPointType ;
@@ -2711,32 +2708,28 @@ xeos:searchIntent-informational a skos:Concept , xeo:SearchIntent ;
     skos:topConceptOf xeos:searchIntent ;
     skos:notation "informational" ;
     skos:prefLabel "Informational"@en ;
-    skos:definition "The person wants to learn something"@en ;
-    skos:exactMatch xeo:Informational .
+    skos:definition "The person wants to learn something"@en .
 
 xeos:searchIntent-navigational a skos:Concept , xeo:SearchIntent ;
     skos:inScheme xeos:searchIntent ;
     skos:topConceptOf xeos:searchIntent ;
     skos:notation "navigational" ;
     skos:prefLabel "Navigational"@en ;
-    skos:definition "The person wants to reach a particular site or page"@en ;
-    skos:exactMatch xeo:Navigational .
+    skos:definition "The person wants to reach a particular site or page"@en .
 
 xeos:searchIntent-commercial_investigation a skos:Concept , xeo:SearchIntent ;
     skos:inScheme xeos:searchIntent ;
     skos:topConceptOf xeos:searchIntent ;
     skos:notation "commercial_investigation" ;
     skos:prefLabel "Commercial investigation"@en ;
-    skos:definition "The person is comparing options before a purchase"@en ;
-    skos:exactMatch xeo:CommercialInvestigation .
+    skos:definition "The person is comparing options before a purchase"@en .
 
 xeos:searchIntent-transactional a skos:Concept , xeo:SearchIntent ;
     skos:inScheme xeos:searchIntent ;
     skos:topConceptOf xeos:searchIntent ;
     skos:notation "transactional" ;
     skos:prefLabel "Transactional"@en ;
-    skos:definition "The person wants to do something now: buy, book, sign up"@en ;
-    skos:exactMatch xeo:Transactional .
+    skos:definition "The person wants to do something now: buy, book, sign up"@en .
 
 # --- Forecast categories (extension) ----------------------------------------
 

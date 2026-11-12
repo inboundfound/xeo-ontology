@@ -173,10 +173,10 @@ xeo:metric a owl:DatatypeProperty ;
     xeo:xeoLayer "interpretation" ;
     dct:description "Which metric the target is set on, as a code: the skos:notation of an xeo:Metric — clicks, ctr, position, ai_mention_rate, sessions, pipeline_created, ... The code resolves in xeos:metric, the reference scheme of Metrics, which states each one's type, unit, better direction and additivity; a consumer may add Metrics of its own. Stays a string in 0.6: the Metric is found by its notation. xeos:objectiveMetric is the earlier list of codes, kept for compatibility." .
 
-xeo:direction a owl:DatatypeProperty ;
-    rdfs:domain xeo:MetricTarget ; rdfs:range xsd:string ;
-    xeo:xeoLayer "interpretation" ;
-    dct:description "'up' or 'down' — which way is better for this metric. DERIVED from metric, never client input: position and rank are 1-based, so a shared '+20%' would silently ask for a rank 20% worse. Deprecated in 0.6.0, as advice: the direction is now stated once, on the Metric, as betterDirection, and a copy here is a cache of it that can drift. Still valid where stored." .
+# Removed in 0.7: xeo:direction. Use betterDirection, stated once on the Metric.
+
+
+
 
 xeo:targetKind a owl:DatatypeProperty ;
     rdfs:domain xeo:MetricTarget ; rdfs:range xsd:string ;
@@ -257,7 +257,7 @@ xeo:cadence rdfs:label "cadence" .
 xeo:durationDays rdfs:label "duration days" .
 xeo:resultsWindowDays rdfs:label "results window days" .
 xeo:metric rdfs:label "metric" .
-xeo:direction rdfs:label "direction" .
+
 xeo:targetKind rdfs:label "target kind" .
 xeo:targetValue rdfs:label "target value" .
 xeo:baseline rdfs:label "baseline" .
@@ -322,8 +322,8 @@ xeo:objectiveReading a owl:ObjectProperty ;
     xeo:termStatus "extension" ;
     dct:description "The reading an Objective is judged on, one per target: the target's Metric over the deduplicated union of the campaign's coversUrl and coversTerm, across the results window, computed from the column store. Which target a reading belongs to is read from readingOf. The objective-level result is this reading against the target's baselineReading. It is never the sum of the campaign's Outcomes: overlapping scopes would be counted twice, and a non-additive metric cannot be summed at all." .
 
-xeo:direction owl:deprecated true ;
-    rdfs:seeAlso xeo:betterDirection .
+
+
 
 xeo:baseline rdfs:seeAlso xeo:baselineReading .
 

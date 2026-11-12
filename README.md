@@ -165,8 +165,8 @@ OPTIONAL MATCH (e:Experiment)-[:TESTS]->(t),
               (e)-[:IN_CONTEXT]->(prior:Gap),
               (e)-[:PRODUCED_OUTCOME]->(o:Outcome)
 WHERE prior.gapType = g.gapType                                  // same kind of gap
-RETURN t.name, count(e) AS precedents, avg(o.lift) AS avg_lift
-ORDER BY precedents DESC, avg_lift DESC;
+RETURN t.name, count(e) AS precedents, avg(o.relativeChange) AS avg_change
+ORDER BY precedents DESC, avg_change DESC;
 ```
 
 `approved` is a boolean property on the `Capability`, and `gapType` is a concept
