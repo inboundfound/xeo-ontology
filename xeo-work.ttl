@@ -329,3 +329,10 @@ xeo:baseline rdfs:seeAlso xeo:baselineReading .
 
 xeo:isPrimary skos:altLabel "KPI" ;
     skos:scopeNote "What practitioners call the KPI. XEO has no KPI class: no system surveyed models one as a type, and the role is this flag on a target." .
+
+# --- v0.7.0 (grounding, 2026-11-12) ---------------------------------------------
+# Appended at the foot, so no line above moves. Every observation names what it
+# is grounded in; these 2 did not. Nothing else about them changes.
+
+xeo:baseline xeo:groundedIn "The API contract of the system named in the source of the target's baselineReading" .
+xeo:baselineCapturedAt xeo:groundedIn "The API contract of the system named in the source of the target's baselineReading" .
