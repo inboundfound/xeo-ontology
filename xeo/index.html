@@ -1663,13 +1663,13 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 <section id="periodEnd" class="term">
   <h3>period end <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:periodEnd</code>
-  <p>Inclusive last day of a rollup window. Carried on ranksFor and visibilityFor, and on a MetricReading.</p>
+  <p>Last day of a rollup window: a calendar date, in the source&#x27;s own time zone. The window runs from periodStart to periodEnd with both days included, so a one-day window has periodStart equal to periodEnd. Carried on ranksFor and visibilityFor, and on a MetricReading.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#date" class="ext">xsd:date</a></dd></div></dl>
 </section>
 <section id="periodStart" class="term">
   <h3>period start <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:periodStart</code>
-  <p>Inclusive first day of a rollup window. Carried on ranksFor and visibilityFor, and on a MetricReading; never pool across windows silently.</p>
+  <p>First day of a rollup window: a calendar date, in the source&#x27;s own time zone. The window runs from periodStart to periodEnd with both days included. Carried on ranksFor and visibilityFor, and on a MetricReading; never pool across windows silently.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#date" class="ext">xsd:date</a></dd></div></dl>
 </section>
 <section id="pipelineRef" class="term">
