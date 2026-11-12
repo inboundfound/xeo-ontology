@@ -424,3 +424,14 @@ xeo:lift owl:deprecated true ;
     rdfs:seeAlso xeo:absoluteChange , xeo:relativeChange .
 
 xeo:magnitudeUnit rdfs:seeAlso xeo:magnitudeMetric .
+
+# --- v0.7.0 (grounding, 2026-11-12) ---------------------------------------------
+# Appended at the foot, so no line above moves. Every observation names what it
+# is grounded in; these 6 did not. Nothing else about them changes.
+
+xeo:Outcome xeo:groundedIn "The two MetricReadings it compares, each grounded in the API contract of the system named in its source" .
+xeo:lift xeo:groundedIn "The two MetricReadings its Outcome compares, each grounded in the API contract of the system named in its source" .
+xeo:result xeo:groundedIn "The two MetricReadings its Outcome compares, read with the test its method names" .
+xeo:resultReason xeo:groundedIn "The experiment's run record: its window, and the co-interventions and ExternalEvents logged against it" .
+xeo:producedOutcome xeo:groundedIn "The experiment's run record" .
+xeo:inContext xeo:groundedIn "The experiment's run record: the Gap it was set up against" .

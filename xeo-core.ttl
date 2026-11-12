@@ -1042,3 +1042,14 @@ xeo:dataState a owl:ObjectProperty ;
     xeo:canonicalStore "bigquery" ;
     xeo:termStatus "extension" ;
     dct:description "Whether the source considered the reading's window complete when it answered, as a slotted-in concept (final, partial — xeos:dataState is a published reference filling). A partial reading is expected to change and should not anchor a baseline. Absent where the source does not say." .
+
+# --- v0.7.0 (grounding, 2026-11-12) ---------------------------------------------
+# Appended at the foot, so no line above moves. Every observation names what it
+# is grounded in; these 6 did not. Nothing else about them changes.
+
+xeo:fetchedAt xeo:groundedIn "The crawler's fetch log: when the HTTP response (RFC 9110) was received" .
+xeo:firstSeenAt xeo:groundedIn "The crawl records in which the edge was observed (each Crawl's own run log)" .
+xeo:lastSeenAt xeo:groundedIn "The crawl records in which the edge was observed (each Crawl's own run log)" .
+xeo:hasResult xeo:groundedIn "The engine's results page as one SerpSnapshot captured it (the provider's SERP API contract, or the rendered page)" .
+xeo:position xeo:groundedIn "The engine's results page as one SerpSnapshot captured it (the provider's SERP API contract, or the rendered page)" .
+xeo:resultType xeo:groundedIn "The engine's results page as one SerpSnapshot captured it (the provider's result-type field, mapped to xeos:serpResultType)" .
