@@ -35,10 +35,10 @@
 # and the tenancy hierarchy (agency / client / engagement / campaign) are
 # skos:Concepts and instances you slot in — not subclasses baked into the ontology.
 #
-# DEPENDENCIES, declared honestly. Unlike core / visibility / engagement (which
-# stand alone on primary web standards), this module builds on xeo-decision — it
-# governs its Recommendation, Tactic, Diagnostic, and Capability — and, like
-# decision, uses SKOS as its slot primitive (appliesToConcept, hasRole,
+# NEEDS core only. Its links to xeo-decision (constrains and appliedPractice on
+# a Recommendation, a Practice placed at a Tactic or a Diagnostic) are optional:
+# they work when decision is loaded too, which is how practices act on calls.
+# Like decision, uses SKOS as its slot primitive (appliesToConcept, hasRole,
 # appliesAtScope). An agent assembling only falsifiable context filters this
 # whole module out.
 

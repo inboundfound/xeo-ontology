@@ -215,7 +215,7 @@ xeosh:AlgorithmRunShape a sh:NodeShape ;
     ] .
 
 # --- Metrics and readings ----------------------------------------------------
-# The rules xeo-metrics.ttl states for a Metric and a MetricReading. The typed
+# The rules core states for a Metric and a MetricReading. The typed
 # rules (simple, ratio, derived) fire only when metricType is the concept from
 # the published xeos:metricType scheme; a Metric typed from a consumer's own
 # scheme is not judged by them. The Metrics published in xeos:metric are held

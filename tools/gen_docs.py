@@ -153,7 +153,7 @@ def render():
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>XEO — the xEO family ontology (terms)</title>
-<meta name="description" content="Term reference for the XEO ontology: classes, properties, and individuals across the core, visibility, engagement, decision, strategy, delivery, analysis, and metrics modules.">
+<meta name="description" content="Term reference for the XEO ontology: classes, properties, and individuals across the core, visibility, analysis, sales, work, decision and strategy modules.">
 <link rel="alternate" type="text/turtle" href="xeo-core.ttl">
 <style>
 :root {{ color-scheme: light dark; --bg:#f7f5ef; --surface:#fffdf8; --text:#17181c;

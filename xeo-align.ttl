@@ -130,7 +130,7 @@ xeo:supportedBy rdfs:subPropertyOf prov:wasDerivedFrom ;
     rdfs:comment "A recommendation is derived from the precedent experiments that back it." .
 
 # ===========================================================================
-# Delivery layer (xeo-delivery.ttl) — schema.org bridge. Only Project has a
+# Work module (xeo-work.ttl) — schema.org bridge. Only Project has a
 # published counterpart; Campaign, Objective and MetricTarget are XEO-native.
 # ===========================================================================
 

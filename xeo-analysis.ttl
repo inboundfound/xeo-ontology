@@ -42,8 +42,8 @@
 # published reference fillings), named for the published method and never for a
 # library's procedure.
 #
-# DEPENDENCIES, declared honestly: builds on core (any node may be scored) and
-# decision (Experiment, for precedentFor), and uses SKOS for its two slots.
+# NEEDS core only (any node may be scored). precedentFor, between Experiments, is
+# an optional link: it works when decision is loaded too. SKOS for its two slots.
 
 xeo:analysis-module a owl:Ontology ;
     dct:title "XEO Analysis (derived structure)" ;

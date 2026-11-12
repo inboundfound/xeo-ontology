@@ -231,7 +231,7 @@
       "module": "work"
     },
     "Organization": {
-      "definition": "The canonical organization: one node per real organization (an agency, a brand's company, an in-house team, a customer's company), which every system's record of it (a CRM company, an ad account's owner, a billing customer) points at with refersTo. Identified by name. The owner of Websites and Brands (owns), the holder of Capabilities and the client of another Organization (holdsCapability and clientOf, in xeo-delivery), and a tenancy node that activates Frameworks and Playbooks. It copies no vendor's fields: what a CRM knows about the company stays on the CRM's record, which refers to this node. Its kind is a slotted-in concept (organizationKind), never a subclass.",
+      "definition": "The canonical organization: one node per real organization (an agency, a brand's company, an in-house team, a customer's company), which every system's record of it (a CRM company, an ad account's owner, a billing customer) points at with refersTo. Identified by name. The owner of Websites and Brands (owns), the holder of Capabilities and the client of another Organization (holdsCapability and clientOf, in xeo-work), and a tenancy node that activates Frameworks and Playbooks. It copies no vendor's fields: what a CRM knows about the company stays on the CRM's record, which refers to this node. Its kind is a slotted-in concept (organizationKind), never a subclass.",
       "iri": "https://xeoontology.org/xeo#Organization",
       "layer": "entity",
       "module": "core"
