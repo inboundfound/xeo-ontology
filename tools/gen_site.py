@@ -53,13 +53,12 @@ BUNDLE = os.path.join(ROOT, "site-bundle")
 NS = "https://xeoontology.org/xeo#"
 XEOS = "https://xeoontology.org/schemes#"
 
-# Bedrock-to-surface order. A term's "module" is the first file in this order
+# Core first, then the add-ons. A term's "module" is the first file in this order
 # that states anything about it (the rule gen_docs.py uses), so a module that
 # only adds triples about an older term (align, a deprecation) never claims it.
 MODULE_ORDER = [
-    "xeo-core", "xeo-visibility", "xeo-engagement", "xeo-decision",
-    "xeo-strategy", "xeo-delivery", "xeo-analysis", "xeo-metrics",
-    "xeo-schemes", "xeo-align",
+    "xeo-core", "xeo-visibility", "xeo-analysis", "xeo-sales", "xeo-work",
+    "xeo-decision", "xeo-strategy", "xeo-schemes", "xeo-align",
 ]
 
 # Files and folders copied into public/ as-is, if the release has them.

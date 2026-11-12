@@ -59,13 +59,12 @@ HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 XEO = Namespace("https://xeoontology.org/xeo#")
 XEOS = Namespace("https://xeoontology.org/schemes#")
 
-# Modules that declare terms, in dependency order. xeo-align only bridges and
+# Modules that declare terms: core first, then the add-ons, each of which needs only core. xeo-align only bridges and
 # xeo-schemes only fills slots; neither declares a class or property a graph
 # would carry, so they are read for alignment and values, not for terms.
 TERM_MODULES = [
-    "xeo-core.ttl", "xeo-visibility.ttl", "xeo-engagement.ttl",
-    "xeo-decision.ttl", "xeo-strategy.ttl", "xeo-delivery.ttl",
-    "xeo-analysis.ttl", "xeo-metrics.ttl",
+    "xeo-core.ttl", "xeo-visibility.ttl", "xeo-analysis.ttl",
+    "xeo-sales.ttl", "xeo-work.ttl", "xeo-decision.ttl", "xeo-strategy.ttl",
 ]
 SCHEMES_MODULE = "xeo-schemes.ttl"
 LAYERS = ["entity", "episode", "observation", "derivation", "interpretation", "norm"]

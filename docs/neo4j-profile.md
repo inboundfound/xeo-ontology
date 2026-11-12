@@ -122,48 +122,48 @@ Generated from XEO 0.6.0. Do not edit between the markers; run `tools/gen_profil
 | `AlgorithmRun` | `xeo:AlgorithmRun` | episode | analysis |
 | `AnswerEngine` | `xeo:AnswerEngine` | entity | visibility |
 | `Brand` | `xeo:Brand` | entity | visibility |
-| `CallToAction` (deprecated) | `xeo:CallToAction` | entity | engagement |
-| `Campaign` | `xeo:Campaign` | entity | delivery |
+| `CallToAction` (deprecated) | `xeo:CallToAction` | entity | core |
+| `Campaign` | `xeo:Campaign` | entity | work |
 | `Capability` | `xeo:Capability` | entity | decision |
 | `ConversationalAgent` | `xeo:ConversationalAgent` | entity | visibility |
-| `ConversionEvent` | `xeo:ConversionEvent` | episode | engagement |
-| `ConversionPoint` | `xeo:ConversionPoint` | entity | engagement |
+| `ConversionEvent` | `xeo:ConversionEvent` | episode | core |
+| `ConversionPoint` | `xeo:ConversionPoint` | entity | core |
 | `Crawl` | `xeo:Crawl` | episode | core |
 | `Diagnostic` | `xeo:Diagnostic` | entity | decision |
 | `DiagnosticRun` | `xeo:DiagnosticRun` | episode | decision |
 | `Domain` | `xeo:Domain` | entity | core |
-| `Engine` | `xeo:Engine` | entity | visibility |
+| `Engine` | `xeo:Engine` | entity | core |
 | `Entity` | `xeo:Entity` | entity | core |
 | `Experiment` | `xeo:Experiment` | episode | decision |
 | `ExternalEvent` | `xeo:ExternalEvent` | episode | decision |
 | `Feedback` | `xeo:Feedback` | interpretation | decision |
 | `Framework` | `xeo:Framework` | norm | strategy |
 | `Gap` | `xeo:Gap` | interpretation | decision |
-| `GatedAsset` (deprecated) | `xeo:GatedAsset` | entity | engagement |
+| `GatedAsset` (deprecated) | `xeo:GatedAsset` | entity | core |
 | `GenerativeEngine` | `xeo:GenerativeEngine` | entity | visibility |
 | `Intervention` | `xeo:Intervention` | entity | decision |
 | `LLMResponse` | `xeo:LLMResponse` | episode | visibility |
-| `LeadCaptureForm` (deprecated) | `xeo:LeadCaptureForm` | entity | engagement |
-| `Metric` | `xeo:Metric` | norm | metrics |
-| `MetricReading` | `xeo:MetricReading` | observation | metrics |
-| `MetricTarget` | `xeo:MetricTarget` | interpretation | delivery |
-| `Objective` | `xeo:Objective` | interpretation | delivery |
+| `LeadCaptureForm` (deprecated) | `xeo:LeadCaptureForm` | entity | core |
+| `Metric` | `xeo:Metric` | norm | core |
+| `MetricReading` | `xeo:MetricReading` | observation | core |
+| `MetricTarget` | `xeo:MetricTarget` | interpretation | work |
+| `Objective` | `xeo:Objective` | interpretation | work |
 | `Organization` | `xeo:Organization` | entity | core |
 | `Outcome` | `xeo:Outcome` | observation | decision |
-| `OwnerChange` (extension) | `xeo:OwnerChange` | episode | engagement |
+| `OwnerChange` (extension) | `xeo:OwnerChange` | episode | sales |
 | `Person` | `xeo:Person` | entity | core |
-| `PipelineRollup` | `xeo:PipelineRollup` | derivation | engagement |
+| `PipelineRollup` | `xeo:PipelineRollup` | derivation | sales |
 | `Playbook` | `xeo:Playbook` | entity | strategy |
 | `Practice` | `xeo:Practice` | norm | strategy |
-| `Project` | `xeo:Project` | entity | delivery |
+| `Project` | `xeo:Project` | entity | work |
 | `Prompt` | `xeo:Prompt` | entity | visibility |
 | `Recommendation` | `xeo:Recommendation` | interpretation | decision |
-| `SearchEngine` | `xeo:SearchEngine` | entity | visibility |
-| `SearchIntent` | `xeo:SearchIntent` | entity | engagement |
+| `SearchEngine` | `xeo:SearchEngine` | entity | core |
+| `SearchIntent` | `xeo:SearchIntent` | entity | core |
 | `SearchPerformanceFact` | `xeo:SearchPerformanceFact` | observation | core |
 | `SerpSnapshot` | `xeo:SerpSnapshot` | episode | core |
 | `Stage` | `xeo:Stage` | norm | strategy |
-| `StageTransition` | `xeo:StageTransition` | episode | engagement |
+| `StageTransition` | `xeo:StageTransition` | episode | sales |
 | `Tactic` | `xeo:Tactic` | entity | decision |
 | `TacticAssessment` | `xeo:TacticAssessment` | interpretation | decision |
 | `Term` | `xeo:Term` | entity | core |
@@ -178,12 +178,12 @@ Generated from XEO 0.6.0. Do not edit between the markers; run `tools/gen_profil
 | Relationship type | XEO property | From | To | Layer | Module |
 |---|---|---|---|---|---|
 | `ABOUT` | `xeo:about` | `Prompt` · `Term` · `URL` | `Entity` · `Topic` | derivation | core |
-| `ABOUT_TOPIC` | `xeo:aboutTopic` | `Campaign` | `Topic` | entity | delivery |
+| `ABOUT_TOPIC` | `xeo:aboutTopic` | `Campaign` | `Topic` | entity | work |
 | `ACTIVATES` | `xeo:activates` | `Campaign` · `Organization` · `Project` | `Framework` · `Playbook` | norm | strategy |
-| `ADDITIVITY` | `xeo:additivity` | `Metric` | `skos:Concept` (concept slot) | norm | metrics |
+| `ADDITIVITY` | `xeo:additivity` | `Metric` | `skos:Concept` (concept slot) | norm | core |
 | `ADDRESSABLE_BY` | `xeo:addressableBy` | `Gap` | `Tactic` | interpretation | decision |
-| `AGGREGATION` | `xeo:aggregation` | `Metric` | `skos:Concept` (concept slot) | norm | metrics |
-| `AGGREGATION_BASIS` (extension) | `xeo:aggregationBasis` | `MetricReading` | `skos:Concept` (concept slot) | observation | metrics |
+| `AGGREGATION` | `xeo:aggregation` | `Metric` | `skos:Concept` (concept slot) | norm | core |
+| `AGGREGATION_BASIS` (extension) | `xeo:aggregationBasis` | `MetricReading` | `skos:Concept` (concept slot) | observation | core |
 | `ALGORITHM` | `xeo:algorithm` | `AlgorithmRun` | `skos:Concept` (concept slot) | episode | analysis |
 | `APPLIED_PRACTICE` | `xeo:appliedPractice` | `Recommendation` | `Practice` | derivation | strategy |
 | `APPLIES_AT_SCOPE` | `xeo:appliesAtScope` | open | `skos:Concept` (concept slot) | norm | strategy |
@@ -192,81 +192,81 @@ Generated from XEO 0.6.0. Do not edit between the markers; run `tools/gen_profil
 | `ASSESSED_AS` | `xeo:assessedAs` | `Recommendation` · `Tactic` | `TacticAssessment` | interpretation | decision |
 | `AT_PRIORITY` | `xeo:atPriority` | `Recommendation` | `skos:Concept` (concept slot) | interpretation | decision |
 | `AT_STAGE` | `xeo:atStage` | `Diagnostic` · `Gap` · `Tactic` | `Stage` | norm | strategy |
-| `ATTRIBUTED_RESPONSE` | `xeo:attributedResponse` | `ConversionEvent` | `LLMResponse` | interpretation | engagement |
+| `ATTRIBUTED_RESPONSE` | `xeo:attributedResponse` | `ConversionEvent` | `LLMResponse` | interpretation | visibility |
 | `AUTHORED_BY` | `xeo:authoredBy` | `Practice` | open | norm | strategy |
-| `BASE_METRIC` (extension) | `xeo:baseMetric` | `Metric` | `Metric` | norm | metrics |
-| `BASELINE_READING` | `xeo:baselineReading` | `MetricTarget` · `Outcome` | `MetricReading` | observation | delivery |
+| `BASE_METRIC` (extension) | `xeo:baseMetric` | `Metric` | `Metric` | norm | core |
+| `BASELINE_READING` | `xeo:baselineReading` | `MetricTarget` · `Outcome` | `MetricReading` | observation | work |
 | `BASIS` | `xeo:basis` | open | `skos:Concept` (concept slot) | derivation | analysis |
-| `BETTER_DIRECTION` | `xeo:betterDirection` | `Metric` | `skos:Concept` (concept slot) | norm | metrics |
-| `CAPTURED_BY` | `xeo:capturedBy` | `ConversionEvent` | `ConversionPoint` | observation | engagement |
+| `BETTER_DIRECTION` | `xeo:betterDirection` | `Metric` | `skos:Concept` (concept slot) | norm | core |
+| `CAPTURED_BY` | `xeo:capturedBy` | `ConversionEvent` | `ConversionPoint` | observation | core |
 | `CHILD_OF` | `xeo:childOf` | `Topic` | `Topic` | derivation | core |
 | `CITES` | `xeo:cites` | `LLMResponse` | `URL` | observation | visibility |
-| `CLIENT_OF` | `xeo:clientOf` | `Organization` | `Organization` | entity | delivery |
+| `CLIENT_OF` | `xeo:clientOf` | `Organization` | `Organization` | entity | work |
 | `CLOSES_GAP` | `xeo:closesGap` | `Recommendation` | `Gap` | interpretation | decision |
 | `COMPETES_WITH` | `xeo:competesWith` | `Brand` · `Domain` · `Website` | `Brand` · `Domain` · `Website` | interpretation | visibility |
 | `COMPUTED_BY` | `xeo:computedBy` | `Experiment` · `Prompt` · `Term` · `Topic` · `URL` | `AlgorithmRun` | derivation | analysis |
 | `CONFOUNDED_BY` | `xeo:confoundedBy` | `Experiment` · `Outcome` | `ExternalEvent` | interpretation | decision |
 | `CONSTRAINS` | `xeo:constrains` | `Practice` | `Recommendation` | norm | strategy |
-| `CONVERSION_ENTITY` (extension) | `xeo:conversionEntity` | `Metric` | `http://www.w3.org/1999/02/22-rdf-syntax-ns#Property` | norm | metrics |
-| `CONVERSION_METRIC` (extension) | `xeo:conversionMetric` | `Metric` | `Metric` | norm | metrics |
-| `COVERS_TERM` | `xeo:coversTerm` | `Campaign` | `Term` | entity | delivery |
-| `COVERS_URL` | `xeo:coversUrl` | `Campaign` | `URL` | entity | delivery |
-| `DATA_STATE` (extension) | `xeo:dataState` | `MetricReading` | `skos:Concept` (concept slot) | observation | metrics |
-| `DENOMINATOR` | `xeo:denominator` | `Metric` | `Metric` | norm | metrics |
-| `EFFORT_ESTIMATE` | `xeo:effortEstimate` | `Recommendation` | `skos:Concept` (concept slot) | interpretation | delivery |
+| `CONVERSION_ENTITY` (extension) | `xeo:conversionEntity` | `Metric` | `http://www.w3.org/1999/02/22-rdf-syntax-ns#Property` | norm | core |
+| `CONVERSION_METRIC` (extension) | `xeo:conversionMetric` | `Metric` | `Metric` | norm | core |
+| `COVERS_TERM` | `xeo:coversTerm` | `Campaign` | `Term` | entity | work |
+| `COVERS_URL` | `xeo:coversUrl` | `Campaign` | `URL` | entity | work |
+| `DATA_STATE` (extension) | `xeo:dataState` | `MetricReading` | `skos:Concept` (concept slot) | observation | core |
+| `DENOMINATOR` | `xeo:denominator` | `Metric` | `Metric` | norm | core |
+| `EFFORT_ESTIMATE` | `xeo:effortEstimate` | `Recommendation` | `skos:Concept` (concept slot) | interpretation | work |
 | `EVALUATED_PRACTICE` | `xeo:evaluatedPractice` | `Recommendation` | `Practice` | derivation | strategy |
 | `EVIDENCED_BY` | `xeo:evidencedBy` | `Gap` | `LLMResponse` · `Prompt` · `SerpSnapshot` · `Term` · `URL` | derivation | decision |
-| `EXECUTION` | `xeo:execution` | `Recommendation` | `skos:Concept` (concept slot) | interpretation | delivery |
+| `EXECUTION` | `xeo:execution` | `Recommendation` | `skos:Concept` (concept slot) | interpretation | work |
 | `FANS_OUT_TO` | `xeo:fansOutTo` | `Prompt` | `Term` | observation | visibility |
 | `FEEDBACK_ON` | `xeo:feedbackOn` | `Feedback` | `Gap` · `Recommendation` | interpretation | decision |
 | `FETCHED` | `xeo:fetched` | `Crawl` | `URL` | observation | core |
 | `FRAMEWORK_KIND` | `xeo:frameworkKind` | `Framework` | `skos:Concept` (concept slot) | norm | strategy |
 | `GAP_TYPE` | `xeo:gapType` | `Gap` | `skos:Concept` (concept slot) | derivation | decision |
-| `GRAIN_TO_DATE` (extension) | `xeo:grainToDate` | `Metric` | `skos:Concept` (concept slot) | norm | metrics |
-| `HAS_CAMPAIGN` | `xeo:hasCampaign` | `Project` | `Campaign` | entity | delivery |
+| `GRAIN_TO_DATE` (extension) | `xeo:grainToDate` | `Metric` | `skos:Concept` (concept slot) | norm | core |
+| `HAS_CAMPAIGN` | `xeo:hasCampaign` | `Project` | `Campaign` | entity | work |
 | `HAS_CANONICAL` | `xeo:hasCanonical` | `URL` | `URL` | observation | core |
 | `HAS_CONTROL` | `xeo:hasControl` | `Experiment` | `Term` · `URL` | episode | decision |
-| `HAS_CONVERSION_POINT` | `xeo:hasConversionPoint` | `URL` | `ConversionPoint` | observation | engagement |
+| `HAS_CONVERSION_POINT` | `xeo:hasConversionPoint` | `URL` | `ConversionPoint` | observation | core |
 | `HAS_CRAWL` | `xeo:hasCrawl` | `Website` | `Crawl` | episode | core |
-| `HAS_OBJECTIVE` | `xeo:hasObjective` | `Campaign` | `Objective` | interpretation | delivery |
-| `HAS_PROJECT` | `xeo:hasProject` | `Website` | `Project` | entity | delivery |
+| `HAS_OBJECTIVE` | `xeo:hasObjective` | `Campaign` | `Objective` | interpretation | work |
+| `HAS_PROJECT` | `xeo:hasProject` | `Website` | `Project` | entity | work |
 | `HAS_RESPONSE` | `xeo:hasResponse` | `Prompt` | `LLMResponse` | episode | visibility |
 | `HAS_RESULT` | `xeo:hasResult` | `SerpSnapshot` | `URL` | observation | core |
 | `HAS_ROLE` | `xeo:hasRole` | `URL` | `skos:Concept` (concept slot) | derivation | strategy |
 | `HAS_SNAPSHOT` | `xeo:hasSnapshot` | `Term` | `SerpSnapshot` | episode | core |
 | `HAS_STAGE` | `xeo:hasStage` | `Framework` | `Stage` | norm | strategy |
-| `HAS_TARGET` | `xeo:hasTarget` | `Objective` | `MetricTarget` | interpretation | delivery |
+| `HAS_TARGET` | `xeo:hasTarget` | `Objective` | `MetricTarget` | interpretation | work |
 | `HAS_WEBSITE` | `xeo:hasWebsite` | `Brand` | `Website` | entity | visibility |
-| `HOLDS_CAPABILITY` | `xeo:holdsCapability` | `Organization` | `Capability` | entity | delivery |
+| `HOLDS_CAPABILITY` | `xeo:holdsCapability` | `Organization` | `Capability` | entity | work |
 | `IMPLEMENTED_AS` | `xeo:implementedAs` | `Recommendation` | `Experiment` | episode | decision |
 | `IN_CONTEXT` | `xeo:inContext` | `Experiment` | `Gap` | observation | decision |
 | `IN_INTERVENTION` | `xeo:inIntervention` | `Tactic` | `Intervention` | derivation | decision |
-| `IN_SCOPE` | `xeo:inScope` | `Project` | `Intervention` · `Tactic` | entity | delivery |
+| `IN_SCOPE` | `xeo:inScope` | `Project` | `Intervention` · `Tactic` | entity | work |
 | `IN_TOPIC` | `xeo:inTopic` | `Term` | `Topic` | derivation | core |
 | `INCLUDES` | `xeo:includes` | `Framework` · `Playbook` | `Diagnostic` · `Practice` · `Tactic` | entity | strategy |
-| `INPUT_METRIC` | `xeo:inputMetric` | `Metric` | `Metric` | norm | metrics |
-| `ISSUED_FOR` | `xeo:issuedFor` | `Recommendation` | `Campaign` | interpretation | delivery |
+| `INPUT_METRIC` | `xeo:inputMetric` | `Metric` | `Metric` | norm | core |
+| `ISSUED_FOR` | `xeo:issuedFor` | `Recommendation` | `Campaign` | interpretation | work |
 | `LEARNED_FROM` | `xeo:learnedFrom` | `Practice` | `Experiment` · `Outcome` | derivation | strategy |
 | `LINKS_TO` | `xeo:linksTo` | `URL` | `URL` | observation | core |
 | `MAGNITUDE_METRIC` | `xeo:magnitudeMetric` | `Gap` | `Metric` | derivation | decision |
 | `MAGNITUDE_UNIT` | `xeo:magnitudeUnit` | `Gap` | `skos:Concept` (concept slot) | derivation | decision |
-| `MEASURES` | `xeo:measures` | `Experiment` | `MetricTarget` | episode | delivery |
+| `MEASURES` | `xeo:measures` | `Experiment` | `MetricTarget` | episode | work |
 | `MENTIONS` | `xeo:mentions` | `LLMResponse` | `Brand` | observation | visibility |
-| `METRIC_TYPE` | `xeo:metricType` | `Metric` | `skos:Concept` (concept slot) | norm | metrics |
+| `METRIC_TYPE` | `xeo:metricType` | `Metric` | `skos:Concept` (concept slot) | norm | core |
 | `NEXT_STAGE` | `xeo:nextStage` | `Stage` | `Stage` | norm | strategy |
-| `NUMERATOR` | `xeo:numerator` | `Metric` | `Metric` | norm | metrics |
-| `OBJECTIVE_READING` (extension) | `xeo:objectiveReading` | `Objective` | `MetricReading` | derivation | delivery |
+| `NUMERATOR` | `xeo:numerator` | `Metric` | `Metric` | norm | core |
+| `OBJECTIVE_READING` (extension) | `xeo:objectiveReading` | `Objective` | `MetricReading` | derivation | work |
 | `ON_DIMENSION` | `xeo:onDimension` | `TacticAssessment` | `skos:Concept` (concept slot) | interpretation | decision |
 | `ON_DOMAIN` | `xeo:onDomain` | `URL` | `Domain` | entity | core |
-| `ON_ENGINE` | `xeo:onEngine` | open | `Engine` | episode | visibility |
+| `ON_ENGINE` | `xeo:onEngine` | open | `Engine` | episode | core |
 | `ORGANIZATION_KIND` | `xeo:organizationKind` | `Organization` | `skos:Concept` (concept slot) | entity | core |
 | `OWNS` | `xeo:owns` | `Organization` | `Brand` · `Website` | entity | core |
 | `PART_OF` | `xeo:partOf` | `URL` | `Website` | entity | core |
 | `PRECEDENT_FOR` | `xeo:precedentFor` | `Experiment` | `Experiment` | derivation | analysis |
 | `PRODUCED_OUTCOME` | `xeo:producedOutcome` | `Experiment` | `Outcome` | observation | decision |
 | `RANKS_FOR` | `xeo:ranksFor` | `URL` | `Term` | observation | core |
-| `READING_OF` | `xeo:readingOf` | `MetricReading` | `Metric` | observation | metrics |
-| `READS_SLOT` | `xeo:readsSlot` | `Metric` | `http://www.w3.org/1999/02/22-rdf-syntax-ns#Property` | norm | metrics |
+| `READING_OF` | `xeo:readingOf` | `MetricReading` | `Metric` | observation | core |
+| `READS_SLOT` | `xeo:readsSlot` | `Metric` | `http://www.w3.org/1999/02/22-rdf-syntax-ns#Property` | norm | core |
 | `RECOMMENDS` | `xeo:recommends` | `Recommendation` | `Tactic` | interpretation | decision |
 | `REDIRECTS_TO` | `xeo:redirectsTo` | `URL` | `URL` | observation | core |
 | `REFERS_TO` | `xeo:refersTo` | open | `Organization` · `Person` | derivation | core |
@@ -277,18 +277,18 @@ Generated from XEO 0.6.0. Do not edit between the markers; run `tools/gen_profil
 | `REVEALED_IN` | `xeo:revealedIn` | `Gap` | `DiagnosticRun` | episode | decision |
 | `REVEALS` | `xeo:reveals` | `Diagnostic` | `Gap` | interpretation | decision |
 | `RUN_OF` | `xeo:runOf` | `DiagnosticRun` | `Diagnostic` | episode | decision |
-| `SCOPE` | `xeo:scope` | `MetricReading` | `Brand` · `Campaign` · `Prompt` · `Term` · `Topic` · `URL` · `Website` | observation | metrics |
+| `SCOPE` | `xeo:scope` | `MetricReading` | `Brand` · `Campaign` · `Prompt` · `Term` · `Topic` · `URL` · `Website` | observation | core |
 | `SCOPED_TO` | `xeo:scopedTo` | `Topic` | `Website` | entity | core |
 | `SIMILAR_TO` | `xeo:similarTo` | `Experiment` · `Prompt` · `Term` · `Topic` · `URL` | `Experiment` · `Prompt` · `Term` · `Topic` · `URL` | derivation | analysis |
 | `SUGGESTS` | `xeo:suggests` | `Diagnostic` | `Intervention` · `Tactic` | norm | decision |
 | `SUPERSEDES` | `xeo:supersedes` | `Practice` | `Practice` | norm | strategy |
 | `SUPPORTED_BY` | `xeo:supportedBy` | `Recommendation` | `Experiment` | interpretation | decision |
-| `TARGETS_INTENT` | `xeo:targetsIntent` | open | `SearchIntent` | interpretation | engagement |
+| `TARGETS_INTENT` | `xeo:targetsIntent` | open | `SearchIntent` | interpretation | core |
 | `TESTS` | `xeo:tests` | `Experiment` | `Tactic` | episode | decision |
-| `TIME_ANCHOR` | `xeo:timeAnchor` | `Metric` | `http://www.w3.org/1999/02/22-rdf-syntax-ns#Property` | norm | metrics |
+| `TIME_ANCHOR` | `xeo:timeAnchor` | `Metric` | `http://www.w3.org/1999/02/22-rdf-syntax-ns#Property` | norm | core |
 | `TRACKS_PROMPT` | `xeo:tracksPrompt` | `Website` | `Prompt` | entity | visibility |
 | `TREATS` | `xeo:treats` | `Experiment` | `Term` · `URL` | episode | decision |
-| `UNIT` | `xeo:unit` | `Metric` | `skos:Concept` (concept slot) | norm | metrics |
+| `UNIT` | `xeo:unit` | `Metric` | `skos:Concept` (concept slot) | norm | core |
 | `VERDICT` | `xeo:verdict` | `Feedback` · `Gap` | `skos:Concept` (concept slot) | interpretation | decision |
 | `VISIBILITY_FOR` | `xeo:visibilityFor` | `Prompt` | `Brand` | observation | visibility |
 
@@ -296,43 +296,43 @@ Generated from XEO 0.6.0. Do not edit between the markers; run `tools/gen_profil
 
 | Property key | Datatype | Values from | Layer | Module |
 |---|---|---|---|---|
-| `additivity` | concept code | `additivity` | norm | metrics |
-| `aggregation` | concept code | `aggregation` | norm | metrics |
-| `aggregationBasis` (extension) | concept code | `aggregationBasis` | observation | metrics |
+| `additivity` | concept code | `additivity` | norm | core |
+| `aggregation` | concept code | `aggregation` | norm | core |
+| `aggregationBasis` (extension) | concept code | `aggregationBasis` | observation | core |
 | `algorithm` | concept code | `algorithm` | episode | analysis |
 | `appliesAtScope` | concept code |  | norm | strategy |
 | `appliesToConcept` | concept code |  | norm | strategy |
 | `atPriority` | concept code | `priority` | interpretation | decision |
 | `basis` | concept code | `similarityBasis` | derivation | analysis |
-| `betterDirection` | concept code | `betterDirection` | norm | metrics |
-| `dataState` (extension) | concept code | `dataState` | observation | metrics |
-| `effortEstimate` | concept code | `effort` | interpretation | delivery |
-| `execution` | concept code | `execution` | interpretation | delivery |
+| `betterDirection` | concept code | `betterDirection` | norm | core |
+| `dataState` (extension) | concept code | `dataState` | observation | core |
+| `effortEstimate` | concept code | `effort` | interpretation | work |
+| `execution` | concept code | `execution` | interpretation | work |
 | `frameworkKind` | concept code | `frameworkKind` | norm | strategy |
 | `gapType` | concept code | `gapType` | derivation | decision |
-| `grainToDate` (extension) | concept code | `timeGrain` | norm | metrics |
+| `grainToDate` (extension) | concept code | `timeGrain` | norm | core |
 | `hasRole` | concept code |  | derivation | strategy |
 | `magnitudeUnit` | concept code | `magnitudeUnit` | derivation | decision |
-| `metricType` | concept code | `metricType` | norm | metrics |
+| `metricType` | concept code | `metricType` | norm | core |
 | `onDimension` | concept code |  | interpretation | decision |
 | `organizationKind` | concept code | `organizationKind` | entity | core |
-| `unit` | concept code | `metricUnit` | norm | metrics |
+| `unit` | concept code | `metricUnit` | norm | core |
 | `verdict` | concept code | `feedbackVerdict` · `gapVerdict` | interpretation | decision |
 | `absoluteChange` | `xsd:decimal` |  | derivation | decision |
 | `address` | `xsd:string` |  | entity | core |
-| `agentContext` (extension) | `xsd:string` |  | norm | metrics |
-| `amountAtTransition` | `xsd:decimal` |  | episode | engagement |
-| `amountInReportingCurrency` (extension) | `xsd:decimal` |  | derivation | engagement |
+| `agentContext` (extension) | `xsd:string` |  | norm | core |
+| `amountAtTransition` | `xsd:decimal` |  | episode | sales |
+| `amountInReportingCurrency` (extension) | `xsd:decimal` |  | derivation | core |
 | `anchorText` | `xsd:string` |  | observation | core |
 | `approved` | `xsd:boolean` |  | interpretation | decision |
 | `assignedAt` | `xsd:dateTime` |  | derivation | core |
 | `avgPosition` | `xsd:decimal` |  | observation | core |
-| `baseline` | `xsd:decimal` |  | observation | delivery |
-| `baselineCapturedAt` | `xsd:dateTime` |  | observation | delivery |
+| `baseline` | `xsd:decimal` |  | observation | work |
+| `baselineCapturedAt` | `xsd:dateTime` |  | observation | work |
 | `betweenness` | `xsd:decimal` |  | derivation | analysis |
-| `cadence` | `xsd:string` | `cadence` | entity | delivery |
-| `campaignInfluenceShare` (extension) | `xsd:decimal` |  | derivation | engagement |
-| `capturedAt` | `xsd:dateTime` |  | episode | visibility |
+| `cadence` | `xsd:string` | `cadence` | entity | work |
+| `campaignInfluenceShare` (extension) | `xsd:decimal` |  | derivation | sales |
+| `capturedAt` | `xsd:dateTime` |  | episode | core |
 | `citationRank` | `xsd:integer` |  | observation | visibility |
 | `citationRate` | `xsd:decimal` |  | derivation | visibility |
 | `clicks` | `xsd:integer` |  | observation | core |
@@ -341,129 +341,129 @@ Generated from XEO 0.6.0. Do not edit between the markers; run `tools/gen_profil
 | `confidence` | `xsd:decimal` |  | derivation | core |
 | `contentHash` | `xsd:string` |  | derivation | core |
 | `contentType` | `xsd:string` |  | observation | core |
-| `conversionPointType` | `xsd:string` | `conversionPointType` | entity | engagement |
-| `conversionWindow` (extension) | `xsd:duration` |  | norm | metrics |
-| `convertedAt` (extension) | `xsd:dateTime` |  | episode | engagement |
-| `convertedTo` (extension) | `xsd:string` |  | episode | engagement |
+| `conversionPointType` | `xsd:string` | `conversionPointType` | entity | core |
+| `conversionWindow` (extension) | `xsd:duration` |  | norm | core |
+| `convertedAt` (extension) | `xsd:dateTime` |  | episode | sales |
+| `convertedTo` (extension) | `xsd:string` |  | episode | sales |
 | `crawlDepth` | `xsd:integer` |  | derivation | core |
 | `crawler` | `xsd:string` |  | episode | core |
-| `crmObjectType` | `xsd:string` | `crmObjectType` | entity | engagement |
-| `crmRecordRef` | `xsd:string` |  | entity | engagement |
-| `crmSystem` | `xsd:string` | `crmSystem` | entity | engagement |
+| `crmObjectType` | `xsd:string` | `crmObjectType` | entity | sales |
+| `crmRecordRef` | `xsd:string` |  | entity | sales |
+| `crmSystem` | `xsd:string` | `crmSystem` | entity | sales |
 | `ctr` | `xsd:decimal` |  | observation | core |
-| `cumulativeWindow` (extension) | `xsd:duration` |  | norm | metrics |
-| `currencyCode` | `xsd:string` |  | observation | engagement |
+| `cumulativeWindow` (extension) | `xsd:duration` |  | norm | core |
+| `currencyCode` | `xsd:string` |  | observation | core |
 | `datasetUri` | `xsd:string` |  | derivation | core |
-| `dealAmount` | `xsd:decimal` |  | observation | engagement |
-| `dealClosedAt` | `xsd:dateTime` |  | observation | engagement |
-| `dealOutcome` | `xsd:string` | `dealOutcome` | observation | engagement |
-| `dealProbability` (extension) | `xsd:decimal` |  | interpretation | engagement |
+| `dealAmount` | `xsd:decimal` |  | observation | sales |
+| `dealClosedAt` | `xsd:dateTime` |  | observation | sales |
+| `dealOutcome` | `xsd:string` | `dealOutcome` | observation | sales |
+| `dealProbability` (extension) | `xsd:decimal` |  | interpretation | sales |
 | `degree` | `xsd:integer` |  | derivation | analysis |
-| `deletedAt` | `xsd:dateTime` |  | entity | delivery |
-| `denominatorValue` | `xsd:decimal` |  | observation | metrics |
+| `deletedAt` | `xsd:dateTime` |  | entity | work |
+| `denominatorValue` | `xsd:decimal` |  | observation | core |
 | `device` | `xsd:string` | `device` | episode | core |
-| `direction` (deprecated) | `xsd:string` |  | interpretation | delivery |
-| `durationDays` | `xsd:integer` |  | entity | delivery |
+| `direction` (deprecated) | `xsd:string` |  | interpretation | work |
+| `durationDays` | `xsd:integer` |  | entity | work |
 | `embeddedAt` | `xsd:dateTime` |  | derivation | core |
 | `embeddingDim` | `xsd:integer` |  | derivation | core |
 | `embeddingModel` | `xsd:string` |  | derivation | core |
 | `embeddingRef` | `xsd:string` |  | derivation | core |
 | `endedAt` | `xsd:dateTime` |  | episode | core |
-| `engagementType` | `xsd:string` | `engagementType` | entity | delivery |
-| `enteredAt` | `xsd:dateTime` |  | episode | engagement |
+| `engagementType` | `xsd:string` | `engagementType` | entity | work |
+| `enteredAt` | `xsd:dateTime` |  | episode | sales |
 | `entityRef` | `xsd:string` |  | entity | core |
-| `exitedAt` | `xsd:dateTime` |  | episode | engagement |
-| `expectedCloseDate` | `xsd:date` |  | interpretation | engagement |
-| `expression` | `xsd:string` |  | norm | metrics |
+| `exitedAt` | `xsd:dateTime` |  | episode | sales |
+| `expectedCloseDate` | `xsd:date` |  | interpretation | sales |
+| `expression` | `xsd:string` |  | norm | core |
 | `fetchedAt` | `xsd:dateTime` |  | observation | core |
 | `fired` | `xsd:boolean` |  | derivation | strategy |
 | `firstSeenAt` | `xsd:dateTime` |  | observation | core |
-| `firstTouchChannel` | `xsd:string` | `acquisitionChannel` | derivation | engagement |
-| `forecastCategory` (extension) | `xsd:string` | `forecastCategory` | interpretation | engagement |
-| `fromStageRef` | `xsd:string` |  | episode | engagement |
+| `firstTouchChannel` | `xsd:string` | `acquisitionChannel` | derivation | sales |
+| `forecastCategory` (extension) | `xsd:string` | `forecastCategory` | interpretation | sales |
+| `fromStageRef` | `xsd:string` |  | episode | sales |
 | `h1` | `xsd:string` |  | observation | core |
 | `halfLife` | `xsd:duration` |  | norm | strategy |
 | `impressions` | `xsd:integer` |  | observation | core |
 | `indexable` | `xsd:boolean` |  | derivation | core |
-| `interventionQuota` | `xsd:integer` |  | entity | delivery |
-| `isPrimary` | `xsd:boolean` |  | interpretation | delivery |
+| `interventionQuota` | `xsd:integer` |  | entity | work |
+| `isPrimary` | `xsd:boolean` |  | interpretation | work |
 | `lastSeenAt` | `xsd:dateTime` |  | observation | core |
 | `lastSeenCrawlId` | `xsd:string` |  | episode | core |
-| `latestTouchChannel` (extension) | `xsd:string` |  | derivation | engagement |
-| `leadStatus` (extension) | `xsd:string` |  | interpretation | engagement |
-| `lifecycleStage` (extension) | `xsd:string` | `lifecycleStageClass` | interpretation | engagement |
+| `latestTouchChannel` (extension) | `xsd:string` |  | derivation | sales |
+| `leadStatus` (extension) | `xsd:string` |  | interpretation | sales |
+| `lifecycleStage` (extension) | `xsd:string` | `lifecycleStageClass` | interpretation | sales |
 | `lift` (deprecated) | `xsd:decimal` |  | observation | decision |
 | `linkPosition` | `xsd:string` | `linkPosition` | derivation | core |
 | `locale` | `xsd:string` |  | episode | core |
-| `lostReason` (extension) | `xsd:string` |  | interpretation | engagement |
+| `lostReason` (extension) | `xsd:string` |  | interpretation | sales |
 | `magnitude` | `xsd:decimal` |  | derivation | decision |
-| `marketingCampaignRef` (extension) | `xsd:string` |  | entity | engagement |
+| `marketingCampaignRef` (extension) | `xsd:string` |  | entity | sales |
 | `mentionRank` | `xsd:integer` |  | observation | visibility |
 | `mentionRate` | `xsd:decimal` |  | derivation | visibility |
 | `metaDescription` | `xsd:string` |  | observation | core |
 | `method` | `xsd:string` |  | interpretation | decision |
-| `metric` | `xsd:string` | `metric` · `objectiveMetric` | interpretation | delivery |
-| `metricFilter` | `xsd:string` |  | norm | metrics |
-| `minDenominator` | `xsd:integer` |  | norm | metrics |
-| `model` | `xsd:string` |  | episode | visibility |
+| `metric` | `xsd:string` | `metric` · `objectiveMetric` | interpretation | work |
+| `metricFilter` | `xsd:string` |  | norm | core |
+| `minDenominator` | `xsd:integer` |  | norm | core |
+| `model` | `xsd:string` |  | episode | core |
 | `modelVersion` | `xsd:string` |  | episode | visibility |
 | `name` | `xsd:string` |  | entity | core |
-| `numeratorValue` | `xsd:decimal` |  | observation | metrics |
-| `occurredAt` | `xsd:dateTime` |  | episode | engagement |
-| `offsetWindow` (extension) | `xsd:duration` |  | norm | metrics |
+| `numeratorValue` | `xsd:decimal` |  | observation | core |
+| `occurredAt` | `xsd:dateTime` |  | episode | core |
+| `offsetWindow` (extension) | `xsd:duration` |  | norm | core |
 | `origin` | `xsd:string` |  | entity | core |
-| `ownerRef` | `xsd:string` |  | entity | engagement |
+| `ownerRef` | `xsd:string` |  | entity | sales |
 | `pageRank` | `xsd:decimal` |  | derivation | analysis |
 | `parameters` | `xsd:string` |  | episode | analysis |
-| `percentileValue` (extension) | `xsd:decimal` |  | norm | metrics |
+| `percentileValue` (extension) | `xsd:decimal` |  | norm | core |
 | `periodEnd` | `xsd:date` |  | derivation | core |
 | `periodStart` | `xsd:date` |  | derivation | core |
-| `pipelineRef` | `xsd:string` |  | entity | engagement |
+| `pipelineRef` | `xsd:string` |  | entity | sales |
 | `position` | `xsd:integer` |  | observation | core |
 | `practiceKind` | `xsd:string` | `practiceKind` | norm | strategy |
 | `practiceOutcome` | `xsd:string` | `practiceOutcome` | derivation | strategy |
 | `projection` | `xsd:string` |  | episode | analysis |
 | `ranAt` | `xsd:dateTime` |  | episode | analysis |
 | `rationale` | `xsd:string` |  | norm | strategy |
-| `recordCreatedAt` | `xsd:dateTime` |  | observation | engagement |
-| `recordOrigin` (extension) | `xsd:string` | `recordOrigin` | observation | engagement |
-| `recurringValue` (extension) | `xsd:decimal` |  | observation | engagement |
-| `referringPlatform` | `xsd:string` |  | derivation | engagement |
+| `recordCreatedAt` | `xsd:dateTime` |  | observation | sales |
+| `recordOrigin` (extension) | `xsd:string` | `recordOrigin` | observation | sales |
+| `recurringValue` (extension) | `xsd:decimal` |  | observation | core |
+| `referringPlatform` | `xsd:string` |  | derivation | sales |
 | `rel` | `xsd:string` |  | observation | core |
 | `relativeChange` | `xsd:decimal` |  | derivation | decision |
 | `responses` | `xsd:integer` |  | observation | visibility |
 | `result` | `xsd:string` | `outcomeResult` | observation | decision |
 | `resultReason` | `xsd:string` | `outcomeResultReason` | observation | decision |
 | `resultType` | `xsd:string` | `serpResultType` | observation | core |
-| `resultsWindowDays` | `xsd:integer` |  | interpretation | delivery |
-| `resultsWindowStart` | `xsd:date` |  | interpretation | delivery |
+| `resultsWindowDays` | `xsd:integer` |  | interpretation | work |
+| `resultsWindowStart` | `xsd:date` |  | interpretation | work |
 | `robotsMeta` | `xsd:string` |  | observation | core |
 | `score` | `xsd:decimal` |  | interpretation | decision |
 | `sentiment` | `xsd:string` | `sentiment` | derivation | visibility |
 | `similarity` | `xsd:decimal` |  | derivation | analysis |
 | `source` | `xsd:string` | `practiceSource` | norm | strategy |
-| `stageClass` | `xsd:string` | `dealStageClass` | norm | engagement |
-| `stageDefaultProbability` (extension) | `xsd:decimal` |  | norm | engagement |
+| `stageClass` | `xsd:string` | `dealStageClass` | norm | sales |
+| `stageDefaultProbability` (extension) | `xsd:decimal` |  | norm | sales |
 | `stageOrder` | `xsd:integer` |  | norm | strategy |
-| `stageRef` | `xsd:string` |  | entity | engagement |
-| `stageSlot` | `xsd:string` | `stageSlot` | episode | engagement |
+| `stageRef` | `xsd:string` |  | entity | sales |
+| `stageSlot` | `xsd:string` | `stageSlot` | episode | sales |
 | `startedAt` | `xsd:dateTime` |  | episode | core |
 | `statement` | `xsd:string` |  | norm | strategy |
 | `status` | `xsd:string` | `experimentStatus` · `practiceStatus` · `recommendationStatus` | norm | strategy |
 | `statusCode` | `xsd:integer` |  | observation | core |
 | `syncedAt` | `xsd:dateTime` |  | derivation | core |
-| `targetCurrency` | `xsd:string` |  | interpretation | delivery |
-| `targetKind` | `xsd:string` | `targetKind` | interpretation | delivery |
-| `targetValue` | `xsd:decimal` |  | interpretation | delivery |
+| `targetCurrency` | `xsd:string` |  | interpretation | work |
+| `targetKind` | `xsd:string` | `targetKind` | interpretation | work |
+| `targetValue` | `xsd:decimal` |  | interpretation | work |
 | `test` | `xsd:string` |  | norm | strategy |
 | `text` | `xsd:string` |  | entity | visibility |
 | `title` | `xsd:string` |  | observation | core |
-| `toStageRef` | `xsd:string` |  | episode | engagement |
-| `value` | `xsd:decimal` |  | observation | metrics |
-| `valuePeriod` (extension) | `xsd:string` | `valuePeriod` | observation | engagement |
+| `toStageRef` | `xsd:string` |  | episode | sales |
+| `value` | `xsd:decimal` |  | observation | core |
+| `valuePeriod` (extension) | `xsd:string` | `valuePeriod` | observation | core |
 | `webSearchEnabled` | `xsd:boolean` |  | episode | visibility |
 | `websiteId` | `xsd:string` |  | entity | core |
-| `weightedAmount` (extension) | `xsd:decimal` |  | derivation | engagement |
+| `weightedAmount` (extension) | `xsd:decimal` |  | derivation | sales |
 | `wordCount` | `xsd:integer` |  | derivation | core |
 
 ### Reference schemes (50)
