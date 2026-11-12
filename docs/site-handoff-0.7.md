@@ -1,86 +1,106 @@
-# xeoontology.org update: deploy 0.6, then build the term map
+# Site handoff: XEO 0.7.0
 
 For whoever updates xeoontology.org: a person, or an agent handed this file. It is
-self-contained. Written 12 November 2026.
+self-contained. Written 12 November 2026, for the 0.7.0 release.
 
-There are three parts, in order:
+The live site is still 0.5. 0.6 and 0.7 go out together. There are three parts, in order:
 
-- **Part A. Deploy 0.6 now.** It's ready, already built on a site branch.
-- **Part B. Build the term map.** Build it now on its own branch, and launch it with 0.7 (decision W2).
-- **Part C. When 0.7 is released.** Tombstones, a frozen copy, and the launch.
+- **Part A. Freeze 0.6.0.** A frozen copy of the 0.6 release, cut from its commit (decision W5).
+- **Part B. Deploy 0.7.0.** Generate from `main`; the tombstones; the home-page copy; checks.
+- **Part C. The term map.** It launches with 0.7 (decision W2), so it ships in the same deploy if it's ready, or in the next one.
 
 ## Where things stand
 
 | Repo | State |
 |---|---|
-| `inboundfound/xeo-ontology` (public) | `main` has 0.6 (#3) and the first 0.7 pull request (#5: the modules). 0.7 is **not released**. The rest of it (deletions, core and sales, attribution) is still to come. |
-| `inboundfound/site-weo-the-web-engine-optimization-ontology` (private, Astro 5) | The live site is 0.5. Branch `jamesmthornton/xeo-0.6` (commit `db17ac0`, local, not pushed) is 0.6, generated and built. |
+| `inboundfound/xeo-ontology` (public) | `main` holds 0.7.0 once its pull request merges. 0.6.0's last commit is `2587695`. |
+| `inboundfound/site-weo-the-web-engine-optimization-ontology` (private, Astro 5) | Live: 0.5. Branch `jamesmthornton/xeo-0.6` (commit `db17ac0`, local, not pushed) has 0.6 applied, plus the generator-driven version and counts. Start from that branch. |
 
-**Two traps:**
-
-1. **Don't generate the site from today's `main`.** `main` already has 0.7's new module files, but still says version 0.6.0. Generating from it now would publish 0.7's layout labelled 0.6.0. Generate from commit `2587695` (the last 0.6 commit on `main`) until 0.7 is released.
-2. **The frozen 0.6.0 copy must also come from `2587695`, not `main`.** `docs/site-handoff-0.6.md` says "from `main`"; that was written before 0.7 started landing. This file corrects it.
-
-All ontology commands below run from the ontology repo root and need `uv`. The site generator is `tools/gen_site.py` in the ontology repo (decision W3).
+All ontology commands run from the ontology repo root and need `uv`. The site generator is
+`tools/gen_site.py` in the ontology repo (decision W3).
 
 ---
 
-## Part A. Deploy 0.6
+## Part A. Freeze 0.6.0
 
-**A1. Tag the release.** Optional, but it gives `2587695` a name everything else can point at.
+**A1. Tag 0.6.0** (optional, but gives the commit a name):
 
 ```
 git tag -a v0.6.0 2587695 -m "XEO 0.6.0"
 git push origin v0.6.0
 ```
 
-**A2. Get a 0.6 checkout of the ontology** without disturbing your working copy:
+**A2. Check out 0.6** beside your working copy, without disturbing it:
 
 ```
-git worktree add ../xeo-0.6.0 2587695      # or v0.6.0 after A1
+git worktree add ../xeo-0.6.0 2587695
 ```
 
-**A3. The site.** The 0.6 files are already applied and built on the site repo's branch `jamesmthornton/xeo-0.6`. To rebuild them yourself, run this against the A2 checkout:
-
-```
-uv run --no-project --python 3.12 --with rdflib \
-    python tools/gen_site.py /path/to/site-xeoontology --onto ../xeo-0.6.0
-```
-
-**A4. The frozen copy** (decision W5), from the same checkout:
+**A3. Freeze it** into the site checkout:
 
 ```
 uv run --no-project --python 3.12 --with rdflib \
-    python tools/gen_site.py /path/to/site-xeoontology --onto ../xeo-0.6.0 --freeze
+    python tools/gen_site.py /path/to/site-xeoontology --onto ../xeo-0.6.0 --no-copy --freeze
 ```
 
-This writes `public/releases/0.6.0/`, and refuses to overwrite an existing copy. Commit it on the site branch.
+This writes `public/releases/0.6.0/`. It also rewrites `src/lib/*.json` with the 0.6 data, which Part B overwrites. Then remove the checkout with `git worktree remove ../xeo-0.6.0`.
 
-**A5. Copy changes for the home page**, made by hand in the site repo. The repo's description no longer says "xEO family", and the site should follow:
+## Part B. Deploy 0.7.0
 
-| Where | Now | Change to |
-|---|---|---|
-| `src/pages/index.astro`, the `lede` | "A small, standards-grounded vocabulary for how engines … One graph model for the whole **xEO** family: SEO, GEO, AEO, and whatever letter comes next." | "XEO is a standards-grounded ontology for AI agents that support growth engineering teams. Core covers sites, pages, queries, crawls, observations and metrics. Add-on modules cover AI visibility, graph analysis, sales, client work, decisions and strategy. Every term states the kind of claim it makes and what it is grounded in." |
-| `src/pages/index.astro`, `seo.title` | "XEO — the ontology for the xEO family" | "XEO — an ontology for growth engineering agents" |
-| `src/pages/index.astro`, `seo.description` | "…vocabulary for how search, generative, answer and conversational engines see, cite and serve web content…" | "XEO is an open, standards-grounded ontology for AI agents that support growth engineering teams: sites, search, AI answers, metrics, sales and client work. v${VERSION}, CC BY 4.0." |
-| `src/content/readme.md`, line 1 | "# XEO — the ontology for the xEO family" | Leave as is. It's a copy of the ontology README, whose title changes in a small ontology pull request (still to open). Copy the new title over when that merges. |
+**B1. Generate from `main`, and freeze 0.7.0:**
 
-**A6. Build and deploy:** `npm ci && npm run build` in the site repo, then deploy as usual. The live site's commits are "Publish …" from SiteGen.
+```
+uv run --no-project --python 3.12 --with rdflib \
+    python tools/gen_site.py /path/to/site-xeoontology --freeze
+```
 
-**A7. Check after deploy** (from `docs/site-handoff-0.6.md` §5):
+What this writes:
 
-1. `https://xeoontology.org/xeo#Person`, `#refersTo` and `#mappingConfidence` each scroll to their term.
-2. `https://xeoontology.org/schemes#metric-ai_mention_rate` shows the AI mention rate.
-3. On `/xeo`, typing `refersTo` in the search box shows that term.
-4. The header reads v0.6.0, and `/schemes.json`, `/neo4j-profile.json` and `/releases/0.6.0/xeo-core.ttl` download.
+- **`public/`:** the ten module files, the data files and `mappings/`.
+- **Four removed files:** `xeo-engagement.ttl`, `xeo-delivery.ttl`, `xeo-metrics.ttl` and `xeo-strategy.ttl` are each overwritten with a three-line comment saying where their terms went, so the old URLs still answer.
+- **`src/lib/`:** `xeo-terms.json`, `xeo-schemes.json`, `xeo-release.json`, and the new `xeo-tombstones.json`.
+- **`public/releases/0.7.0/`:** the frozen copy.
 
-**A8. Clean up:** `git worktree remove ../xeo-0.6.0` in the ontology repo.
+**B2. Show the term tombstones on `/xeo`.** `src/lib/xeo-tombstones.json` lists every removed term:
 
-0.6 deletes no published term, so it needs no tombstones.
+```json
+{"terms": [{"term": "lift", "removedIn": "0.7.0", "useInstead": ["absoluteChange", "relativeChange"]}, ...],
+ "files": [{"file": "xeo-engagement.ttl", "removedIn": "0.7.0", "note": "..."}, ...]}
+```
+
+On `/xeo`, render each removed term after the live terms, as a short card:
+- `id` equal to the term, so `/xeo#lift` lands on it;
+- the text "Removed in 0.7.0. Use …";
+- each `useInstead` name linked to its card, and the `note` if there is one.
+
+These cards are not counted in the term totals, and the filters hide them unless a "show removed" toggle is on. A `#term` address that matches a tombstone opens it, as for a live term. There are 14 for 0.7.
+
+`websiteId` is **not** removed: it stays, optional. The 0.6 handoff listed it as a tombstone; ignore that line. `Term` also stays.
+
+**B3. Home-page copy, by hand.** The repo's description no longer says "xEO family", and the site follows:
+
+| Where | Change to |
+|---|---|
+| `src/pages/index.astro`, `lede` | "XEO is a standards-grounded ontology for AI agents that support growth engineering teams. Core covers sites, pages, queries, crawls, observations and metrics. Add-on modules cover AI visibility, graph analysis, sales, attribution, client work and decisions. Every term states the kind of claim it makes and what it is grounded in." |
+| `src/pages/index.astro`, `seo.title` | "XEO — an ontology for growth engineering agents" |
+| `src/pages/index.astro`, `seo.description` | "XEO is an open, standards-grounded ontology for AI agents that support growth engineering teams: sites, search, AI answers, metrics, sales, attribution and client work. v${VERSION}, CC BY 4.0." |
+| `src/content/readme.md` | Replace it with the ontology's `README.md` as of 0.7.0. It has the new title, module table and stack figure. |
+| `src/pages/xeo.astro`, the search placeholder | Change "gap, citation, websiteId…" to "gap, citation, refersTo…". |
+
+**B4. Build and deploy:** `npm ci && npm run build`, then deploy as usual (the live site's commits are "Publish …" from SiteGen).
+
+**B5. Check after deploy:**
+
+1. `https://xeoontology.org/xeo#Consent`, `#AttributionModel` and `#targetMetric` each scroll to their term.
+2. `https://xeoontology.org/xeo#lift` shows its tombstone, naming `absoluteChange` and `relativeChange`.
+3. `https://xeoontology.org/xeo-strategy.ttl` returns the three-line note.
+4. On `/xeo`, a search for `Touchpoint` finds it.
+5. The header reads v0.7.0. `/releases/0.6.0/xeo-core.ttl` and `/releases/0.7.0/xeo-core.ttl` both download.
+6. `/schemes#metric-roas` shows ROAS.
 
 ---
 
-## Part B. The term map
+## Part C. The term map
 
 ### What it is
 
@@ -119,20 +139,19 @@ One file is the site's own, because it's a product choice and not part of the on
 [
   {"id": "site-seo",       "label": "Site owner doing SEO",            "modules": ["core", "analysis"]},
   {"id": "site-seo-aeo",   "label": "Site owner doing SEO and AEO",    "modules": ["core", "visibility", "analysis"]},
-  {"id": "seo-agency",     "label": "SEO agency with a method",        "modules": ["core", "visibility", "analysis", "work", "decision", "strategy"]},
-  {"id": "full-agency",    "label": "SEO, AEO and sales agency",       "modules": ["core", "visibility", "analysis", "work", "decision", "strategy", "sales", "attribution"]},
-  {"id": "ai-agency",      "label": "AI-native agency",                "modules": ["core", "visibility", "analysis", "work", "decision", "strategy", "sales", "attribution", "experiments", "agentic-engineering"]},
+  {"id": "seo-agency",     "label": "SEO agency with a method",        "modules": ["core", "visibility", "analysis", "work", "decision"]},
+  {"id": "full-agency",    "label": "SEO, AEO and sales agency",       "modules": ["core", "visibility", "analysis", "work", "decision", "sales", "attribution"]},
+  {"id": "ai-agency",      "label": "AI-native agency",                "modules": ["core", "visibility", "analysis", "work", "decision", "sales", "attribution", "experiments", "agentic-engineering"]},
   {"id": "online-seller",  "label": "Online seller (ecommerce, courses)", "modules": ["core", "attribution"]}
 ]
 ```
 
-Some of these modules don't exist yet (`attribution`, `experiments`, `agentic-engineering`). A persona filter ignores module names the release doesn't have, so this file never needs to change when they arrive.
+Some of these modules don't exist yet (`experiments`, `agentic-engineering`). A persona filter ignores module names the release doesn't have, so this file never needs to change when they arrive.
 
 **Module names.** Strip the `xeo-` prefix for display. Order them as `xeo-release.json` lists them: core first, then the add-ons. Leave out `xeo-schemes` and `xeo-align`: one holds reference values and the other alignments, and neither declares terms a graph would carry.
-- **For 0.6** that's core, visibility, engagement, decision, strategy, delivery, analysis, metrics.
-- **For 0.7** it's core, visibility, analysis, sales, attribution, work, decision.
+- **For 0.7** that's core, visibility, analysis, sales, attribution, attribution-sales, work, decision. Show `attribution-sales` as a small note under attribution ("bridge to sales"), not as a row of its own.
 
-The map must work for both releases with no code change.
+Read the list from the data, so a later release's modules (experiments, agentic engineering) appear with no code change.
 
 ### Section 1: the layer stack
 
@@ -196,23 +215,12 @@ A short panel listing `xeo-release.json`'s `mappings` (one file per tool: HubSpo
 
 ### Done when
 
-1. With the 0.6 data, the grid shows 8 module rows. With the 0.7 data (generated from `main` into a scratch folder, not deployed) it shows 7. No code differs between the two.
+1. With the 0.7 data, the grid shows 7 module rows (attribution-sales as a note under attribution). Generating the 0.6 data into a scratch folder gives 8 rows from the same code.
 2. `/xeo?module=sales&layer=observation` loads with both filters set, and the counts agree with the cards shown.
 3. `/xeo#refersTo` opens and shows that card with its name visible below the sticky bar, even when the URL also has filter parameters.
-4. With the persona "Online seller" selected, only core terms (and attribution terms, once they exist) are listed, and the other rows of the grid are dimmed.
+4. With the persona "Online seller" selected, only core and attribution terms are listed, and the other rows of the grid are dimmed.
 5. At 400px wide, nothing scrolls the page sideways: the grid scrolls inside its own box, and the header fits. That header is the known 82px overflow; fix it here.
 6. With JavaScript off, every term is still in the page.
 7. `npm run build` passes, and every term count on the page matches `xeo-release.json`.
 
 ---
-
-## Part C. When 0.7 is released
-
-Not yet: 0.7 is released when its last pull request (attribution) merges and the modules say `0.7.0`. The ontology repo will then have `docs/site-handoff-0.7.md` with the exact lists. In outline:
-
-- **Generate** from `main` (no `--onto`), then `--freeze` for `public/releases/0.7.0/`.
-- **Remove three files from `public/`:** `xeo-engagement.ttl`, `xeo-delivery.ttl` and `xeo-metrics.ttl` no longer exist. Leave a short tombstone at each old address saying where its terms went: core, `xeo-sales.ttl`, or `xeo-work.ttl`.
-- **Term tombstones,** "removed in 0.7, use X", for every term 0.7 deletes. The list is in `docs/site-handoff-0.6.md` §2, and the 0.7 handoff will confirm it.
-- **`/xeo` search placeholder:** it suggests `websiteId`, which 0.7 deletes. Change it to `refersTo`.
-- **Launch the map** (Part B), merged into the same deploy.
-- **Copy the README** into `src/content/readme.md` again: the 0.7 README has the new module table.

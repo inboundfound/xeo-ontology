@@ -12,7 +12,7 @@ xeo:attribution-sales-module a owl:Ontology ;
     dct:title "XEO Attribution x Sales (bridge)" ;
     dct:description "The two terms a B2B attribution model needs from the CRM: an anchor fixed at a tenant's stage, and credit given to a deal record." ;
     dct:creator "Inbound Found" ;
-    owl:versionInfo "0.6.0" .
+    owl:versionInfo "0.7.0" .
 
 xeo:anchorStageRef a owl:DatatypeProperty ;
     rdfs:label "anchor stage reference" ;

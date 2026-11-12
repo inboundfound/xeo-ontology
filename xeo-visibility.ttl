@@ -18,7 +18,7 @@ xeo:visibility-module a owl:Ontology ;
     dct:title "XEO Visibility (the xEO layer)" ;
     dct:description "Extends XEO Core with the terms needed once the engine stops being a results page and starts being an answer: engines, prompts, captured responses, citations, mentions, and the visibility rollups over them." ;
     dct:creator "Inbound Found" ;
-    owl:versionInfo "0.6.0" .
+    owl:versionInfo "0.7.0" .
 
 # --- Classes ----------------------------------------------------------------
 

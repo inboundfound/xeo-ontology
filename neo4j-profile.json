@@ -244,7 +244,7 @@
       "module": "core"
     },
     "MetricReading": {
-      "definition": "The value one Metric took over one window, for one scope, from one source. One row per metric, scope, window and source: its identity is readingOf, scope, periodStart, periodEnd, source and, where the source deduplicates in more than one way, aggregationBasis. Requires value, periodStart, periodEnd and readingOf, and should carry websiteId and datasetUri; a ratio reading also carries numeratorValue and denominatorValue. An observation only when the primary API returned exactly that metric, window and scope. When the value was rolled up, recomputed, or taken from a vendor's model, the reading is a derivation and carries method and confidence. High-cardinality readings live in the column store; the graph holds the windowed readings a target, an Outcome or an Objective points at.",
+      "definition": "The value one Metric took over one window, for one scope, from one source. One row per metric, scope, window and source: its identity is readingOf, scope, periodStart, periodEnd, source and, where the source deduplicates in more than one way, aggregationBasis. Requires value, periodStart, periodEnd and readingOf, and may carry websiteId and datasetUri; a ratio reading also carries numeratorValue and denominatorValue. An observation only when the primary API returned exactly that metric, window and scope. When the value was rolled up, recomputed, or taken from a vendor's model, the reading is a derivation and carries method and confidence. High-cardinality readings live in the column store; the graph holds the windowed readings a target, an Outcome or an Objective points at.",
       "iri": "https://xeoontology.org/xeo#MetricReading",
       "layer": "observation",
       "module": "core"
@@ -4523,5 +4523,5 @@
     ]
   },
   "schemesNamespace": "https://xeoontology.org/schemes#",
-  "version": "0.6.0"
+  "version": "0.7.0"
 }

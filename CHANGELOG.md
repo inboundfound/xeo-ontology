@@ -7,12 +7,19 @@ and corrects prose; a domain or range is not narrowed.
 
 Versions before 0.6.0 are reconstructed from the git history.
 
-## 0.7.0 — unreleased
+## 0.7.0 — modules, deletions, core and sales, attribution (2026-11-12)
 
-0.7 lands as four pull requests: the repackaging, the deletions, core and sales, and the
-attribution module. This section grows with each.
+Every module now needs only core; deprecated terms are deleted; core gains `Model`,
+`Consent` and inbound references; a target links to its Metric; and a new attribution
+module covers touches, journeys, revenue, spend and attribution models. Decided in the 0.7
+plan of record (11 November) and Jim's answers of 12 November.
 
-### Modules (pull request 1)
+**Breaking, on purpose.** Until 1.0, deprecated terms may be removed in the next release.
+Every removal below was deprecated in 0.6 with its replacement named, or is replaced in this
+release. `tools/term_list.py --against <ref> --removed ... --added ...` states each change
+exactly.
+
+### Modules
 
 Every module now needs only core. A link between two add-ons (a practice constraining a
 recommendation, a recommendation issued for a campaign) is optional and works when both are
@@ -37,6 +44,82 @@ into core were appended at its foot, so line citations into core still resolve.
 **Renamed.** `xeo:epistemicLayer` is now `xeo:xeoLayer`, the name the kit already stamps on
 every node. The scheme of its six values is `xeos:xeoLayer`, its concepts
 `xeos:xeoLayer-entity` and so on. A consumer that reads the old name reads nothing: rename it.
+
+**Strategy merges into decision** (Jim, 12 Nov). Practices govern Recommendations, and on
+its own the module had little to say. `xeo-strategy.ttl` is appended at the foot of
+`xeo-decision.ttl`, unchanged. Line citations into `xeo-strategy.ttl` must name terms instead.
+
+**Every observation names its grounding.** The 19 that did not now do, and `validate.py` fails
+an observation with no `groundedIn`.
+
+### Removed
+
+| Term | Use instead |
+|---|---|
+| `lift` | `absoluteChange` and `relativeChange` on the Outcome |
+| `direction` | `betterDirection`, stated once on the Metric |
+| `Informational`, `Navigational`, `CommercialInvestigation`, `Transactional` | the `xeos:searchIntent` concepts |
+| `CallToAction`, `LeadCaptureForm`, `GatedAsset` | `conversionPointType`: `cta`, `lead_form`, `gated_asset` |
+| `campaignInfluenceShare` | `creditShare` on an `AttributedCredit` (attribution) |
+| `GenerativeEngine` | `GenerativeOverview` (a rename) |
+| `ConversationalAgent` | `AnswerEngine` |
+| `metric` (the text code on a MetricTarget) | `targetMetric`, a link to the Metric node |
+| `valuePeriod` and `xeos:valuePeriod` | `billingInterval` with `billingIntervalCount` |
+
+`websiteId` stays, and is optional: nothing requires it. `Term` stays until `SearchQuery` lands.
+
+### Redefined
+
+- `modelVersion` is now the dated build of a `Model`, in core. It was a text field on an
+  `LLMResponse`.
+- `Engine` is a parent class only: every engine node is a `SearchEngine` (core), a
+  `GenerativeOverview` or an `AnswerEngine` (visibility).
+
+### Core and sales
+
+- **`Model`**, with `modelFamily`, `modelVersion` and `modelKind`. `producedByModel` links an
+  answer to it. The plain `model` text field stays, for imports that only give a name.
+- **`Consent`**: one recorded choice for one purpose by one Person or Organization, as one
+  system captured it. Its properties are `consentSubject`, `consentPurpose`, `consentStatus`,
+  `consentRecordedAt`, `consentCapturedBy` and `consentSource`. History is kept, and
+  validity under law is left to an interpretation. It has close matches to W3C DPV in
+  `xeo-align.ttl`, and a shape.
+- **`InboundReference`**: a page on another site that links to or mentions you. Its
+  properties are `referencingUrl`, `referenceTarget` and `referenceKind`. How it came about
+  is `acquiredByTactic` (decision); an organic reference has none.
+- **`targetMetric`** links a MetricTarget to its Metric (C5). Neo4j constraints are added for
+  Metric and MetricReading (K3), and for Model, Consent and InboundReference.
+- **Acquisition channels:** 14, adding `affiliate`, `display` and `programmatic` (D2).
+- **`billingInterval`** (day, week, month, year) and **`billingIntervalCount`** replace
+  `valuePeriod` (D3). Quarterly is month and 3.
+
+### Attribution (new module)
+
+`xeo-attribution.ttl` needs only core, so an online seller with no CRM loads core and
+attribution and nothing else.
+
+- **Touches and identity:**
+  - `Touchpoint`, carrying `touchType`, `touchChannel`, the UTM fields, `clickIdentifier`,
+    ad pointers and `touchLandingUrl`.
+  - `Journey`, of a Person or an Organization.
+  - `IdentityLink`, whose methods include `ip_to_company`.
+- **Calls and meetings:** `Call` and `BookedMeeting` are kinds of `ConversionEvent`.
+  `callOutcome` records the outcome and `outcomeJudgedBy` says who judged it.
+- **Revenue without a pipeline:** `Order`, `Payment`, `Refund`, `Chargeback` and
+  `Subscription`, with their amounts, `quoteValue` and `customerStatus`.
+- **Spend:** `SpendRollup`, per campaign, ad set or ad.
+- **Attribution models:** an `AttributionModel` is described by its structure, never by a
+  vendor's name for it: `creditRule`, `CreditAnchor`s (positions include `qualified`),
+  `lookbackWindow`, eligible touch types (email opens are not eligible by default),
+  deduplication, `dateBasis` and `revenueBasis`.
+- **Results:** `AttributedCredit` and `AttributionRollup`. A shape requires both to name
+  their model with `usesAttributionModel`.
+- **Moved here from sales:** `firstTouchChannel`, `latestTouchChannel` and
+  `referringPlatform`.
+- **Eight metrics:** ad spend, attributed revenue, ROAS, blended ROAS, cost per lead, cost
+  per acquisition, lifetime value and payback period.
+- **Bridge:** `xeo-attribution-sales.ttl` lets B2B models read deal stages
+  (`anchorStageRef`, `creditForDeal`).
 
 ## 0.6.0 — kit sync (2026-11-09)
 

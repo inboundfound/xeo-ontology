@@ -549,6 +549,21 @@ def check_modules(report: Report, per_module: dict[str, Graph]) -> None:
             else:
                 optional.add(f"{name}: {link}")
     addons = sorted(set(home.values()) - {CORE})
+    # Tombstones: a removed term is no longer declared; its replacements are.
+    tomb_path = os.path.join(HERE, "tombstones.json")
+    if os.path.exists(tomb_path):
+        with open(tomb_path, encoding="utf-8") as fh:
+            tombs = json.load(fh)
+        declared_terms = {local(s) for s in home}
+        for e in tombs.get("terms", []):
+            if e["term"] in declared_terms:
+                problems.append(f"tombstones.json says xeo:{e['term']} was removed, but a module still declares it")
+            for r in e.get("useInstead", []):
+                if r not in declared_terms:
+                    problems.append(f"tombstones.json points xeo:{e['term']} at xeo:{r}, which no module declares")
+        for e in tombs.get("files", []):
+            if os.path.exists(os.path.join(HERE, e["file"])):
+                problems.append(f"tombstones.json says {e['file']} was removed, but it is still here")
     report.section("modules", problems,
                    f"core loads alone; {len(addons)} add-ons, each needing only core")
     if optional:

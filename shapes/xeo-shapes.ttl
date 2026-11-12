@@ -35,7 +35,7 @@ xeosh: a owl:Ontology ;
     dct:title "XEO Shapes" ;
     dct:description "SHACL shapes for the rules the XEO ontology states in prose. Conservative: each shape checks one rule a term's description already makes, and none closes a class." ;
     dct:creator "Inbound Found" ;
-    owl:versionInfo "0.6.0" .
+    owl:versionInfo "0.7.0" .
 
 # --- Values in range ---------------------------------------------------------
 

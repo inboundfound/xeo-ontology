@@ -153,7 +153,7 @@ def render():
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>XEO — the xEO family ontology (terms)</title>
+<title>XEO — terms</title>
 <meta name="description" content="Term reference for the XEO ontology: classes, properties, and individuals across the core, visibility, analysis, sales, attribution, work and decision modules.">
 <link rel="alternate" type="text/turtle" href="xeo-core.ttl">
 <style>
@@ -201,7 +201,7 @@ code {{ font-family:ui-monospace,SFMono-Regular,Menlo,monospace; }}
 </head>
 <body>
 <div class="wrap">
-<h1>XEO — the ontology for the xEO family</h1>
+<h1>XEO — terms</h1>
 <p class="tag">Namespace <code>{NS}</code> · prefix <code>xeo:</code> · v{version} ·
 <a href="https://github.com/inboundfound/xeo-ontology">repo</a> · CC BY 4.0</p>
 <p class="lead">One standards-grounded vocabulary for how engines — search,

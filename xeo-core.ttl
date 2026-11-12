@@ -4,15 +4,15 @@
 @prefix dct:  <http://purl.org/dc/terms/> .
 @prefix xeo:  <https://xeoontology.org/xeo#> .
 
-# XEO — the ontology for the xEO family, core module.
+# XEO core module: the terms every other module builds on.
 # Namespace served at xeoontology.org; a w3id.org redirect may front it later
 # without changing term local names.
 
 xeo: a owl:Ontology ;
     dct:title "XEO Core Ontology" ;
-    dct:description "Standards-grounded observation layer for web-engine data in a property graph. XEO generalizes the xEO family (SEO, GEO, AEO): one vocabulary for how search, generative, and answer engines see and serve web content. Entities are durable, episodes are immutable, derivations carry provenance. Interpretations and decisions are modeled in higher layers." ;
+    dct:description "XEO core: sites, pages, queries, crawls, search results, engines, observations, metrics, website conversions, people, organizations, consent and money. Every add-on module needs only this one. Entities are durable, episodes are immutable, observations name what they are grounded in, derivations carry provenance." ;
     dct:creator "Inbound Found" ;
-    owl:versionInfo "0.6.0" .
+    owl:versionInfo "0.7.0" .
 
 # --- Annotation properties -------------------------------------------------
 
@@ -185,7 +185,7 @@ xeo:confidence a owl:DatatypeProperty ;
 xeo:websiteId a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
     xeo:xeoLayer "entity" ;
-    dct:description "The tenancy key. Scope lives in this property on every scoped node and edge, never in a dynamic label — the identity half of 'tenancy is data, not schema'." .
+    dct:description "The tenancy key, where a graph holds more than one tenant: scope lives in this property on the scoped nodes and edges, never in a dynamic label — the identity half of 'tenancy is data, not schema'. Optional: XEO requires it nowhere, and a single-tenant graph can leave it out." .
 
 xeo:datasetUri a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
@@ -809,7 +809,7 @@ xeo:MetricReading a owl:Class ;
     xeo:xeoLayer "observation" ;
     xeo:groundedIn "The API contract of the system named in the reading's source (e.g. GSC searchAnalytics.query, GA4 runReport)" ;
     xeo:canonicalStore "bigquery" ;
-    dct:description "The value one Metric took over one window, for one scope, from one source. One row per metric, scope, window and source: its identity is readingOf, scope, periodStart, periodEnd, source and, where the source deduplicates in more than one way, aggregationBasis. Requires value, periodStart, periodEnd and readingOf, and should carry websiteId and datasetUri; a ratio reading also carries numeratorValue and denominatorValue. An observation only when the primary API returned exactly that metric, window and scope. When the value was rolled up, recomputed, or taken from a vendor's model, the reading is a derivation and carries method and confidence. High-cardinality readings live in the column store; the graph holds the windowed readings a target, an Outcome or an Objective points at." .
+    dct:description "The value one Metric took over one window, for one scope, from one source. One row per metric, scope, window and source: its identity is readingOf, scope, periodStart, periodEnd, source and, where the source deduplicates in more than one way, aggregationBasis. Requires value, periodStart, periodEnd and readingOf, and may carry websiteId and datasetUri; a ratio reading also carries numeratorValue and denominatorValue. An observation only when the primary API returned exactly that metric, window and scope. When the value was rolled up, recomputed, or taken from a vendor's model, the reading is a derivation and carries method and confidence. High-cardinality readings live in the column store; the graph holds the windowed readings a target, an Outcome or an Objective points at." .
 
 # --- The definition: object properties ----------------------------------------
 
