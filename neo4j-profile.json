@@ -3468,8 +3468,10 @@
       "ai_assistant_sessions",
       "ai_average_position",
       "ai_brand_mentions",
+      "ai_citation_rate",
       "ai_citation_share",
       "ai_citations",
+      "ai_mention_rate",
       "ai_owned_citations",
       "ai_referred_leads",
       "ai_sentiment",
@@ -3515,6 +3517,8 @@
       "seconds"
     ],
     "objectiveMetric": [
+      "ai_citation_rate",
+      "ai_mention_rate",
       "citation_rate",
       "clicks",
       "ctr",

@@ -33,7 +33,7 @@ must conform to `shapes/xeo-shapes.ttl`.
 7. **The decision and the loop.** A `DiagnosticRun` reveals a `Gap` (with a magnitude
    and its unit, `relativeTo` the competitor's page). An operator's `Feedback` accepts
    it. A `Recommendation` is issued into a `Campaign` whose `MetricTarget` is
-   `citation_rate`; one `Practice` fired on it and one was evaluated and did not
+   `ai_citation_rate`; one `Practice` fired on it and one was evaluated and did not
    (`evaluatedPractice` with `fired`). It is `implementedAs` an `Experiment` with a
    treated page and a control. An earlier experiment is its `precedentFor`, and that
    one's `Outcome` was `confoundedBy` an `ExternalEvent`. The new outcome is what a

@@ -23,6 +23,8 @@ A concept gains further keys only where the Turtle states them, so a concept
 with nothing extra reads exactly as it always has:
     "altLabels"       skos:altLabel
     "status"          xeo:termStatus ("extension")
+    "deprecated"      true, where owl:deprecated true; with "replacedBy",
+                      the rdfs:seeAlso concepts' CURIEs
     "matches"         {"exactMatch": [...], "closeMatch": [...], ...}
     "editorialNote"   skos:editorialNote
     "metric"          for an xeo:Metric: its type, unit, direction, additivity
@@ -35,7 +37,7 @@ import glob
 import json
 import os
 
-from rdflib import Graph, Namespace, RDF, URIRef
+from rdflib import Graph, Namespace, RDF, RDFS, URIRef
 from rdflib.collection import Collection
 from rdflib.namespace import DCTERMS, OWL, SKOS
 
@@ -88,7 +90,10 @@ def extras(g: Graph, c: URIRef) -> dict:
     status = text(g, c, XEO.termStatus)
     if status:
         out["status"] = status
-    matches = {m: sorted(curie(o) for o in g.objects(c, SKOS[m])) for m in MATCHES}
+    if str(g.value(c, OWL.deprecated)).lower() == "true":
+        out["deprecated"] = True
+        out["replacedBy"] = sorted(curie(o) for o in g.objects(c, RDFS.seeAlso))
+    matches ={m: sorted(curie(o) for o in g.objects(c, SKOS[m])) for m in MATCHES}
     matches = {m: v for m, v in matches.items() if v}
     if matches:
         out["matches"] = matches
