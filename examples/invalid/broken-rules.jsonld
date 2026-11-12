@@ -20,6 +20,8 @@
     { "id": "ex:bad-outcome", "type": "Outcome", "absoluteChange": "0.15", "expect": "OutcomeShape" },
     { "id": "ex:bad-practice", "type": "Practice", "statement": "A rule with no kind and no status.", "expect": "PracticeShape" },
     { "id": "ex:bad-consent", "type": "Consent", "consentPurpose": "ad_personalization", "consentStatus": "GRANTED", "consentRecordedAt": "2026-11-01T10:00:00Z", "expect": "ConsentShape" },
+    { "id": "ex:bad-credit", "type": "AttributedCredit", "creditShare": "0.5", "expect": "AttributedNumberNamesItsModel" },
+    { "id": "ex:bad-share", "creditShare": "1.4", "expect": "CreditShareIsAShare" },
     { "id": "ex:bad-stage", "type": "Stage", "name": "Ranked", "stageOrder": "second", "expect": "StageShape" },
     { "id": "ex:bad-run", "type": "AlgorithmRun", "algorithm": "xeos:algorithm-pagerank", "expect": "AlgorithmRunShape" },
     { "id": "ex:bad-gap", "type": "Gap", "magnitude": "120", "expect": "MagnitudeNeedsUnit" },

@@ -20,6 +20,8 @@
     "xeo-visibility.ttl",
     "xeo-analysis.ttl",
     "xeo-sales.ttl",
+    "xeo-attribution.ttl",
+    "xeo-attribution-sales.ttl",
     "xeo-work.ttl",
     "xeo-decision.ttl",
     "xeo-schemes.ttl"
@@ -40,11 +42,50 @@
         "Engine"
       ]
     },
+    "AttributedCredit": {
+      "definition": "One touch's credit for one conversion under one model: creditedTouchpoint, creditFor, usesAttributionModel, creditShare, and attributedRevenue and attributedConversions where they apply. The credits of one conversion under one model sum to 1 (or, for full_credit_each, each is 1).",
+      "iri": "https://xeoontology.org/xeo#AttributedCredit",
+      "layer": "derivation",
+      "module": "attribution"
+    },
+    "AttributionModel": {
+      "definition": "A rule for giving conversions' credit to touches, described by its structure, not its name: creditRule, its CreditAnchors (positions and weights), lookbackWindow, the touch types eligible, deduplicationRule, dateBasis and revenueBasis. Vendor names such as 'U-shaped' are mapped in mappings/, not trusted: two vendors' U-shaped can put the remaining credit on different touches. A rule, so a norm; a changed rule is a new AttributionModel.",
+      "iri": "https://xeoontology.org/xeo#AttributionModel",
+      "layer": "norm",
+      "module": "attribution"
+    },
+    "AttributionRollup": {
+      "definition": "Credited totals for one channel, campaign, ad set or ad over one window under one model: attributedRevenue and attributedConversions, with periodStart, periodEnd, usesAttributionModel and method. A MetricReading of an attribution Metric. The graph keeps rollups; the per-touch credits may live in the column store.",
+      "iri": "https://xeoontology.org/xeo#AttributionRollup",
+      "layer": "derivation",
+      "module": "attribution",
+      "subClassOf": [
+        "MetricReading"
+      ]
+    },
+    "BookedMeeting": {
+      "definition": "A meeting booked through a scheduler or by a salesperson: a kind of ConversionEvent. Its outcome (held, no-show) is callOutcome.",
+      "iri": "https://xeoontology.org/xeo#BookedMeeting",
+      "layer": "episode",
+      "module": "attribution",
+      "subClassOf": [
+        "ConversionEvent"
+      ]
+    },
     "Brand": {
       "definition": "A named market identity that engines may mention, cite, or recommend. Distinct from Website: a brand can be visible on the whole web, not only its own origin.",
       "iri": "https://xeoontology.org/xeo#Brand",
       "layer": "entity",
       "module": "visibility"
+    },
+    "Call": {
+      "definition": "A phone call that happened: a kind of ConversionEvent, captured by a call-tracking system. Carries occurredAt and, once judged, callOutcome.",
+      "iri": "https://xeoontology.org/xeo#Call",
+      "layer": "episode",
+      "module": "attribution",
+      "subClassOf": [
+        "ConversionEvent"
+      ]
     },
     "Campaign": {
       "definition": "A body of work inside a Project against one Topic: the URLs and Terms it covers, and the single Objective it is measured by. Recommendations are issuedFor a campaign, and it is the unit an operator plans a cycle around. Soft-deleted like its Project.",
@@ -57,6 +98,15 @@
       "iri": "https://xeoontology.org/xeo#Capability",
       "layer": "entity",
       "module": "decision"
+    },
+    "Chargeback": {
+      "definition": "A payment reversed by the buyer's bank against an Order (refundsOrder). Carries refundedAmount. Its grounding is provisional: chargeback records differ most between processors.",
+      "iri": "https://xeoontology.org/xeo#Chargeback",
+      "layer": "episode",
+      "module": "attribution",
+      "subClassOf": [
+        "RevenueEvent"
+      ]
     },
     "Consent": {
       "definition": "One recorded consent choice, for one purpose (consentPurpose), by one subject (consentSubject), as one system captured it (consentCapturedBy), with its status and when it was recorded. A new choice is a new Consent, never an edit; the current status for a subject and purpose is the latest. Company-level choices, such as not using a company's data to train models, sit on the Organization. Validity under any law is an interpretation made elsewhere, not part of this record.",
@@ -81,6 +131,12 @@
       "iri": "https://xeoontology.org/xeo#Crawl",
       "layer": "episode",
       "module": "core"
+    },
+    "CreditAnchor": {
+      "definition": "One fixed position a position-based model gives a share to, and the share: anchorPosition and anchorWeight. A U-shaped model has two (first_touch 0.4, lead_created 0.4); the rest is spread by the model's rule.",
+      "iri": "https://xeoontology.org/xeo#CreditAnchor",
+      "layer": "norm",
+      "module": "attribution"
     },
     "Diagnostic": {
       "definition": "A named, reusable check or framework that reads observations and reveals gaps (e.g. a waterfall-position assessment). The framework is durable; each finding it produces is a Gap.",
@@ -151,6 +207,12 @@
         "Engine"
       ]
     },
+    "IdentityLink": {
+      "definition": "The claim that an identifier (a cookie id, a device id, an email hash, a click id, an IP address) belongs to a Person or Organization. Carries linkedIdentifier, identityResolvesTo, identityMethod and confidence. A derivation, because two resolvers can link the same identifier differently.",
+      "iri": "https://xeoontology.org/xeo#IdentityLink",
+      "layer": "derivation",
+      "module": "attribution"
+    },
     "InboundReference": {
       "definition": "A page on another site that links to or mentions you: your URL, Website, Brand or Organization. Observed, however it came about. Carries referencingUrl (the page), referenceTarget (what it points at or names), referenceKind (link or mention), and firstSeenAt and lastSeenAt; anchorText where it is a link. How it came about is not part of it: a placement, a pitch or a link magnet is a Tactic, linked from decision with acquiredByTactic, and an organic reference has none. A link between two pages of sites you crawl is linksTo; this is the record of a reference to you, kept whether or not you crawl the other site.",
       "iri": "https://xeoontology.org/xeo#InboundReference",
@@ -162,6 +224,12 @@
       "iri": "https://xeoontology.org/xeo#Intervention",
       "layer": "entity",
       "module": "decision"
+    },
+    "Journey": {
+      "definition": "The ordered Touchpoints of one Person or Organization (journeyOf) leading to their conversions. A derivation: stitching touches to one party is a resolution, so it carries method, and the IdentityLinks it used. Account-level journeys (an Organization's) and person-level ones are both journeys.",
+      "iri": "https://xeoontology.org/xeo#Journey",
+      "layer": "derivation",
+      "module": "attribution"
     },
     "LLMResponse": {
       "definition": "One captured response from one engine/model for one Prompt at a moment: time-bounded, source-attributed, immutable once captured. The visibility sibling of SerpSnapshot.",
@@ -199,6 +267,15 @@
       "layer": "interpretation",
       "module": "work"
     },
+    "Order": {
+      "definition": "A purchase placed: what was bought, for how much, before payment settles. Carries grossAmount, discountAmount, taxAmount, shippingAmount and, once paid, paidAmount.",
+      "iri": "https://xeoontology.org/xeo#Order",
+      "layer": "episode",
+      "module": "attribution",
+      "subClassOf": [
+        "RevenueEvent"
+      ]
+    },
     "Organization": {
       "definition": "The canonical organization: one node per real organization (an agency, a brand's company, an in-house team, a customer's company), which every system's record of it (a CRM company, an ad account's owner, a billing customer) points at with refersTo. Identified by name. The owner of Websites and Brands (owns), the holder of Capabilities and the client of another Organization (holdsCapability and clientOf, in xeo-work), and a tenancy node that activates Frameworks and Playbooks. It copies no vendor's fields: what a CRM knows about the company stays on the CRM's record, which refers to this node. Its kind is a slotted-in concept (organizationKind), never a subclass.",
       "iri": "https://xeoontology.org/xeo#Organization",
@@ -217,6 +294,15 @@
       "layer": "episode",
       "module": "sales",
       "status": "extension"
+    },
+    "Payment": {
+      "definition": "Money received against an Order or a Subscription. Carries paidAmount.",
+      "iri": "https://xeoontology.org/xeo#Payment",
+      "layer": "episode",
+      "module": "attribution",
+      "subClassOf": [
+        "RevenueEvent"
+      ]
     },
     "Person": {
       "definition": "The canonical person: one node per real person (a contact, a lead, a known visitor, a client's marketer, a team member), which every system's record of that person (a HubSpot contact, a Hyros lead, a SegMetrics visitor) points at with refersTo, so all of a person's representations join the same way. Its identity is a key the implementation mints; an email or a name is how a record is matched to it, not what it is. It copies no vendor's fields: a lifecycle stage, an owner or a source channel stays on the system's record that refers to it.",
@@ -263,6 +349,21 @@
       "layer": "interpretation",
       "module": "decision"
     },
+    "Refund": {
+      "definition": "Money returned to the buyer against an Order (refundsOrder). Carries refundedAmount.",
+      "iri": "https://xeoontology.org/xeo#Refund",
+      "layer": "episode",
+      "module": "attribution",
+      "subClassOf": [
+        "RevenueEvent"
+      ]
+    },
+    "RevenueEvent": {
+      "definition": "Money moving at a time, recorded by a store or a payment processor: the parent of Order, Payment, Refund and Chargeback. Immutable once recorded. Carries occurredAt, currencyCode, the amounts that apply, revenueSubject and, where known, customerStatus.",
+      "iri": "https://xeoontology.org/xeo#RevenueEvent",
+      "layer": "episode",
+      "module": "attribution"
+    },
     "SearchEngine": {
       "definition": "Classic ranked-results retrieval (the SEO surface).",
       "iri": "https://xeoontology.org/xeo#SearchEngine",
@@ -290,6 +391,12 @@
       "layer": "episode",
       "module": "core"
     },
+    "SpendRollup": {
+      "definition": "What an ad platform reports for one campaign, ad set or ad (spendLevel and its pointer) over one window: spendAmount in currencyCode, impressions and clicks, with periodStart, periodEnd and source. The column store keeps the daily rows; the graph keeps windowed rollups.",
+      "iri": "https://xeoontology.org/xeo#SpendRollup",
+      "layer": "observation",
+      "module": "attribution"
+    },
     "Stage": {
       "definition": "One step or cell of a Framework: a named position that Diagnostics, Tactics and Gaps are placed at (atStage). Carries name, an optional stageOrder, and an optional test — the question a subject must pass to move on. Belongs to exactly one Framework (hasStage) and is identified by name within it. In an ordered Framework, nextStage links each stage to the one after.",
       "iri": "https://xeoontology.org/xeo#Stage",
@@ -301,6 +408,12 @@
       "iri": "https://xeoontology.org/xeo#StageTransition",
       "layer": "episode",
       "module": "sales"
+    },
+    "Subscription": {
+      "definition": "An agreement to pay a recurringValue every billing period (billingInterval and billingIntervalCount), from a start date until cancelled. Its Payments are RevenueEvents.",
+      "iri": "https://xeoontology.org/xeo#Subscription",
+      "layer": "entity",
+      "module": "attribution"
     },
     "Tactic": {
       "definition": "A durable, named approach that can address gaps. Categorized by a slotted-in intervention taxonomy (inIntervention), scored on slotted-in dimensions (assessedAs -> TacticAssessment), and gated by the Capabilities it requires.",
@@ -326,6 +439,12 @@
       "layer": "derivation",
       "module": "core"
     },
+    "Touchpoint": {
+      "definition": "One interaction a person or organization had with your marketing at a time: an ad click or view, a visit, an email or an email open, a text message, a call, a form, a meeting. Immutable once recorded. Carries touchType, occurredAt, touchChannel, and what the source gives: the UTM fields, clickIdentifier, adCampaignRef, adSetRef, adRef, referringPlatform, touchLandingUrl. Belongs to a Journey.",
+      "iri": "https://xeoontology.org/xeo#Touchpoint",
+      "layer": "episode",
+      "module": "attribution"
+    },
     "URL": {
       "definition": "A resource address within a Website. Durable identity; the state of the resource at a time is recorded by Fetch observations.",
       "iri": "https://xeoontology.org/xeo#URL",
@@ -349,6 +468,36 @@
       "iri": "https://xeoontology.org/xeo#absoluteChange",
       "layer": "derivation",
       "module": "decision"
+    },
+    "adCampaignRef": {
+      "datatype": "xsd:string",
+      "domain": [
+        "SpendRollup",
+        "Touchpoint"
+      ],
+      "iri": "https://xeoontology.org/xeo#adCampaignRef",
+      "layer": "entity",
+      "module": "attribution"
+    },
+    "adRef": {
+      "datatype": "xsd:string",
+      "domain": [
+        "SpendRollup",
+        "Touchpoint"
+      ],
+      "iri": "https://xeoontology.org/xeo#adRef",
+      "layer": "entity",
+      "module": "attribution"
+    },
+    "adSetRef": {
+      "datatype": "xsd:string",
+      "domain": [
+        "SpendRollup",
+        "Touchpoint"
+      ],
+      "iri": "https://xeoontology.org/xeo#adSetRef",
+      "layer": "entity",
+      "module": "attribution"
     },
     "additivity": {
       "conceptSlot": true,
@@ -426,11 +575,41 @@
       "module": "core",
       "status": "extension"
     },
+    "anchorPosition": {
+      "datatype": "xsd:string",
+      "domain": [
+        "CreditAnchor"
+      ],
+      "iri": "https://xeoontology.org/xeo#anchorPosition",
+      "layer": "norm",
+      "module": "attribution",
+      "schemes": [
+        "anchorPosition"
+      ]
+    },
+    "anchorStageRef": {
+      "datatype": "xsd:string",
+      "domain": [
+        "CreditAnchor"
+      ],
+      "iri": "https://xeoontology.org/xeo#anchorStageRef",
+      "layer": "norm",
+      "module": "attribution-sales"
+    },
     "anchorText": {
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#anchorText",
       "layer": "observation",
       "module": "core"
+    },
+    "anchorWeight": {
+      "datatype": "xsd:decimal",
+      "domain": [
+        "CreditAnchor"
+      ],
+      "iri": "https://xeoontology.org/xeo#anchorWeight",
+      "layer": "norm",
+      "module": "attribution"
     },
     "appliesAtScope": {
       "conceptSlot": true,
@@ -472,6 +651,26 @@
       "schemes": [
         "priority"
       ]
+    },
+    "attributedConversions": {
+      "datatype": "xsd:decimal",
+      "domain": [
+        "AttributedCredit",
+        "AttributionRollup"
+      ],
+      "iri": "https://xeoontology.org/xeo#attributedConversions",
+      "layer": "derivation",
+      "module": "attribution"
+    },
+    "attributedRevenue": {
+      "datatype": "xsd:decimal",
+      "domain": [
+        "AttributedCredit",
+        "AttributionRollup"
+      ],
+      "iri": "https://xeoontology.org/xeo#attributedRevenue",
+      "layer": "derivation",
+      "module": "attribution"
     },
     "avgPosition": {
       "datatype": "xsd:decimal",
@@ -550,6 +749,19 @@
         "cadence"
       ]
     },
+    "callOutcome": {
+      "datatype": "xsd:string",
+      "domain": [
+        "BookedMeeting",
+        "Call"
+      ],
+      "iri": "https://xeoontology.org/xeo#callOutcome",
+      "layer": "interpretation",
+      "module": "attribution",
+      "schemes": [
+        "callOutcome"
+      ]
+    },
     "capturedAt": {
       "datatype": "xsd:dateTime",
       "iri": "https://xeoontology.org/xeo#capturedAt",
@@ -567,6 +779,15 @@
       "iri": "https://xeoontology.org/xeo#citationRate",
       "layer": "derivation",
       "module": "visibility"
+    },
+    "clickIdentifier": {
+      "datatype": "xsd:string",
+      "domain": [
+        "Touchpoint"
+      ],
+      "iri": "https://xeoontology.org/xeo#clickIdentifier",
+      "layer": "observation",
+      "module": "attribution"
     },
     "clicks": {
       "datatype": "xsd:integer",
@@ -673,6 +894,19 @@
         "conversionPointType"
       ]
     },
+    "conversionRole": {
+      "datatype": "xsd:string",
+      "domain": [
+        "ConversionEvent",
+        "RevenueEvent"
+      ],
+      "iri": "https://xeoontology.org/xeo#conversionRole",
+      "layer": "interpretation",
+      "module": "attribution",
+      "schemes": [
+        "conversionRole"
+      ]
+    },
     "conversionWindow": {
       "datatype": "xsd:duration",
       "domain": [
@@ -708,6 +942,36 @@
       "iri": "https://xeoontology.org/xeo#crawler",
       "layer": "episode",
       "module": "core"
+    },
+    "creditForDeal": {
+      "datatype": "xsd:string",
+      "domain": [
+        "AttributedCredit"
+      ],
+      "iri": "https://xeoontology.org/xeo#creditForDeal",
+      "layer": "derivation",
+      "module": "attribution-sales"
+    },
+    "creditRule": {
+      "datatype": "xsd:string",
+      "domain": [
+        "AttributionModel"
+      ],
+      "iri": "https://xeoontology.org/xeo#creditRule",
+      "layer": "norm",
+      "module": "attribution",
+      "schemes": [
+        "creditRule"
+      ]
+    },
+    "creditShare": {
+      "datatype": "xsd:decimal",
+      "domain": [
+        "AttributedCredit"
+      ],
+      "iri": "https://xeoontology.org/xeo#creditShare",
+      "layer": "derivation",
+      "module": "attribution"
     },
     "crmObjectType": {
       "datatype": "xsd:string",
@@ -755,6 +1019,19 @@
       "layer": "observation",
       "module": "core"
     },
+    "customerStatus": {
+      "datatype": "xsd:string",
+      "domain": [
+        "ConversionEvent",
+        "RevenueEvent"
+      ],
+      "iri": "https://xeoontology.org/xeo#customerStatus",
+      "layer": "derivation",
+      "module": "attribution",
+      "schemes": [
+        "customerStatus"
+      ]
+    },
     "dataState": {
       "conceptSlot": true,
       "datatype": "xsd:string",
@@ -771,6 +1048,18 @@
       "iri": "https://xeoontology.org/xeo#datasetUri",
       "layer": "derivation",
       "module": "core"
+    },
+    "dateBasis": {
+      "datatype": "xsd:string",
+      "domain": [
+        "AttributionModel"
+      ],
+      "iri": "https://xeoontology.org/xeo#dateBasis",
+      "layer": "norm",
+      "module": "attribution",
+      "schemes": [
+        "dateBasis"
+      ]
     },
     "dealAmount": {
       "datatype": "xsd:decimal",
@@ -799,6 +1088,15 @@
       "layer": "interpretation",
       "module": "sales",
       "status": "extension"
+    },
+    "deduplicationRule": {
+      "datatype": "xsd:string",
+      "domain": [
+        "AttributionModel"
+      ],
+      "iri": "https://xeoontology.org/xeo#deduplicationRule",
+      "layer": "norm",
+      "module": "attribution"
     },
     "degree": {
       "datatype": "xsd:integer",
@@ -830,6 +1128,15 @@
         "device"
       ]
     },
+    "discountAmount": {
+      "datatype": "xsd:decimal",
+      "domain": [
+        "RevenueEvent"
+      ],
+      "iri": "https://xeoontology.org/xeo#discountAmount",
+      "layer": "observation",
+      "module": "attribution"
+    },
     "durationDays": {
       "datatype": "xsd:integer",
       "domain": [
@@ -848,6 +1155,15 @@
       "schemes": [
         "effort"
       ]
+    },
+    "eligibleTouchType": {
+      "datatype": "xsd:string",
+      "domain": [
+        "AttributionModel"
+      ],
+      "iri": "https://xeoontology.org/xeo#eligibleTouchType",
+      "layer": "norm",
+      "module": "attribution"
     },
     "embeddedAt": {
       "datatype": "xsd:dateTime",
@@ -962,7 +1278,7 @@
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#firstTouchChannel",
       "layer": "derivation",
-      "module": "sales",
+      "module": "attribution",
       "schemes": [
         "acquisitionChannel"
       ]
@@ -1017,6 +1333,15 @@
       ],
       "status": "extension"
     },
+    "grossAmount": {
+      "datatype": "xsd:decimal",
+      "domain": [
+        "RevenueEvent"
+      ],
+      "iri": "https://xeoontology.org/xeo#grossAmount",
+      "layer": "observation",
+      "module": "attribution"
+    },
     "h1": {
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#h1",
@@ -1039,6 +1364,18 @@
       "layer": "derivation",
       "module": "decision",
       "schemes": []
+    },
+    "identityMethod": {
+      "datatype": "xsd:string",
+      "domain": [
+        "IdentityLink"
+      ],
+      "iri": "https://xeoontology.org/xeo#identityMethod",
+      "layer": "derivation",
+      "module": "attribution",
+      "schemes": [
+        "identityMethod"
+      ]
     },
     "impressions": {
       "datatype": "xsd:integer",
@@ -1086,7 +1423,7 @@
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#latestTouchChannel",
       "layer": "derivation",
-      "module": "sales",
+      "module": "attribution",
       "status": "extension"
     },
     "leadStatus": {
@@ -1115,11 +1452,29 @@
         "linkPosition"
       ]
     },
+    "linkedIdentifier": {
+      "datatype": "xsd:string",
+      "domain": [
+        "IdentityLink"
+      ],
+      "iri": "https://xeoontology.org/xeo#linkedIdentifier",
+      "layer": "observation",
+      "module": "attribution"
+    },
     "locale": {
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#locale",
       "layer": "episode",
       "module": "core"
+    },
+    "lookbackWindow": {
+      "datatype": "xsd:duration",
+      "domain": [
+        "AttributionModel"
+      ],
+      "iri": "https://xeoontology.org/xeo#lookbackWindow",
+      "layer": "norm",
+      "module": "attribution"
     },
     "lostReason": {
       "datatype": "xsd:string",
@@ -1300,6 +1655,19 @@
       "layer": "entity",
       "module": "core"
     },
+    "outcomeJudgedBy": {
+      "datatype": "xsd:string",
+      "domain": [
+        "BookedMeeting",
+        "Call"
+      ],
+      "iri": "https://xeoontology.org/xeo#outcomeJudgedBy",
+      "layer": "interpretation",
+      "module": "attribution",
+      "schemes": [
+        "outcomeJudgedBy"
+      ]
+    },
     "ownerRef": {
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#ownerRef",
@@ -1311,6 +1679,15 @@
       "iri": "https://xeoontology.org/xeo#pageRank",
       "layer": "derivation",
       "module": "analysis"
+    },
+    "paidAmount": {
+      "datatype": "xsd:decimal",
+      "domain": [
+        "RevenueEvent"
+      ],
+      "iri": "https://xeoontology.org/xeo#paidAmount",
+      "layer": "observation",
+      "module": "attribution"
     },
     "parameters": {
       "datatype": "xsd:string",
@@ -1385,6 +1762,12 @@
       "layer": "episode",
       "module": "analysis"
     },
+    "quoteValue": {
+      "datatype": "xsd:decimal",
+      "iri": "https://xeoontology.org/xeo#quoteValue",
+      "layer": "interpretation",
+      "module": "attribution"
+    },
     "ranAt": {
       "datatype": "xsd:dateTime",
       "iri": "https://xeoontology.org/xeo#ranAt",
@@ -1437,9 +1820,21 @@
     },
     "referringPlatform": {
       "datatype": "xsd:string",
+      "domain": [
+        "Touchpoint"
+      ],
       "iri": "https://xeoontology.org/xeo#referringPlatform",
       "layer": "derivation",
-      "module": "sales"
+      "module": "attribution"
+    },
+    "refundedAmount": {
+      "datatype": "xsd:decimal",
+      "domain": [
+        "RevenueEvent"
+      ],
+      "iri": "https://xeoontology.org/xeo#refundedAmount",
+      "layer": "observation",
+      "module": "attribution"
     },
     "rel": {
       "datatype": "xsd:string",
@@ -1513,6 +1908,18 @@
       "layer": "interpretation",
       "module": "work"
     },
+    "revenueBasis": {
+      "datatype": "xsd:string",
+      "domain": [
+        "AttributionModel"
+      ],
+      "iri": "https://xeoontology.org/xeo#revenueBasis",
+      "layer": "norm",
+      "module": "attribution",
+      "schemes": [
+        "revenueBasis"
+      ]
+    },
     "robotsMeta": {
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#robotsMeta",
@@ -1537,6 +1944,15 @@
         "sentiment"
       ]
     },
+    "shippingAmount": {
+      "datatype": "xsd:decimal",
+      "domain": [
+        "RevenueEvent"
+      ],
+      "iri": "https://xeoontology.org/xeo#shippingAmount",
+      "layer": "observation",
+      "module": "attribution"
+    },
     "similarity": {
       "datatype": "xsd:decimal",
       "iri": "https://xeoontology.org/xeo#similarity",
@@ -1550,6 +1966,27 @@
       "module": "decision",
       "schemes": [
         "practiceSource"
+      ]
+    },
+    "spendAmount": {
+      "datatype": "xsd:decimal",
+      "domain": [
+        "SpendRollup"
+      ],
+      "iri": "https://xeoontology.org/xeo#spendAmount",
+      "layer": "observation",
+      "module": "attribution"
+    },
+    "spendLevel": {
+      "datatype": "xsd:string",
+      "domain": [
+        "SpendRollup"
+      ],
+      "iri": "https://xeoontology.org/xeo#spendLevel",
+      "layer": "observation",
+      "module": "attribution",
+      "schemes": [
+        "spendLevel"
       ]
     },
     "stageClass": {
@@ -1667,6 +2104,15 @@
       "layer": "interpretation",
       "module": "work"
     },
+    "taxAmount": {
+      "datatype": "xsd:decimal",
+      "domain": [
+        "RevenueEvent"
+      ],
+      "iri": "https://xeoontology.org/xeo#taxAmount",
+      "layer": "observation",
+      "module": "attribution"
+    },
     "test": {
       "datatype": "xsd:string",
       "domain": [
@@ -1697,6 +2143,27 @@
       "layer": "episode",
       "module": "sales"
     },
+    "touchChannel": {
+      "datatype": "xsd:string",
+      "domain": [
+        "Touchpoint"
+      ],
+      "iri": "https://xeoontology.org/xeo#touchChannel",
+      "layer": "derivation",
+      "module": "attribution"
+    },
+    "touchType": {
+      "datatype": "xsd:string",
+      "domain": [
+        "Touchpoint"
+      ],
+      "iri": "https://xeoontology.org/xeo#touchType",
+      "layer": "observation",
+      "module": "attribution",
+      "schemes": [
+        "touchType"
+      ]
+    },
     "unit": {
       "conceptSlot": true,
       "datatype": "xsd:string",
@@ -1706,6 +2173,51 @@
       "schemes": [
         "metricUnit"
       ]
+    },
+    "utmCampaign": {
+      "datatype": "xsd:string",
+      "domain": [
+        "Touchpoint"
+      ],
+      "iri": "https://xeoontology.org/xeo#utmCampaign",
+      "layer": "observation",
+      "module": "attribution"
+    },
+    "utmContent": {
+      "datatype": "xsd:string",
+      "domain": [
+        "Touchpoint"
+      ],
+      "iri": "https://xeoontology.org/xeo#utmContent",
+      "layer": "observation",
+      "module": "attribution"
+    },
+    "utmMedium": {
+      "datatype": "xsd:string",
+      "domain": [
+        "Touchpoint"
+      ],
+      "iri": "https://xeoontology.org/xeo#utmMedium",
+      "layer": "observation",
+      "module": "attribution"
+    },
+    "utmSource": {
+      "datatype": "xsd:string",
+      "domain": [
+        "Touchpoint"
+      ],
+      "iri": "https://xeoontology.org/xeo#utmSource",
+      "layer": "observation",
+      "module": "attribution"
+    },
+    "utmTerm": {
+      "datatype": "xsd:string",
+      "domain": [
+        "Touchpoint"
+      ],
+      "iri": "https://xeoontology.org/xeo#utmTerm",
+      "layer": "observation",
+      "module": "attribution"
     },
     "value": {
       "datatype": "xsd:decimal",
@@ -2248,6 +2760,31 @@
       ],
       "term": "coversUrl"
     },
+    "CREDITED_TOUCHPOINT": {
+      "domain": [
+        "AttributedCredit"
+      ],
+      "iri": "https://xeoontology.org/xeo#creditedTouchpoint",
+      "layer": "derivation",
+      "module": "attribution",
+      "range": [
+        "Touchpoint"
+      ],
+      "term": "creditedTouchpoint"
+    },
+    "CREDIT_FOR": {
+      "domain": [
+        "AttributedCredit"
+      ],
+      "iri": "https://xeoontology.org/xeo#creditFor",
+      "layer": "derivation",
+      "module": "attribution",
+      "range": [
+        "ConversionEvent",
+        "RevenueEvent"
+      ],
+      "term": "creditFor"
+    },
     "DATA_STATE": {
       "conceptSlot": true,
       "domain": [
@@ -2484,6 +3021,18 @@
       ],
       "term": "hasCrawl"
     },
+    "HAS_CREDIT_ANCHOR": {
+      "domain": [
+        "AttributionModel"
+      ],
+      "iri": "https://xeoontology.org/xeo#hasCreditAnchor",
+      "layer": "norm",
+      "module": "attribution",
+      "range": [
+        "CreditAnchor"
+      ],
+      "term": "hasCreditAnchor"
+    },
     "HAS_OBJECTIVE": {
       "domain": [
         "Campaign"
@@ -2582,6 +3131,18 @@
       ],
       "term": "hasTarget"
     },
+    "HAS_TOUCHPOINT": {
+      "domain": [
+        "Journey"
+      ],
+      "iri": "https://xeoontology.org/xeo#hasTouchpoint",
+      "layer": "derivation",
+      "module": "attribution",
+      "range": [
+        "Touchpoint"
+      ],
+      "term": "hasTouchpoint"
+    },
     "HAS_WEBSITE": {
       "domain": [
         "Brand"
@@ -2605,6 +3166,19 @@
         "Capability"
       ],
       "term": "holdsCapability"
+    },
+    "IDENTITY_RESOLVES_TO": {
+      "domain": [
+        "IdentityLink"
+      ],
+      "iri": "https://xeoontology.org/xeo#identityResolvesTo",
+      "layer": "derivation",
+      "module": "attribution",
+      "range": [
+        "Organization",
+        "Person"
+      ],
+      "term": "identityResolvesTo"
     },
     "IMPLEMENTED_AS": {
       "domain": [
@@ -2708,6 +3282,19 @@
         "Campaign"
       ],
       "term": "issuedFor"
+    },
+    "JOURNEY_OF": {
+      "domain": [
+        "Journey"
+      ],
+      "iri": "https://xeoontology.org/xeo#journeyOf",
+      "layer": "derivation",
+      "module": "attribution",
+      "range": [
+        "Organization",
+        "Person"
+      ],
+      "term": "journeyOf"
     },
     "LEARNED_FROM": {
       "domain": [
@@ -3051,6 +3638,19 @@
       ],
       "term": "refersTo"
     },
+    "REFUNDS_ORDER": {
+      "domain": [
+        "Chargeback",
+        "Refund"
+      ],
+      "iri": "https://xeoontology.org/xeo#refundsOrder",
+      "layer": "observation",
+      "module": "attribution",
+      "range": [
+        "Order"
+      ],
+      "term": "refundsOrder"
+    },
     "RELATED_TERM": {
       "domain": [
         "SerpSnapshot"
@@ -3124,6 +3724,20 @@
         "Gap"
       ],
       "term": "reveals"
+    },
+    "REVENUE_SUBJECT": {
+      "domain": [
+        "RevenueEvent",
+        "Subscription"
+      ],
+      "iri": "https://xeoontology.org/xeo#revenueSubject",
+      "layer": "observation",
+      "module": "attribution",
+      "range": [
+        "Organization",
+        "Person"
+      ],
+      "term": "revenueSubject"
     },
     "RUN_OF": {
       "domain": [
@@ -3289,6 +3903,18 @@
       ],
       "term": "timeAnchor"
     },
+    "TOUCH_LANDING_URL": {
+      "domain": [
+        "Touchpoint"
+      ],
+      "iri": "https://xeoontology.org/xeo#touchLandingUrl",
+      "layer": "observation",
+      "module": "attribution",
+      "range": [
+        "URL"
+      ],
+      "term": "touchLandingUrl"
+    },
     "TRACKS_PROMPT": {
       "domain": [
         "Website"
@@ -3330,6 +3956,19 @@
       ],
       "term": "unit"
     },
+    "USES_ATTRIBUTION_MODEL": {
+      "domain": [
+        "AttributedCredit",
+        "AttributionRollup"
+      ],
+      "iri": "https://xeoontology.org/xeo#usesAttributionModel",
+      "layer": "derivation",
+      "module": "attribution",
+      "range": [
+        "AttributionModel"
+      ],
+      "term": "usesAttributionModel"
+    },
     "VERDICT": {
       "conceptSlot": true,
       "domain": [
@@ -3347,6 +3986,18 @@
         "gapVerdict"
       ],
       "term": "verdict"
+    },
+    "VIA_TOUCHPOINT": {
+      "domain": [
+        "ConversionEvent"
+      ],
+      "iri": "https://xeoontology.org/xeo#viaTouchpoint",
+      "layer": "derivation",
+      "module": "attribution",
+      "range": [
+        "Touchpoint"
+      ],
+      "term": "viaTouchpoint"
     },
     "VISIBILITY_FOR": {
       "domain": [
@@ -3413,6 +4064,14 @@
       "pagerank",
       "shortest_path"
     ],
+    "anchorPosition": [
+      "customer_close",
+      "first_touch",
+      "last_touch",
+      "lead_created",
+      "opportunity_created",
+      "qualified"
+    ],
     "betterDirection": [
       "down",
       "none",
@@ -3427,6 +4086,15 @@
     "cadence": [
       "monthly",
       "quarterly"
+    ],
+    "callOutcome": [
+      "cancelled",
+      "good_lead",
+      "no_show",
+      "not_a_lead",
+      "previously_marked_good_lead",
+      "qualified",
+      "unqualified"
     ],
     "consentPurpose": [
       "ad_personalization",
@@ -3457,6 +4125,23 @@
       "lead_form",
       "meeting_booker"
     ],
+    "conversionRole": [
+      "lead",
+      "opportunity",
+      "other",
+      "qualified_lead",
+      "sale"
+    ],
+    "creditRule": [
+      "algorithmic",
+      "custom",
+      "first_touch",
+      "full_credit_each",
+      "last_touch",
+      "linear",
+      "position_based",
+      "time_decay"
+    ],
     "crmObjectType": [
       "deal",
       "lead",
@@ -3472,9 +4157,17 @@
       "salesforce",
       "zoho"
     ],
+    "customerStatus": [
+      "new",
+      "repeat"
+    ],
     "dataState": [
       "final",
       "partial"
+    ],
+    "dateBasis": [
+      "conversion_date",
+      "touch_date"
     ],
     "dealOutcome": [
       "lost",
@@ -3552,6 +4245,15 @@
       "hold",
       "ignore"
     ],
+    "identityMethod": [
+      "click_id",
+      "email_match",
+      "fingerprint",
+      "form_fill",
+      "ip_to_company",
+      "login",
+      "vendor_graph"
+    ],
     "intervention": [
       "brand-entity-ops",
       "community-mobilization",
@@ -3591,6 +4293,7 @@
       "words"
     ],
     "metric": [
+      "ad_spend",
       "ai_answers_citing_owned",
       "ai_answers_mentioning",
       "ai_answers_sampled",
@@ -3606,8 +4309,12 @@
       "ai_sentiment",
       "ai_share_of_voice",
       "ai_tracked_brand_mentions",
+      "attributed_revenue",
+      "blended_roas",
       "clicks",
       "converting_sessions",
+      "cost_per_acquisition",
+      "cost_per_lead",
       "ctr",
       "deals_closed",
       "deals_created",
@@ -3618,10 +4325,13 @@
       "impressions",
       "key_events",
       "leads_created",
+      "lifetime_value",
+      "payback_period",
       "pipeline_created",
       "position",
       "rank_absolute",
       "revenue_won",
+      "roas",
       "sales_cycle_days",
       "session_conversion_rate",
       "sessions",
@@ -3665,6 +4375,11 @@
       "agency",
       "brand",
       "in_house"
+    ],
+    "outcomeJudgedBy": [
+      "ai",
+      "person",
+      "rule"
     ],
     "outcomeResult": [
       "inconclusive",
@@ -3723,6 +4438,11 @@
       "link",
       "mention"
     ],
+    "revenueBasis": [
+      "gross",
+      "net_of_refunds",
+      "paid"
+    ],
     "searchIntent": [
       "commercial_investigation",
       "informational",
@@ -3756,6 +4476,11 @@
       "structural_embedding",
       "text_embedding"
     ],
+    "spendLevel": [
+      "ad",
+      "ad_set",
+      "campaign"
+    ],
     "stageSlot": [
       "deal_stage",
       "lead_status",
@@ -3773,6 +4498,20 @@
       "quarter",
       "week",
       "year"
+    ],
+    "touchType": [
+      "ad_click",
+      "ad_view",
+      "call",
+      "chat",
+      "email",
+      "email_open",
+      "form",
+      "meeting",
+      "offline",
+      "other",
+      "text_message",
+      "visit"
     ],
     "xeoLayer": [
       "entity",

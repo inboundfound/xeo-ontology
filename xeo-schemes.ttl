@@ -3073,3 +3073,589 @@ xeos:acquisitionChannel-programmatic a skos:Concept ;
     skos:notation "programmatic" ;
     skos:prefLabel "Programmatic"@en ;
     skos:definition "Arrived from an advertisement bought through programmatic exchanges (D2, 0.7)"@en .
+
+# --- v0.7.0 attribution schemes and metrics (2026-11-12) ----------------------------
+
+xeos:touchType a skos:ConceptScheme ;
+    skos:prefLabel "Touch types"@en ;
+    xeo:fillsSlot xeo:touchType ;
+    dct:source "XEO 0.7 plan of record, 2026-11-11 (attribution module and its follow-up research) · Hyros journey event types; WhatConverts lead types" ;
+    dct:description "What kind of interaction a Touchpoint was. email_open is recorded but not credited unless a model lists it in eligibleTouchType." .
+
+xeos:touchType-ad_click a skos:Concept ;
+    skos:inScheme xeos:touchType ;
+    skos:topConceptOf xeos:touchType ;
+    skos:notation "ad_click" ;
+    skos:prefLabel "Ad click"@en ;
+    skos:definition "Clicked an advertisement"@en .
+
+xeos:touchType-ad_view a skos:Concept ;
+    skos:inScheme xeos:touchType ;
+    skos:topConceptOf xeos:touchType ;
+    skos:notation "ad_view" ;
+    skos:prefLabel "Ad view"@en ;
+    skos:definition "Saw an advertisement without clicking"@en .
+
+xeos:touchType-visit a skos:Concept ;
+    skos:inScheme xeos:touchType ;
+    skos:topConceptOf xeos:touchType ;
+    skos:notation "visit" ;
+    skos:prefLabel "Visit"@en ;
+    skos:definition "Arrived on the site"@en .
+
+xeos:touchType-email a skos:Concept ;
+    skos:inScheme xeos:touchType ;
+    skos:topConceptOf xeos:touchType ;
+    skos:notation "email" ;
+    skos:prefLabel "Email"@en ;
+    skos:definition "Clicked through from an email"@en .
+
+xeos:touchType-email_open a skos:Concept ;
+    skos:inScheme xeos:touchType ;
+    skos:topConceptOf xeos:touchType ;
+    skos:notation "email_open" ;
+    skos:prefLabel "Email open"@en ;
+    skos:definition "Opened an email; not credited by default"@en .
+
+xeos:touchType-text_message a skos:Concept ;
+    skos:inScheme xeos:touchType ;
+    skos:topConceptOf xeos:touchType ;
+    skos:notation "text_message" ;
+    skos:prefLabel "Text message"@en ;
+    skos:definition "Replied to or clicked from a text message"@en .
+
+xeos:touchType-call a skos:Concept ;
+    skos:inScheme xeos:touchType ;
+    skos:topConceptOf xeos:touchType ;
+    skos:notation "call" ;
+    skos:prefLabel "Call"@en ;
+    skos:definition "A phone call"@en .
+
+xeos:touchType-form a skos:Concept ;
+    skos:inScheme xeos:touchType ;
+    skos:topConceptOf xeos:touchType ;
+    skos:notation "form" ;
+    skos:prefLabel "Form"@en ;
+    skos:definition "Submitted a form"@en .
+
+xeos:touchType-chat a skos:Concept ;
+    skos:inScheme xeos:touchType ;
+    skos:topConceptOf xeos:touchType ;
+    skos:notation "chat" ;
+    skos:prefLabel "Chat"@en ;
+    skos:definition "A chat conversation"@en .
+
+xeos:touchType-meeting a skos:Concept ;
+    skos:inScheme xeos:touchType ;
+    skos:topConceptOf xeos:touchType ;
+    skos:notation "meeting" ;
+    skos:prefLabel "Meeting"@en ;
+    skos:definition "A booked or held meeting"@en .
+
+xeos:touchType-offline a skos:Concept ;
+    skos:inScheme xeos:touchType ;
+    skos:topConceptOf xeos:touchType ;
+    skos:notation "offline" ;
+    skos:prefLabel "Offline"@en ;
+    skos:definition "An event, a letter, a conversation in person"@en .
+
+xeos:touchType-other a skos:Concept ;
+    skos:inScheme xeos:touchType ;
+    skos:topConceptOf xeos:touchType ;
+    skos:notation "other" ;
+    skos:prefLabel "Other"@en ;
+    skos:definition "A touch none of the codes above covers"@en .
+
+xeos:identityMethod a skos:ConceptScheme ;
+    skos:prefLabel "Identity methods"@en ;
+    xeo:fillsSlot xeo:identityMethod ;
+    dct:source "XEO 0.7 plan of record, 2026-11-11 (attribution module and its follow-up research) · Factors.ai (IP-to-company)" ;
+    dct:description "How an identifier was linked to a party." .
+
+xeos:identityMethod-login a skos:Concept ;
+    skos:inScheme xeos:identityMethod ;
+    skos:topConceptOf xeos:identityMethod ;
+    skos:notation "login" ;
+    skos:prefLabel "Login"@en ;
+    skos:definition "The person signed in"@en .
+
+xeos:identityMethod-form_fill a skos:Concept ;
+    skos:inScheme xeos:identityMethod ;
+    skos:topConceptOf xeos:identityMethod ;
+    skos:notation "form_fill" ;
+    skos:prefLabel "Form fill"@en ;
+    skos:definition "The person typed an identifying detail into a form"@en .
+
+xeos:identityMethod-email_match a skos:Concept ;
+    skos:inScheme xeos:identityMethod ;
+    skos:topConceptOf xeos:identityMethod ;
+    skos:notation "email_match" ;
+    skos:prefLabel "Email match"@en ;
+    skos:definition "The same email or email hash in two systems"@en .
+
+xeos:identityMethod-click_id a skos:Concept ;
+    skos:inScheme xeos:identityMethod ;
+    skos:topConceptOf xeos:identityMethod ;
+    skos:notation "click_id" ;
+    skos:prefLabel "Click id"@en ;
+    skos:definition "An ad platform's click id carried through"@en .
+
+xeos:identityMethod-fingerprint a skos:Concept ;
+    skos:inScheme xeos:identityMethod ;
+    skos:topConceptOf xeos:identityMethod ;
+    skos:notation "fingerprint" ;
+    skos:prefLabel "Fingerprint"@en ;
+    skos:definition "Device and browser traits compared"@en .
+
+xeos:identityMethod-ip_to_company a skos:Concept ;
+    skos:inScheme xeos:identityMethod ;
+    skos:topConceptOf xeos:identityMethod ;
+    skos:notation "ip_to_company" ;
+    skos:prefLabel "IP to company"@en ;
+    skos:definition "An IP address looked up to a company; resolves to an Organization only"@en .
+
+xeos:identityMethod-vendor_graph a skos:Concept ;
+    skos:inScheme xeos:identityMethod ;
+    skos:topConceptOf xeos:identityMethod ;
+    skos:notation "vendor_graph" ;
+    skos:prefLabel "Vendor graph"@en ;
+    skos:definition "A vendor's identity graph, by its own method"@en .
+
+xeos:conversionRole a skos:ConceptScheme ;
+    skos:prefLabel "Conversion roles"@en ;
+    xeo:fillsSlot xeo:conversionRole ;
+    dct:source "XEO 0.7 plan of record, 2026-11-11 (attribution module and its follow-up research)" ;
+    dct:description "What a conversion counts as for attribution, by the tenant's mapping." .
+
+xeos:conversionRole-lead a skos:Concept ;
+    skos:inScheme xeos:conversionRole ;
+    skos:topConceptOf xeos:conversionRole ;
+    skos:notation "lead" ;
+    skos:prefLabel "Lead"@en ;
+    skos:definition "A new contact who could buy"@en .
+
+xeos:conversionRole-qualified_lead a skos:Concept ;
+    skos:inScheme xeos:conversionRole ;
+    skos:topConceptOf xeos:conversionRole ;
+    skos:notation "qualified_lead" ;
+    skos:prefLabel "Qualified lead"@en ;
+    skos:definition "A lead someone judged worth pursuing"@en .
+
+xeos:conversionRole-opportunity a skos:Concept ;
+    skos:inScheme xeos:conversionRole ;
+    skos:topConceptOf xeos:conversionRole ;
+    skos:notation "opportunity" ;
+    skos:prefLabel "Opportunity"@en ;
+    skos:definition "A deal opened"@en .
+
+xeos:conversionRole-sale a skos:Concept ;
+    skos:inScheme xeos:conversionRole ;
+    skos:topConceptOf xeos:conversionRole ;
+    skos:notation "sale" ;
+    skos:prefLabel "Sale"@en ;
+    skos:definition "A purchase or a deal won"@en .
+
+xeos:conversionRole-other a skos:Concept ;
+    skos:inScheme xeos:conversionRole ;
+    skos:topConceptOf xeos:conversionRole ;
+    skos:notation "other" ;
+    skos:prefLabel "Other"@en ;
+    skos:definition "Any other conversion"@en .
+
+xeos:callOutcome a skos:ConceptScheme ;
+    skos:prefLabel "Call outcomes"@en ;
+    xeo:fillsSlot xeo:callOutcome ;
+    dct:source "XEO 0.7 plan of record, 2026-11-11 (attribution module and its follow-up research) · Hyros call states; CallRail lead status" ;
+    dct:description "What a call or meeting came to, as someone judged it after the fact." .
+
+xeos:callOutcome-qualified a skos:Concept ;
+    skos:inScheme xeos:callOutcome ;
+    skos:topConceptOf xeos:callOutcome ;
+    skos:notation "qualified" ;
+    skos:prefLabel "Qualified"@en ;
+    skos:definition "Worth pursuing"@en .
+
+xeos:callOutcome-unqualified a skos:Concept ;
+    skos:inScheme xeos:callOutcome ;
+    skos:topConceptOf xeos:callOutcome ;
+    skos:notation "unqualified" ;
+    skos:prefLabel "Unqualified"@en ;
+    skos:definition "Not worth pursuing"@en .
+
+xeos:callOutcome-cancelled a skos:Concept ;
+    skos:inScheme xeos:callOutcome ;
+    skos:topConceptOf xeos:callOutcome ;
+    skos:notation "cancelled" ;
+    skos:prefLabel "Cancelled"@en ;
+    skos:definition "Called off before it happened"@en .
+
+xeos:callOutcome-no_show a skos:Concept ;
+    skos:inScheme xeos:callOutcome ;
+    skos:topConceptOf xeos:callOutcome ;
+    skos:notation "no_show" ;
+    skos:prefLabel "No-show"@en ;
+    skos:definition "Booked, and the person did not attend"@en .
+
+xeos:callOutcome-good_lead a skos:Concept ;
+    skos:inScheme xeos:callOutcome ;
+    skos:topConceptOf xeos:callOutcome ;
+    skos:notation "good_lead" ;
+    skos:prefLabel "Good lead"@en ;
+    skos:definition "Marked a good lead (CallRail)"@en .
+
+xeos:callOutcome-not_a_lead a skos:Concept ;
+    skos:inScheme xeos:callOutcome ;
+    skos:topConceptOf xeos:callOutcome ;
+    skos:notation "not_a_lead" ;
+    skos:prefLabel "Not a lead"@en ;
+    skos:definition "Marked not a lead (CallRail)"@en .
+
+xeos:callOutcome-previously_marked_good_lead a skos:Concept ;
+    skos:inScheme xeos:callOutcome ;
+    skos:topConceptOf xeos:callOutcome ;
+    skos:notation "previously_marked_good_lead" ;
+    skos:prefLabel "Previously marked good lead"@en ;
+    skos:definition "Marked a good lead on an earlier call (CallRail)"@en .
+
+xeos:outcomeJudgedBy a skos:ConceptScheme ;
+    skos:prefLabel "Outcome judges"@en ;
+    xeo:fillsSlot xeo:outcomeJudgedBy ;
+    dct:source "XEO 0.7 plan of record, 2026-11-11 (attribution module and its follow-up research) · Invoca signals" ;
+    dct:description "Who judged a call or meeting's outcome." .
+
+xeos:outcomeJudgedBy-person a skos:Concept ;
+    skos:inScheme xeos:outcomeJudgedBy ;
+    skos:topConceptOf xeos:outcomeJudgedBy ;
+    skos:notation "person" ;
+    skos:prefLabel "Person"@en ;
+    skos:definition "A person set it"@en .
+
+xeos:outcomeJudgedBy-rule a skos:Concept ;
+    skos:inScheme xeos:outcomeJudgedBy ;
+    skos:topConceptOf xeos:outcomeJudgedBy ;
+    skos:notation "rule" ;
+    skos:prefLabel "Rule"@en ;
+    skos:definition "A rule set it"@en .
+
+xeos:outcomeJudgedBy-ai a skos:Concept ;
+    skos:inScheme xeos:outcomeJudgedBy ;
+    skos:topConceptOf xeos:outcomeJudgedBy ;
+    skos:notation "ai" ;
+    skos:prefLabel "AI"@en ;
+    skos:definition "A model set it"@en .
+
+xeos:customerStatus a skos:ConceptScheme ;
+    skos:prefLabel "Customer statuses"@en ;
+    xeo:fillsSlot xeo:customerStatus ;
+    dct:source "XEO 0.7 plan of record, 2026-11-11 (attribution module and its follow-up research) · Rockerbox new and repeat" ;
+    dct:description "Whether a buyer was new or repeat at the time of an order." .
+
+xeos:customerStatus-new a skos:Concept ;
+    skos:inScheme xeos:customerStatus ;
+    skos:topConceptOf xeos:customerStatus ;
+    skos:notation "new" ;
+    skos:prefLabel "New"@en ;
+    skos:definition "First purchase in the history available"@en .
+
+xeos:customerStatus-repeat a skos:Concept ;
+    skos:inScheme xeos:customerStatus ;
+    skos:topConceptOf xeos:customerStatus ;
+    skos:notation "repeat" ;
+    skos:prefLabel "Repeat"@en ;
+    skos:definition "Has bought before"@en .
+
+xeos:spendLevel a skos:ConceptScheme ;
+    skos:prefLabel "Spend levels"@en ;
+    xeo:fillsSlot xeo:spendLevel ;
+    dct:source "XEO 0.7 plan of record, 2026-11-11 (attribution module and its follow-up research) · Rockerbox spend partition" ;
+    dct:description "The level an ad platform's spend is reported at." .
+
+xeos:spendLevel-campaign a skos:Concept ;
+    skos:inScheme xeos:spendLevel ;
+    skos:topConceptOf xeos:spendLevel ;
+    skos:notation "campaign" ;
+    skos:prefLabel "Campaign"@en ;
+    skos:definition "An ad campaign"@en .
+
+xeos:spendLevel-ad_set a skos:Concept ;
+    skos:inScheme xeos:spendLevel ;
+    skos:topConceptOf xeos:spendLevel ;
+    skos:notation "ad_set" ;
+    skos:prefLabel "Ad set"@en ;
+    skos:definition "An ad set or ad group"@en .
+
+xeos:spendLevel-ad a skos:Concept ;
+    skos:inScheme xeos:spendLevel ;
+    skos:topConceptOf xeos:spendLevel ;
+    skos:notation "ad" ;
+    skos:prefLabel "Ad"@en ;
+    skos:definition "One ad"@en .
+
+xeos:creditRule a skos:ConceptScheme ;
+    skos:prefLabel "Credit rules"@en ;
+    xeo:fillsSlot xeo:creditRule ;
+    dct:source "XEO 0.7 plan of record, 2026-11-11 (attribution module and its follow-up research) · Hyros (last_click, first_click, scientific); HockeyStack (predictive); Dreamdata (influenced)" ;
+    dct:description "How an attribution model splits credit." .
+
+xeos:creditRule-first_touch a skos:Concept ;
+    skos:inScheme xeos:creditRule ;
+    skos:topConceptOf xeos:creditRule ;
+    skos:notation "first_touch" ;
+    skos:prefLabel "First touch"@en ;
+    skos:definition "All credit to the first eligible touch"@en .
+
+xeos:creditRule-last_touch a skos:Concept ;
+    skos:inScheme xeos:creditRule ;
+    skos:topConceptOf xeos:creditRule ;
+    skos:notation "last_touch" ;
+    skos:prefLabel "Last touch"@en ;
+    skos:definition "All credit to the last eligible touch"@en .
+
+xeos:creditRule-linear a skos:Concept ;
+    skos:inScheme xeos:creditRule ;
+    skos:topConceptOf xeos:creditRule ;
+    skos:notation "linear" ;
+    skos:prefLabel "Linear"@en ;
+    skos:definition "Equal credit to every eligible touch"@en .
+
+xeos:creditRule-time_decay a skos:Concept ;
+    skos:inScheme xeos:creditRule ;
+    skos:topConceptOf xeos:creditRule ;
+    skos:notation "time_decay" ;
+    skos:prefLabel "Time decay"@en ;
+    skos:definition "More credit to touches nearer the conversion"@en .
+
+xeos:creditRule-position_based a skos:Concept ;
+    skos:inScheme xeos:creditRule ;
+    skos:topConceptOf xeos:creditRule ;
+    skos:notation "position_based" ;
+    skos:prefLabel "Position based"@en ;
+    skos:definition "Fixed shares to anchor touches, the rest spread (U-shaped, W-shaped)"@en .
+
+xeos:creditRule-full_credit_each a skos:Concept ;
+    skos:inScheme xeos:creditRule ;
+    skos:topConceptOf xeos:creditRule ;
+    skos:notation "full_credit_each" ;
+    skos:prefLabel "Full credit each"@en ;
+    skos:definition "Every eligible touch gets full credit: what vendors report as 'influenced'"@en .
+
+xeos:creditRule-algorithmic a skos:Concept ;
+    skos:inScheme xeos:creditRule ;
+    skos:topConceptOf xeos:creditRule ;
+    skos:notation "algorithmic" ;
+    skos:prefLabel "Algorithmic"@en ;
+    skos:definition "A fitted model decides the shares: 'data-driven', 'predictive'"@en .
+
+xeos:creditRule-custom a skos:Concept ;
+    skos:inScheme xeos:creditRule ;
+    skos:topConceptOf xeos:creditRule ;
+    skos:notation "custom" ;
+    skos:prefLabel "Custom"@en ;
+    skos:definition "A rule of the tenant's own"@en .
+
+xeos:anchorPosition a skos:ConceptScheme ;
+    skos:prefLabel "Anchor positions"@en ;
+    xeo:fillsSlot xeo:anchorPosition ;
+    dct:source "XEO 0.7 plan of record, 2026-11-11 (attribution module and its follow-up research) · CallRail milestones" ;
+    dct:description "Which touch a position-based model's anchor is." .
+
+xeos:anchorPosition-first_touch a skos:Concept ;
+    skos:inScheme xeos:anchorPosition ;
+    skos:topConceptOf xeos:anchorPosition ;
+    skos:notation "first_touch" ;
+    skos:prefLabel "First touch"@en ;
+    skos:definition "The first eligible touch"@en .
+
+xeos:anchorPosition-lead_created a skos:Concept ;
+    skos:inScheme xeos:anchorPosition ;
+    skos:topConceptOf xeos:anchorPosition ;
+    skos:notation "lead_created" ;
+    skos:prefLabel "Lead created"@en ;
+    skos:definition "The touch that created the lead"@en .
+
+xeos:anchorPosition-qualified a skos:Concept ;
+    skos:inScheme xeos:anchorPosition ;
+    skos:topConceptOf xeos:anchorPosition ;
+    skos:notation "qualified" ;
+    skos:prefLabel "Qualified"@en ;
+    skos:definition "The touch at which the lead was qualified"@en .
+
+xeos:anchorPosition-opportunity_created a skos:Concept ;
+    skos:inScheme xeos:anchorPosition ;
+    skos:topConceptOf xeos:anchorPosition ;
+    skos:notation "opportunity_created" ;
+    skos:prefLabel "Opportunity created"@en ;
+    skos:definition "The touch that opened the deal"@en .
+
+xeos:anchorPosition-customer_close a skos:Concept ;
+    skos:inScheme xeos:anchorPosition ;
+    skos:topConceptOf xeos:anchorPosition ;
+    skos:notation "customer_close" ;
+    skos:prefLabel "Customer close"@en ;
+    skos:definition "The touch at which the deal was won or the order placed"@en .
+
+xeos:anchorPosition-last_touch a skos:Concept ;
+    skos:inScheme xeos:anchorPosition ;
+    skos:topConceptOf xeos:anchorPosition ;
+    skos:notation "last_touch" ;
+    skos:prefLabel "Last touch"@en ;
+    skos:definition "The last eligible touch"@en .
+
+xeos:dateBasis a skos:ConceptScheme ;
+    skos:prefLabel "Date bases"@en ;
+    xeo:fillsSlot xeo:dateBasis ;
+    dct:source "XEO 0.7 plan of record, 2026-11-11 (attribution module and its follow-up research) · Hyros dayOfAttribution" ;
+    dct:description "Which date a credited conversion is counted on." .
+
+xeos:dateBasis-touch_date a skos:Concept ;
+    skos:inScheme xeos:dateBasis ;
+    skos:topConceptOf xeos:dateBasis ;
+    skos:notation "touch_date" ;
+    skos:prefLabel "Touch date"@en ;
+    skos:definition "The date of the credited touch"@en .
+
+xeos:dateBasis-conversion_date a skos:Concept ;
+    skos:inScheme xeos:dateBasis ;
+    skos:topConceptOf xeos:dateBasis ;
+    skos:notation "conversion_date" ;
+    skos:prefLabel "Conversion date"@en ;
+    skos:definition "The date of the conversion or sale"@en .
+
+xeos:revenueBasis a skos:ConceptScheme ;
+    skos:prefLabel "Revenue bases"@en ;
+    xeo:fillsSlot xeo:revenueBasis ;
+    dct:source "XEO 0.7 plan of record, 2026-11-11 (attribution module and its follow-up research)" ;
+    dct:description "Which amount an attribution model credits." .
+
+xeos:revenueBasis-gross a skos:Concept ;
+    skos:inScheme xeos:revenueBasis ;
+    skos:topConceptOf xeos:revenueBasis ;
+    skos:notation "gross" ;
+    skos:prefLabel "Gross"@en ;
+    skos:definition "The order's grossAmount"@en .
+
+xeos:revenueBasis-paid a skos:Concept ;
+    skos:inScheme xeos:revenueBasis ;
+    skos:topConceptOf xeos:revenueBasis ;
+    skos:notation "paid" ;
+    skos:prefLabel "Paid"@en ;
+    skos:definition "What was paid"@en .
+
+xeos:revenueBasis-net_of_refunds a skos:Concept ;
+    skos:inScheme xeos:revenueBasis ;
+    skos:topConceptOf xeos:revenueBasis ;
+    skos:notation "net_of_refunds" ;
+    skos:prefLabel "Net of refunds"@en ;
+    skos:definition "What was paid less refunds and chargebacks"@en .
+
+xeos:metric-ad_spend a skos:Concept , xeo:Metric ;
+    skos:inScheme xeos:metric ;
+    skos:topConceptOf xeos:metric ;
+    skos:notation "ad_spend" ;
+    skos:prefLabel "Ad spend"@en ;
+    skos:definition "What was spent on advertising in the window, in one stated currency"@en ;
+    xeo:metricType xeos:metricType-simple ;
+    xeo:aggregation xeos:aggregation-sum ;
+    xeo:readsSlot xeo:spendAmount ;
+    xeo:unit xeos:metricUnit-currency ;
+    xeo:betterDirection xeos:betterDirection-none ;
+    xeo:additivity xeos:additivity-additive ;
+    skos:note "reading: an observation where the ad platform returned it for this window; a derivation when summed across platforms. Added in 0.7 as the denominator of the spend ratios"@en .
+
+xeos:metric-attributed_revenue a skos:Concept , xeo:Metric ;
+    skos:inScheme xeos:metric ;
+    skos:topConceptOf xeos:metric ;
+    skos:notation "attributed_revenue" ;
+    skos:prefLabel "Attributed revenue"@en ;
+    skos:definition "Revenue credited to touches under one attribution model, in one stated currency"@en ;
+    xeo:metricType xeos:metricType-simple ;
+    xeo:aggregation xeos:aggregation-sum ;
+    xeo:readsSlot xeo:attributedRevenue ;
+    xeo:unit xeos:metricUnit-currency ;
+    xeo:betterDirection xeos:betterDirection-up ;
+    xeo:additivity xeos:additivity-additive ;
+    skos:note "reading: a derivation, and it names its model (usesAttributionModel). Sums within one model only; never across models"@en .
+
+xeos:metric-roas a skos:Concept , xeo:Metric ;
+    skos:inScheme xeos:metric ;
+    skos:topConceptOf xeos:metric ;
+    skos:notation "roas" ;
+    skos:prefLabel "Return on ad spend"@en ;
+    skos:definition "Attributed revenue divided by ad spend, under one attribution model, as a quotient"@en ;
+    xeo:metricType xeos:metricType-ratio ;
+    xeo:numerator xeos:metric-attributed_revenue ;
+    xeo:denominator xeos:metric-ad_spend ;
+    xeo:unit xeos:metricUnit-ratio ;
+    xeo:betterDirection xeos:betterDirection-up ;
+    xeo:additivity xeos:additivity-non_additive ;
+    skos:note "reading: a derivation that names its model. Rolled up as sum(attributed revenue) over sum(spend), never a mean of ROAS"@en .
+
+xeos:metric-blended_roas a skos:Concept , xeo:Metric ;
+    skos:inScheme xeos:metric ;
+    skos:topConceptOf xeos:metric ;
+    skos:notation "blended_roas" ;
+    skos:prefLabel "Blended ROAS"@en ;
+    skos:definition "All revenue in the window divided by all ad spend in the window, with no attribution model"@en ;
+    xeo:metricType xeos:metricType-derived ;
+    xeo:expression "sum(paidAmount of RevenueEvents in the window, less refundedAmount) / ad_spend" ;
+    xeo:inputMetric xeos:metric-ad_spend ;
+    xeo:unit xeos:metricUnit-ratio ;
+    xeo:betterDirection xeos:betterDirection-up ;
+    xeo:additivity xeos:additivity-non_additive ;
+    skos:note "reading: a derivation. Needs no model, which is why it is reported beside ROAS"@en .
+
+xeos:metric-cost_per_lead a skos:Concept , xeo:Metric ;
+    skos:inScheme xeos:metric ;
+    skos:topConceptOf xeos:metric ;
+    skos:notation "cost_per_lead" ;
+    skos:prefLabel "Cost per lead"@en ;
+    skos:definition "Ad spend divided by leads created in the window, in one stated currency"@en ;
+    xeo:metricType xeos:metricType-derived ;
+    xeo:expression "ad_spend / leads_created" ;
+    xeo:inputMetric xeos:metric-ad_spend , xeos:metric-leads_created ;
+    xeo:unit xeos:metricUnit-currency ;
+    xeo:betterDirection xeos:betterDirection-down ;
+    xeo:additivity xeos:additivity-non_additive ;
+    skos:note "reading: a derivation. Rolled up as sum(spend) over sum(leads)"@en .
+
+xeos:metric-cost_per_acquisition a skos:Concept , xeo:Metric ;
+    skos:inScheme xeos:metric ;
+    skos:topConceptOf xeos:metric ;
+    skos:notation "cost_per_acquisition" ;
+    skos:prefLabel "Cost per acquisition"@en ;
+    skos:definition "Ad spend divided by conversions credited under one attribution model, in one stated currency"@en ;
+    xeo:metricType xeos:metricType-derived ;
+    xeo:expression "ad_spend / sum(attributedConversions)" ;
+    xeo:inputMetric xeos:metric-ad_spend ;
+    xeo:unit xeos:metricUnit-currency ;
+    xeo:betterDirection xeos:betterDirection-down ;
+    xeo:additivity xeos:additivity-non_additive ;
+    skos:note "reading: a derivation that names its model"@en .
+
+xeos:metric-lifetime_value a skos:Concept , xeo:Metric ;
+    skos:inScheme xeos:metric ;
+    skos:topConceptOf xeos:metric ;
+    skos:notation "lifetime_value" ;
+    skos:prefLabel "Lifetime value"@en ;
+    skos:definition "The mean revenue per customer over the history available: paid less refunded, per revenueSubject, in one stated currency"@en ;
+    xeo:metricType xeos:metricType-derived ;
+    xeo:expression "sum(paidAmount - refundedAmount) / count_distinct(revenueSubject)" ;
+    xeo:inputMetric xeos:metric-attributed_revenue ;
+    xeo:unit xeos:metricUnit-currency ;
+    xeo:betterDirection xeos:betterDirection-up ;
+    xeo:additivity xeos:additivity-non_additive ;
+    skos:note "reading: a derivation. Depends on how far back the history reaches; state the window"@en .
+
+xeos:metric-payback_period a skos:Concept , xeo:Metric ;
+    skos:inScheme xeos:metric ;
+    skos:topConceptOf xeos:metric ;
+    skos:notation "payback_period" ;
+    skos:prefLabel "Payback period"@en ;
+    skos:definition "Days until a customer's cumulative paid revenue covers what it cost to acquire them"@en ;
+    xeo:metricType xeos:metricType-derived ;
+    xeo:expression "days from first order until cumulative (paidAmount - refundedAmount) >= cost_per_acquisition" ;
+    xeo:inputMetric xeos:metric-cost_per_acquisition ;
+    xeo:unit xeos:metricUnit-days ;
+    xeo:betterDirection xeos:betterDirection-down ;
+    xeo:additivity xeos:additivity-non_additive ;
+    skos:note "reading: a derivation that names its model, through cost_per_acquisition"@en .

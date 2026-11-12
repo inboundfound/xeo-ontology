@@ -307,6 +307,29 @@ FOR (c:Consent) ON (c.consentRecordedAt);
 CREATE CONSTRAINT inbound_reference_id IF NOT EXISTS
 FOR (r:InboundReference) REQUIRE r.id IS UNIQUE;
 
+// ========== ATTRIBUTION (0.7) ==========
+
+CREATE CONSTRAINT touchpoint_id IF NOT EXISTS
+FOR (t:Touchpoint) REQUIRE t.id IS UNIQUE;
+
+CREATE INDEX touchpoint_time IF NOT EXISTS
+FOR (t:Touchpoint) ON (t.occurredAt);
+
+CREATE CONSTRAINT journey_id IF NOT EXISTS
+FOR (j:Journey) REQUIRE j.id IS UNIQUE;
+
+CREATE CONSTRAINT revenue_event_id IF NOT EXISTS
+FOR (r:RevenueEvent) REQUIRE r.id IS UNIQUE;
+
+CREATE CONSTRAINT subscription_id IF NOT EXISTS
+FOR (s:Subscription) REQUIRE s.id IS UNIQUE;
+
+CREATE CONSTRAINT attribution_model_id IF NOT EXISTS
+FOR (m:AttributionModel) REQUIRE m.id IS UNIQUE;
+
+CREATE CONSTRAINT attributed_credit_id IF NOT EXISTS
+FOR (c:AttributedCredit) REQUIRE c.id IS UNIQUE;
+
 // Embeddings live in an external vector store; the graph keeps only the
 // derivation claim (embeddingRef, embeddingModel, embeddedAt, embeddingDim) on
 // the embedded node — a :Term, a :URL, a :Prompt or a :Topic.

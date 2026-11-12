@@ -198,20 +198,6 @@ xeo:amountAtTransition a owl:DatatypeProperty ;
 
 # --- Source (derivations) -------------------------------------------------------------------
 
-xeo:firstTouchChannel a owl:DatatypeProperty ;
-    rdfs:label "first-touch channel" ;
-    rdfs:range xsd:string ;
-    xeo:xeoLayer "derivation" ;
-    xeo:canonicalStore "crm" ;
-    dct:description "The acquisition channel of the earliest known interaction the CRM attributes to a record, as a code from a slotted-in scheme (organic_search, referral, ai_assistant, ... — xeos:acquisitionChannel is a published reference filling). A derivation, never an observation: a classifier or a person decided it, so it carries method, either vendor-classifier:<vendor> or manual-entry. One per record. A deal usually inherits it from a contact, by a rule that is the vendor's." .
-
-xeo:referringPlatform a owl:DatatypeProperty ;
-    rdfs:label "referring platform" ;
-    rdfs:range xsd:string ;
-    xeo:xeoLayer "derivation" ;
-    xeo:canonicalStore "crm" ;
-    dct:description "The host of the platform behind a touch, in lower case (chatgpt.com, perplexity.ai). Says which assistant or site, where the channel says only what kind. A derivation by the same classifier that set the channel. Read beside firstTouchChannel or latestTouchChannel." .
-
 # --- A pipeline number over a window -----------------------------------------------------------
 
 xeo:PipelineRollup a owl:Class ;
@@ -224,14 +210,6 @@ xeo:PipelineRollup a owl:Class ;
 # --- Extension set -----------------------------------------------------------------------------
 # Declared and usable; not something a consumer is expected to implement. Each
 # is supported by one to four of the seven CRMs read.
-
-xeo:latestTouchChannel a owl:DatatypeProperty ;
-    rdfs:label "latest-touch channel" ;
-    rdfs:range xsd:string ;
-    xeo:xeoLayer "derivation" ;
-    xeo:canonicalStore "crm" ;
-    xeo:termStatus "extension" ;
-    dct:description "The acquisition channel of the most recent known interaction the CRM attributes to a record, as a code from xeos:acquisitionChannel. A derivation carrying method, like firstTouchChannel. One CRM of the seven read keeps it." .
 
 xeo:lifecycleStage a owl:DatatypeProperty ;
     rdfs:label "lifecycle stage" ;
@@ -323,12 +301,6 @@ xeo:marketingCampaignRef a owl:DatatypeProperty ;
     dct:description "Identity-key pointer to a marketing campaign in the CRM that a record is attributed to. A pointer and nothing more. Never an xeo:Campaign: that is a body of delivery work against a Topic inside a Project, and a CRM campaign is a marketing programme. The two share a word and must not be joined on it." .
 
 # Removed in 0.7: xeo:campaignInfluenceShare. Use the attribution module's creditShare on an AttributedCredit.
-
-
-
-
-
-
 
 xeo:OwnerChange a owl:Class ;
     rdfs:label "Owner Change" ;
