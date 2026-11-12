@@ -264,7 +264,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <h3>Outcome <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:Outcome</code>
   <p>The measured result an experiment produced: the comparison of a resultReading against a baselineReading of one Metric over one scope, recorded as absoluteChange, relativeChange and result. The measurement is an observation; any claim that the tactic CAUSED it is an interpretation, carried on the Recommendation, not asserted here.</p>
-  <dl><div class="row"><dt>subclass of</dt><dd><a href="http://www.w3.org/ns/prov#Entity" class="ext">prov:Entity</a></dd></div></dl>
+  <dl><div class="row"><dt>subclass of</dt><dd><a href="http://www.w3.org/ns/prov#Entity" class="ext">prov:Entity</a></dd></div><div class="row"><dt>grounded in</dt><dd>The two MetricReadings it compares, each grounded in the API contract of the system named in its source</dd></div></dl>
 </section>
 <section id="OwnerChange" class="term">
   <h3>Owner Change <span class="layer" style="--h:#319795">episode</span> <span class="status">extension</span><span class="mod">xeo-sales</span></h3>
@@ -715,7 +715,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <h3>has result <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:hasResult</code>
   <p>A result observed on the SERP. Carries position and resultType. A result is a URL whether or not its site is under observation: a competitor&#x27;s result has no partOf edge, it has onDomain.</p>
-  <dl><div class="row"><dt>domain</dt><dd><a href="#SerpSnapshot">xeo:SerpSnapshot</a></dd></div><div class="row"><dt>range</dt><dd><a href="#URL">xeo:URL</a></dd></div></dl>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#SerpSnapshot">xeo:SerpSnapshot</a></dd></div><div class="row"><dt>range</dt><dd><a href="#URL">xeo:URL</a></dd></div><div class="row"><dt>grounded in</dt><dd>The engine&#x27;s results page as one SerpSnapshot captured it (the provider&#x27;s SERP API contract, or the rendered page)</dd></div></dl>
 </section>
 <section id="hasRole" class="term">
   <h3>has role <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-strategy</span></h3>
@@ -763,7 +763,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <h3>in context <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:inContext</code>
   <p>The gap the experiment was run against. The precedent-similarity key: &#x27;has this tactic worked on a gap like mine?&#x27; is a match on gapType through this edge.</p>
-  <dl><div class="row"><dt>domain</dt><dd><a href="#Experiment">xeo:Experiment</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Gap">xeo:Gap</a></dd></div></dl>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Experiment">xeo:Experiment</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Gap">xeo:Gap</a></dd></div><div class="row"><dt>grounded in</dt><dd>The experiment&#x27;s run record: the Gap it was set up against</dd></div></dl>
 </section>
 <section id="inIntervention" class="term">
   <h3>in intervention <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-decision</span></h3>
@@ -835,7 +835,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <h3>mentions <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-visibility</span></h3>
   <code class="iri">xeo:mentions</code>
   <p>The brand&#x27;s name appears in the response text. Carries mentionRank (order of first appearance) — high mention counts at poor ranks are the &#x27;named among twelve, championed never&#x27; pattern. Extraction method (string match, NER model) must be recorded; model-extracted mentions are derivations, not observations.</p>
-  <dl><div class="row"><dt>domain</dt><dd><a href="#LLMResponse">xeo:LLMResponse</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Brand">xeo:Brand</a></dd></div></dl>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#LLMResponse">xeo:LLMResponse</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Brand">xeo:Brand</a></dd></div><div class="row"><dt>grounded in</dt><dd>The response text as captured (per-provider API contract), read by the recorded extraction method</dd></div></dl>
 </section>
 <section id="metricType" class="term">
   <h3>metric type <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-core</span></h3>
@@ -907,7 +907,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <h3>produced outcome <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:producedOutcome</code>
   <p>The measured result this experiment generated.</p>
-  <dl><div class="row"><dt>domain</dt><dd><a href="#Experiment">xeo:Experiment</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Outcome">xeo:Outcome</a></dd></div><div class="row"><dt>subproperty of</dt><dd><a href="http://www.w3.org/ns/prov#generated" class="ext">prov:generated</a></dd></div></dl>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Experiment">xeo:Experiment</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Outcome">xeo:Outcome</a></dd></div><div class="row"><dt>subproperty of</dt><dd><a href="http://www.w3.org/ns/prov#generated" class="ext">prov:generated</a></dd></div><div class="row"><dt>grounded in</dt><dd>The experiment&#x27;s run record</dd></div></dl>
 </section>
 <section id="ranksFor" class="term">
   <h3>ranks for <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
@@ -1069,7 +1069,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <h3>visibility for <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-visibility</span></h3>
   <code class="iri">xeo:visibilityFor</code>
   <p>Windowed rollup of response-level observations for a (prompt, brand) pair: mentionRate, citationRate, responses, periodStart, periodEnd, source, datasetUri. Mirrors the ranksFor rollup pattern — raw responses are the authoritative record; this is the traversal-friendly projection.</p>
-  <dl><div class="row"><dt>domain</dt><dd><a href="#Prompt">xeo:Prompt</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Brand">xeo:Brand</a></dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Prompt">xeo:Prompt</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Brand">xeo:Brand</a></dd></div><div class="row"><dt>grounded in</dt><dd>The captured LLMResponses the rollup window covers: their text and citation annotations (per-provider API contract)</dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
 </section>
 <h2 id="datatype-properties">Datatype properties <span class="n">147</span></h2>
 <section id="absoluteChange" class="term">
@@ -1130,13 +1130,13 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <h3>baseline <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:baseline</code>
   <p>The metric&#x27;s value when the target was set — the anchor &#x27;how far beyond target&#x27; is measured from. An observation captured onto an interpretation; baselineCapturedAt says when, because it is not the same instant as the target&#x27;s creation. The cached value of baselineReading, which carries the window, scope and source a bare number cannot.</p>
-  <dl><div class="row"><dt>domain</dt><dd><a href="#MetricTarget">xeo:MetricTarget</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>seeAlso</dt><dd><a href="#baselineReading">xeo:baselineReading</a></dd></div></dl>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#MetricTarget">xeo:MetricTarget</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>seeAlso</dt><dd><a href="#baselineReading">xeo:baselineReading</a></dd></div><div class="row"><dt>grounded in</dt><dd>The API contract of the system named in the source of the target&#x27;s baselineReading</dd></div></dl>
 </section>
 <section id="baselineCapturedAt" class="term">
   <h3>baseline captured at <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:baselineCapturedAt</code>
   <p>When baseline was read. Not the same instant as the target&#x27;s creation.</p>
-  <dl><div class="row"><dt>domain</dt><dd><a href="#MetricTarget">xeo:MetricTarget</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div></dl>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#MetricTarget">xeo:MetricTarget</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div><div class="row"><dt>grounded in</dt><dd>The API contract of the system named in the source of the target&#x27;s baselineReading</dd></div></dl>
 </section>
 <section id="betweenness" class="term">
   <h3>betweenness <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-analysis</span></h3>
@@ -1166,7 +1166,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <h3>citation rank <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-visibility</span></h3>
   <code class="iri">xeo:citationRank</code>
   <p>1-based order of a cited source where the engine orders its citations. Carried on cites; absent where the engine reports an unordered set.</p>
-  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div></dl>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div><div class="row"><dt>grounded in</dt><dd>Engine response citation annotations (per-provider API contract)</dd></div></dl>
 </section>
 <section id="citationRate" class="term">
   <h3>citation rate <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-visibility</span></h3>
@@ -1418,7 +1418,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <h3>fetched at <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:fetchedAt</code>
   <p>When the fetch observation was made. Carried on fetched.</p>
-  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div></dl>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div><div class="row"><dt>grounded in</dt><dd>The crawler&#x27;s fetch log: when the HTTP response (RFC 9110) was received</dd></div></dl>
 </section>
 <section id="fired" class="term">
   <h3>fired <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-strategy</span></h3>
@@ -1430,7 +1430,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <h3>first seen at <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:firstSeenAt</code>
   <p>When an observed edge (a link, typically) was first seen. Half of the bitemporal pair that makes link liveness answerable.</p>
-  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div></dl>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div><div class="row"><dt>grounded in</dt><dd>The crawl records in which the edge was observed (each Crawl&#x27;s own run log)</dd></div></dl>
 </section>
 <section id="firstTouchChannel" class="term">
   <h3>first-touch channel <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-sales</span></h3>
@@ -1490,7 +1490,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <h3>last seen at <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:lastSeenAt</code>
   <p>When an observed edge was most recently seen. With lastSeenCrawlId this is how a link is known to be live rather than merely once-observed.</p>
-  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div></dl>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div><div class="row"><dt>grounded in</dt><dd>The crawl records in which the edge was observed (each Crawl&#x27;s own run log)</dd></div></dl>
 </section>
 <section id="lastSeenCrawlId" class="term">
   <h3>last seen crawl id <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-core</span></h3>
@@ -1520,7 +1520,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <h3>lift <span class="layer" style="--h:#38A169">observation</span> <span class="status dep">deprecated</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:lift</code>
   <p>The measured change the experiment recorded on its target metric. Deprecated in 0.6.0, as advice: one number that may be points or a percentage, with nothing to say which. Write absoluteChange and relativeChange. Still valid where stored.</p>
-  <dl><div class="row"><dt>domain</dt><dd><a href="#Outcome">xeo:Outcome</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>seeAlso</dt><dd><a href="#absoluteChange">xeo:absoluteChange</a> · <a href="#relativeChange">xeo:relativeChange</a></dd></div></dl>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Outcome">xeo:Outcome</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>seeAlso</dt><dd><a href="#absoluteChange">xeo:absoluteChange</a> · <a href="#relativeChange">xeo:relativeChange</a></dd></div><div class="row"><dt>grounded in</dt><dd>The two MetricReadings its Outcome compares, each grounded in the API contract of the system named in its source</dd></div></dl>
 </section>
 <section id="linkPosition" class="term">
   <h3>link position <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-core</span></h3>
@@ -1556,7 +1556,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <h3>mention rank <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-visibility</span></h3>
   <code class="iri">xeo:mentionRank</code>
   <p>1-based order of the brand&#x27;s first appearance in the response text. Carried on mentions edges.</p>
-  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div></dl>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div><div class="row"><dt>grounded in</dt><dd>The response text as captured (per-provider API contract), read by the recorded extraction method</dd></div></dl>
 </section>
 <section id="mentionRate" class="term">
   <h3>mention rate <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-visibility</span></h3>
@@ -1682,7 +1682,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <h3>position <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:position</code>
   <p>1-based rank of a result within a SERP snapshot. Carried on hasResult. Distinct from avgPosition, which is a windowed rollup, not a single observation.</p>
-  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div></dl>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div><div class="row"><dt>grounded in</dt><dd>The engine&#x27;s results page as one SerpSnapshot captured it (the provider&#x27;s SERP API contract, or the rendered page)</dd></div></dl>
 </section>
 <section id="practiceKind" class="term">
   <h3>practice kind <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-strategy</span></h3>
@@ -1754,25 +1754,25 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <h3>responses <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-visibility</span></h3>
   <code class="iri">xeo:responses</code>
   <p>How many captured responses the rollup window covers — the denominator behind mentionRate and citationRate. Carried on visibilityFor; a rate without it cannot be weighted.</p>
-  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div></dl>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div><div class="row"><dt>grounded in</dt><dd>The captured LLMResponses the rollup window covers (per-provider API contract)</dd></div></dl>
 </section>
 <section id="result" class="term">
   <h3>result <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:result</code>
   <p>&#x27;significant&#x27;, &#x27;no_change&#x27; or &#x27;inconclusive&#x27;. Answers DID THIS MOVE; lift&#x27;s sign answers which way. A regression is significant — the value never smuggles a direction in.</p>
-  <dl><div class="row"><dt>domain</dt><dd><a href="#Outcome">xeo:Outcome</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Outcome">xeo:Outcome</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>The two MetricReadings its Outcome compares, read with the test its method names</dd></div></dl>
 </section>
 <section id="resultReason" class="term">
   <h3>result reason <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:resultReason</code>
   <p>Why an outcome was inconclusive, from a small controlled set (window_incomplete, co_intervention, confounded_external, baseline_unavailable, ...). The two confounder reasons differ on purpose: a co-intervention keeps its lift and shares attribution; an external confounder records none.</p>
-  <dl><div class="row"><dt>domain</dt><dd><a href="#Outcome">xeo:Outcome</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Outcome">xeo:Outcome</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>The experiment&#x27;s run record: its window, and the co-interventions and ExternalEvents logged against it</dd></div></dl>
 </section>
 <section id="resultType" class="term">
   <h3>result type <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:resultType</code>
   <p>The kind of SERP result observed (organic, featured snippet, local pack, ...). Carried on hasResult and relatedTerm. The vocabulary is per-engine and belongs to the consumer; xeos:serpResultType is a published reference filling.</p>
-  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>The engine&#x27;s results page as one SerpSnapshot captured it (the provider&#x27;s result-type field, mapped to xeos:serpResultType)</dd></div></dl>
 </section>
 <section id="resultsWindowDays" class="term">
   <h3>results window days <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-work</span></h3>

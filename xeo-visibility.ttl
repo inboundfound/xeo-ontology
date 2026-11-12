@@ -213,3 +213,13 @@ xeo:attributedResponse a owl:ObjectProperty ;
     xeo:xeoLayer "interpretation" ;
     dct:description "The claim that this conversion traces to engine visibility captured in this response episode. Multi-engine attribution is inherently inferential: this edge MUST carry method and confidence, and honest implementations will leave it sparse. Assert it only when the event's session, or the linked record's first or latest touch, has channel ai_assistant (or a declared assisted-path method applies), and the response cites a URL of the same website within a declared lookback window. Method is referral-match, citation-window or model." ;
     rdfs:label "attributed response" .
+
+# --- v0.7.0 (grounding, 2026-11-12) ---------------------------------------------
+# Appended at the foot, so no line above moves. Every observation names what it
+# is grounded in; these 5 did not. Nothing else about them changes.
+
+xeo:mentions xeo:groundedIn "The response text as captured (per-provider API contract), read by the recorded extraction method" .
+xeo:mentionRank xeo:groundedIn "The response text as captured (per-provider API contract), read by the recorded extraction method" .
+xeo:citationRank xeo:groundedIn "Engine response citation annotations (per-provider API contract)" .
+xeo:responses xeo:groundedIn "The captured LLMResponses the rollup window covers (per-provider API contract)" .
+xeo:visibilityFor xeo:groundedIn "The captured LLMResponses the rollup window covers: their text and citation annotations (per-provider API contract)" .
