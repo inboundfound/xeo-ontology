@@ -16,8 +16,8 @@ xeo: a owl:Ontology ;
 
 # --- Annotation properties -------------------------------------------------
 
-xeo:epistemicLayer a owl:AnnotationProperty ;
-    rdfs:comment "One of: entity, episode, observation, derivation, interpretation, norm. Types every term by the kind of claim it makes. Core terms stay at entity/episode/observation/derivation; extension modules may introduce interpretation- or norm-layer terms and must mark them." .
+xeo:xeoLayer a owl:AnnotationProperty ;
+    rdfs:comment "One of: entity, episode, observation, derivation, interpretation, norm. Types every term by the kind of claim it makes; every term carries exactly one. A layer is a kind of claim, not a file: the files are modules, and any module may hold terms of any layer. A graph that stamps instances with their layer uses the same name and values. Named epistemicLayer until 0.7." .
 
 xeo:groundedIn a owl:AnnotationProperty ;
     rdfs:comment "The primary standard or API contract that defines this term's meaning." .
@@ -29,39 +29,39 @@ xeo:canonicalStore a owl:AnnotationProperty ;
 
 xeo:Website a owl:Class ;
     rdfs:label "Website" ;
-    xeo:epistemicLayer "entity" ;
+    xeo:xeoLayer "entity" ;
     xeo:groundedIn "WHATWG URL Standard (origin)" ;
     dct:description "A site under observation, identified by its origin. The tenancy scope for URLs, crawls, and topics." .
 
 xeo:URL a owl:Class ;
     rdfs:label "URL" ;
-    xeo:epistemicLayer "entity" ;
+    xeo:xeoLayer "entity" ;
     xeo:groundedIn "WHATWG URL Standard" ;
     dct:description "A resource address within a Website. Durable identity; the state of the resource at a time is recorded by Fetch observations." .
 
 xeo:Term a owl:Class ;
     rdfs:label "Term" ;
-    xeo:epistemicLayer "entity" ;
+    xeo:xeoLayer "entity" ;
     dct:description "A search query string, unique by name. Data sources are attributed on observations that mention the term, never as subtypes of the term." .
 
 xeo:Crawl a owl:Class ;
     rdfs:label "Crawl" ;
-    xeo:epistemicLayer "episode" ;
+    xeo:xeoLayer "episode" ;
     dct:description "One crawl run over one Website: time-bounded, agent-attributed, immutable once finished." .
 
 xeo:SerpSnapshot a owl:Class ;
     rdfs:label "SERP Snapshot" ;
-    xeo:epistemicLayer "episode" ;
+    xeo:xeoLayer "episode" ;
     dct:description "One observation of a search results page for a Term at a moment, for a stated engine, locale, and device." .
 
 xeo:Topic a owl:Class ;
     rdfs:label "Topic" ;
-    xeo:epistemicLayer "derivation" ;
+    xeo:xeoLayer "derivation" ;
     dct:description "A named grouping of Terms and/or URLs produced by a clustering or labeling process. Site-scoped. Assignments (inTopic for a Term, about for a URL or Prompt) carry method, model, and confidence." .
 
 xeo:SearchPerformanceFact a owl:Class ;
     rdfs:label "Search Performance Fact" ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     xeo:canonicalStore "bigquery" ;
     xeo:groundedIn "Google Search Console Search Analytics API" ;
     dct:description "The atomic ground-truth metric row for one (websiteId, address, term, date [, device, country]) tuple. Never instantiated as graph relationships; the graph carries windowed ranksFor rollups whose datasetUri points back to the authoritative table." .
@@ -70,62 +70,62 @@ xeo:SearchPerformanceFact a owl:Class ;
 
 xeo:partOf a owl:ObjectProperty ;
     rdfs:domain xeo:URL ; rdfs:range xeo:Website ;
-    xeo:epistemicLayer "entity" .
+    xeo:xeoLayer "entity" .
 
 xeo:hasCrawl a owl:ObjectProperty ;
     rdfs:domain xeo:Website ; rdfs:range xeo:Crawl ;
-    xeo:epistemicLayer "episode" .
+    xeo:xeoLayer "episode" .
 
 xeo:fetched a owl:ObjectProperty ;
     rdfs:domain xeo:Crawl ; rdfs:range xeo:URL ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     xeo:groundedIn "RFC 9110 (HTTP Semantics)" ;
     dct:description "An HTTP fetch of a URL within a crawl. In the property graph this relationship carries statusCode, contentType, title, metaDescription, robotsMeta, contentHash, fetchedAt." .
 
 xeo:linksTo a owl:ObjectProperty ;
     rdfs:domain xeo:URL ; rdfs:range xeo:URL ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     xeo:groundedIn "WHATWG HTML §4.5.1 (the a element)" ;
     dct:description "An observed hyperlink. Carries anchorText, rel, linkPosition, firstSeenAt, lastSeenAt, lastSeenCrawlId." .
 
 xeo:redirectsTo a owl:ObjectProperty ;
     rdfs:domain xeo:URL ; rdfs:range xeo:URL ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     xeo:groundedIn "RFC 9110 §15.4 (Redirection 3xx)" .
 
 xeo:hasCanonical a owl:ObjectProperty ;
     rdfs:domain xeo:URL ; rdfs:range xeo:URL ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     xeo:groundedIn "RFC 6596 (The Canonical Link Relation)" .
 
 xeo:ranksFor a owl:ObjectProperty ;
     rdfs:domain xeo:URL ; rdfs:range xeo:Term ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     xeo:canonicalStore "neo4j" ;
     xeo:groundedIn "Google Search Console Search Analytics API" ;
     dct:description "Windowed rollup projection of SearchPerformanceFacts for a (page, query) pair. Carries clicks, impressions, ctr, avgPosition, periodStart, periodEnd, source, datasetUri, syncedAt." .
 
 xeo:hasSnapshot a owl:ObjectProperty ;
     rdfs:domain xeo:Term ; rdfs:range xeo:SerpSnapshot ;
-    xeo:epistemicLayer "episode" .
+    xeo:xeoLayer "episode" .
 
 xeo:hasResult a owl:ObjectProperty ;
     rdfs:domain xeo:SerpSnapshot ; rdfs:range xeo:URL ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     dct:description "A result observed on the SERP. Carries position and resultType. A result is a URL whether or not its site is under observation: a competitor's result has no partOf edge, it has onDomain." .
 
 xeo:inTopic a owl:ObjectProperty ;
     rdfs:domain xeo:Term ; rdfs:range xeo:Topic ;
-    xeo:epistemicLayer "derivation" ;
+    xeo:xeoLayer "derivation" ;
     dct:description "Process-attributed topic assignment. Carries method, model, confidence, assignedAt." .
 
 xeo:childOf a owl:ObjectProperty ;
     rdfs:domain xeo:Topic ; rdfs:range xeo:Topic ;
-    xeo:epistemicLayer "derivation" .
+    xeo:xeoLayer "derivation" .
 
 xeo:scopedTo a owl:ObjectProperty ;
     rdfs:domain xeo:Topic ; rdfs:range xeo:Website ;
-    xeo:epistemicLayer "entity" .
+    xeo:xeoLayer "entity" .
 
 # --- Datatype properties (selection; relationship-carried ones documented in README) ---
 
@@ -139,42 +139,42 @@ xeo:address a owl:DatatypeProperty ;
 
 xeo:statusCode a owl:DatatypeProperty ;
     rdfs:range xsd:integer ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     xeo:groundedIn "RFC 9110 §15 (Status Codes)" .
 
 xeo:anchorText a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     xeo:groundedIn "WHATWG HTML §4.5.1" .
 
 xeo:clicks a owl:DatatypeProperty ;
     rdfs:range xsd:integer ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     xeo:groundedIn "GSC Search Analytics API" .
 
 xeo:impressions a owl:DatatypeProperty ;
     rdfs:range xsd:integer ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     xeo:groundedIn "GSC Search Analytics API" .
 
 xeo:avgPosition a owl:DatatypeProperty ;
     rdfs:range xsd:decimal ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     xeo:groundedIn "GSC Search Analytics API" .
 
 xeo:embeddingRef a owl:DatatypeProperty ;
     rdfs:range xsd:string ;  # domain-free since v0.6.0 (was xeo:Term): any embedded node carries it. See the v0.6.0 notes at the foot.
-    xeo:epistemicLayer "derivation" ;
+    xeo:xeoLayer "derivation" ;
     xeo:canonicalStore "vector-store" ;
     dct:description "Pointer (collection + id) to the vector in the external store, on any embedded node (a Term, a URL, a Prompt, a Topic). The geometry lives where ANN search happens; the graph keeps the claim and its provenance." .
 
 xeo:embeddingModel a owl:DatatypeProperty ;
     rdfs:range xsd:string ;  # domain-free since v0.6.0 (was xeo:Term), with embeddingRef.
-    xeo:epistemicLayer "derivation" .
+    xeo:xeoLayer "derivation" .
 
 xeo:confidence a owl:DatatypeProperty ;
     rdfs:range xsd:decimal ;
-    xeo:epistemicLayer "derivation" ;
+    xeo:xeoLayer "derivation" ;
     dct:description "0-1 confidence attached to a derivation edge." .
 
 # --- Relationship-carried properties -----------------------------------------
@@ -184,81 +184,81 @@ xeo:confidence a owl:DatatypeProperty ;
 
 xeo:websiteId a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
-    xeo:epistemicLayer "entity" ;
+    xeo:xeoLayer "entity" ;
     dct:description "The tenancy key. Scope lives in this property on every scoped node and edge, never in a dynamic label — the identity half of 'tenancy is data, not schema'." .
 
 xeo:datasetUri a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
-    xeo:epistemicLayer "derivation" ;
+    xeo:xeoLayer "derivation" ;
     dct:description "Pointer to the authoritative table a windowed rollup was projected from (e.g. a BigQuery table URI). The provenance contract for ranksFor and visibilityFor: the graph keeps the traversable projection, this says where the ground truth lives." .
 
 xeo:name a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
-    xeo:epistemicLayer "entity" ;
+    xeo:xeoLayer "entity" ;
     dct:description "The identifying name of a Term, Topic, Brand, or Capability — and of a Domain, Entity, Engine, Organization, Framework, Stage, Diagnostic, Tactic or ExternalEvent. Unique within its scope; see schema.cypher for the per-class identity keys." .
 
 xeo:title a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     xeo:groundedIn "WHATWG HTML (the title element)" ;
     dct:description "The document title observed on a fetch. Carried on the fetched edge, not on the URL: the address is durable, the title is what one crawl saw." .
 
 xeo:metaDescription a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     xeo:groundedIn "WHATWG HTML (meta name=description)" ;
     dct:description "The meta description observed on a fetch. Carried on the fetched edge." .
 
 xeo:rel a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     xeo:groundedIn "WHATWG HTML (link types)" ;
     dct:description "The rel attribute of an observed hyperlink (nofollow, sponsored, ugc, ...). Carried on linksTo." .
 
 xeo:resultType a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     dct:description "The kind of SERP result observed (organic, featured snippet, local pack, ...). Carried on hasResult and relatedTerm. The vocabulary is per-engine and belongs to the consumer; xeos:serpResultType is a published reference filling." .
 
 xeo:position a owl:DatatypeProperty ;
     rdfs:range xsd:integer ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     dct:description "1-based rank of a result within a SERP snapshot. Carried on hasResult. Distinct from avgPosition, which is a windowed rollup, not a single observation." .
 
 xeo:ctr a owl:DatatypeProperty ;
     rdfs:range xsd:decimal ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     xeo:groundedIn "GSC Search Analytics API" ;
     dct:description "Clickthrough rate over the rollup window. Carried on ranksFor." .
 
 xeo:periodStart a owl:DatatypeProperty ;
     rdfs:range xsd:date ;
-    xeo:epistemicLayer "derivation" ;
+    xeo:xeoLayer "derivation" ;
     dct:description "First day of a rollup window: a calendar date, in the source's own time zone. The window runs from periodStart to periodEnd with both days included. Carried on ranksFor and visibilityFor, and on a MetricReading; never pool across windows silently." .
 
 xeo:periodEnd a owl:DatatypeProperty ;
     rdfs:range xsd:date ;
-    xeo:epistemicLayer "derivation" ;
+    xeo:xeoLayer "derivation" ;
     dct:description "Last day of a rollup window: a calendar date, in the source's own time zone. The window runs from periodStart to periodEnd with both days included, so a one-day window has periodStart equal to periodEnd. Carried on ranksFor and visibilityFor, and on a MetricReading." .
 
 xeo:fetchedAt a owl:DatatypeProperty ;
     rdfs:range xsd:dateTime ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     dct:description "When the fetch observation was made. Carried on fetched." .
 
 xeo:firstSeenAt a owl:DatatypeProperty ;
     rdfs:range xsd:dateTime ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     dct:description "When an observed edge (a link, typically) was first seen. Half of the bitemporal pair that makes link liveness answerable." .
 
 xeo:lastSeenAt a owl:DatatypeProperty ;
     rdfs:range xsd:dateTime ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     dct:description "When an observed edge was most recently seen. With lastSeenCrawlId this is how a link is known to be live rather than merely once-observed." .
 
 xeo:assignedAt a owl:DatatypeProperty ;
     rdfs:range xsd:dateTime ;
-    xeo:epistemicLayer "derivation" ;
+    xeo:xeoLayer "derivation" ;
     dct:description "When a derivation edge was written (e.g. a topic assignment). Carried on inTopic alongside method, model and confidence." .
 
 # --- Module IRI convention ---------------------------------------------------
@@ -298,34 +298,34 @@ xeo:rangeIncludes a owl:AnnotationProperty ;
 
 xeo:Domain a owl:Class ;
     rdfs:label "Domain" ;
-    xeo:epistemicLayer "entity" ;
+    xeo:xeoLayer "entity" ;
     xeo:groundedIn "WHATWG URL Standard (host) · Public Suffix List (registrable domain)" ;
     dct:description "A registrable domain (the public suffix plus one label, e.g. example.co.uk), identified by its name in lower case. The publisher-level identity a URL sits on, whether or not the site is under observation: a competitor's result has no partOf edge to a tracked Website, it has onDomain. Not tenant-scoped: one node per domain, shared by every tenant that sees it, and it carries no websiteId." .
 
 xeo:Entity a owl:Class ;
     rdfs:label "Entity" ;
-    xeo:epistemicLayer "entity" ;
-    dct:description "A real-world thing or concept that content is about — a product, a place, a person, a material, a method — identified by a reference into a public knowledge base (entityRef) where one exists, otherwise by name. Distinct from Topic, which is a site-scoped grouping somebody derived, and from Brand, which is a market identity engines mention: an Entity is the thing itself, shared across sites. Not tenant-scoped. Named for the knowledge-graph sense of the word; not to be confused with the epistemic layer 'entity', which Website, URL and Term also occupy." .
+    xeo:xeoLayer "entity" ;
+    dct:description "A real-world thing or concept that content is about — a product, a place, a person, a material, a method — identified by a reference into a public knowledge base (entityRef) where one exists, otherwise by name. Distinct from Topic, which is a site-scoped grouping somebody derived, and from Brand, which is a market identity engines mention: an Entity is the thing itself, shared across sites. Not tenant-scoped. Named for the knowledge-graph sense of the word; not to be confused with the layer 'entity', which Website, URL and Term also occupy." .
 
 # --- v0.6.0 object properties ----------------------------------------------------
 
 xeo:onDomain a owl:ObjectProperty ;
     rdfs:label "on domain" ;
     rdfs:domain xeo:URL ; rdfs:range xeo:Domain ;
-    xeo:epistemicLayer "entity" ;
+    xeo:xeoLayer "entity" ;
     xeo:groundedIn "WHATWG URL Standard (host) · Public Suffix List (registrable domain)" ;
     dct:description "The registrable domain this URL's host belongs to. A fact of the address, not of any crawl: computed from the host and the public suffix list, the same for every tenant. One per URL." .
 
 xeo:relatedTerm a owl:ObjectProperty ;
     rdfs:label "related term" ;
     rdfs:domain xeo:SerpSnapshot ; rdfs:range xeo:Term ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     xeo:groundedIn "The results page as served (per-provider SERP API contract)" ;
     dct:description "A query the results page itself suggested: a 'people also ask' question or a related search. Carries resultType to say which, and position where the engine orders them. The suggested query is a Term like any other, which is what joins a snapshot's neighbourhood back to rank data." .
 
 xeo:about a owl:ObjectProperty ;
     rdfs:label "about" ;
-    xeo:epistemicLayer "derivation" ;
+    xeo:xeoLayer "derivation" ;
     xeo:domainIncludes xeo:URL , xeo:Prompt , xeo:Term ;
     xeo:rangeIncludes xeo:Topic , xeo:Entity ;
     dct:description "The subject says something about this Topic or Entity, as assigned by a stated process (entity linking, a classifier, a human tagger). Carries method and confidence, and model where a model made the call. Many per subject. Domain and range left open across the terms listed: inTopic stays the narrower, clustering-specific edge from a Term to its Topic; about is the general aboutness claim for a URL, a Prompt or a Term." .
@@ -340,95 +340,95 @@ xeo:about a owl:ObjectProperty ;
 xeo:contentType a owl:DatatypeProperty ;
     rdfs:label "content type" ;
     rdfs:range xsd:string ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     xeo:groundedIn "RFC 9110 §8.3 (Content-Type)" ;
     dct:description "The media type the server declared for the fetched representation (text/html, application/pdf, ...), parameters dropped. Carried on fetched." .
 
 xeo:robotsMeta a owl:DatatypeProperty ;
     rdfs:label "robots meta" ;
     rdfs:range xsd:string ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     xeo:groundedIn "WHATWG HTML (meta name=robots) · the X-Robots-Tag response header" ;
     dct:description "The robots directives observed on a fetch, as a comma-separated list in lower case (noindex, nofollow, ...), combining the robots meta element and the X-Robots-Tag header. Absent when the page declares none. Carried on fetched." .
 
 xeo:h1 a owl:DatatypeProperty ;
     rdfs:label "h1" ;
     rdfs:range xsd:string ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     xeo:groundedIn "WHATWG HTML §4.3.6 (the h1 element)" ;
     dct:description "The text of the first h1 element observed on a fetch. Carried on fetched. A page with several h1 elements records the first; the count is a crawler's finding, not this slot's." .
 
 xeo:contentHash a owl:DatatypeProperty ;
     rdfs:label "content hash" ;
     rdfs:range xsd:string ;
-    xeo:epistemicLayer "derivation" ;
+    xeo:xeoLayer "derivation" ;
     dct:description "A digest of the fetched body, used to tell whether a page changed between crawls. A derivation: the algorithm and what was hashed (raw bytes, rendered text) are the crawler's choice, so the value names its algorithm (sha256:...) and is only comparable with hashes made the same way. Carried on fetched." .
 
 xeo:crawlDepth a owl:DatatypeProperty ;
     rdfs:label "crawl depth" ;
     rdfs:range xsd:integer ;
-    xeo:epistemicLayer "derivation" ;
+    xeo:xeoLayer "derivation" ;
     dct:description "The fewest link hops from the crawl's start URL to this one, 0 for the start URL. A derivation over one crawl's link graph: it depends on where that crawl started and what it was allowed to follow, so it is carried on fetched and compared only within a crawl." .
 
 xeo:indexable a owl:DatatypeProperty ;
     rdfs:label "indexable" ;
     rdfs:range xsd:boolean ;
-    xeo:epistemicLayer "derivation" ;
+    xeo:xeoLayer "derivation" ;
     dct:description "Whether the crawler judged the fetched page eligible for indexing: a successful status, no noindex directive, not canonicalised elsewhere, not blocked. A derivation from statusCode, robotsMeta and hasCanonical by the crawler's own rule, which is the method; it is not a statement that any engine has indexed the page. Carried on fetched." .
 
 xeo:wordCount a owl:DatatypeProperty ;
     rdfs:label "word count" ;
     rdfs:range xsd:integer ;
-    xeo:epistemicLayer "derivation" ;
+    xeo:xeoLayer "derivation" ;
     dct:description "The number of words the crawler counted in the fetched page. A derivation: tools differ on what is counted (body text only, or navigation and footer as well), so counts from different crawlers are not comparable. Carried on fetched." .
 
 xeo:linkPosition a owl:DatatypeProperty ;
     rdfs:label "link position" ;
     rdfs:range xsd:string ;
-    xeo:epistemicLayer "derivation" ;
+    xeo:xeoLayer "derivation" ;
     dct:description "Where on the source page an observed hyperlink sits, as a code from a slotted-in scheme (content, navigation, header, footer, sidebar, other — xeos:linkPosition is a published reference filling). A derivation: the crawler classifies it from the markup around the link. Carried on linksTo. It is what separates an editorial link from a template link, which is why role and authority derivations read it." .
 
 xeo:crawler a owl:DatatypeProperty ;
     rdfs:label "crawler" ;
     rdfs:range xsd:string ;
-    xeo:epistemicLayer "episode" ;
+    xeo:xeoLayer "episode" ;
     xeo:groundedIn "RFC 9110 §10.1.5 (User-Agent)" ;
     dct:description "The agent that ran a Crawl: its product token and version as sent in User-Agent, or the tool's name and version. Carried on the Crawl. Without it two crawls of one site are not comparable, because rendering, depth limits and counting rules differ by tool." .
 
 xeo:startedAt a owl:DatatypeProperty ;
     rdfs:label "started at" ;
     rdfs:range xsd:dateTime ;
-    xeo:epistemicLayer "episode" ;
+    xeo:xeoLayer "episode" ;
     dct:description "When a time-bounded episode began: a Crawl, an Experiment. Domain left open so any episode with a duration can carry it. With endedAt (or concludedAt on an Experiment) it bounds the window." .
 
 xeo:endedAt a owl:DatatypeProperty ;
     rdfs:label "ended at" ;
     rdfs:range xsd:dateTime ;
-    xeo:epistemicLayer "episode" ;
+    xeo:xeoLayer "episode" ;
     dct:description "When a time-bounded episode finished and became immutable. Carried on a Crawl. An Experiment keeps concludedAt, which says the same for its own case. Domain left open." .
 
 xeo:lastSeenCrawlId a owl:DatatypeProperty ;
     rdfs:label "last seen crawl id" ;
     rdfs:range xsd:string ;
-    xeo:epistemicLayer "episode" ;
+    xeo:xeoLayer "episode" ;
     dct:description "The id of the Crawl that most recently observed an edge or a cached value. An identity key naming an episode, not itself a measurement. Carried on linksTo with lastSeenAt: a link whose lastSeenCrawlId is not the site's latest crawl is one that crawl did not find." .
 
 xeo:syncedAt a owl:DatatypeProperty ;
     rdfs:label "synced at" ;
     rdfs:range xsd:dateTime ;
-    xeo:epistemicLayer "derivation" ;
+    xeo:xeoLayer "derivation" ;
     dct:description "When a windowed rollup was last projected from its authoritative table. Carried on ranksFor and visibilityFor beside datasetUri. It dates the projection, not the data: the window is periodStart to periodEnd." .
 
 xeo:embeddedAt a owl:DatatypeProperty ;
     rdfs:label "embedded at" ;
     rdfs:range xsd:dateTime ;
-    xeo:epistemicLayer "derivation" ;
+    xeo:xeoLayer "derivation" ;
     dct:description "When the vector behind embeddingRef was computed. Carried beside embeddingRef and embeddingModel on any embedded node; an embedding older than the content it was made from is stale." .
 
 xeo:embeddingDim a owl:DatatypeProperty ;
     rdfs:label "embedding dimension" ;
     rdfs:range xsd:integer ;
-    xeo:epistemicLayer "derivation" ;
+    xeo:xeoLayer "derivation" ;
     dct:description "The number of dimensions of the vector behind embeddingRef. Fixed by embeddingModel and any truncation applied; two vectors are comparable only when model and dimension both match." .
 
 # --- v0.6.0 SERP capture slots ----------------------------------------------------
@@ -436,31 +436,31 @@ xeo:embeddingDim a owl:DatatypeProperty ;
 xeo:locale a owl:DatatypeProperty ;
     rdfs:label "locale" ;
     rdfs:range xsd:string ;
-    xeo:epistemicLayer "episode" ;
+    xeo:xeoLayer "episode" ;
     xeo:groundedIn "BCP 47 (RFC 5646)" ;
     dct:description "The language and region a capture was requested for, as a BCP 47 tag (en-GB, de-DE). Carried on a SerpSnapshot, and on an LLMResponse where the engine takes one. Part of what makes two captures comparable: never pool across locales silently. A finer location (a city, coordinates) is the capturing tool's parameter and is not modelled here." .
 
 xeo:device a owl:DatatypeProperty ;
     rdfs:label "device" ;
     rdfs:range xsd:string ;
-    xeo:epistemicLayer "episode" ;
+    xeo:xeoLayer "episode" ;
     dct:description "The device class a capture was requested for, as a code from a slotted-in scheme (desktop, mobile, tablet — xeos:device is a published reference filling). Carried on a SerpSnapshot. Results differ by device, so it is part of what makes two snapshots comparable." .
 
 xeo:entityRef a owl:DatatypeProperty ;
     rdfs:label "entity reference" ;
     rdfs:range xsd:string ;
-    xeo:epistemicLayer "entity" ;
+    xeo:xeoLayer "entity" ;
     dct:description "Identity-key pointer from an Entity to its record in a public knowledge base, written as a compact or full IRI (a Wikidata item, a knowledge-graph machine id). The identity of the Entity where present: two Entities with the same entityRef are the same thing whatever their names. The graph joins on the key and never mirrors the knowledge base's schema." .
 
 # --- v0.6.0 annotation completeness -----------------------------------------------
 # Every class and property now carries rdfs:label, dct:description and
-# xeo:epistemicLayer, so tools/validate.py can require all three. The triples
+# xeo:xeoLayer, so tools/validate.py can require all three. The triples
 # below add what the declarations above lacked; nothing is redefined.
 
-xeo:origin xeo:epistemicLayer "entity" ;
+xeo:origin xeo:xeoLayer "entity" ;
     dct:description "The serialized origin (scheme, host, port) that identifies a Website, e.g. https://www.example.com. One per Website." .
 
-xeo:address xeo:epistemicLayer "entity" ;
+xeo:address xeo:xeoLayer "entity" ;
     dct:description "The serialized absolute URL. The identity of a URL, together with websiteId where the URL is tenant-scoped." .
 
 xeo:partOf dct:description "The Website this URL belongs to. Present only for URLs of a site under observation; any other URL is placed by onDomain alone." .
@@ -577,30 +577,30 @@ xeo:mappingConfidence a owl:AnnotationProperty ;
 
 xeo:Organization a owl:Class ;
     rdfs:label "Organization" ;
-    xeo:epistemicLayer "entity" ;
+    xeo:xeoLayer "entity" ;
     dct:description "The canonical organization: one node per real organization (an agency, a brand's company, an in-house team, a customer's company), which every system's record of it (a CRM company, an ad account's owner, a billing customer) points at with refersTo. Identified by name. The owner of Websites and Brands (owns), the holder of Capabilities and the client of another Organization (holdsCapability and clientOf, in xeo-delivery), and a tenancy node that activates Frameworks and Playbooks. It copies no vendor's fields: what a CRM knows about the company stays on the CRM's record, which refers to this node. Its kind is a slotted-in concept (organizationKind), never a subclass." .
 
 xeo:Person a owl:Class ;
     rdfs:label "Person" ;
-    xeo:epistemicLayer "entity" ;
+    xeo:xeoLayer "entity" ;
     dct:description "The canonical person: one node per real person (a contact, a lead, a known visitor, a client's marketer, a team member), which every system's record of that person (a HubSpot contact, a Hyros lead, a SegMetrics visitor) points at with refersTo, so all of a person's representations join the same way. Its identity is a key the implementation mints; an email or a name is how a record is matched to it, not what it is. It copies no vendor's fields: a lifecycle stage, an owner or a source channel stays on the system's record that refers to it." .
 
 xeo:owns a owl:ObjectProperty ;
     rdfs:label "owns" ;
     rdfs:domain xeo:Organization ;
-    xeo:epistemicLayer "entity" ;
+    xeo:xeoLayer "entity" ;
     xeo:rangeIncludes xeo:Website , xeo:Brand ;
     dct:description "A Website or Brand this Organization is responsible for. Ownership in the working sense — whose site it is — not a legal claim. Range left open across Website and Brand." .
 
 xeo:organizationKind a owl:ObjectProperty ;
     rdfs:label "organization kind" ;
     rdfs:domain xeo:Organization ; rdfs:range <http://www.w3.org/2004/02/skos/core#Concept> ;
-    xeo:epistemicLayer "entity" ;
+    xeo:xeoLayer "entity" ;
     dct:description "What kind of party an Organization is, as a slotted-in concept (agency, brand, in_house — xeos:organizationKind is a published reference filling). One per Organization." .
 
 xeo:refersTo a owl:ObjectProperty ;
     rdfs:label "refers to" ;
-    xeo:epistemicLayer "derivation" ;
+    xeo:xeoLayer "derivation" ;
     xeo:rangeIncludes xeo:Person , xeo:Organization ;
     dct:description "From a system's record of a party to the canonical Person or Organization it represents: a HubSpot contact or company, a Hyros lead, a SegMetrics visitor. Many records may refer to one canonical node; a record refers to one. A derivation, because matching a record to a real party is a resolution two resolvers can make differently. It carries method, which says how the match was made: system-key:<key> where the systems share a key (a vendor id carried across an integration, the strongest match and as good as recorded), email-match or name-match where values were compared, manual where a person linked them; and confidence where the method reports one. Domain left open: the record is a vendor-labelled node, and a vendor label is never an XEO term. Range left open across Person and Organization." .
 
@@ -628,29 +628,29 @@ xeo:refersTo a owl:ObjectProperty ;
 
 xeo:Engine a owl:Class ;
     rdfs:label "Engine" ;
-    xeo:epistemicLayer "entity" ;
+    xeo:xeoLayer "entity" ;
     dct:description "A system that mediates between a person's question and web content. The taxonomy below is operational, not doctrinal — subclass as engines evolve." .
 
 xeo:SearchEngine a owl:Class ; rdfs:subClassOf xeo:Engine ;
     rdfs:label "Search Engine" ;
     dct:description "Classic ranked-results retrieval (the SEO surface)." ;
-    xeo:epistemicLayer "entity" .
+    xeo:xeoLayer "entity" .
 
 xeo:onEngine a owl:ObjectProperty ;
     rdfs:range xeo:Engine ;  # domain-free since v0.6.0 (was xeo:LLMResponse): a SerpSnapshot is on an engine too.
-    xeo:epistemicLayer "episode" ;
+    xeo:xeoLayer "episode" ;
     dct:description "Which engine (and, via model/modelVersion properties, which model) produced this response — or, on a SerpSnapshot, served this results page." ;
     rdfs:label "on engine" .
 
 xeo:capturedAt a owl:DatatypeProperty ;
     rdfs:range xsd:dateTime ;  # domain-free since v0.6.0 (was xeo:LLMResponse): SerpSnapshot carries it, and the domain typed every snapshot as a response.
-    xeo:epistemicLayer "episode" ;
+    xeo:xeoLayer "episode" ;
     dct:description "When a capture episode was taken: an LLMResponse or a SerpSnapshot. The instant the record was made, after which it is immutable." ;
     rdfs:label "captured at" .
 
 xeo:model a owl:DatatypeProperty ;
     rdfs:range xsd:string ;  # domain-free since v0.6.0 (was xeo:LLMResponse): inTopic and other derivation edges carry it.
-    xeo:epistemicLayer "episode" ;
+    xeo:xeoLayer "episode" ;
     dct:description "Model identifier + version as reported at capture time. Without this the episode is not comparable across time. Also carried on derivation edges (inTopic, about) to name the model that produced the assignment." ;
     rdfs:label "model" .
 
@@ -658,7 +658,7 @@ xeo:model a owl:DatatypeProperty ;
 
 xeo:SearchIntent a owl:Class ;
     rdfs:label "Search Intent" ;
-    xeo:epistemicLayer "entity" ;
+    xeo:xeoLayer "entity" ;
     xeo:groundedIn "Broder (2002), 'A taxonomy of web search', as extended in common practice" ;
     dct:description "Why the person is asking. Modeled as named individuals, not free strings. Since 0.6.0 the same four values are also published as concepts in xeos:searchIntent, each a SearchIntent, which is the form to write." .
 
@@ -676,7 +676,7 @@ xeo:Transactional a xeo:SearchIntent , owl:NamedIndividual ; rdfs:label "Transac
 
 xeo:targetsIntent a owl:ObjectProperty ;
     rdfs:range xeo:SearchIntent ;
-    xeo:epistemicLayer "interpretation" ;
+    xeo:xeoLayer "interpretation" ;
     dct:description "A URL or Prompt is aimed at this intent. A strategist's or model's claim — carries method and confidence." ;
     rdfs:label "targets intent" .
 
@@ -686,55 +686,55 @@ xeo:targetsIntent a owl:ObjectProperty ;
 
 xeo:ConversionPoint a owl:Class ;
     rdfs:label "Conversion Point" ;
-    xeo:epistemicLayer "entity" ;
+    xeo:xeoLayer "entity" ;
     dct:description "A durable on-page mechanism that turns attention into a pipeline event. Identified by the URL it sits on and its form id or selector. Its kind is conversionPointType." .
 
 xeo:CallToAction a owl:Class ; rdfs:subClassOf xeo:ConversionPoint ;
     rdfs:label "Call To Action" ;
-    xeo:epistemicLayer "entity" ;
+    xeo:xeoLayer "entity" ;
     dct:description "A button or link that asks the visitor to take the next step." ;
     owl:deprecated true ; rdfs:seeAlso xeo:conversionPointType .
 
 xeo:LeadCaptureForm a owl:Class ; rdfs:subClassOf xeo:ConversionPoint ;
     rdfs:label "Lead Capture Form" ;
-    xeo:epistemicLayer "entity" ;
+    xeo:xeoLayer "entity" ;
     dct:description "A form that exchanges contact details for a response, a quote or a booking." ;
     owl:deprecated true ; rdfs:seeAlso xeo:conversionPointType .
 
 xeo:GatedAsset a owl:Class ; rdfs:subClassOf xeo:ConversionPoint ;
     rdfs:label "Gated Asset" ;
     dct:description "Content exchanged for contact information." ;
-    xeo:epistemicLayer "entity" ;
+    xeo:xeoLayer "entity" ;
     owl:deprecated true ; rdfs:seeAlso xeo:conversionPointType .
 
 xeo:conversionPointType a owl:DatatypeProperty ;
     rdfs:label "conversion point type" ;
     rdfs:domain xeo:ConversionPoint ; rdfs:range xsd:string ;
-    xeo:epistemicLayer "entity" ;
+    xeo:xeoLayer "entity" ;
     dct:description "The kind of mechanism a ConversionPoint is, as a code from a slotted-in scheme (cta, lead_form, gated_asset, meeting_booker, chat — xeos:conversionPointType is a published reference filling). One per ConversionPoint. Says with a value what the CallToAction, LeadCaptureForm and GatedAsset subclasses said with a class, so a new kind of mechanism is a new code and not a new term." .
 
 xeo:hasConversionPoint a owl:ObjectProperty ;
     rdfs:domain xeo:URL ; rdfs:range xeo:ConversionPoint ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     dct:description "Observed presence of a conversion point on a page (crawl-attributed, bitemporal like linksTo)." ;
     rdfs:label "has conversion point" ;
     xeo:groundedIn "The page's markup as one crawl fetched it (WHATWG HTML: the form, a and button elements)" .
 
 xeo:ConversionEvent a owl:Class ;
     rdfs:label "Conversion Event" ;
-    xeo:epistemicLayer "episode" ;
+    xeo:xeoLayer "episode" ;
     dct:description "A submission/click/unlock that happened at a time: a visitor's action on a ConversionPoint, recorded by the capturing system. Immutable once recorded. Identified by the capturing system and its submission id; one per submission. Not the creation of a CRM record, which may follow, be merged into an existing record, or never happen: events are not leads." .
 
 xeo:capturedBy a owl:ObjectProperty ;
     rdfs:domain xeo:ConversionEvent ; rdfs:range xeo:ConversionPoint ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     dct:description "The conversion point this event happened at." ;
     rdfs:label "captured by" ;
     xeo:groundedIn "The capturing system's submission payload (per-vendor form or event API contract)" .
 
 xeo:occurredAt a owl:DatatypeProperty ;
     rdfs:range xsd:dateTime ;  # domain-free since v0.6.0 (was xeo:ConversionEvent): xeo:ExternalEvent carries it too.
-    xeo:epistemicLayer "episode" ;
+    xeo:xeoLayer "episode" ;
     dct:description "When an event happened: a ConversionEvent, an ExternalEvent. Domain left open so any dated event can carry it. In UTC, as recorded by the system that captured the event." ;
     rdfs:label "occurred at" .
 
@@ -743,7 +743,7 @@ xeo:occurredAt a owl:DatatypeProperty ;
 xeo:currencyCode a owl:DatatypeProperty ;
     rdfs:label "currency code" ;
     rdfs:range xsd:string ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     xeo:groundedIn "ISO 4217 · the vendor's deal object API contract" ;
     xeo:canonicalStore "crm" ;
     dct:description "The ISO 4217 code (three upper-case letters) of the amount it travels with: a dealAmount, or the value of a currency MetricReading. Where a CRM runs in one currency and has no field for it, the account's currency is stated here. A vendor's internal currency id is not a code and is resolved to one first." .
@@ -751,7 +751,7 @@ xeo:currencyCode a owl:DatatypeProperty ;
 xeo:recurringValue a owl:DatatypeProperty ;
     rdfs:label "recurring value" ;
     rdfs:range xsd:decimal ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     xeo:groundedIn "The vendor's deal object API contract (recurring revenue fields)" ;
     xeo:canonicalStore "crm" ;
     xeo:termStatus "extension" ;
@@ -760,7 +760,7 @@ xeo:recurringValue a owl:DatatypeProperty ;
 xeo:valuePeriod a owl:DatatypeProperty ;
     rdfs:label "value period" ;
     rdfs:range xsd:string ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     xeo:groundedIn "The vendor's deal object API contract (recurring revenue fields)" ;
     xeo:canonicalStore "crm" ;
     xeo:termStatus "extension" ;
@@ -769,7 +769,7 @@ xeo:valuePeriod a owl:DatatypeProperty ;
 xeo:amountInReportingCurrency a owl:DatatypeProperty ;
     rdfs:label "amount in reporting currency" ;
     rdfs:range xsd:decimal ;
-    xeo:epistemicLayer "derivation" ;
+    xeo:xeoLayer "derivation" ;
     xeo:canonicalStore "crm" ;
     xeo:termStatus "extension" ;
     dct:description "A dealAmount converted into the account's reporting currency. A derivation: the result depends on the rate, the date the rate was taken on and where it came from, and method states all three. CRMs differ on which rate they use for an open deal and a closed one, so totals for the same deals differ between systems." .
@@ -800,13 +800,13 @@ xeo:amountInReportingCurrency a owl:DatatypeProperty ;
 xeo:Metric a owl:Class ;
     rdfs:subClassOf skos:Concept ;
     rdfs:label "Metric" ;
-    xeo:epistemicLayer "norm" ;
+    xeo:xeoLayer "norm" ;
     xeo:canonicalStore "neo4j" ;
     dct:description "A named, reusable definition of a measured quantity: what is counted or computed, over which records, aggregated how, in what unit, and which way is better. A rule, not a number: the number is a MetricReading. One node per definition, identified by its skos:notation within its scheme (xeos:metric is the published reference scheme). Two Metrics are the same when metricType, aggregation, readsSlot or inputs, metricFilter, timeAnchor and unit all match; changing any of them makes a new Metric, never an edit, because readings and targets are anchored to the definition. Carries exactly one metricType, unit, betterDirection and additivity. A simple metric also carries aggregation and readsSlot; a ratio carries numerator and denominator and has unit ratio; a derived metric carries expression and at least one inputMetric. A skos:Concept, so a consumer adds its own metrics as instances without touching the ontology." .
 
 xeo:MetricReading a owl:Class ;
     rdfs:label "Metric Reading" ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     xeo:groundedIn "The API contract of the system named in the reading's source (e.g. GSC searchAnalytics.query, GA4 runReport)" ;
     xeo:canonicalStore "bigquery" ;
     dct:description "The value one Metric took over one window, for one scope, from one source. One row per metric, scope, window and source: its identity is readingOf, scope, periodStart, periodEnd, source and, where the source deduplicates in more than one way, aggregationBasis. Requires value, periodStart, periodEnd and readingOf, and should carry websiteId and datasetUri; a ratio reading also carries numeratorValue and denominatorValue. An observation only when the primary API returned exactly that metric, window and scope. When the value was rolled up, recomputed, or taken from a vendor's model, the reading is a derivation and carries method and confidence. High-cardinality readings live in the column store; the graph holds the windowed readings a target, an Outcome or an Objective points at." .
@@ -816,70 +816,70 @@ xeo:MetricReading a owl:Class ;
 xeo:metricType a owl:ObjectProperty ;
     rdfs:label "metric type" ;
     rdfs:domain xeo:Metric ; rdfs:range skos:Concept ;
-    xeo:epistemicLayer "norm" ;
+    xeo:xeoLayer "norm" ;
     xeo:canonicalStore "neo4j" ;
     dct:description "How a Metric is computed, as a slotted-in concept (simple, ratio, derived, cumulative, conversion — xeos:metricType is a published reference filling). Exactly one per Metric. The type decides which other properties are required: a simple metric aggregates one slot, a ratio divides one metric by another, a derived metric is arithmetic over others." .
 
 xeo:aggregation a owl:ObjectProperty ;
     rdfs:label "aggregation" ;
     rdfs:domain xeo:Metric ; rdfs:range skos:Concept ;
-    xeo:epistemicLayer "norm" ;
+    xeo:xeoLayer "norm" ;
     xeo:canonicalStore "neo4j" ;
     dct:description "How a simple Metric reduces the values of its readsSlot in a window to one number, as a slotted-in concept (sum, count, count_distinct, mean, weighted_mean, min, max, median, percentile, last — xeos:aggregation is a published reference filling). Required on a simple metric and absent on the others. 'count' is also a unit; this slot says how the values are combined, unit says what the result is a number of." .
 
 xeo:readsSlot a owl:ObjectProperty ;
     rdfs:label "reads slot" ;
     rdfs:domain xeo:Metric ; rdfs:range rdf:Property ;
-    xeo:epistemicLayer "norm" ;
+    xeo:xeoLayer "norm" ;
     xeo:canonicalStore "neo4j" ;
     dct:description "The XEO property a simple Metric aggregates: clicks, dealAmount, mentionRank. Required on a simple metric. If the slot is a derivation, every reading of the metric is a derivation. Where XEO declares no slot beneath the number, because the source returns it already aggregated (an analytics tool's sessions, a vendor's modelled traffic value), readsSlot is xeo:value: the metric combines the source's own readings, and the vendor scheme says which field that is." .
 
 xeo:numerator a owl:ObjectProperty ;
     rdfs:label "numerator" ;
     rdfs:domain xeo:Metric ; rdfs:range xeo:Metric ;
-    xeo:epistemicLayer "norm" ;
+    xeo:xeoLayer "norm" ;
     xeo:canonicalStore "neo4j" ;
     dct:description "The Metric a ratio divides. Required on a ratio, with denominator. A filter on the numerator does not apply to the denominator unless it is declared there too. A ratio is rolled up as sum(numerator) divided by sum(denominator), never as a mean of ratios." .
 
 xeo:denominator a owl:ObjectProperty ;
     rdfs:label "denominator" ;
     rdfs:domain xeo:Metric ; rdfs:range xeo:Metric ;
-    xeo:epistemicLayer "norm" ;
+    xeo:xeoLayer "norm" ;
     xeo:canonicalStore "neo4j" ;
     dct:description "The Metric a ratio divides by. Required on a ratio, with numerator. Two tools that share a metric's name and differ in its denominator are reporting two different metrics." .
 
 xeo:inputMetric a owl:ObjectProperty ;
     rdfs:label "input metric" ;
     rdfs:domain xeo:Metric ; rdfs:range xeo:Metric ;
-    xeo:epistemicLayer "norm" ;
+    xeo:xeoLayer "norm" ;
     xeo:canonicalStore "neo4j" ;
     dct:description "A Metric a derived metric is computed from. At least one on a derived metric, each named by its notation in expression." .
 
 xeo:timeAnchor a owl:ObjectProperty ;
     rdfs:label "time anchor" ;
     rdfs:domain xeo:Metric ; rdfs:range rdf:Property ;
-    xeo:epistemicLayer "norm" ;
+    xeo:xeoLayer "norm" ;
     xeo:canonicalStore "neo4j" ;
     dct:description "Which timestamp places a record in a window: recordCreatedAt or dealClosedAt for a deal, capturedAt for a sampled answer. Part of a Metric's identity: deals counted by create date and by close date are two metrics. Absent where the source places records itself and offers no choice." .
 
 xeo:unit a owl:ObjectProperty ;
     rdfs:label "unit" ;
     rdfs:domain xeo:Metric ; rdfs:range skos:Concept ;
-    xeo:epistemicLayer "norm" ;
+    xeo:xeoLayer "norm" ;
     xeo:canonicalStore "neo4j" ;
     dct:description "What a reading of this Metric is a number of, as a slotted-in concept (count, ratio, rank, currency, seconds, days, score_0_100 — xeos:metricUnit is a published reference filling). Exactly one per Metric. A ratio is a 0 to 1 quotient, never a percentage. A rank is 1-based with 1 best. A currency reading carries currencyCode. Distinct from magnitudeUnit, which names the unit of a Gap's size." .
 
 xeo:betterDirection a owl:ObjectProperty ;
     rdfs:label "better direction" ;
     rdfs:domain xeo:Metric ; rdfs:range skos:Concept ;
-    xeo:epistemicLayer "norm" ;
+    xeo:xeoLayer "norm" ;
     xeo:canonicalStore "neo4j" ;
     dct:description "Which way a change in this Metric counts as improvement, as a slotted-in concept (up, down, none — xeos:betterDirection is a published reference filling). Exactly one per Metric, declared here and nowhere else: positions and ranks are 1-based, so a shared '+20%' would ask for a rank 20% worse. A change is recorded signed and raw; whether it is an improvement is read through this. Replaces xeo:direction, which stored a copy on each target." .
 
 xeo:additivity a owl:ObjectProperty ;
     rdfs:label "additivity" ;
     rdfs:domain xeo:Metric ; rdfs:range skos:Concept ;
-    xeo:epistemicLayer "norm" ;
+    xeo:xeoLayer "norm" ;
     xeo:canonicalStore "neo4j" ;
     dct:description "Whether readings of this Metric may be summed across windows, pages or terms, as a slotted-in concept (additive, semi_additive, non_additive — xeos:additivity is a published reference filling). Exactly one per Metric. A non-additive reading (a ratio, an average, a rank, a distinct count) is never summed: it is recomputed over the union from the column store." .
 
@@ -888,21 +888,21 @@ xeo:additivity a owl:ObjectProperty ;
 xeo:expression a owl:DatatypeProperty ;
     rdfs:label "expression" ;
     rdfs:domain xeo:Metric ; rdfs:range xsd:string ;
-    xeo:epistemicLayer "norm" ;
+    xeo:xeoLayer "norm" ;
     xeo:canonicalStore "neo4j" ;
     dct:description "On a derived Metric: the arithmetic over its inputMetrics, each named by its notation ('revenue_won / deals_won'). Required on a derived metric. On a simple Metric it may state a row-level computation applied before aggregation, where the number is not the slot's own value ('days from recordCreatedAt to dealClosedAt'). Plain arithmetic in neutral names, never a vendor's query syntax." .
 
 xeo:metricFilter a owl:DatatypeProperty ;
     rdfs:label "metric filter" ;
     rdfs:domain xeo:Metric ; rdfs:range xsd:string ;
-    xeo:epistemicLayer "norm" ;
+    xeo:xeoLayer "norm" ;
     xeo:canonicalStore "neo4j" ;
     dct:description "A condition applied to the records before they are aggregated, over neutral names (dealOutcome = 'won'; firstTouchChannel = 'ai_assistant'). Part of the Metric's identity: sessions and sessions from AI assistants are two metrics. Distinct from scope, which belongs to a reading and restricts numerator and denominator alike; a metricFilter on a numerator restricts only that numerator." .
 
 xeo:minDenominator a owl:DatatypeProperty ;
     rdfs:label "minimum denominator" ;
     rdfs:domain xeo:Metric ; rdfs:range xsd:integer ;
-    xeo:epistemicLayer "norm" ;
+    xeo:xeoLayer "norm" ;
     xeo:canonicalStore "neo4j" ;
     dct:description "The smallest denominatorValue at which a reading of this Metric is reportable: for a ratio the denominator, for a mean the number of values averaged. A reading below it is flagged, and an Outcome read from it is inconclusive with resultReason below_volume_floor. An XEO norm: no vendor publishes one. A slot only: XEO ships no value, and the Metrics in xeos:metric carry none. Each implementation sets its own." .
 
@@ -911,7 +911,7 @@ xeo:minDenominator a owl:DatatypeProperty ;
 xeo:readingOf a owl:ObjectProperty ;
     rdfs:label "reading of" ;
     rdfs:domain xeo:MetricReading ; rdfs:range xeo:Metric ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     xeo:groundedIn "The API contract of the system named in the reading's source" ;
     xeo:canonicalStore "bigquery" ;
     dct:description "The Metric this reading is a value of. Exactly one per reading. Two readings are comparable only when this matches: a changed definition is a new Metric, and its readings are not continued from the old one's." .
@@ -919,7 +919,7 @@ xeo:readingOf a owl:ObjectProperty ;
 xeo:scope a owl:ObjectProperty ;
     rdfs:label "scope" ;
     rdfs:domain xeo:MetricReading ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     xeo:groundedIn "The API contract of the system named in the reading's source" ;
     xeo:canonicalStore "bigquery" ;
     xeo:rangeIncludes xeo:Website , xeo:URL , xeo:Term , xeo:Topic , xeo:Prompt , xeo:Brand , xeo:Campaign ;
@@ -928,7 +928,7 @@ xeo:scope a owl:ObjectProperty ;
 xeo:value a owl:DatatypeProperty ;
     rdfs:label "value" ;
     rdfs:domain xeo:MetricReading ; rdfs:range xsd:decimal ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     xeo:groundedIn "The API contract of the system named in the reading's source" ;
     xeo:canonicalStore "bigquery" ;
     dct:description "The number the Metric took over the reading's window and scope, in the Metric's unit: a ratio as a 0 to 1 quotient, a rank 1-based, a currency amount in the reading's currencyCode. Exactly one per reading. A rate the source computed itself goes here as returned; its parts, where the source gives them, go in numeratorValue and denominatorValue." .
@@ -936,7 +936,7 @@ xeo:value a owl:DatatypeProperty ;
 xeo:numeratorValue a owl:DatatypeProperty ;
     rdfs:label "numerator value" ;
     rdfs:domain xeo:MetricReading ; rdfs:range xsd:decimal ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     xeo:groundedIn "The API contract of the system named in the reading's source" ;
     xeo:canonicalStore "bigquery" ;
     dct:description "The numerator behind a ratio or mean reading: the clicks behind a clickthrough rate, the summed positions behind an average. With denominatorValue it is what lets readings be rolled up correctly, as sum(numeratorValue) divided by sum(denominatorValue)." .
@@ -944,7 +944,7 @@ xeo:numeratorValue a owl:DatatypeProperty ;
 xeo:denominatorValue a owl:DatatypeProperty ;
     rdfs:label "denominator value" ;
     rdfs:domain xeo:MetricReading ; rdfs:range xsd:decimal ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     xeo:groundedIn "The API contract of the system named in the reading's source" ;
     xeo:canonicalStore "bigquery" ;
     dct:description "The denominator behind a ratio reading, or the number of values behind a mean. Compared with the Metric's minDenominator to decide whether the reading is reportable." .
@@ -956,7 +956,7 @@ xeo:denominatorValue a owl:DatatypeProperty ;
 xeo:offsetWindow a owl:DatatypeProperty ;
     rdfs:label "offset window" ;
     rdfs:domain xeo:Metric ; rdfs:range xsd:duration ;
-    xeo:epistemicLayer "norm" ;
+    xeo:xeoLayer "norm" ;
     xeo:canonicalStore "neo4j" ;
     xeo:termStatus "extension" ;
     dct:description "A lag applied to the input of a derived Metric, as an ISO 8601 duration (P28D): the input is read over the window that long before the reading's own. How a period-over-period metric is defined once instead of being recomputed by each client." .
@@ -964,7 +964,7 @@ xeo:offsetWindow a owl:DatatypeProperty ;
 xeo:cumulativeWindow a owl:DatatypeProperty ;
     rdfs:label "cumulative window" ;
     rdfs:domain xeo:Metric ; rdfs:range xsd:duration ;
-    xeo:epistemicLayer "norm" ;
+    xeo:xeoLayer "norm" ;
     xeo:canonicalStore "neo4j" ;
     xeo:termStatus "extension" ;
     dct:description "The trailing window a cumulative Metric accumulates over, as an ISO 8601 duration (P7D for a trailing seven days). Absent on a cumulative metric that accumulates from the start of a grain; that one carries grainToDate." .
@@ -972,7 +972,7 @@ xeo:cumulativeWindow a owl:DatatypeProperty ;
 xeo:grainToDate a owl:ObjectProperty ;
     rdfs:label "grain to date" ;
     rdfs:domain xeo:Metric ; rdfs:range skos:Concept ;
-    xeo:epistemicLayer "norm" ;
+    xeo:xeoLayer "norm" ;
     xeo:canonicalStore "neo4j" ;
     xeo:termStatus "extension" ;
     dct:description "The grain at whose start a cumulative Metric resets, as a slotted-in concept (day, week, month, quarter, year — xeos:timeGrain is a published reference filling): month for a month-to-date total. Used instead of cumulativeWindow, never with it." .
@@ -980,7 +980,7 @@ xeo:grainToDate a owl:ObjectProperty ;
 xeo:conversionEntity a owl:ObjectProperty ;
     rdfs:label "conversion entity" ;
     rdfs:domain xeo:Metric ; rdfs:range rdf:Property ;
-    xeo:epistemicLayer "norm" ;
+    xeo:xeoLayer "norm" ;
     xeo:canonicalStore "neo4j" ;
     xeo:termStatus "extension" ;
     dct:description "On a conversion Metric: the identity key that joins a base event to the conversion event that followed it (crmRecordRef, for a lead that became a deal). The metric is the share of that entity's base events followed by a conversion event within conversionWindow." .
@@ -988,7 +988,7 @@ xeo:conversionEntity a owl:ObjectProperty ;
 xeo:conversionWindow a owl:DatatypeProperty ;
     rdfs:label "conversion window" ;
     rdfs:domain xeo:Metric ; rdfs:range xsd:duration ;
-    xeo:epistemicLayer "norm" ;
+    xeo:xeoLayer "norm" ;
     xeo:canonicalStore "neo4j" ;
     xeo:termStatus "extension" ;
     dct:description "On a conversion Metric: how long after a base event a conversion event still counts, as an ISO 8601 duration." .
@@ -996,7 +996,7 @@ xeo:conversionWindow a owl:DatatypeProperty ;
 xeo:baseMetric a owl:ObjectProperty ;
     rdfs:label "base metric" ;
     rdfs:domain xeo:Metric ; rdfs:range xeo:Metric ;
-    xeo:epistemicLayer "norm" ;
+    xeo:xeoLayer "norm" ;
     xeo:canonicalStore "neo4j" ;
     xeo:termStatus "extension" ;
     dct:description "On a conversion Metric: the Metric that counts the base events, the ones a conversion may follow." .
@@ -1004,7 +1004,7 @@ xeo:baseMetric a owl:ObjectProperty ;
 xeo:conversionMetric a owl:ObjectProperty ;
     rdfs:label "conversion metric" ;
     rdfs:domain xeo:Metric ; rdfs:range xeo:Metric ;
-    xeo:epistemicLayer "norm" ;
+    xeo:xeoLayer "norm" ;
     xeo:canonicalStore "neo4j" ;
     xeo:termStatus "extension" ;
     dct:description "On a conversion Metric: the Metric that counts the conversion events." .
@@ -1012,7 +1012,7 @@ xeo:conversionMetric a owl:ObjectProperty ;
 xeo:percentileValue a owl:DatatypeProperty ;
     rdfs:label "percentile value" ;
     rdfs:domain xeo:Metric ; rdfs:range xsd:decimal ;
-    xeo:epistemicLayer "norm" ;
+    xeo:xeoLayer "norm" ;
     xeo:canonicalStore "neo4j" ;
     xeo:termStatus "extension" ;
     dct:description "Which percentile a Metric whose aggregation is percentile takes, from 0 to 1 (0.9 for the ninetieth). Required with that aggregation and meaningless with any other." .
@@ -1020,7 +1020,7 @@ xeo:percentileValue a owl:DatatypeProperty ;
 xeo:agentContext a owl:DatatypeProperty ;
     rdfs:label "agent context" ;
     rdfs:domain xeo:Metric ; rdfs:range xsd:string ;
-    xeo:epistemicLayer "norm" ;
+    xeo:xeoLayer "norm" ;
     xeo:canonicalStore "neo4j" ;
     xeo:termStatus "extension" ;
     dct:description "Guidance to an agent on when to use this Metric and when not to, in plain language: what it is commonly mistaken for, which question it answers. Read by a model choosing between metrics; it does not change how the metric is computed." .
@@ -1028,7 +1028,7 @@ xeo:agentContext a owl:DatatypeProperty ;
 xeo:aggregationBasis a owl:ObjectProperty ;
     rdfs:label "aggregation basis" ;
     rdfs:domain xeo:MetricReading ; rdfs:range skos:Concept ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     xeo:groundedIn "Google Search Console Search Analytics API (aggregationType)" ;
     xeo:canonicalStore "bigquery" ;
     xeo:termStatus "extension" ;
@@ -1037,7 +1037,7 @@ xeo:aggregationBasis a owl:ObjectProperty ;
 xeo:dataState a owl:ObjectProperty ;
     rdfs:label "data state" ;
     rdfs:domain xeo:MetricReading ; rdfs:range skos:Concept ;
-    xeo:epistemicLayer "observation" ;
+    xeo:xeoLayer "observation" ;
     xeo:groundedIn "Google Search Console Search Analytics API (dataState), as reported by a secondary source" ;
     xeo:canonicalStore "bigquery" ;
     xeo:termStatus "extension" ;
