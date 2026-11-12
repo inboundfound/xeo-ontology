@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>XEO — the xEO family ontology (terms)</title>
-<meta name="description" content="Term reference for the XEO ontology: classes, properties, and individuals across the core, visibility, analysis, sales, work, decision and strategy modules.">
+<meta name="description" content="Term reference for the XEO ontology: classes, properties, and individuals across the core, visibility, analysis, sales, work and decision modules.">
 <link rel="alternate" type="text/turtle" href="xeo-core.ttl">
 <style>
 :root { color-scheme: light dark; --bg:#f7f5ef; --surface:#fffdf8; --text:#17181c;
@@ -67,13 +67,12 @@ not something every implementation is expected to support. A term marked
 <code>xeo-analysis</code> (graph algorithms and what they computed) ·
 <code>xeo-sales</code> (CRM records and pipeline) ·
 <code>xeo-work</code> (clients, contracts, projects, campaigns, objectives, targets) ·
-<code>xeo-decision</code> (gaps, diagnostics, tactics, recommendations) ·
-<code>xeo-strategy</code> (practices: the standing rules) ·
+<code>xeo-decision</code> (gaps, diagnostics, tactics, recommendations, and the practices that govern them) ·
 <code>xeo-align</code> (schema.org / PROV-O / SKOS bridges). Machine-readable Turtle:
 <a href="xeo-core.ttl">core</a>, <a href="xeo-visibility.ttl">visibility</a>,
 <a href="xeo-analysis.ttl">analysis</a>, <a href="xeo-sales.ttl">sales</a>,
 <a href="xeo-work.ttl">work</a>, <a href="xeo-decision.ttl">decision</a>,
-<a href="xeo-strategy.ttl">strategy</a>, <a href="xeo-align.ttl">align</a>;
+<a href="xeo-align.ttl">align</a>;
 reference values <a href="xeo-schemes.ttl">schemes</a> (<a href="schemes.json">JSON</a>);
 vendor mappings <a href="https://github.com/inboundfound/xeo-ontology/tree/main/mappings">mappings/</a>, one file per tool, not part of the ontology;
 JSON-LD <a href="context.jsonld">context</a>; Neo4j
@@ -189,7 +188,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   
 </section>
 <section id="Framework" class="term">
-  <h3>Framework <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-strategy</span></h3>
+  <h3>Framework <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:Framework</code>
   <p>A named method: a set of Stages, ordered or not, with the Diagnostics, Tactics and Practices hung on them. An optimization waterfall (ordered stages, each with a test, a subject placed at the first stage it fails), a tactic matrix, a launch checklist and a discipline playbook are all Frameworks, told apart by frameworkKind and never by subclass. A norm: it says how the work should be approached, it is authored and revisable, and it is identified by name within its author&#x27;s scope. Distinct from Playbook, which is the unordered bundle a discipline reuses; a Framework adds the structure, and may include what a Playbook includes. The method is the instance you author. XEO ships the frame and none of the stages.</p>
   <dl><div class="row"><dt>closeMatch</dt><dd><a href="https://schema.org/HowTo" class="ext">schema:HowTo</a></dd></div></dl>
@@ -285,13 +284,13 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>subclass of</dt><dd><a href="#MetricReading">xeo:MetricReading</a></dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
 </section>
 <section id="Playbook" class="term">
-  <h3>Playbook <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-strategy</span></h3>
+  <h3>Playbook <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:Playbook</code>
   <p>A reusable, discipline-scoped bundle of Diagnostics, Tactics, and Practices — an &#x27;SEO playbook&#x27;, an &#x27;AEO playbook&#x27;, a &#x27;local playbook&#x27;. Durable and named, like a Diagnostic. Its scope is the DISCIPLINE, not the account: a Playbook is authored once (by the community or an agency) and reused across every client. What varies per client or campaign is which Playbooks a tenancy activates and which Practices it overrides — never the Playbook itself.</p>
   
 </section>
 <section id="Practice" class="term">
-  <h3>Practice <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-strategy</span></h3>
+  <h3>Practice <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:Practice</code>
   <p>A standing rule that governs how recommendations are made under stated conditions. Best-practices, SOPs, and lessons-learned are all Practices, distinguished by source, not by class. A Practice does one of three things (practiceKind): veto a candidate (guardrail), reorder it (preference), or attach a caveat (guidance). Revisable and versioned (supersedes); scoped to the concepts it appliesToConcept; audited on the recommendations it fired on (appliedPractice).</p>
   
@@ -339,7 +338,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>subclass of</dt><dd><a href="http://www.w3.org/ns/prov#Entity" class="ext">prov:Entity</a></dd></div></dl>
 </section>
 <section id="Stage" class="term">
-  <h3>Stage <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-strategy</span></h3>
+  <h3>Stage <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:Stage</code>
   <p>One step or cell of a Framework: a named position that Diagnostics, Tactics and Gaps are placed at (atStage). Carries name, an optional stageOrder, and an optional test — the question a subject must pass to move on. Belongs to exactly one Framework (hasStage) and is identified by name within it. In an ordered Framework, nextStage links each stage to the one after.</p>
   <dl><div class="row"><dt>closeMatch</dt><dd><a href="https://schema.org/HowToStep" class="ext">schema:HowToStep</a></dd></div></dl>
@@ -400,7 +399,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Campaign">xeo:Campaign</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Topic">xeo:Topic</a></dd></div></dl>
 </section>
 <section id="activates" class="term">
-  <h3>activates <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-strategy</span></h3>
+  <h3>activates <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:activates</code>
   <p>A tenancy context puts a Playbook or Framework into effect for a body of work. Domain left open: model your own tenancy node (an Organization, a client, an engagement, a campaign) and point it here — this module stays agnostic about the account hierarchy, which is expressed through appliesAtScope.</p>
   <dl><div class="row"><dt>expected on</dt><dd><a href="#Campaign">xeo:Campaign</a> · <a href="#Organization">xeo:Organization</a> · <a href="#Project">xeo:Project</a></dd></div><div class="row"><dt>expected to point at</dt><dd><a href="#Framework">xeo:Framework</a> · <a href="#Playbook">xeo:Playbook</a></dd></div></dl>
@@ -436,25 +435,25 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>domain</dt><dd><a href="#AlgorithmRun">xeo:AlgorithmRun</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div></dl>
 </section>
 <section id="appliedPractice" class="term">
-  <h3>applied practice <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-strategy</span></h3>
+  <h3>applied practice <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:appliedPractice</code>
   <p>Audit edge: this Practice was evaluated against this recommendation and fired. Carries method and confidence — the application is a computed derivation, not itself a norm. The transparent record of why a candidate was blocked, demoted, or flagged.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Recommendation">xeo:Recommendation</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Practice">xeo:Practice</a></dd></div><div class="row"><dt>subproperty of</dt><dd><a href="#evaluatedPractice">xeo:evaluatedPractice</a></dd></div></dl>
 </section>
 <section id="appliesAtScope" class="term">
-  <h3>applies at scope <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-strategy</span></h3>
+  <h3>applies at scope <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:appliesAtScope</code>
   <p>The tenancy level at which a Practice (or activation or override) applies, as a slotted-in concept. A recommended hierarchy is default &lt; agency &lt; client &lt; engagement &lt; campaign &lt; user. Domain left open so it can annotate any strategy-layer assertion. Resolution is most-specific-wins: a client-level Practice overrides an agency default, which overrides the shipped default. This is the &#x27;customization&#x27; axis — not a lens, a specificity ladder.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div></dl>
 </section>
 <section id="appliesTo" class="term">
-  <h3>applies to <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-strategy</span></h3>
+  <h3>applies to <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:appliesTo</code>
   <p>What a Practice is scoped to: a Tactic, an Intervention, a single URL, or any slotted-in concept. The Practice fires only where a candidate matches. appliesToConcept is its narrower form, for the case where the target is a concept; this is the general edge, for a rule about one tactic or one page. Range left open across the terms listed.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Practice">xeo:Practice</a></dd></div><div class="row"><dt>expected to point at</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a> · <a href="#Intervention">xeo:Intervention</a> · <a href="#Tactic">xeo:Tactic</a> · <a href="#URL">xeo:URL</a></dd></div></dl>
 </section>
 <section id="appliesToConcept" class="term">
-  <h3>applies to concept <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-strategy</span></h3>
+  <h3>applies to concept <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:appliesToConcept</code>
   <p>Binds a Practice to the slotted-in concepts it applies to — a page role (hasRole), an Intervention, a gapType, a Capability. Bring your own schemes; the Practice fires only where a candidate carries a matching concept.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Practice">xeo:Practice</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div><div class="row"><dt>subproperty of</dt><dd><a href="#appliesTo">xeo:appliesTo</a></dd></div></dl>
@@ -472,7 +471,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Recommendation">xeo:Recommendation</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div></dl>
 </section>
 <section id="atStage" class="term">
-  <h3>at stage <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-strategy</span></h3>
+  <h3>at stage <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:atStage</code>
   <p>Places a Diagnostic, a Tactic or a Gap at a Stage of a Framework. For a Diagnostic or a Tactic the placement is the method author&#x27;s standing claim about where it belongs. For a Gap it is inherited from the Diagnostic that revealed it and carries method. Domain left open across the three terms listed.</p>
   <dl><div class="row"><dt>expected on</dt><dd><a href="#Diagnostic">xeo:Diagnostic</a> · <a href="#Gap">xeo:Gap</a> · <a href="#Tactic">xeo:Tactic</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Stage">xeo:Stage</a></dd></div></dl>
@@ -484,7 +483,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>domain</dt><dd><a href="#ConversionEvent">xeo:ConversionEvent</a></dd></div><div class="row"><dt>range</dt><dd><a href="#LLMResponse">xeo:LLMResponse</a></dd></div></dl>
 </section>
 <section id="authoredBy" class="term">
-  <h3>authored by <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-strategy</span></h3>
+  <h3>authored by <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:authoredBy</code>
   <p>The party that authored a Practice (or an activation or override). Range left open — a person, an agency, the system, or a prov:Agent in your own graph. One half of the customization axis: with appliesAtScope, it decides whose rule wins.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Practice">xeo:Practice</a></dd></div></dl>
@@ -562,7 +561,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>expected on</dt><dd><a href="#Experiment">xeo:Experiment</a> · <a href="#Outcome">xeo:Outcome</a></dd></div><div class="row"><dt>range</dt><dd><a href="#ExternalEvent">xeo:ExternalEvent</a></dd></div></dl>
 </section>
 <section id="constrains" class="term">
-  <h3>constrains <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-strategy</span></h3>
+  <h3>constrains <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:constrains</code>
   <p>The Practice governs recommendations matching its conditions — vetoing, reordering, or caveating per its practiceKind. Which recommendations &#x27;match&#x27; is set by appliesToConcept.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Practice">xeo:Practice</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Recommendation">xeo:Recommendation</a></dd></div></dl>
@@ -610,7 +609,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Recommendation">xeo:Recommendation</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div></dl>
 </section>
 <section id="evaluatedPractice" class="term">
-  <h3>evaluated practice <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-strategy</span></h3>
+  <h3>evaluated practice <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:evaluatedPractice</code>
   <p>Audit edge: this Practice was evaluated against this recommendation, whether or not it fired. Carries fired, method and confidence, and should carry what the evaluation matched on. The whole record, of which appliedPractice is the fired half: without the negative half, a rule that never fires cannot be told from a rule that was never checked.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Recommendation">xeo:Recommendation</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Practice">xeo:Practice</a></dd></div></dl>
@@ -646,7 +645,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Crawl">xeo:Crawl</a></dd></div><div class="row"><dt>range</dt><dd><a href="#URL">xeo:URL</a></dd></div><div class="row"><dt>grounded in</dt><dd>RFC 9110 (HTTP Semantics)</dd></div></dl>
 </section>
 <section id="frameworkKind" class="term">
-  <h3>framework kind <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-strategy</span></h3>
+  <h3>framework kind <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:frameworkKind</code>
   <p>What shape of method a Framework is, as a slotted-in concept (diagnostic, tactic_matrix, checklist, playbook — xeos:frameworkKind is a published reference filling). One per Framework. The kind says how the stages are read: in order with a test at each, as cells of a grid, as items to tick, or as a bundle.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Framework">xeo:Framework</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div></dl>
@@ -718,7 +717,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>domain</dt><dd><a href="#SerpSnapshot">xeo:SerpSnapshot</a></dd></div><div class="row"><dt>range</dt><dd><a href="#URL">xeo:URL</a></dd></div><div class="row"><dt>grounded in</dt><dd>The engine&#x27;s results page as one SerpSnapshot captured it (the provider&#x27;s SERP API contract, or the rendered page)</dd></div></dl>
 </section>
 <section id="hasRole" class="term">
-  <h3>has role <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-strategy</span></h3>
+  <h3>has role <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:hasRole</code>
   <p>The structural role a URL plays on its site, as a slotted-in concept. A recommended starter scheme is coarse and purpose-based: brand-core (home, about), commercial (services, products, sales), content (articles, marketing), infrastructure (pagination, archives, tag and category indexes). Assignment is a DERIVATION from graph and crawl structure — inbound link_position, index-vs-leaf link patterns, template similarity — not URL-string matching; it carries method and confidence, and &#x27;unknown&#x27; is a valid, conservative state. Parallels core&#x27;s inTopic. Norms bind to these roles via appliesToConcept, so &#x27;never redirect an infrastructure page for ranking&#x27; is a rule over a role, not a growing list of regexes.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#URL">xeo:URL</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div></dl>
@@ -730,7 +729,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Term">xeo:Term</a></dd></div><div class="row"><dt>range</dt><dd><a href="#SerpSnapshot">xeo:SerpSnapshot</a></dd></div></dl>
 </section>
 <section id="hasStage" class="term">
-  <h3>has stage <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-strategy</span></h3>
+  <h3>has stage <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:hasStage</code>
   <p>A Stage of this Framework. A Stage belongs to exactly one Framework.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Framework">xeo:Framework</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Stage">xeo:Stage</a></dd></div></dl>
@@ -784,7 +783,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Term">xeo:Term</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Topic">xeo:Topic</a></dd></div><div class="row"><dt>closeMatch</dt><dd><a href="https://schema.org/about" class="ext">schema:about</a></dd></div></dl>
 </section>
 <section id="includes" class="term">
-  <h3>includes <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-strategy</span></h3>
+  <h3>includes <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:includes</code>
   <p>A Diagnostic, Tactic, or Practice bundled into this Playbook or Framework. Domain and range left open: the two bundles on one side, the three decision/norm terms they may hold on the other.</p>
   <dl><div class="row"><dt>expected on</dt><dd><a href="#Framework">xeo:Framework</a> · <a href="#Playbook">xeo:Playbook</a></dd></div><div class="row"><dt>expected to point at</dt><dd><a href="#Diagnostic">xeo:Diagnostic</a> · <a href="#Practice">xeo:Practice</a> · <a href="#Tactic">xeo:Tactic</a></dd></div></dl>
@@ -802,7 +801,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Recommendation">xeo:Recommendation</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Campaign">xeo:Campaign</a></dd></div></dl>
 </section>
 <section id="learnedFrom" class="term">
-  <h3>learned from <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-strategy</span></h3>
+  <h3>learned from <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:learnedFrom</code>
   <p>The Experiments or Outcomes a Practice was earned from. Expected on every Practice whose source is &#x27;learned&#x27;, and it is what makes that word checkable: a learned rule with no learnedFrom is a claimed one. Carries method (who or what drew the lesson) and confidence. Range left open across Experiment and Outcome.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Practice">xeo:Practice</a></dd></div><div class="row"><dt>expected to point at</dt><dd><a href="#Experiment">xeo:Experiment</a> · <a href="#Outcome">xeo:Outcome</a></dd></div><div class="row"><dt>subproperty of</dt><dd><a href="http://www.w3.org/ns/prov#wasDerivedFrom" class="ext">prov:wasDerivedFrom</a></dd></div></dl>
@@ -844,7 +843,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Metric">xeo:Metric</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
 </section>
 <section id="nextStage" class="term">
-  <h3>next stage <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-strategy</span></h3>
+  <h3>next stage <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:nextStage</code>
   <p>The stage that follows this one in an ordered Framework. Both stages belong to the same Framework. Says the same as stageOrder, as an edge a traversal can walk; where both are present they must agree.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Stage">xeo:Stage</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Stage">xeo:Stage</a></dd></div></dl>
@@ -1012,7 +1011,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Diagnostic">xeo:Diagnostic</a></dd></div><div class="row"><dt>expected to point at</dt><dd><a href="#Intervention">xeo:Intervention</a> · <a href="#Tactic">xeo:Tactic</a></dd></div></dl>
 </section>
 <section id="supersedes" class="term">
-  <h3>supersedes <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-strategy</span></h3>
+  <h3>supersedes <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:supersedes</code>
   <p>This Practice replaces an earlier version. Editing a rule mints a new Practice that supersedes the old (retired to status &#x27;deprecated&#x27;, never deleted) — the version chain that makes the norms layer revisable and auditable.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Practice">xeo:Practice</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Practice">xeo:Practice</a></dd></div></dl>
@@ -1321,7 +1320,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 <section id="deletedAt" class="term">
   <h3>deleted at <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:deletedAt</code>
-  <p>Soft-delete stamp. XEO never destroys a node something else was derived from — xeo-strategy states the rule for a Practice (destroying it destroys the record of what it vetoed) and it holds here for a Project, a Campaign, or a MetricTarget that measured history hangs off. Absent on a live node; domain left open so any revisable term can carry it.</p>
+  <p>Soft-delete stamp. XEO never destroys a node something else was derived from — xeo-decision states the rule for a Practice (destroying it destroys the record of what it vetoed) and it holds here for a Project, a Campaign, or a MetricTarget that measured history hangs off. Absent on a live node; domain left open so any revisable term can carry it.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div></dl>
 </section>
 <section id="denominatorValue" class="term">
@@ -1421,7 +1420,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div><div class="row"><dt>grounded in</dt><dd>The crawler&#x27;s fetch log: when the HTTP response (RFC 9110) was received</dd></div></dl>
 </section>
 <section id="fired" class="term">
-  <h3>fired <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-strategy</span></h3>
+  <h3>fired <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:fired</code>
   <p>Carried on an evaluatedPractice edge: true when the Practice matched the candidate and acted (and an appliedPractice edge records what it did), false when it was evaluated and did not match. Domain left open because it rides on the edge, not on a node.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#boolean" class="ext">xsd:boolean</a></dd></div></dl>
@@ -1457,7 +1456,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>WHATWG HTML §4.3.6 (the h1 element)</dd></div></dl>
 </section>
 <section id="halfLife" class="term">
-  <h3>half life <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-strategy</span></h3>
+  <h3>half life <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:halfLife</code>
   <p>Optional decay window for a Practice whose source is &#x27;claimed&#x27;: how long the assertion is trusted absent supporting Outcomes. Encodes the reality that today&#x27;s answer-engine tactics may not survive the year — a claim nobody&#x27;s experiments confirm ages out on its own.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Practice">xeo:Practice</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#duration" class="ext">xsd:duration</a></dd></div></dl>
@@ -1685,13 +1684,13 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div><div class="row"><dt>grounded in</dt><dd>The engine&#x27;s results page as one SerpSnapshot captured it (the provider&#x27;s SERP API contract, or the rendered page)</dd></div></dl>
 </section>
 <section id="practiceKind" class="term">
-  <h3>practice kind <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-strategy</span></h3>
+  <h3>practice kind <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:practiceKind</code>
   <p>How the Practice acts: &#x27;guardrail&#x27; (veto a matching candidate), &#x27;preference&#x27; (reorder it), or &#x27;guidance&#x27; (attach a caveat, change nothing). The mechanism, kept as a small controlled string rather than a subclass.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Practice">xeo:Practice</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
 <section id="practiceOutcome" class="term">
-  <h3>practice outcome <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-strategy</span></h3>
+  <h3>practice outcome <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:practiceOutcome</code>
   <p>Carried on an appliedPractice edge: &#x27;vetoed&#x27; (a guardrail removed the candidate), &#x27;reranked&#x27; (a preference moved it), or &#x27;caveated&#x27; (guidance flagged it and changed nothing). One value per practiceKind. Domain left open because it rides on the edge, not on a node.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
@@ -1709,7 +1708,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div><div class="row"><dt>subproperty of</dt><dd><a href="http://www.w3.org/ns/prov#endedAtTime" class="ext">prov:endedAtTime</a></dd></div></dl>
 </section>
 <section id="rationale" class="term">
-  <h3>rationale <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-strategy</span></h3>
+  <h3>rationale <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:rationale</code>
   <p>Why the rule exists — surfaced to a user when the Practice fires, so a veto or demotion is explained, never silent.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Practice">xeo:Practice</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
@@ -1811,7 +1810,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div></dl>
 </section>
 <section id="source" class="term">
-  <h3>source <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-strategy</span></h3>
+  <h3>source <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:source</code>
   <p>Provenance of an assertion. The value vocabulary is subject-specific. On a Practice: &#x27;authored&#x27; (a human SOP or best-practice — high standing, durable), &#x27;learned&#x27; (earned from the experiment ledger — confidence ratchets with Outcomes), or &#x27;claimed&#x27; (an unproven assertion, e.g. a current answer-engine tactic — ships low-confidence with a halfLife and decays unless experiments promote it); this lets one class hold a firm SOP and a fragile claim without conflating their trust. On a ranksFor or visibilityFor rollup: the data source the window was built from. DOMAIN LEFT OPEN deliberately — rdfs:domain is an entailment rule, not a constraint, so naming xeo:Practice here would silently type every rollup edge carrying a source as a Practice.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
@@ -1829,7 +1828,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="stageOrder" class="term">
-  <h3>stage order <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-strategy</span></h3>
+  <h3>stage order <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:stageOrder</code>
   <p>The position of a Stage within its Framework, as an integer, lower first. Unique within a Framework. Absent in an unordered Framework.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Stage">xeo:Stage</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div></dl>
@@ -1853,13 +1852,13 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div><div class="row"><dt>subproperty of</dt><dd><a href="http://www.w3.org/ns/prov#startedAtTime" class="ext">prov:startedAtTime</a></dd></div></dl>
 </section>
 <section id="statement" class="term">
-  <h3>statement <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-strategy</span></h3>
+  <h3>statement <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:statement</code>
   <p>The rule in plain language, as a human authored or confirmed it — e.g. &#x27;Never 301 a paginated archive URL for ranking purposes.&#x27; The canonical human-facing form; the structural fields (practiceKind, appliesToConcept, constrains) make it executable.</p>
   <dl><div class="row"><dt>expected on</dt><dd><a href="#Feedback">xeo:Feedback</a> · <a href="#Gap">xeo:Gap</a> · <a href="#Objective">xeo:Objective</a> · <a href="#Practice">xeo:Practice</a> · <a href="#Recommendation">xeo:Recommendation</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
 <section id="status" class="term">
-  <h3>status <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-strategy</span></h3>
+  <h3>status <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:status</code>
   <p>Lifecycle state of a revisable term. The value vocabulary is subject-specific. On a Practice: &#x27;proposed&#x27;, &#x27;active&#x27;, or &#x27;deprecated&#x27; — a proposed Practice is visible but does not fire, and superseding one deprecates it. DOMAIN LEFT OPEN deliberately, so another revisable term (the execution lifecycle of a Recommendation, say) can carry a lifecycle without being entailed a Practice.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
@@ -1895,7 +1894,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>domain</dt><dd><a href="#MetricTarget">xeo:MetricTarget</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div></dl>
 </section>
 <section id="test" class="term">
-  <h3>test <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-strategy</span></h3>
+  <h3>test <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:test</code>
   <p>The question a subject must pass at this Stage, in plain language (&#x27;Is the page indexed?&#x27;). The human-facing form; the Diagnostics placed atStage are what make it executable.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Stage">xeo:Stage</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>

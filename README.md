@@ -60,8 +60,7 @@ Every module needs only core; load core and the add-ons you use. A link between 
 | `xeo-analysis.ttl` | derived structure | What algorithms and models add to the graph: `AlgorithmRun` (algorithm, parameters, projection), `COMPUTED_BY`, `SIMILAR_TO {similarity, basis}`, `PRECEDENT_FOR`, and the node scores `pageRank`, `betweenness`, `degree`, `communityId`. All derivations. Similarity and centrality nominate candidates; they decide nothing, and a score is meaningless without the projection it was computed on. |
 | `xeo-sales.ttl` | the CRM side | **The CRM seam:** `crmRecordRef` (the join key, typed by `crmSystem` and `crmObjectType`) and the few neutral slots that make pipeline numbers computable without mirroring any CRM — `dealAmount` (with core's `currencyCode`), `dealOutcome`, `stageRef` / `pipelineRef` with a neutral `stageClass`, `ownerRef`, `recordCreatedAt`, `dealClosedAt`, `firstTouchChannel` (with an `ai_assistant` channel), `StageTransition`, `PipelineRollup`. Lifecycle stage, probabilities and weighted amounts are an extension set. Was the CRM half of `xeo-engagement` until 0.7. |
 | `xeo-work.ttl` | clients and delivery | `Project` (the contract — `engagementType`, `interventionQuota`, `cadence`/`durationDays`, what's `inScope`), `Campaign` (a body of work `aboutTopic`, covering URLs and Terms), `Objective` → `MetricTarget` (the intent, as targets a later `Outcome` is read against). `Recommendation` `issuedFor` a campaign; `Experiment` `measures` a target. An `Organization` (core) is `clientOf` another and `holdsCapability`. Was `xeo-delivery` until 0.7. |
-| `xeo-decision.ttl` | gaps to recommendations | `Diagnostic` (and its episode, `DiagnosticRun`), `Gap`, `Tactic`, `Capability`, `Experiment`, `Outcome`, `ExternalEvent`, `Recommendation`, `Feedback`; the chain `reveals`→`addressableBy`→`requiresCapability` (scope gate)→`tests`/`inContext`→`recommends`/`supportedBy`. Classes, never values — `gapType`/`inIntervention`/`onDimension`/`atPriority` are `skos:Concept` slots you fill. |
-| `xeo-strategy.ttl` | the standing rules | `Practice` (a standing rule: `guardrail` vetoes a candidate, `preference` reorders it, `guidance` caveats it), `Playbook` (a reusable discipline bundle); `constrains`, `appliesToConcept`, `appliedPractice` (the audit edge — why a candidate was blocked), `supersedes` (revisable, never deleted), `hasRole` (page roles as a derivation, not regexes), `appliesAtScope` (the tenancy specificity ladder); `Framework` and `Stage` (a named method as data: stages, ordered or not, with diagnostics and tactics placed `atStage`); `learnedFrom` and `evaluatedPractice {fired}`. Governs **how** a `Recommendation` is allowed to be made. |
+| `xeo-decision.ttl` | gaps to recommendations | `Diagnostic` (and its episode, `DiagnosticRun`), `Gap`, `Tactic`, `Capability`, `Experiment`, `Outcome`, `ExternalEvent`, `Recommendation`, `Feedback`; the chain `reveals`→`addressableBy`→`requiresCapability` (scope gate)→`tests`/`inContext`→`recommends`/`supportedBy`. Classes, never values — `gapType`/`inIntervention`/`onDimension`/`atPriority` are `skos:Concept` slots you fill. **Practices** (strategy until 0.7): `Practice` (a standing rule: `guardrail` vetoes a candidate, `preference` reorders it, `guidance` caveats it), `Playbook` (a reusable discipline bundle); `constrains`, `appliesToConcept`, `appliedPractice` (the audit edge — why a candidate was blocked), `supersedes` (revisable, never deleted), `hasRole` (page roles as a derivation, not regexes), `appliesAtScope` (the tenancy specificity ladder); `Framework` and `Stage` (a named method as data: stages, ordered or not, with diagnostics and tactics placed `atStage`); `learnedFrom` and `evaluatedPractice {fired}`. Governs **how** a `Recommendation` is allowed to be made. |
 | `xeo-schemes.ttl` · `schemes.json` | reference values | **The slots, filled.** SKOS concept schemes for every `skos:Concept` slot and controlled string in the ontology — 50 schemes, ~280 concepts: gap types, verdicts, priority, the intervention catalogue, lifecycles, **the Metrics themselves** (`xeos:metric`: search, AI visibility, analytics, CRM pipeline), metric types and units, deal outcomes, acquisition channels, SERP result types, link positions, algorithms, layers. Every scheme names its source. `schemes.json` is the generated projection for anything that builds an enum at boot. |
 | [`mappings/`](mappings/README.md) | vendor mappings, **not part of the ontology** | **Where a vendor's field meets a slot.** One file and one SKOS scheme per tool; each concept holds the vendor's exact field name (`skos:notation`), the slot it fills, a SKOS match, a scope note, a dated source and an `xeo:mappingConfidence`. Transcribed so far: HubSpot CRM, Google Search Console, GA4, Peec, Profound. From documentation only: nothing is verified against live API output yet, and each file says which mappings are inferred. Nothing in the ontology points at a mapping, and the folder has a template for adding a tool. |
 | `xeo-align.ttl` | interoperability | Optional bridges — schema.org (`WebSite`, `WebPage`, `Brand`, `Observation`), PROV-O (`Crawl`→`Activity`, `Engine`→`SoftwareAgent`, `LLMResponse`→`Entity`), SKOS (`Topic`→`Concept`, `childOf`→`broader`). **Alignments, not dependencies.** |
@@ -90,7 +89,7 @@ engine-side data has been missing.
   sales       (CRM records, by pointer)        StageTransition · OwnerChange
   work        Project · Campaign                (Objective → MetricTarget: the intent)
   decision    Gap · Tactic · Capability        Experiment (→ Outcome)
-  strategy    Practice · Playbook               (norms — rules, not events)
+              Practice · Playbook               (norms — rules, not events)
 
   every add-on needs only core
 
@@ -220,7 +219,7 @@ object properties resolve to node references, datatype properties carry their
 
 ## What is deliberately NOT here
 
-- **Filled-in norms** — `xeo-strategy` ships the *mechanism* for standing rules
+- **Filled-in norms** — `xeo-decision` ships the *mechanism* for standing rules
   (`Practice`, `practiceKind`, `appliesToConcept`, `appliedPractice`), never the
   rules themselves. "Never 301 a paginated archive" is an instance you author, and
   which Practices a given tenancy activates or overrides is data, not schema.
@@ -255,7 +254,7 @@ slot is what XEO defines; a scheme is one answer.
 | `intervention` | `xeo:inIntervention` | 8 — **the service catalogue**: what an agency can deploy, who controls it, lead time |
 | `priority` | `xeo:atPriority` | 3 — now · next · later |
 | `recommendationStatus` · `experimentStatus` · `practiceStatus` | `xeo:status` | the three lifecycles |
-| `practiceKind` · `practiceSource` · `practiceOutcome` | the norms tier | how a rule acts, where it came from, what it did |
+| `practiceKind` · `practiceSource` · `practiceOutcome` | practices (decision) | how a rule acts, where it came from, what it did |
 | `outcomeResult` · `outcomeResultReason` | `xeo:result` · `xeo:resultReason` | did it move, and why it couldn't be judged |
 | `objectiveMetric` · `targetKind` · `engagementType` · `cadence` · `effort` · `execution` | the work module | `objectiveMetric` is the earlier list of metric codes, kept for compatibility; each is an exactMatch of its Metric in `metric` |
 | `metric` | `xeo:metric` | 35 — **the Metrics**: each an `xeo:Metric` with a type, unit, better direction and additivity. Search, AI visibility, analytics, CRM pipeline |
@@ -321,8 +320,8 @@ cat schema.cypher | cypher-shell -u neo4j -p <password>
 ```
 
 The TTL files are plain OWL — load `xeo-core` and whichever add-ons you use
-(`xeo-visibility`, `xeo-analysis`, `xeo-sales`, `xeo-work`, `xeo-decision`,
-`xeo-strategy`), and (if you want the crosswalk) `xeo-align`, into any triple
+(`xeo-visibility`, `xeo-analysis`, `xeo-sales`, `xeo-work`, `xeo-decision`),
+and (if you want the crosswalk) `xeo-align`, into any triple
 store or ontology editor. Every add-on needs only core. `xeo-schemes` is SKOS data, not ontology — load it where you want the
 reference values, and the file for your tool from `mappings/` where a loader needs to know which
 vendor field fills which slot. To publish graph data as linked data, serve your

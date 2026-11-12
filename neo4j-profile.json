@@ -22,7 +22,6 @@
     "xeo-sales.ttl",
     "xeo-work.ttl",
     "xeo-decision.ttl",
-    "xeo-strategy.ttl",
     "xeo-schemes.ttl"
   ],
   "labels": {
@@ -151,7 +150,7 @@
       "definition": "A named method: a set of Stages, ordered or not, with the Diagnostics, Tactics and Practices hung on them. An optimization waterfall (ordered stages, each with a test, a subject placed at the first stage it fails), a tactic matrix, a launch checklist and a discipline playbook are all Frameworks, told apart by frameworkKind and never by subclass. A norm: it says how the work should be approached, it is authored and revisable, and it is identified by name within its author's scope. Distinct from Playbook, which is the unordered bundle a discipline reuses; a Framework adds the structure, and may include what a Playbook includes. The method is the instance you author. XEO ships the frame and none of the stages.",
       "iri": "https://xeoontology.org/xeo#Framework",
       "layer": "norm",
-      "module": "strategy"
+      "module": "decision"
     },
     "Gap": {
       "definition": "A diagnosed deficit between current and desired visibility. First-order, but a claim: asserted by a Diagnostic from evidence, never observed directly. Its kind (gapType) is a slotted-in skos:Concept — e.g. a Citation-Waterfall stage — not a subclass baked into the ontology.",
@@ -268,13 +267,13 @@
       "definition": "A reusable, discipline-scoped bundle of Diagnostics, Tactics, and Practices — an 'SEO playbook', an 'AEO playbook', a 'local playbook'. Durable and named, like a Diagnostic. Its scope is the DISCIPLINE, not the account: a Playbook is authored once (by the community or an agency) and reused across every client. What varies per client or campaign is which Playbooks a tenancy activates and which Practices it overrides — never the Playbook itself.",
       "iri": "https://xeoontology.org/xeo#Playbook",
       "layer": "entity",
-      "module": "strategy"
+      "module": "decision"
     },
     "Practice": {
       "definition": "A standing rule that governs how recommendations are made under stated conditions. Best-practices, SOPs, and lessons-learned are all Practices, distinguished by source, not by class. A Practice does one of three things (practiceKind): veto a candidate (guardrail), reorder it (preference), or attach a caveat (guidance). Revisable and versioned (supersedes); scoped to the concepts it appliesToConcept; audited on the recommendations it fired on (appliedPractice).",
       "iri": "https://xeoontology.org/xeo#Practice",
       "layer": "norm",
-      "module": "strategy"
+      "module": "decision"
     },
     "Project": {
       "definition": "The contractual container for a body of work on one Website. Declares its engagementType (retainer or one-off), an interventionQuota (a scope of work with no ceiling is not a scope), a cadence the quota resets over (retainer) or a durationDays it runs for (one-off), and the Interventions and Tactics inScope under the contract. Never destroyed: its campaigns, objectives and targets are the substrate the end-of-campaign report and the experiment loop read, so it is stamped deletedAt and filtered, not deleted.",
@@ -325,7 +324,7 @@
       "definition": "One step or cell of a Framework: a named position that Diagnostics, Tactics and Gaps are placed at (atStage). Carries name, an optional stageOrder, and an optional test — the question a subject must pass to move on. Belongs to exactly one Framework (hasStage) and is identified by name within it. In an ordered Framework, nextStage links each stage to the one after.",
       "iri": "https://xeoontology.org/xeo#Stage",
       "layer": "norm",
-      "module": "strategy"
+      "module": "decision"
     },
     "StageTransition": {
       "definition": "A CRM record entering a stage: happened at a time, immutable once recorded. Identified by crmRecordRef, stageSlot, toStageRef and enteredAt. One row per entry, and a record that returns to a stage enters it again as a new row. Carries fromStageRef where the previous stage is known, exitedAt once it has left, amountAtTransition, datasetUri, and method saying how the row was obtained: vendor-history (the CRM's own history rows), vendor-calculated-property (a per-stage entry timestamp the CRM maintains), or snapshot-diff (two reads compared). High-cardinality, so it lives in the column store and the graph holds rollups. A calculated property that is cleared when a record moves backwards, or filled when it skips a stage, is not a record of what happened and never fills this.",
@@ -468,7 +467,7 @@
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#appliesAtScope",
       "layer": "norm",
-      "module": "strategy",
+      "module": "decision",
       "schemes": []
     },
     "appliesToConcept": {
@@ -476,7 +475,7 @@
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#appliesToConcept",
       "layer": "norm",
-      "module": "strategy",
+      "module": "decision",
       "schemes": []
     },
     "approved": {
@@ -932,7 +931,7 @@
       "datatype": "xsd:boolean",
       "iri": "https://xeoontology.org/xeo#fired",
       "layer": "derivation",
-      "module": "strategy"
+      "module": "decision"
     },
     "firstSeenAt": {
       "datatype": "xsd:dateTime",
@@ -964,7 +963,7 @@
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#frameworkKind",
       "layer": "norm",
-      "module": "strategy",
+      "module": "decision",
       "schemes": [
         "frameworkKind"
       ]
@@ -1012,14 +1011,14 @@
       ],
       "iri": "https://xeoontology.org/xeo#halfLife",
       "layer": "norm",
-      "module": "strategy"
+      "module": "decision"
     },
     "hasRole": {
       "conceptSlot": true,
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#hasRole",
       "layer": "derivation",
-      "module": "strategy",
+      "module": "decision",
       "schemes": []
     },
     "impressions": {
@@ -1347,7 +1346,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#practiceKind",
       "layer": "norm",
-      "module": "strategy",
+      "module": "decision",
       "schemes": [
         "practiceKind"
       ]
@@ -1356,7 +1355,7 @@
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#practiceOutcome",
       "layer": "derivation",
-      "module": "strategy",
+      "module": "decision",
       "schemes": [
         "practiceOutcome"
       ]
@@ -1383,7 +1382,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#rationale",
       "layer": "norm",
-      "module": "strategy"
+      "module": "decision"
     },
     "recordCreatedAt": {
       "datatype": "xsd:dateTime",
@@ -1520,7 +1519,7 @@
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#source",
       "layer": "norm",
-      "module": "strategy",
+      "module": "decision",
       "schemes": [
         "practiceSource"
       ]
@@ -1548,7 +1547,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#stageOrder",
       "layer": "norm",
-      "module": "strategy"
+      "module": "decision"
     },
     "stageRef": {
       "datatype": "xsd:string",
@@ -1585,13 +1584,13 @@
       ],
       "iri": "https://xeoontology.org/xeo#statement",
       "layer": "norm",
-      "module": "strategy"
+      "module": "decision"
     },
     "status": {
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#status",
       "layer": "norm",
-      "module": "strategy",
+      "module": "decision",
       "schemes": [
         "experimentStatus",
         "practiceStatus",
@@ -1647,7 +1646,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#test",
       "layer": "norm",
-      "module": "strategy"
+      "module": "decision"
     },
     "text": {
       "datatype": "xsd:string",
@@ -1775,7 +1774,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#activates",
       "layer": "norm",
-      "module": "strategy",
+      "module": "decision",
       "range": [
         "Framework",
         "Playbook"
@@ -1865,7 +1864,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#appliedPractice",
       "layer": "derivation",
-      "module": "strategy",
+      "module": "decision",
       "range": [
         "Practice"
       ],
@@ -1879,7 +1878,7 @@
       "domain": [],
       "iri": "https://xeoontology.org/xeo#appliesAtScope",
       "layer": "norm",
-      "module": "strategy",
+      "module": "decision",
       "range": [
         "skos:Concept"
       ],
@@ -1892,7 +1891,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#appliesTo",
       "layer": "norm",
-      "module": "strategy",
+      "module": "decision",
       "range": [
         "Intervention",
         "Tactic",
@@ -1908,7 +1907,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#appliesToConcept",
       "layer": "norm",
-      "module": "strategy",
+      "module": "decision",
       "range": [
         "skos:Concept"
       ],
@@ -1967,7 +1966,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#atStage",
       "layer": "norm",
-      "module": "strategy",
+      "module": "decision",
       "range": [
         "Stage"
       ],
@@ -1979,7 +1978,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#authoredBy",
       "layer": "norm",
-      "module": "strategy",
+      "module": "decision",
       "range": [],
       "term": "authoredBy"
     },
@@ -2150,7 +2149,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#constrains",
       "layer": "norm",
-      "module": "strategy",
+      "module": "decision",
       "range": [
         "Recommendation"
       ],
@@ -2257,7 +2256,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#evaluatedPractice",
       "layer": "derivation",
-      "module": "strategy",
+      "module": "decision",
       "range": [
         "Practice"
       ],
@@ -2339,7 +2338,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#frameworkKind",
       "layer": "norm",
-      "module": "strategy",
+      "module": "decision",
       "range": [
         "skos:Concept"
       ],
@@ -2497,7 +2496,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#hasRole",
       "layer": "derivation",
-      "module": "strategy",
+      "module": "decision",
       "range": [
         "skos:Concept"
       ],
@@ -2522,7 +2521,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#hasStage",
       "layer": "norm",
-      "module": "strategy",
+      "module": "decision",
       "range": [
         "Stage"
       ],
@@ -2583,7 +2582,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#includes",
       "layer": "entity",
-      "module": "strategy",
+      "module": "decision",
       "range": [
         "Diagnostic",
         "Practice",
@@ -2673,7 +2672,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#learnedFrom",
       "layer": "derivation",
-      "module": "strategy",
+      "module": "decision",
       "range": [
         "Experiment",
         "Outcome"
@@ -2766,7 +2765,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#nextStage",
       "layer": "norm",
-      "module": "strategy",
+      "module": "decision",
       "range": [
         "Stage"
       ],
@@ -3127,7 +3126,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#supersedes",
       "layer": "norm",
-      "module": "strategy",
+      "module": "decision",
       "range": [
         "Practice"
       ],

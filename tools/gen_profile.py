@@ -64,7 +64,7 @@ XEOS = Namespace("https://xeoontology.org/schemes#")
 # would carry, so they are read for alignment and values, not for terms.
 TERM_MODULES = [
     "xeo-core.ttl", "xeo-visibility.ttl", "xeo-analysis.ttl",
-    "xeo-sales.ttl", "xeo-work.ttl", "xeo-decision.ttl", "xeo-strategy.ttl",
+    "xeo-sales.ttl", "xeo-work.ttl", "xeo-decision.ttl",
 ]
 SCHEMES_MODULE = "xeo-schemes.ttl"
 LAYERS = ["entity", "episode", "observation", "derivation", "interpretation", "norm"]

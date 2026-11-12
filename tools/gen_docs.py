@@ -18,7 +18,7 @@ HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 NS = "https://xeoontology.org/xeo#"
 MODULES = [
     "xeo-core.ttl", "xeo-visibility.ttl", "xeo-analysis.ttl", "xeo-sales.ttl",
-    "xeo-work.ttl", "xeo-decision.ttl", "xeo-strategy.ttl", "xeo-align.ttl",
+    "xeo-work.ttl", "xeo-decision.ttl", "xeo-align.ttl",
 ]
 EPI = URIRef(NS + "xeoLayer")
 GROUNDED = URIRef(NS + "groundedIn")
@@ -153,7 +153,7 @@ def render():
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>XEO — the xEO family ontology (terms)</title>
-<meta name="description" content="Term reference for the XEO ontology: classes, properties, and individuals across the core, visibility, analysis, sales, work, decision and strategy modules.">
+<meta name="description" content="Term reference for the XEO ontology: classes, properties, and individuals across the core, visibility, analysis, sales, work and decision modules.">
 <link rel="alternate" type="text/turtle" href="xeo-core.ttl">
 <style>
 :root {{ color-scheme: light dark; --bg:#f7f5ef; --surface:#fffdf8; --text:#17181c;
@@ -216,13 +216,12 @@ not something every implementation is expected to support. A term marked
 <code>xeo-analysis</code> (graph algorithms and what they computed) ·
 <code>xeo-sales</code> (CRM records and pipeline) ·
 <code>xeo-work</code> (clients, contracts, projects, campaigns, objectives, targets) ·
-<code>xeo-decision</code> (gaps, diagnostics, tactics, recommendations) ·
-<code>xeo-strategy</code> (practices: the standing rules) ·
+<code>xeo-decision</code> (gaps, diagnostics, tactics, recommendations, and the practices that govern them) ·
 <code>xeo-align</code> (schema.org / PROV-O / SKOS bridges). Machine-readable Turtle:
 <a href="xeo-core.ttl">core</a>, <a href="xeo-visibility.ttl">visibility</a>,
 <a href="xeo-analysis.ttl">analysis</a>, <a href="xeo-sales.ttl">sales</a>,
 <a href="xeo-work.ttl">work</a>, <a href="xeo-decision.ttl">decision</a>,
-<a href="xeo-strategy.ttl">strategy</a>, <a href="xeo-align.ttl">align</a>;
+<a href="xeo-align.ttl">align</a>;
 reference values <a href="xeo-schemes.ttl">schemes</a> (<a href="schemes.json">JSON</a>);
 vendor mappings <a href="https://github.com/inboundfound/xeo-ontology/tree/main/mappings">mappings/</a>, one file per tool, not part of the ontology;
 JSON-LD <a href="context.jsonld">context</a>; Neo4j

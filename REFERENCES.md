@@ -47,7 +47,7 @@ Two areas extend past SEOntology's scope, and they are the reason XEO exists rat
 profile of `seovoc`:
 
 1. **Decision intelligence.** XEO carries the reasoning, not only the artefacts — diagnostics and
-   their stages (`xeo-decision`), norms that fire or veto (`xeo-strategy`: Practices, guardrails,
+   their stages (`xeo-decision`), norms that fire or veto (Practices in `xeo-decision`: guardrails,
    provenance, an experiment ledger that promotes a `claimed` practice to `learned`), and
    provenance all the way down. Modelling *why* a recommendation was made, and how much to trust
    it, is a first-class requirement here.

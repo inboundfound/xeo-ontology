@@ -122,7 +122,7 @@ FOR (e:Experiment) ON (e.concludedAt);
 CREATE INDEX gap_website IF NOT EXISTS
 FOR (g:Gap) ON (g.websiteId);
 
-// ========== STRATEGY (the norms tier) ==========
+// ========== PRACTICES (in decision since 0.7) ==========
 // Practices and Playbooks are authored once and reused; what varies per tenant is
 // which Playbooks are activated and which Practices are overridden. Both are
 // global by id — tenancy rides on the activation and override edges, not on the
