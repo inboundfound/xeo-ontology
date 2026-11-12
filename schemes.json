@@ -1352,7 +1352,7 @@
       "iri": "https://xeoontology.org/schemes#metric",
       "label": "Metrics",
       "fillsSlot": "xeo:metric",
-      "description": "The reference scheme of XEO Metrics: each a definition with a type, a unit, a better direction and an additivity, and what it is computed from. Covers search, AI visibility, website analytics and CRM pipeline, so an Objective can target any of them and a reading means the same thing wherever it is computed. The code a MetricTarget stores in xeo:metric is the skos:notation of a concept here. The eight codes published earlier in xeos:objectiveMetric are kept exactly, each with an exactMatch from its old concept; two of them, mention_rate and citation_rate, are deprecated for ai_mention_rate and ai_citation_rate. Definitions are neutral: where vendors use one name for different ratios, the definition here states the denominator, and each vendor's field is mapped to it in mappings/. XEO ships no minDenominator values: it is a slot, and each implementation sets its own. A consumer adds its own Metrics as instances of xeo:Metric in a scheme of its own.",
+      "description": "The reference scheme of XEO Metrics: each a definition with a type, a unit, a better direction and an additivity, and what it is computed from. Covers search, AI visibility, website analytics and CRM pipeline, so an Objective can target any of them and a reading means the same thing wherever it is computed. The code a MetricTarget stores in xeo:metric is the skos:notation of a concept here. The six codes published earlier in xeos:objectiveMetric are kept exactly, each with an exactMatch from its old concept, and the two AI rates added there in 0.6.0 match theirs the same way. Definitions are neutral: where vendors use one name for different ratios, the definition here states the denominator, and each vendor's field is mapped to it in mappings/. XEO ships no minDenominator values: it is a slot, and each implementation sets its own. A consumer adds its own Metrics as instances of xeo:Metric in a scheme of its own.",
       "source": "XEO metrics and KPIs research report, 2026-11-10 (starter reference scheme) · XEO CRM pipeline research report, 2026-11-10 (pipeline metrics) · the codes of xeos:objectiveMetric, kept unchanged",
       "ordered": false,
       "concepts": [
@@ -1466,7 +1466,7 @@
           "altLabels": [
             "ai_owned_source_rate"
           ],
-          "editorialNote": "Adopted in 0.6.0 (decided 2026-11-12) so every AI visibility code carries the ai_ prefix; replaces citation_rate, which is deprecated. The report names this ai_owned_source_rate, kept as an altLabel. Not ai_citation_share, which divides by citations and not by answers. The implementation sets its minDenominator; XEO ships no value.",
+          "editorialNote": "Adopted in 0.6.0 (decided 2026-11-12) so every AI visibility code carries the ai_ prefix. The report names this ai_owned_source_rate, kept as an altLabel. Not ai_citation_share, which divides by citations and not by answers. The implementation sets its minDenominator; XEO ships no value.",
           "metric": {
             "metricType": "ratio",
             "numerator": "ai_answers_citing_owned",
@@ -1515,7 +1515,7 @@
           "label": "AI mention rate",
           "definition": "The share of sampled answers that mention the brand: answers mentioning the brand divided by all answers sampled. Every sampled answer is in the denominator, whether or not it names any brand",
           "note": "reading: a derivation. Whether an answer mentions or cites a brand is extracted from sampled answers, and the sample is a vendor's or a tracker's choice. The property that carries the rollup value is xeo:mentionRate",
-          "editorialNote": "The report's name, adopted in 0.6.0 (decided 2026-11-12) so every AI visibility code carries the ai_ prefix. Replaces mention_rate, which is deprecated. What vendors call 'visibility' or 'visibility score' maps here, and not always exactly: see mappings/. The implementation sets its minDenominator; XEO ships no value.",
+          "editorialNote": "The report's name, adopted in 0.6.0 (decided 2026-11-12) so every AI visibility code carries the ai_ prefix. What vendors call 'visibility' or 'visibility score' maps here, and not always exactly: see mappings/. The implementation sets its minDenominator; XEO ships no value.",
           "metric": {
             "metricType": "ratio",
             "numerator": "ai_answers_mentioning",
@@ -1610,26 +1610,6 @@
             "unit": "count",
             "betterDirection": "none",
             "additivity": "additive"
-          }
-        },
-        {
-          "code": "citation_rate",
-          "iri": "https://xeoontology.org/schemes#metric-citation_rate",
-          "label": "Citation rate",
-          "definition": "The share of sampled answers that cite at least one of the brand's owned URLs: answers citing an owned URL divided by all answers sampled",
-          "note": "reading: a derivation. Whether an answer mentions or cites a brand is extracted from sampled answers, and the sample is a vendor's or a tracker's choice",
-          "deprecated": true,
-          "replacedBy": [
-            "xeos:metric-ai_citation_rate"
-          ],
-          "editorialNote": "Deprecated in 0.6.0: write ai_citation_rate (xeos:metric-ai_citation_rate), the same Metric with the ai_ prefix. This code is kept and still resolves, because consumers already store it; it is removed in 0.7. The implementation sets its minDenominator; XEO ships no value.",
-          "metric": {
-            "metricType": "ratio",
-            "numerator": "ai_answers_citing_owned",
-            "denominator": "ai_answers_sampled",
-            "unit": "ratio",
-            "betterDirection": "up",
-            "additivity": "non_additive"
           }
         },
         {
@@ -1830,26 +1810,6 @@
             "unit": "count",
             "betterDirection": "up",
             "additivity": "additive"
-          }
-        },
-        {
-          "code": "mention_rate",
-          "iri": "https://xeoontology.org/schemes#metric-mention_rate",
-          "label": "Mention rate",
-          "definition": "The share of sampled answers that mention the brand: answers mentioning the brand divided by all answers sampled. Every sampled answer is in the denominator, whether or not it names any brand",
-          "note": "reading: a derivation. Whether an answer mentions or cites a brand is extracted from sampled answers, and the sample is a vendor's or a tracker's choice",
-          "deprecated": true,
-          "replacedBy": [
-            "xeos:metric-ai_mention_rate"
-          ],
-          "editorialNote": "Deprecated in 0.6.0: write ai_mention_rate (xeos:metric-ai_mention_rate), the same Metric under the report's name. This code is kept and still resolves, because consumers already store it; it is removed in 0.7. The implementation sets its minDenominator; XEO ships no value.",
-          "metric": {
-            "metricType": "ratio",
-            "numerator": "ai_answers_mentioning",
-            "denominator": "ai_answers_sampled",
-            "unit": "ratio",
-            "betterDirection": "up",
-            "additivity": "non_additive"
           }
         },
         {
@@ -2096,7 +2056,7 @@
       "iri": "https://xeoontology.org/schemes#objectiveMetric",
       "label": "Objective metrics",
       "fillsSlot": "xeo:metric",
-      "description": "The metrics a MetricTarget can be set on. Half the vocabulary is lower-is-better — position and rank_absolute are 1-based ranks — so a target's direction is DERIVED from the metric, never client input; a shared +20% across metrics would silently ask for a rank 20% worse. The note on each concept records direction and unit. Since 0.6.0 this is the compatibility list: the eight codes published before xeo:Metric existed, each an exactMatch of its Metric in xeos:metric, which is the full reference scheme and where a target's code resolves. Two of the eight, mention_rate and citation_rate, are deprecated in 0.6.0 for ai_mention_rate and ai_citation_rate, which are listed here too.",
+      "description": "The metrics a MetricTarget can be set on. Half the vocabulary is lower-is-better — position and rank_absolute are 1-based ranks — so a target's direction is DERIVED from the metric, never client input; a shared +20% across metrics would silently ask for a rank 20% worse. The note on each concept records direction and unit. Since 0.6.0 this is the compatibility list: the six codes published before xeo:Metric existed, plus ai_mention_rate and ai_citation_rate added in 0.6.0, each an exactMatch of its Metric in xeos:metric, which is the full reference scheme and where a target's code resolves.",
       "source": "if-control-center packages/contracts/src/objective-metric.ts (OBJECTIVE_METRICS, METRIC_DIRECTIONS, METRIC_UNIT_OF) · launch-guardian LG_OBJECTIVE_METRICS",
       "ordered": false,
       "concepts": [
@@ -2121,22 +2081,6 @@
           "matches": {
             "exactMatch": [
               "xeos:metric-ai_mention_rate"
-            ]
-          }
-        },
-        {
-          "code": "citation_rate",
-          "iri": "https://xeoontology.org/schemes#objectiveMetric-citation_rate",
-          "label": "Citation rate",
-          "definition": "Share of captured responses in the window that cite the brand's owned URLs",
-          "note": "direction up · unit rate · source visibilityFor rollup (xeo:citationRate)",
-          "deprecated": true,
-          "replacedBy": [
-            "xeos:objectiveMetric-ai_citation_rate"
-          ],
-          "matches": {
-            "exactMatch": [
-              "xeos:metric-citation_rate"
             ]
           }
         },
@@ -2187,22 +2131,6 @@
           "matches": {
             "exactMatch": [
               "xeos:metric-impressions"
-            ]
-          }
-        },
-        {
-          "code": "mention_rate",
-          "iri": "https://xeoontology.org/schemes#objectiveMetric-mention_rate",
-          "label": "Mention rate",
-          "definition": "Share of captured responses in the window that mention the brand",
-          "note": "direction up · unit rate · source visibilityFor rollup (xeo:mentionRate)",
-          "deprecated": true,
-          "replacedBy": [
-            "xeos:objectiveMetric-ai_mention_rate"
-          ],
-          "matches": {
-            "exactMatch": [
-              "xeos:metric-mention_rate"
             ]
           }
         },
