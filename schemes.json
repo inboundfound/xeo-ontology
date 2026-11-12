@@ -1352,7 +1352,7 @@
       "iri": "https://xeoontology.org/schemes#metric",
       "label": "Metrics",
       "fillsSlot": "xeo:metric",
-      "description": "The reference scheme of XEO Metrics: each a definition with a type, a unit, a better direction and an additivity, and what it is computed from. Covers search, AI visibility, website analytics and CRM pipeline, so an Objective can target any of them and a reading means the same thing wherever it is computed. The code a MetricTarget stores in xeo:metric is the skos:notation of a concept here. The eight codes published earlier in xeos:objectiveMetric are kept exactly, each with an exactMatch from its old concept; two of them, mention_rate and citation_rate, are deprecated for ai_mention_rate and ai_citation_rate. Definitions are neutral: where vendors use one name for different ratios, the definition here states the denominator, and each vendor's field is mapped to it in mappings/. Every minDenominator is a stated default inferred for XEO, not a vendor fact. A consumer adds its own Metrics as instances of xeo:Metric in a scheme of its own.",
+      "description": "The reference scheme of XEO Metrics: each a definition with a type, a unit, a better direction and an additivity, and what it is computed from. Covers search, AI visibility, website analytics and CRM pipeline, so an Objective can target any of them and a reading means the same thing wherever it is computed. The code a MetricTarget stores in xeo:metric is the skos:notation of a concept here. The eight codes published earlier in xeos:objectiveMetric are kept exactly, each with an exactMatch from its old concept; two of them, mention_rate and citation_rate, are deprecated for ai_mention_rate and ai_citation_rate. Definitions are neutral: where vendors use one name for different ratios, the definition here states the denominator, and each vendor's field is mapped to it in mappings/. XEO ships no minDenominator values: it is a slot, and each implementation sets its own. A consumer adds its own Metrics as instances of xeo:Metric in a scheme of its own.",
       "source": "XEO metrics and KPIs research report, 2026-11-10 (starter reference scheme) · XEO CRM pipeline research report, 2026-11-10 (pipeline metrics) · the codes of xeos:objectiveMetric, kept unchanged",
       "ordered": false,
       "concepts": [
@@ -1429,7 +1429,7 @@
           "label": "AI average position",
           "definition": "The average order in which the brand is first mentioned among the brands an answer names, over the answers that mention it. 1-based, 1 best",
           "note": "reading: a derivation. Whether an answer mentions or cites a brand is extracted from sampled answers, and the sample is a vendor's or a tracker's choice",
-          "editorialNote": "Averaged only over answers that mention the brand, so it says nothing about how often that is. Not comparable with a search position, which averages over impressions. minDenominator 10 is an inferred default, not a vendor fact.",
+          "editorialNote": "Averaged only over answers that mention the brand, so it says nothing about how often that is. Not comparable with a search position, which averages over impressions. The implementation sets its minDenominator; XEO ships no value.",
           "metric": {
             "metricType": "simple",
             "aggregation": "mean",
@@ -1437,8 +1437,7 @@
             "timeAnchor": "xeo:capturedAt",
             "unit": "rank",
             "betterDirection": "down",
-            "additivity": "non_additive",
-            "minDenominator": 10
+            "additivity": "non_additive"
           }
         },
         {
@@ -1467,15 +1466,14 @@
           "altLabels": [
             "ai_owned_source_rate"
           ],
-          "editorialNote": "Adopted in 0.6.0 (decided 2026-11-12) so every AI visibility code carries the ai_ prefix; replaces citation_rate, which is deprecated. The report names this ai_owned_source_rate, kept as an altLabel. Not ai_citation_share, which divides by citations and not by answers. minDenominator 30 is an inferred default, not a vendor fact.",
+          "editorialNote": "Adopted in 0.6.0 (decided 2026-11-12) so every AI visibility code carries the ai_ prefix; replaces citation_rate, which is deprecated. The report names this ai_owned_source_rate, kept as an altLabel. Not ai_citation_share, which divides by citations and not by answers. The implementation sets its minDenominator; XEO ships no value.",
           "metric": {
             "metricType": "ratio",
             "numerator": "ai_answers_citing_owned",
             "denominator": "ai_answers_sampled",
             "unit": "ratio",
             "betterDirection": "up",
-            "additivity": "non_additive",
-            "minDenominator": 30
+            "additivity": "non_additive"
           }
         },
         {
@@ -1484,15 +1482,14 @@
           "label": "AI citation share",
           "definition": "The share of all citations in the sampled answers that point at the brand's owned domains: citations of owned domains divided by all citations",
           "note": "reading: a derivation. Whether an answer mentions or cites a brand is extracted from sampled answers, and the sample is a vendor's or a tracker's choice",
-          "editorialNote": "minDenominator 30 is an inferred default, not a vendor fact.",
+          "editorialNote": "The implementation sets its minDenominator; XEO ships no value.",
           "metric": {
             "metricType": "ratio",
             "numerator": "ai_owned_citations",
             "denominator": "ai_citations",
             "unit": "ratio",
             "betterDirection": "up",
-            "additivity": "non_additive",
-            "minDenominator": 30
+            "additivity": "non_additive"
           }
         },
         {
@@ -1518,15 +1515,14 @@
           "label": "AI mention rate",
           "definition": "The share of sampled answers that mention the brand: answers mentioning the brand divided by all answers sampled. Every sampled answer is in the denominator, whether or not it names any brand",
           "note": "reading: a derivation. Whether an answer mentions or cites a brand is extracted from sampled answers, and the sample is a vendor's or a tracker's choice. The property that carries the rollup value is xeo:mentionRate",
-          "editorialNote": "The report's name, adopted in 0.6.0 (decided 2026-11-12) so every AI visibility code carries the ai_ prefix. Replaces mention_rate, which is deprecated. What vendors call 'visibility' or 'visibility score' maps here, and not always exactly: see mappings/. minDenominator 30 is an inferred default, not a vendor fact.",
+          "editorialNote": "The report's name, adopted in 0.6.0 (decided 2026-11-12) so every AI visibility code carries the ai_ prefix. Replaces mention_rate, which is deprecated. What vendors call 'visibility' or 'visibility score' maps here, and not always exactly: see mappings/. The implementation sets its minDenominator; XEO ships no value.",
           "metric": {
             "metricType": "ratio",
             "numerator": "ai_answers_mentioning",
             "denominator": "ai_answers_sampled",
             "unit": "ratio",
             "betterDirection": "up",
-            "additivity": "non_additive",
-            "minDenominator": 30
+            "additivity": "non_additive"
           }
         },
         {
@@ -1572,15 +1568,14 @@
           "definition": "A model's score of the tone in which the sampled answers speak of the brand, averaged over the answers that mention it, from 0 to 100",
           "note": "reading: always a derivation, with the scoring model as its method. Not xeo:sentiment, which is a four-way code on one mention",
           "status": "extension",
-          "editorialNote": "minDenominator 10 is an inferred default, not a vendor fact.",
+          "editorialNote": "The implementation sets its minDenominator; XEO ships no value.",
           "metric": {
             "metricType": "simple",
             "aggregation": "mean",
             "readsSlot": "xeo:value",
             "unit": "score_0_100",
             "betterDirection": "up",
-            "additivity": "non_additive",
-            "minDenominator": 10
+            "additivity": "non_additive"
           }
         },
         {
@@ -1589,15 +1584,14 @@
           "label": "AI share of voice",
           "definition": "The brand's share of all tracked-brand mentions in the sampled answers: mentions of the brand divided by mentions of every tracked brand",
           "note": "reading: a derivation. Whether an answer mentions or cites a brand is extracted from sampled answers, and the sample is a vendor's or a tracker's choice",
-          "editorialNote": "minDenominator 30 is an inferred default, not a vendor fact.",
+          "editorialNote": "The implementation sets its minDenominator; XEO ships no value.",
           "metric": {
             "metricType": "ratio",
             "numerator": "ai_brand_mentions",
             "denominator": "ai_tracked_brand_mentions",
             "unit": "ratio",
             "betterDirection": "up",
-            "additivity": "non_additive",
-            "minDenominator": 30
+            "additivity": "non_additive"
           }
         },
         {
@@ -1628,15 +1622,14 @@
           "replacedBy": [
             "xeos:metric-ai_citation_rate"
           ],
-          "editorialNote": "Deprecated in 0.6.0: write ai_citation_rate (xeos:metric-ai_citation_rate), the same Metric with the ai_ prefix. This code is kept and still resolves, because consumers already store it; it is removed in 0.7. minDenominator 30 is an inferred default, not a vendor fact.",
+          "editorialNote": "Deprecated in 0.6.0: write ai_citation_rate (xeos:metric-ai_citation_rate), the same Metric with the ai_ prefix. This code is kept and still resolves, because consumers already store it; it is removed in 0.7. The implementation sets its minDenominator; XEO ships no value.",
           "metric": {
             "metricType": "ratio",
             "numerator": "ai_answers_citing_owned",
             "denominator": "ai_answers_sampled",
             "unit": "ratio",
             "betterDirection": "up",
-            "additivity": "non_additive",
-            "minDenominator": 30
+            "additivity": "non_additive"
           }
         },
         {
@@ -1678,15 +1671,14 @@
           "label": "Clickthrough rate",
           "definition": "The share of impressions that were clicked: clicks divided by impressions, as a 0 to 1 quotient",
           "note": "reading: an observation where Search Console returned it for exactly this window and scope; a derivation when rolled up or recomputed",
-          "editorialNote": "The unit is ratio. xeos:objectiveMetric-ctr, its earlier form, noted the unit as percent until 0.6.0 corrected it; Search Console returns a quotient (0.1078), and so does every other source read. minDenominator 100 is an inferred default, not a vendor fact.",
+          "editorialNote": "The unit is ratio. xeos:objectiveMetric-ctr, its earlier form, noted the unit as percent until 0.6.0 corrected it; Search Console returns a quotient (0.1078), and so does every other source read. The implementation sets its minDenominator; XEO ships no value.",
           "metric": {
             "metricType": "ratio",
             "numerator": "clicks",
             "denominator": "impressions",
             "unit": "ratio",
             "betterDirection": "up",
-            "additivity": "non_additive",
-            "minDenominator": 100
+            "additivity": "non_additive"
           }
         },
         {
@@ -1765,15 +1757,14 @@
           "label": "Engagement rate",
           "definition": "The share of sessions that were engaged: engaged sessions divided by sessions",
           "note": "reading: an observation where the analytics tool returned it for exactly this window and scope; a derivation when rolled up, or when the tool's own channel rule had to be rebuilt",
-          "editorialNote": "Not one minus a bounce rate: one tool's bounce is a single-pageview visit, another's is a session that was not engaged. minDenominator 50 is an inferred default, not a vendor fact.",
+          "editorialNote": "Not one minus a bounce rate: one tool's bounce is a single-pageview visit, another's is a session that was not engaged. The implementation sets its minDenominator; XEO ships no value.",
           "metric": {
             "metricType": "ratio",
             "numerator": "engaged_sessions",
             "denominator": "sessions",
             "unit": "ratio",
             "betterDirection": "up",
-            "additivity": "non_additive",
-            "minDenominator": 50
+            "additivity": "non_additive"
           }
         },
         {
@@ -1851,15 +1842,14 @@
           "replacedBy": [
             "xeos:metric-ai_mention_rate"
           ],
-          "editorialNote": "Deprecated in 0.6.0: write ai_mention_rate (xeos:metric-ai_mention_rate), the same Metric under the report's name. This code is kept and still resolves, because consumers already store it; it is removed in 0.7. minDenominator 30 is an inferred default, not a vendor fact.",
+          "editorialNote": "Deprecated in 0.6.0: write ai_mention_rate (xeos:metric-ai_mention_rate), the same Metric under the report's name. This code is kept and still resolves, because consumers already store it; it is removed in 0.7. The implementation sets its minDenominator; XEO ships no value.",
           "metric": {
             "metricType": "ratio",
             "numerator": "ai_answers_mentioning",
             "denominator": "ai_answers_sampled",
             "unit": "ratio",
             "betterDirection": "up",
-            "additivity": "non_additive",
-            "minDenominator": 30
+            "additivity": "non_additive"
           }
         },
         {
@@ -1886,15 +1876,14 @@
           "label": "Average position",
           "definition": "The average position of the site's results in search over the window, weighted by impressions. 1-based, 1 best",
           "note": "reading: an observation where Search Console returned it for exactly this window and scope; a derivation when rolled up or recomputed",
-          "editorialNote": "Depends on aggregationBasis: the source computes it differently by page and by property. minDenominator 1 is an inferred default, not a vendor fact.",
+          "editorialNote": "Depends on aggregationBasis: the source computes it differently by page and by property. The implementation sets its minDenominator; XEO ships no value.",
           "metric": {
             "metricType": "simple",
             "aggregation": "weighted_mean",
             "readsSlot": "xeo:avgPosition",
             "unit": "rank",
             "betterDirection": "down",
-            "additivity": "non_additive",
-            "minDenominator": 1
+            "additivity": "non_additive"
           }
         },
         {
@@ -1955,15 +1944,14 @@
           "label": "Session conversion rate",
           "definition": "The share of sessions in which at least one key event happened: converting sessions divided by sessions",
           "note": "reading: an observation where the analytics tool returned it for exactly this window and scope; a derivation when rolled up, or when the tool's own channel rule had to be rebuilt",
-          "editorialNote": "minDenominator 100 is an inferred default, not a vendor fact.",
+          "editorialNote": "The implementation sets its minDenominator; XEO ships no value.",
           "metric": {
             "metricType": "ratio",
             "numerator": "converting_sessions",
             "denominator": "sessions",
             "unit": "ratio",
             "betterDirection": "up",
-            "additivity": "non_additive",
-            "minDenominator": 100
+            "additivity": "non_additive"
           }
         },
         {
