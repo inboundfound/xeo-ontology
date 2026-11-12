@@ -1591,7 +1591,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 <section id="minDenominator" class="term">
   <h3>minimum denominator <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-metrics</span></h3>
   <code class="iri">xeo:minDenominator</code>
-  <p>The smallest denominatorValue at which a reading of this Metric is reportable: for a ratio the denominator, for a mean the number of values averaged. A reading below it is flagged, and an Outcome read from it is inconclusive with resultReason below_volume_floor. An XEO norm: no vendor publishes one. The values in xeos:metric are stated defaults, for a consumer to replace.</p>
+  <p>The smallest denominatorValue at which a reading of this Metric is reportable: for a ratio the denominator, for a mean the number of values averaged. A reading below it is flagged, and an Outcome read from it is inconclusive with resultReason below_volume_floor. An XEO norm: no vendor publishes one. A slot only: XEO ships no value, and the Metrics in xeos:metric carry none. Each implementation sets its own.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Metric">xeo:Metric</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
 </section>
 <section id="model" class="term">

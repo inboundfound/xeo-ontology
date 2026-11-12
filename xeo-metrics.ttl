@@ -170,7 +170,7 @@ xeo:minDenominator a owl:DatatypeProperty ;
     rdfs:domain xeo:Metric ; rdfs:range xsd:integer ;
     xeo:epistemicLayer "norm" ;
     xeo:canonicalStore "neo4j" ;
-    dct:description "The smallest denominatorValue at which a reading of this Metric is reportable: for a ratio the denominator, for a mean the number of values averaged. A reading below it is flagged, and an Outcome read from it is inconclusive with resultReason below_volume_floor. An XEO norm: no vendor publishes one. The values in xeos:metric are stated defaults, for a consumer to replace." .
+    dct:description "The smallest denominatorValue at which a reading of this Metric is reportable: for a ratio the denominator, for a mean the number of values averaged. A reading below it is flagged, and an Outcome read from it is inconclusive with resultReason below_volume_floor. An XEO norm: no vendor publishes one. A slot only: XEO ships no value, and the Metrics in xeos:metric carry none. Each implementation sets its own." .
 
 # --- The reading -----------------------------------------------------------------
 

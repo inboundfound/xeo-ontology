@@ -155,7 +155,8 @@ CRM pipeline, each with its type, unit, direction and additivity), `metricType`,
 `metricUnit`, `betterDirection`, `additivity`; `relative` and `absolute_change` in `targetKind`;
 and, as extensions, `timeGrain`, `aggregationBasis`, `dataState`. `objectiveMetric` is kept as
 the compatibility list: each of its eight concepts is an `exactMatch` of its Metric under the
-same code. Every `minDenominator` is an inferred default, and says so.
+same code. No numbers in the ontology (decided 2026-11-12): `minDenominator` is a slot, and no
+published Metric carries a value for it. Each implementation sets its own.
 
 **`ctr` unit, corrected to ratio.** The published `objectiveMetric` concept noted its unit as
 percent. Search Console returns a 0 to 1 quotient, and the Metric `ctr` states ratio, so the old

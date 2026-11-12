@@ -1742,7 +1742,7 @@ xeos:metric a skos:ConceptScheme ;
     skos:prefLabel "Metrics"@en ;
     xeo:fillsSlot xeo:metric ;
     dct:source "XEO metrics and KPIs research report, 2026-11-10 (starter reference scheme) · XEO CRM pipeline research report, 2026-11-10 (pipeline metrics) · the codes of xeos:objectiveMetric, kept unchanged" ;
-    dct:description "The reference scheme of XEO Metrics: each a definition with a type, a unit, a better direction and an additivity, and what it is computed from. Covers search, AI visibility, website analytics and CRM pipeline, so an Objective can target any of them and a reading means the same thing wherever it is computed. The code a MetricTarget stores in xeo:metric is the skos:notation of a concept here. The eight codes published earlier in xeos:objectiveMetric are kept exactly, each with an exactMatch from its old concept; two of them, mention_rate and citation_rate, are deprecated for ai_mention_rate and ai_citation_rate. Definitions are neutral: where vendors use one name for different ratios, the definition here states the denominator, and each vendor's field is mapped to it in mappings/. Every minDenominator is a stated default inferred for XEO, not a vendor fact. A consumer adds its own Metrics as instances of xeo:Metric in a scheme of its own." .
+    dct:description "The reference scheme of XEO Metrics: each a definition with a type, a unit, a better direction and an additivity, and what it is computed from. Covers search, AI visibility, website analytics and CRM pipeline, so an Objective can target any of them and a reading means the same thing wherever it is computed. The code a MetricTarget stores in xeo:metric is the skos:notation of a concept here. The eight codes published earlier in xeos:objectiveMetric are kept exactly, each with an exactMatch from its old concept; two of them, mention_rate and citation_rate, are deprecated for ai_mention_rate and ai_citation_rate. Definitions are neutral: where vendors use one name for different ratios, the definition here states the denominator, and each vendor's field is mapped to it in mappings/. XEO ships no minDenominator values: it is a slot, and each implementation sets its own. A consumer adds its own Metrics as instances of xeo:Metric in a scheme of its own." .
 
 # Search
 
@@ -1788,9 +1788,8 @@ xeos:metric-ctr a skos:Concept , xeo:Metric ;
     xeo:unit xeos:metricUnit-ratio ;
     xeo:betterDirection xeos:betterDirection-up ;
     xeo:additivity xeos:additivity-non_additive ;
-    xeo:minDenominator 100 ;
     skos:note "reading: an observation where Search Console returned it for exactly this window and scope; a derivation when rolled up or recomputed"@en ;
-    skos:editorialNote "The unit is ratio. xeos:objectiveMetric-ctr, its earlier form, noted the unit as percent until 0.6.0 corrected it; Search Console returns a quotient (0.1078), and so does every other source read. minDenominator 100 is an inferred default, not a vendor fact."@en .
+    skos:editorialNote "The unit is ratio. xeos:objectiveMetric-ctr, its earlier form, noted the unit as percent until 0.6.0 corrected it; Search Console returns a quotient (0.1078), and so does every other source read. The implementation sets its minDenominator; XEO ships no value."@en .
 
 xeos:metric-position a skos:Concept , xeo:Metric ;
     skos:inScheme xeos:metric ;
@@ -1804,9 +1803,8 @@ xeos:metric-position a skos:Concept , xeo:Metric ;
     xeo:unit xeos:metricUnit-rank ;
     xeo:betterDirection xeos:betterDirection-down ;
     xeo:additivity xeos:additivity-non_additive ;
-    xeo:minDenominator 1 ;
     skos:note "reading: an observation where Search Console returned it for exactly this window and scope; a derivation when rolled up or recomputed"@en ;
-    skos:editorialNote "Depends on aggregationBasis: the source computes it differently by page and by property. minDenominator 1 is an inferred default, not a vendor fact."@en .
+    skos:editorialNote "Depends on aggregationBasis: the source computes it differently by page and by property. The implementation sets its minDenominator; XEO ships no value."@en .
 
 xeos:metric-rank_absolute a skos:Concept , xeo:Metric ;
     skos:inScheme xeos:metric ;
@@ -1882,9 +1880,8 @@ xeos:metric-mention_rate a skos:Concept , xeo:Metric ;
     xeo:unit xeos:metricUnit-ratio ;
     xeo:betterDirection xeos:betterDirection-up ;
     xeo:additivity xeos:additivity-non_additive ;
-    xeo:minDenominator 30 ;
     skos:note "reading: a derivation. Whether an answer mentions or cites a brand is extracted from sampled answers, and the sample is a vendor's or a tracker's choice"@en ;
-    skos:editorialNote "Deprecated in 0.6.0: write ai_mention_rate (xeos:metric-ai_mention_rate), the same Metric under the report's name. This code is kept and still resolves, because consumers already store it; it is removed in 0.7. minDenominator 30 is an inferred default, not a vendor fact."@en .
+    skos:editorialNote "Deprecated in 0.6.0: write ai_mention_rate (xeos:metric-ai_mention_rate), the same Metric under the report's name. This code is kept and still resolves, because consumers already store it; it is removed in 0.7. The implementation sets its minDenominator; XEO ships no value."@en .
 
 xeos:metric-ai_mention_rate a skos:Concept , xeo:Metric ;
     skos:inScheme xeos:metric ;
@@ -1898,9 +1895,8 @@ xeos:metric-ai_mention_rate a skos:Concept , xeo:Metric ;
     xeo:unit xeos:metricUnit-ratio ;
     xeo:betterDirection xeos:betterDirection-up ;
     xeo:additivity xeos:additivity-non_additive ;
-    xeo:minDenominator 30 ;
     skos:note "reading: a derivation. Whether an answer mentions or cites a brand is extracted from sampled answers, and the sample is a vendor's or a tracker's choice. The property that carries the rollup value is xeo:mentionRate"@en ;
-    skos:editorialNote "The report's name, adopted in 0.6.0 (decided 2026-11-12) so every AI visibility code carries the ai_ prefix. Replaces mention_rate, which is deprecated. What vendors call 'visibility' or 'visibility score' maps here, and not always exactly: see mappings/. minDenominator 30 is an inferred default, not a vendor fact."@en .
+    skos:editorialNote "The report's name, adopted in 0.6.0 (decided 2026-11-12) so every AI visibility code carries the ai_ prefix. Replaces mention_rate, which is deprecated. What vendors call 'visibility' or 'visibility score' maps here, and not always exactly: see mappings/. The implementation sets its minDenominator; XEO ships no value."@en .
 
 xeos:metric-ai_answers_citing_owned a skos:Concept , xeo:Metric ;
     skos:inScheme xeos:metric ;
@@ -1931,9 +1927,8 @@ xeos:metric-citation_rate a skos:Concept , xeo:Metric ;
     xeo:unit xeos:metricUnit-ratio ;
     xeo:betterDirection xeos:betterDirection-up ;
     xeo:additivity xeos:additivity-non_additive ;
-    xeo:minDenominator 30 ;
     skos:note "reading: a derivation. Whether an answer mentions or cites a brand is extracted from sampled answers, and the sample is a vendor's or a tracker's choice"@en ;
-    skos:editorialNote "Deprecated in 0.6.0: write ai_citation_rate (xeos:metric-ai_citation_rate), the same Metric with the ai_ prefix. This code is kept and still resolves, because consumers already store it; it is removed in 0.7. minDenominator 30 is an inferred default, not a vendor fact."@en .
+    skos:editorialNote "Deprecated in 0.6.0: write ai_citation_rate (xeos:metric-ai_citation_rate), the same Metric with the ai_ prefix. This code is kept and still resolves, because consumers already store it; it is removed in 0.7. The implementation sets its minDenominator; XEO ships no value."@en .
 
 xeos:metric-ai_citation_rate a skos:Concept , xeo:Metric ;
     skos:inScheme xeos:metric ;
@@ -1947,10 +1942,9 @@ xeos:metric-ai_citation_rate a skos:Concept , xeo:Metric ;
     xeo:unit xeos:metricUnit-ratio ;
     xeo:betterDirection xeos:betterDirection-up ;
     xeo:additivity xeos:additivity-non_additive ;
-    xeo:minDenominator 30 ;
     skos:altLabel "ai_owned_source_rate" ;
     skos:note "reading: a derivation. Whether an answer mentions or cites a brand is extracted from sampled answers, and the sample is a vendor's or a tracker's choice. The property that carries the rollup value is xeo:citationRate"@en ;
-    skos:editorialNote "Adopted in 0.6.0 (decided 2026-11-12) so every AI visibility code carries the ai_ prefix; replaces citation_rate, which is deprecated. The report names this ai_owned_source_rate, kept as an altLabel. Not ai_citation_share, which divides by citations and not by answers. minDenominator 30 is an inferred default, not a vendor fact."@en .
+    skos:editorialNote "Adopted in 0.6.0 (decided 2026-11-12) so every AI visibility code carries the ai_ prefix; replaces citation_rate, which is deprecated. The report names this ai_owned_source_rate, kept as an altLabel. Not ai_citation_share, which divides by citations and not by answers. The implementation sets its minDenominator; XEO ships no value."@en .
 
 xeos:metric-ai_brand_mentions a skos:Concept , xeo:Metric ;
     skos:inScheme xeos:metric ;
@@ -1997,9 +1991,8 @@ xeos:metric-ai_share_of_voice a skos:Concept , xeo:Metric ;
     xeo:unit xeos:metricUnit-ratio ;
     xeo:betterDirection xeos:betterDirection-up ;
     xeo:additivity xeos:additivity-non_additive ;
-    xeo:minDenominator 30 ;
     skos:note "reading: a derivation. Whether an answer mentions or cites a brand is extracted from sampled answers, and the sample is a vendor's or a tracker's choice"@en ;
-    skos:editorialNote "minDenominator 30 is an inferred default, not a vendor fact."@en .
+    skos:editorialNote "The implementation sets its minDenominator; XEO ships no value."@en .
 
 xeos:metric-ai_owned_citations a skos:Concept , xeo:Metric ;
     skos:inScheme xeos:metric ;
@@ -2046,9 +2039,8 @@ xeos:metric-ai_citation_share a skos:Concept , xeo:Metric ;
     xeo:unit xeos:metricUnit-ratio ;
     xeo:betterDirection xeos:betterDirection-up ;
     xeo:additivity xeos:additivity-non_additive ;
-    xeo:minDenominator 30 ;
     skos:note "reading: a derivation. Whether an answer mentions or cites a brand is extracted from sampled answers, and the sample is a vendor's or a tracker's choice"@en ;
-    skos:editorialNote "minDenominator 30 is an inferred default, not a vendor fact."@en .
+    skos:editorialNote "The implementation sets its minDenominator; XEO ships no value."@en .
 
 xeos:metric-ai_average_position a skos:Concept , xeo:Metric ;
     skos:inScheme xeos:metric ;
@@ -2063,9 +2055,8 @@ xeos:metric-ai_average_position a skos:Concept , xeo:Metric ;
     xeo:unit xeos:metricUnit-rank ;
     xeo:betterDirection xeos:betterDirection-down ;
     xeo:additivity xeos:additivity-non_additive ;
-    xeo:minDenominator 10 ;
     skos:note "reading: a derivation. Whether an answer mentions or cites a brand is extracted from sampled answers, and the sample is a vendor's or a tracker's choice"@en ;
-    skos:editorialNote "Averaged only over answers that mention the brand, so it says nothing about how often that is. Not comparable with a search position, which averages over impressions. minDenominator 10 is an inferred default, not a vendor fact."@en .
+    skos:editorialNote "Averaged only over answers that mention the brand, so it says nothing about how often that is. Not comparable with a search position, which averages over impressions. The implementation sets its minDenominator; XEO ships no value."@en .
 
 xeos:metric-ai_sentiment a skos:Concept , xeo:Metric ;
     skos:inScheme xeos:metric ;
@@ -2079,10 +2070,9 @@ xeos:metric-ai_sentiment a skos:Concept , xeo:Metric ;
     xeo:unit xeos:metricUnit-score_0_100 ;
     xeo:betterDirection xeos:betterDirection-up ;
     xeo:additivity xeos:additivity-non_additive ;
-    xeo:minDenominator 10 ;
     xeo:termStatus "extension" ;
     skos:note "reading: always a derivation, with the scoring model as its method. Not xeo:sentiment, which is a four-way code on one mention"@en ;
-    skos:editorialNote "minDenominator 10 is an inferred default, not a vendor fact."@en .
+    skos:editorialNote "The implementation sets its minDenominator; XEO ships no value."@en .
 
 # Website analytics
 
@@ -2128,9 +2118,8 @@ xeos:metric-engagement_rate a skos:Concept , xeo:Metric ;
     xeo:unit xeos:metricUnit-ratio ;
     xeo:betterDirection xeos:betterDirection-up ;
     xeo:additivity xeos:additivity-non_additive ;
-    xeo:minDenominator 50 ;
     skos:note "reading: an observation where the analytics tool returned it for exactly this window and scope; a derivation when rolled up, or when the tool's own channel rule had to be rebuilt"@en ;
-    skos:editorialNote "Not one minus a bounce rate: one tool's bounce is a single-pageview visit, another's is a session that was not engaged. minDenominator 50 is an inferred default, not a vendor fact."@en .
+    skos:editorialNote "Not one minus a bounce rate: one tool's bounce is a single-pageview visit, another's is a session that was not engaged. The implementation sets its minDenominator; XEO ships no value."@en .
 
 xeos:metric-ai_assistant_sessions a skos:Concept , xeo:Metric ;
     skos:inScheme xeos:metric ;
@@ -2189,9 +2178,8 @@ xeos:metric-session_conversion_rate a skos:Concept , xeo:Metric ;
     xeo:unit xeos:metricUnit-ratio ;
     xeo:betterDirection xeos:betterDirection-up ;
     xeo:additivity xeos:additivity-non_additive ;
-    xeo:minDenominator 100 ;
     skos:note "reading: an observation where the analytics tool returned it for exactly this window and scope; a derivation when rolled up, or when the tool's own channel rule had to be rebuilt"@en ;
-    skos:editorialNote "minDenominator 100 is an inferred default, not a vendor fact."@en .
+    skos:editorialNote "The implementation sets its minDenominator; XEO ships no value."@en .
 
 # CRM pipeline
 
