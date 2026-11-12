@@ -379,7 +379,7 @@ xeo:resultReason rdfs:label "result reason" .
 #
 # ADDED. What makes an Outcome computable: the reading it ended on
 # (resultReading; the reading it started from is baselineReading, in
-# xeo-delivery beside baseline), and the two changes between them. "Lift" was
+# xeo-work beside baseline), and the two changes between them. "Lift" was
 # one number that could be points or a percentage, and nothing said which.
 # absoluteChange and relativeChange are both stated, signed and raw. And
 # magnitudeMetric, so a Gap's size can name the Metric it is a value of.

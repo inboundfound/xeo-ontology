@@ -2657,7 +2657,7 @@ xeos:acquisitionChannel-other a skos:Concept ;
 xeos:conversionPointType a skos:ConceptScheme ;
     skos:prefLabel "Conversion point types"@en ;
     xeo:fillsSlot xeo:conversionPointType ;
-    dct:source "XEO CRM pipeline research report, 2026-11-10 · the three ConversionPoint subclasses of xeo-engagement, as codes, with two kinds the report adds" ;
+    dct:source "XEO CRM pipeline research report, 2026-11-10 · the three ConversionPoint subclasses (xeo-engagement until 0.7, now core), as codes, with two kinds the report adds" ;
     dct:description "The kind of mechanism a ConversionPoint is. The first three say with a code what the CallToAction, LeadCaptureForm and GatedAsset subclasses say with a class; the list was growing, and a growing list is a scheme." .
 
 xeos:conversionPointType-cta a skos:Concept ;
@@ -2703,8 +2703,8 @@ xeos:conversionPointType-chat a skos:Concept ;
 xeos:searchIntent a skos:ConceptScheme ;
     skos:prefLabel "Search intents"@en ;
     xeo:fillsSlot xeo:targetsIntent ;
-    dct:source "Broder (2002), 'A taxonomy of web search', as extended in common practice · the four SearchIntent individuals of xeo-engagement, as concepts" ;
-    dct:description "Why the person is asking. The same four values xeo-engagement declares as named individuals, published as concepts so that a value is a code and not a term. Each concept is also an xeo:SearchIntent, so targetsIntent may point at it without any change to that property." .
+    dct:source "Broder (2002), 'A taxonomy of web search', as extended in common practice · the four SearchIntent individuals (xeo-engagement until 0.7, now core), as concepts" ;
+    dct:description "Why the person is asking. The same four values core declares as named individuals, published as concepts so that a value is a code and not a term. Each concept is also an xeo:SearchIntent, so targetsIntent may point at it without any change to that property." .
 
 xeos:searchIntent-informational a skos:Concept , xeo:SearchIntent ;
     skos:inScheme xeos:searchIntent ;
