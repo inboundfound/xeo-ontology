@@ -225,3 +225,21 @@ xeo:Organization skos:exactMatch schema:Organization ;
 
 xeo:Person skos:exactMatch schema:Person ;
     rdfs:comment "The same thing: a person. exactMatch, because the canonical XEO Person is one node per real person, which is what schema:Person describes. XEO declares none of schema.org's person properties; a consumer may add them from schema.org." .
+
+# ===========================================================================
+# Consent (core, 0.7) — W3C Data Privacy Vocabulary (DPV).
+# Close matches only: DPV models consent as a legal basis with its own status
+# lifecycle; XEO records one captured choice and makes no legal judgement.
+# ===========================================================================
+
+@prefix dpv: <https://w3id.org/dpv#> .
+
+xeo:Consent skos:closeMatch dpv:Consent ;
+    rdfs:comment "Close, not exact: dpv:Consent is consent as a legal basis, with validity and withdrawal; xeo:Consent is one choice as a system recorded it, and validity is left to an interpretation." .
+
+xeo:consentSubject skos:closeMatch dpv:hasDataSubject .
+xeo:consentPurpose skos:closeMatch dpv:hasPurpose .
+xeo:consentStatus skos:closeMatch dpv:hasConsentStatus .
+
+# Model (core, 0.7) — schema.org has no model class; ML-Schema is aligned with the
+# agentic engineering module after 0.7.

@@ -1,4 +1,4 @@
-// XEO Ontology — Neo4j 5.x schema (core + visibility + engagement + decision + strategy + delivery + analysis)
+// XEO Ontology — Neo4j 5.x schema (core, visibility, analysis, sales, work, decision; attribution below)
 // Entities are durable, episodes are immutable, tenancy lives in properties.
 
 // ========== CORE ==========
@@ -75,7 +75,7 @@ FOR ()-[v:VISIBILITY_FOR]-() ON (v.periodStart);
 CREATE INDEX mentions_rank IF NOT EXISTS
 FOR ()-[m:MENTIONS]-() ON (m.mentionRank);
 
-// ========== ENGAGEMENT (draft) ==========
+// ========== WEBSITE CONVERSIONS (core since 0.7) ==========
 
 CREATE CONSTRAINT conversion_point_id IF NOT EXISTS
 FOR (c:ConversionPoint) REQUIRE c.id IS UNIQUE;
@@ -280,6 +280,33 @@ FOR ()-[s:SIMILAR_TO]-() ON (s.basis, s.similarity);
 // (embeddedAt). The one key that is not an XEO term is `id`: a surrogate key
 // for nodes whose identity is not a natural property, a property-graph
 // convention the ontology does not define.
+// ========== METRICS (K3, 0.7) ==========
+// A Metric is a node (C5: a MetricTarget links to it with TARGET_METRIC), one per
+// definition, identified by its code; a MetricReading is one value of one Metric.
+
+CREATE CONSTRAINT metric_id IF NOT EXISTS
+FOR (m:Metric) REQUIRE m.id IS UNIQUE;
+
+CREATE CONSTRAINT metric_reading_id IF NOT EXISTS
+FOR (r:MetricReading) REQUIRE r.id IS UNIQUE;
+
+CREATE INDEX metric_reading_window IF NOT EXISTS
+FOR (r:MetricReading) ON (r.periodStart, r.periodEnd);
+
+// ========== CORE ADDITIONS (0.7) ==========
+
+CREATE CONSTRAINT model_id IF NOT EXISTS
+FOR (m:Model) REQUIRE m.id IS UNIQUE;
+
+CREATE CONSTRAINT consent_id IF NOT EXISTS
+FOR (c:Consent) REQUIRE c.id IS UNIQUE;
+
+CREATE INDEX consent_time IF NOT EXISTS
+FOR (c:Consent) ON (c.consentRecordedAt);
+
+CREATE CONSTRAINT inbound_reference_id IF NOT EXISTS
+FOR (r:InboundReference) REQUIRE r.id IS UNIQUE;
+
 // Embeddings live in an external vector store; the graph keeps only the
 // derivation claim (embeddingRef, embeddingModel, embeddedAt, embeddingDim) on
 // the embedded node — a :Term, a :URL, a :Prompt or a :Topic.

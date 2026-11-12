@@ -13,6 +13,13 @@
       "ordered": false,
       "concepts": [
         {
+          "code": "affiliate",
+          "iri": "https://xeoontology.org/schemes#acquisitionChannel-affiliate",
+          "label": "Affiliate",
+          "definition": "Arrived from a partner paid per referral or per sale (D2, 0.7)",
+          "note": null
+        },
+        {
           "code": "ai_assistant",
           "iri": "https://xeoontology.org/schemes#acquisitionChannel-ai_assistant",
           "label": "AI assistant",
@@ -33,6 +40,13 @@
           "iri": "https://xeoontology.org/schemes#acquisitionChannel-direct",
           "label": "Direct",
           "definition": "Arrived with no referrer: typed, bookmarked, or stripped",
+          "note": null
+        },
+        {
+          "code": "display",
+          "iri": "https://xeoontology.org/schemes#acquisitionChannel-display",
+          "label": "Display",
+          "definition": "Arrived from a display or banner advertisement bought directly (D2, 0.7)",
           "note": null
         },
         {
@@ -82,6 +96,13 @@
           "iri": "https://xeoontology.org/schemes#acquisitionChannel-paid_social",
           "label": "Paid social",
           "definition": "Arrived from a social advertisement",
+          "note": null
+        },
+        {
+          "code": "programmatic",
+          "iri": "https://xeoontology.org/schemes#acquisitionChannel-programmatic",
+          "label": "Programmatic",
+          "definition": "Arrived from an advertisement bought through programmatic exchanges (D2, 0.7)",
           "note": null
         },
         {
@@ -354,6 +375,44 @@
         }
       ]
     },
+    "billingInterval": {
+      "iri": "https://xeoontology.org/schemes#billingInterval",
+      "label": "Billing intervals",
+      "fillsSlot": "xeo:billingInterval",
+      "description": "The unit a recurring amount recurs over. With billingIntervalCount, any period: quarterly is month and 3. Replaces xeos:valuePeriod.",
+      "source": "XEO 0.7 plan of record, 2026-11-11 (D3) · the interval fields of subscription and price APIs",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "day",
+          "iri": "https://xeoontology.org/schemes#billingInterval-day",
+          "label": "Day",
+          "definition": "Recurs every day, or every billingIntervalCount days",
+          "note": null
+        },
+        {
+          "code": "month",
+          "iri": "https://xeoontology.org/schemes#billingInterval-month",
+          "label": "Month",
+          "definition": "Recurs every month, or every billingIntervalCount months",
+          "note": null
+        },
+        {
+          "code": "week",
+          "iri": "https://xeoontology.org/schemes#billingInterval-week",
+          "label": "Week",
+          "definition": "Recurs every week, or every billingIntervalCount weeks",
+          "note": null
+        },
+        {
+          "code": "year",
+          "iri": "https://xeoontology.org/schemes#billingInterval-year",
+          "label": "Year",
+          "definition": "Recurs every year, or every billingIntervalCount years",
+          "note": null
+        }
+      ]
+    },
     "cadence": {
       "iri": "https://xeoontology.org/schemes#cadence",
       "label": "Retainer cadences",
@@ -374,6 +433,148 @@
           "iri": "https://xeoontology.org/schemes#cadence-quarterly",
           "label": "Quarterly",
           "definition": "Quota resets each quarter",
+          "note": null
+        }
+      ]
+    },
+    "consentPurpose": {
+      "iri": "https://xeoontology.org/schemes#consentPurpose",
+      "label": "Consent purposes",
+      "fillsSlot": "xeo:consentPurpose",
+      "description": "What a consent choice is for. Vendor purposes are mapped to these in mappings/.",
+      "source": "XEO 0.7 plan of record, 2026-11-11 (Consent) · Google Consent Mode's purposes, Hyros adOptimizationConsent",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "ad_personalization",
+          "iri": "https://xeoontology.org/schemes#consentPurpose-ad_personalization",
+          "label": "Ad personalization",
+          "definition": "Using the person's data to personalize ads, including ad optimization",
+          "note": null
+        },
+        {
+          "code": "ad_storage",
+          "iri": "https://xeoontology.org/schemes#consentPurpose-ad_storage",
+          "label": "Ad storage",
+          "definition": "Storing and reading identifiers for advertising",
+          "note": null
+        },
+        {
+          "code": "ad_user_data",
+          "iri": "https://xeoontology.org/schemes#consentPurpose-ad_user_data",
+          "label": "Ad user data",
+          "definition": "Sending the person's data to an ad platform",
+          "note": null
+        },
+        {
+          "code": "ai_data_use",
+          "iri": "https://xeoontology.org/schemes#consentPurpose-ai_data_use",
+          "label": "AI data use",
+          "definition": "Using the data with AI tools other than for training",
+          "note": null
+        },
+        {
+          "code": "analytics_cookies",
+          "iri": "https://xeoontology.org/schemes#consentPurpose-analytics_cookies",
+          "label": "Analytics cookies",
+          "definition": "Storing and reading identifiers for measurement",
+          "note": null
+        },
+        {
+          "code": "email_marketing",
+          "iri": "https://xeoontology.org/schemes#consentPurpose-email_marketing",
+          "label": "Email marketing",
+          "definition": "Sending marketing email",
+          "note": null
+        },
+        {
+          "code": "model_training",
+          "iri": "https://xeoontology.org/schemes#consentPurpose-model_training",
+          "label": "Model training",
+          "definition": "Using the data to train machine-learning models",
+          "note": null
+        },
+        {
+          "code": "other",
+          "iri": "https://xeoontology.org/schemes#consentPurpose-other",
+          "label": "Other",
+          "definition": "A purpose none of the codes above covers",
+          "note": null
+        }
+      ]
+    },
+    "consentSource": {
+      "iri": "https://xeoontology.org/schemes#consentSource",
+      "label": "Consent sources",
+      "fillsSlot": "xeo:consentSource",
+      "description": "How a consent choice reached the capturing system.",
+      "source": "XEO 0.7 plan of record, 2026-11-11 (Consent)",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "api",
+          "iri": "https://xeoontology.org/schemes#consentSource-api",
+          "label": "API",
+          "definition": "Sent by another system through an API",
+          "note": null
+        },
+        {
+          "code": "banner",
+          "iri": "https://xeoontology.org/schemes#consentSource-banner",
+          "label": "Banner",
+          "definition": "A consent banner on a site or app",
+          "note": null
+        },
+        {
+          "code": "contract",
+          "iri": "https://xeoontology.org/schemes#consentSource-contract",
+          "label": "Contract",
+          "definition": "Terms the subject signed",
+          "note": null
+        },
+        {
+          "code": "form",
+          "iri": "https://xeoontology.org/schemes#consentSource-form",
+          "label": "Form",
+          "definition": "A form the subject submitted",
+          "note": null
+        },
+        {
+          "code": "inferred_default",
+          "iri": "https://xeoontology.org/schemes#consentSource-inferred_default",
+          "label": "Inferred default",
+          "definition": "No one chose: the system applied its default",
+          "note": null
+        }
+      ]
+    },
+    "consentStatus": {
+      "iri": "https://xeoontology.org/schemes#consentStatus",
+      "label": "Consent statuses",
+      "fillsSlot": "xeo:consentStatus",
+      "description": "The choice a Consent records.",
+      "source": "XEO 0.7 plan of record, 2026-11-11 (Consent) · Hyros adOptimizationConsent (GRANTED, DENIED, UNSPECIFIED)",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "denied",
+          "iri": "https://xeoontology.org/schemes#consentStatus-denied",
+          "label": "Denied",
+          "definition": "The subject refused",
+          "note": null
+        },
+        {
+          "code": "granted",
+          "iri": "https://xeoontology.org/schemes#consentStatus-granted",
+          "label": "Granted",
+          "definition": "The subject agreed",
+          "note": null
+        },
+        {
+          "code": "unspecified",
+          "iri": "https://xeoontology.org/schemes#consentStatus-unspecified",
+          "label": "Unspecified",
+          "definition": "No choice is recorded",
           "note": null
         }
       ]
@@ -1284,7 +1485,7 @@
     "metric": {
       "iri": "https://xeoontology.org/schemes#metric",
       "label": "Metrics",
-      "fillsSlot": "xeo:metric",
+      "fillsSlot": "xeo:targetMetric",
       "description": "The reference scheme of XEO Metrics: each a definition with a type, a unit, a better direction and an additivity, and what it is computed from. Covers search, AI visibility, website analytics and CRM pipeline, so an Objective can target any of them and a reading means the same thing wherever it is computed. The code a MetricTarget stores in xeo:metric is the skos:notation of a concept here. The six codes published earlier in xeos:objectiveMetric are kept exactly, each with an exactMatch from its old concept, and the two AI rates added there in 0.6.0 match theirs the same way. Definitions are neutral: where vendors use one name for different ratios, the definition here states the denominator, and each vendor's field is mapped to it in mappings/. XEO ships no minDenominator values: it is a slot, and each implementation sets its own. A consumer adds its own Metrics as instances of xeo:Metric in a scheme of its own.",
       "source": "XEO metrics and KPIs research report, 2026-11-10 (starter reference scheme) · XEO CRM pipeline research report, 2026-11-10 (pipeline metrics) · the codes of xeos:objectiveMetric, kept unchanged",
       "ordered": false,
@@ -1985,10 +2186,62 @@
         }
       ]
     },
+    "modelKind": {
+      "iri": "https://xeoontology.org/schemes#modelKind",
+      "label": "Model kinds",
+      "fillsSlot": "xeo:modelKind",
+      "description": "What a Model does.",
+      "source": "XEO 0.7 plan of record, 2026-11-11 (H1)",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "classifier",
+          "iri": "https://xeoontology.org/schemes#modelKind-classifier",
+          "label": "Classifier",
+          "definition": "Assigns a label from a fixed set",
+          "note": null
+        },
+        {
+          "code": "decision",
+          "iri": "https://xeoontology.org/schemes#modelKind-decision",
+          "label": "Decision model",
+          "definition": "Chooses an action or a ranking from features",
+          "note": null
+        },
+        {
+          "code": "embedding",
+          "iri": "https://xeoontology.org/schemes#modelKind-embedding",
+          "label": "Embedding model",
+          "definition": "Turns content into vectors for similarity",
+          "note": null
+        },
+        {
+          "code": "image",
+          "iri": "https://xeoontology.org/schemes#modelKind-image",
+          "label": "Image model",
+          "definition": "Generates or reads images",
+          "note": null
+        },
+        {
+          "code": "language",
+          "iri": "https://xeoontology.org/schemes#modelKind-language",
+          "label": "Language model",
+          "definition": "Generates or reads text",
+          "note": null
+        },
+        {
+          "code": "reranker",
+          "iri": "https://xeoontology.org/schemes#modelKind-reranker",
+          "label": "Reranker",
+          "definition": "Reorders a candidate list by relevance",
+          "note": null
+        }
+      ]
+    },
     "objectiveMetric": {
       "iri": "https://xeoontology.org/schemes#objectiveMetric",
       "label": "Objective metrics",
-      "fillsSlot": "xeo:metric",
+      "fillsSlot": "xeo:targetMetric",
       "description": "The metrics a MetricTarget can be set on. Half the vocabulary is lower-is-better — position and rank_absolute are 1-based ranks — so a target's direction is DERIVED from the metric, never client input; a shared +20% across metrics would silently ask for a rank 20% worse. The note on each concept records direction and unit. Since 0.6.0 this is the compatibility list: the six codes published before xeo:Metric existed, plus ai_mention_rate and ai_citation_rate added in 0.6.0, each an exactMatch of its Metric in xeos:metric, which is the full reference scheme and where a target's code resolves.",
       "source": "if-control-center packages/contracts/src/objective-metric.ts (OBJECTIVE_METRICS, METRIC_DIRECTIONS, METRIC_UNIT_OF) · launch-guardian LG_OBJECTIVE_METRICS",
       "ordered": false,
@@ -2460,6 +2713,30 @@
       ],
       "status": "extension"
     },
+    "referenceKind": {
+      "iri": "https://xeoontology.org/schemes#referenceKind",
+      "label": "Reference kinds",
+      "fillsSlot": "xeo:referenceKind",
+      "description": "Whether an InboundReference is a link or a mention.",
+      "source": "XEO 0.7 plan of record, 2026-11-11 (C6)",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "link",
+          "iri": "https://xeoontology.org/schemes#referenceKind-link",
+          "label": "Link",
+          "definition": "The page links to you (an a element with an href to your URL)",
+          "note": null
+        },
+        {
+          "code": "mention",
+          "iri": "https://xeoontology.org/schemes#referenceKind-mention",
+          "label": "Mention",
+          "definition": "The page names you without linking",
+          "note": null
+        }
+      ]
+    },
     "searchIntent": {
       "iri": "https://xeoontology.org/schemes#searchIntent",
       "label": "Search intents",
@@ -2791,38 +3068,6 @@
           "iri": "https://xeoontology.org/schemes#timeGrain-year",
           "label": "Year",
           "definition": "Resets each year",
-          "note": null
-        }
-      ],
-      "status": "extension"
-    },
-    "valuePeriod": {
-      "iri": "https://xeoontology.org/schemes#valuePeriod",
-      "label": "Value periods",
-      "fillsSlot": "xeo:valuePeriod",
-      "description": "The period a recurringValue recurs over.",
-      "source": "XEO CRM pipeline research report, 2026-11-10 (three of seven CRMs record a recurring value). The three codes are inferred for XEO from the fields those CRMs expose (a one-time value, a monthly and an annual recurring value); no vendor's list is adopted",
-      "ordered": false,
-      "concepts": [
-        {
-          "code": "annual",
-          "iri": "https://xeoontology.org/schemes#valuePeriod-annual",
-          "label": "Annual",
-          "definition": "Recurs each year",
-          "note": null
-        },
-        {
-          "code": "monthly",
-          "iri": "https://xeoontology.org/schemes#valuePeriod-monthly",
-          "label": "Monthly",
-          "definition": "Recurs each month",
-          "note": null
-        },
-        {
-          "code": "one_time",
-          "iri": "https://xeoontology.org/schemes#valuePeriod-one_time",
-          "label": "One-time",
-          "definition": "Not recurring",
           "note": null
         }
       ],
