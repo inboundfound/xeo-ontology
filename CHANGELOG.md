@@ -19,7 +19,7 @@ and the CRM pipeline. They are the **Metrics** and **CRM pipeline** sections bel
 landed without a breaking change: where a report asked for an existing term to be renamed,
 retyped or removed, the new form was added beside it and the old one deprecated as advice.
 
-Counts: 36 → 51 classes, 61 → 113 object properties, 65 → 147 datatype properties,
+Counts: 36 → 51 classes, 61 → 114 object properties, 65 → 147 datatype properties,
 20 → 50 reference schemes, 93 → 282 concepts; 5 vendor schemes mapping 57 fields.
 (After the kit sync alone: 45, 91, 95, 29, 146.)
 
@@ -56,6 +56,15 @@ exactly like them. The module names what was written and how it came to be there
   domains open on purpose, because `rdfs:domain` is an entailment rule. These say where a
   property is expected without that entailment, so the docs, the Neo4j profile and a consumer's
   checks have something to read.
+- `Person` and `Organization`, the canonical parties: one node per real person or organization.
+  `Organization` keeps `owns` and `organizationKind`. `refersTo` (derivation) runs from any
+  system's record of a party (a HubSpot contact or company, a Hyros lead, a SegMetrics visitor)
+  to the canonical node, and carries the method of the match. Both classes are `exactMatch`
+  schema.org's (`xeo-align.ttl`). *Why:* every system holds its own copy of a person, and the
+  copies need one node to join on, mapped the same way whatever the vendor. The canonical node
+  copies no vendor's fields; the vendor's record keeps them, under a vendor label that is the
+  implementation's convention, never an XEO term (`mappings/README.md`). Decided 2026-11-12;
+  `Organization`, `owns` and `organizationKind` were in delivery earlier in 0.6.
 
 **Visibility.** `hasWebsite` (*why:* `citationRate` is defined over "the brand's owned URLs"
 and nothing said which those were), `competesWith`, `sentiment`.
@@ -81,8 +90,9 @@ and nothing said which those were), `competesWith`, `sentiment`.
 - `evaluatedPractice` and `fired`, with `appliedPractice` declared its sub-property. *Why:* the
   audit record had only its positive half.
 
-**Delivery.** `Organization`, `organizationKind`, `owns`, `clientOf`, `holdsCapability`. *Why:*
-the only tenancy node was the Website. Explicitly not a CRM mirror.
+**Delivery.** `clientOf` and `holdsCapability`, between Organizations (core). *Why:* the only
+tenancy node was the Website, so "this agency's client" and "what this team can do" had
+nowhere to hang.
 
 **Reference schemes.** `serpResultType`, `linkPosition`, `similarityBasis`, `algorithm`,
 `frameworkKind`, `organizationKind`, `sentiment`, `device`, `feedbackVerdict`; and
@@ -172,11 +182,11 @@ created" and "revenue won" cannot be computed.
   scheme includes `ai_assistant`, and `ai_overview` (extension) for a visit sent by an AI
   overview on a search engine's results page. *Why:* that visit is neither an assistant's nor an
   ordinary result. No source reports it separately yet, so nothing fills it.
-- `CrmRecord`, a pointer class whose only identity is `crmRecordRef`. The record-level pipeline
-  properties point at it with `domainIncludes` hints, not domains. *Why:* those properties had no
-  class to sit on, so a property graph had no label for them. It models no CRM schema. An
-  implementation may put the vendor's own label beside it (`CrmRecord` and `HUBSPOT_Contact`);
-  that label is the implementation's, never an XEO term.
+- No CRM record class. The record-level properties sit on the system's own record, a
+  vendor-labelled node (`HUBSPOT_Contact`, `HUBSPOT_Deal`) that `refersTo` the canonical
+  `Person` or `Organization` where it stands for one. *Why:* one class standing for a person, a
+  company, a deal or a task says too little. (A `CrmRecord` class was minted on 2026-11-11 and
+  removed before release, 2026-11-12.)
 - `PipelineRollup`, a `MetricReading` of a pipeline Metric.
 - `conversionPointType`.
 - Extension set: `latestTouchChannel`, `lifecycleStage`, `leadStatus`,

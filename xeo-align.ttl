@@ -161,9 +161,6 @@ xeo:entityRef skos:closeMatch schema:sameAs ;
 xeo:about skos:closeMatch schema:about ;
     rdfs:comment "The same aboutness claim, from content to its subject matter. closeMatch, not subPropertyOf: schema:about is expected on a CreativeWork, and XEO's about also runs from a Prompt or a Term, and always carries the method that made the assignment." .
 
-xeo:Organization skos:closeMatch schema:Organization ;
-    rdfs:comment "An XEO Organization is the narrow set of parties the graph reasons about (an agency, a client, an in-house team). schema:Organization is the closest published class and the broader one." .
-
 xeo:owns skos:closeMatch schema:owns ;
     rdfs:comment "Working ownership of a Website or Brand; schema:owns is the general 'products owned by the organization or person'." .
 
@@ -207,3 +204,24 @@ xeo:Framework skos:closeMatch schema:HowTo ;
     rdfs:comment "A named method with steps. closeMatch: schema:HowTo is instructions for a reader to follow; an XEO Framework is a structure that diagnostics, tactics and practices are placed on." .
 
 xeo:Stage skos:closeMatch schema:HowToStep .
+
+# ===========================================================================
+# v0.6.0 (canonical parties, 2026-11-12) — appended at the foot.
+#
+# Person and Organization are the same things schema.org names, so they are
+# skos:exactMatch: "the same as", stated as a SKOS mapping. That keeps the
+# stance above. It asserts no owl:equivalentClass, imports nothing from
+# schema.org, and forces no entailment; XEO still loads without schema.org.
+# This replaces the closeMatch Organization carried earlier in 0.6.0, which was
+# never published.
+#
+# xeo:refersTo has no bridge. schema:sameAs points from a thing to a page that
+# identifies it; refersTo points from one system's record to the canonical
+# node, and carries the method of the match.
+# ===========================================================================
+
+xeo:Organization skos:exactMatch schema:Organization ;
+    rdfs:comment "The same thing: an organization. exactMatch, because the canonical XEO Organization is one node per real organization, which is what schema:Organization describes; no XEO restriction narrows it." .
+
+xeo:Person skos:exactMatch schema:Person ;
+    rdfs:comment "The same thing: a person. exactMatch, because the canonical XEO Person is one node per real person, which is what schema:Person describes. XEO declares none of schema.org's person properties; a consumer may add them from schema.org." .
