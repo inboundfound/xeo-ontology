@@ -52,7 +52,7 @@ profile of `seovoc`:
    provenance all the way down. Modelling *why* a recommendation was made, and how much to trust
    it, is a first-class requirement here.
 2. **Chat assistant / agent surface.** Engagement with assistants — citations, mentions, sentiment
-   and the visibility layer they feed (`xeo-visibility`, `xeo-engagement`) — is native to XEO's
+   and the visibility layer they feed (`xeo-visibility`, and website conversions in `xeo-core`) — is native to XEO's
    subject and largely outside a workflow-centred SEO vocabulary. (Sentiment has been a declared
    term, `xeo:sentiment` on a `mentions` edge, since 0.6.0. Before that this sentence was ahead
    of the vocabulary.)
