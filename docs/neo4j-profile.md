@@ -22,14 +22,14 @@ Four conventions sit beside the rule.
 - **Edge-carried properties stay on the relationship.** `avgPosition` belongs on `RANKS_FOR`,
   `anchorText` on `LINKS_TO`, `similarity` on `SIMILAR_TO`. Each property's description in the
   ontology says which relationship carries it.
-- **`xeoLayer` is the instance-level epistemic layer.** A graph that wants to filter by kind of
+- **`xeoLayer` is the layer, on terms and on instances alike.** A graph that wants to filter by kind of
   claim stamps each node and relationship with `xeoLayer`, one of `entity`, `episode`,
   `observation`, `derivation`, `interpretation`, `norm`. The value for a node or relationship is
   the `layer` of its label or type in the profile, with one exception the ontology states: a
   `MENTIONS` edge written by a model is a `derivation`, by a string match an `observation`.
-  `xeoLayer` is a profile convention (`conventions.layerKey`), not an XEO term: XEO types terms
-  with `xeo:epistemicLayer` and has not decided to own an instance-level property (see
-  `xeos:epistemicLayer`). The key carries the prefix so that it cannot be mistaken for a layer of
+  XEO types its terms with the same name, `xeo:xeoLayer` (`epistemicLayer` until 0.7), and the
+  six values are the scheme `xeos:xeoLayer`; the profile records the key as
+  `conventions.layerKey`. The key carries the prefix so that it cannot be mistaken for a layer of
   anything else in the graph (a map layer, a network layer, a model layer).
 
 ### Concept slots: a relationship or a code
