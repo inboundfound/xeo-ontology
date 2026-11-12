@@ -206,29 +206,11 @@ xeo:deletedAt a owl:DatatypeProperty ;
 # --- v0.6.0 (kit sync) ---------------------------------------------------------
 # Appended at the foot, so no line above moves.
 #
-# ADDED. Organization: the party that does the work or has it done. Until now
-# the only tenancy node was the Website, so "this agency's method", "this
-# client of that agency" and "what this team is able to do" had nowhere to
-# hang. An Organization owns Websites and Brands, may be the client of another,
-# holds Capabilities, and activates Frameworks and Playbooks (xeo-strategy).
-#
-# This is NOT a CRM mirror. An Organization here is the handful of parties the
-# graph reasons about: the agency, its clients, an in-house team. Accounts,
-# contacts, deals and the rest of the pipeline stay in the CRM and join by
-# identity key (crmRecordRef), as xeo-engagement states. An Organization may
-# carry a crmRecordRef; it never carries the CRM's fields.
-
-xeo:Organization a owl:Class ;
-    rdfs:label "Organization" ;
-    xeo:epistemicLayer "entity" ;
-    dct:description "A party that does optimization work or has it done: an agency, a brand's company, an in-house team. Identified by name. The owner of Websites and Brands (owns), the holder of Capabilities (holdsCapability), and a tenancy node that activates Frameworks and Playbooks. Not a CRM account: it carries no pipeline fields, and joins to the CRM record by crmRecordRef where one exists. Its kind is a slotted-in concept (organizationKind), never a subclass." .
-
-xeo:owns a owl:ObjectProperty ;
-    rdfs:label "owns" ;
-    rdfs:domain xeo:Organization ;
-    xeo:epistemicLayer "entity" ;
-    xeo:rangeIncludes xeo:Website , xeo:Brand ;
-    dct:description "A Website or Brand this Organization is responsible for. Ownership in the working sense — whose site it is — not a legal claim. Range left open across Website and Brand." .
+# ADDED. The agency relations between Organizations: who is whose client, and
+# what a team is able to do. Organization itself, with owns and
+# organizationKind, is declared in xeo-core.ttl (moved there 2026-11-12, before
+# release): it is the canonical organization, not a delivery term. These two
+# edges stay here because they are agency and scope terms.
 
 xeo:clientOf a owl:ObjectProperty ;
     rdfs:label "client of" ;
@@ -241,12 +223,6 @@ xeo:holdsCapability a owl:ObjectProperty ;
     rdfs:domain xeo:Organization ; rdfs:range xeo:Capability ;
     xeo:epistemicLayer "entity" ;
     dct:description "A Capability this Organization is able to bring: the lever exists in this team. A third question beside the two the scope gate already asks. holdsCapability says the party can do it; approved says the lever is cleared for this engagement; inScope says the contract covers it." .
-
-xeo:organizationKind a owl:ObjectProperty ;
-    rdfs:label "organization kind" ;
-    rdfs:domain xeo:Organization ; rdfs:range skos:Concept ;
-    xeo:epistemicLayer "entity" ;
-    dct:description "What kind of party an Organization is, as a slotted-in concept (agency, brand, in_house — xeos:organizationKind is a published reference filling). One per Organization." .
 
 # --- v0.6.0 annotation completeness -----------------------------------------------
 # The triples below add what the declarations above lacked; nothing is redefined.

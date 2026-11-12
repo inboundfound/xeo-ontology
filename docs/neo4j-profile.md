@@ -129,7 +129,6 @@ Generated from XEO 0.6.0. Do not edit between the markers; run `tools/gen_profil
 | `ConversionEvent` | `xeo:ConversionEvent` | episode | engagement |
 | `ConversionPoint` | `xeo:ConversionPoint` | entity | engagement |
 | `Crawl` | `xeo:Crawl` | episode | core |
-| `CrmRecord` | `xeo:CrmRecord` | entity | engagement |
 | `Diagnostic` | `xeo:Diagnostic` | entity | decision |
 | `DiagnosticRun` | `xeo:DiagnosticRun` | episode | decision |
 | `Domain` | `xeo:Domain` | entity | core |
@@ -149,9 +148,10 @@ Generated from XEO 0.6.0. Do not edit between the markers; run `tools/gen_profil
 | `MetricReading` | `xeo:MetricReading` | observation | metrics |
 | `MetricTarget` | `xeo:MetricTarget` | interpretation | delivery |
 | `Objective` | `xeo:Objective` | interpretation | delivery |
-| `Organization` | `xeo:Organization` | entity | delivery |
+| `Organization` | `xeo:Organization` | entity | core |
 | `Outcome` | `xeo:Outcome` | observation | decision |
 | `OwnerChange` (extension) | `xeo:OwnerChange` | episode | engagement |
+| `Person` | `xeo:Person` | entity | core |
 | `PipelineRollup` | `xeo:PipelineRollup` | derivation | engagement |
 | `Playbook` | `xeo:Playbook` | entity | strategy |
 | `Practice` | `xeo:Practice` | norm | strategy |
@@ -171,7 +171,7 @@ Generated from XEO 0.6.0. Do not edit between the markers; run `tools/gen_profil
 | `URL` | `xeo:URL` | entity | core |
 | `Website` | `xeo:Website` | entity | core |
 
-### Relationship types (113)
+### Relationship types (114)
 
 `open` means the ontology leaves that side unconstrained. A concept slot may also be stored as a property key holding the concept's code.
 
@@ -259,8 +259,8 @@ Generated from XEO 0.6.0. Do not edit between the markers; run `tools/gen_profil
 | `ON_DIMENSION` | `xeo:onDimension` | `TacticAssessment` | `skos:Concept` (concept slot) | interpretation | decision |
 | `ON_DOMAIN` | `xeo:onDomain` | `URL` | `Domain` | entity | core |
 | `ON_ENGINE` | `xeo:onEngine` | open | `Engine` | episode | visibility |
-| `ORGANIZATION_KIND` | `xeo:organizationKind` | `Organization` | `skos:Concept` (concept slot) | entity | delivery |
-| `OWNS` | `xeo:owns` | `Organization` | `Brand` · `Website` | entity | delivery |
+| `ORGANIZATION_KIND` | `xeo:organizationKind` | `Organization` | `skos:Concept` (concept slot) | entity | core |
+| `OWNS` | `xeo:owns` | `Organization` | `Brand` · `Website` | entity | core |
 | `PART_OF` | `xeo:partOf` | `URL` | `Website` | entity | core |
 | `PRECEDENT_FOR` | `xeo:precedentFor` | `Experiment` | `Experiment` | derivation | analysis |
 | `PRODUCED_OUTCOME` | `xeo:producedOutcome` | `Experiment` | `Outcome` | observation | decision |
@@ -269,6 +269,7 @@ Generated from XEO 0.6.0. Do not edit between the markers; run `tools/gen_profil
 | `READS_SLOT` | `xeo:readsSlot` | `Metric` | `http://www.w3.org/1999/02/22-rdf-syntax-ns#Property` | norm | metrics |
 | `RECOMMENDS` | `xeo:recommends` | `Recommendation` | `Tactic` | interpretation | decision |
 | `REDIRECTS_TO` | `xeo:redirectsTo` | `URL` | `URL` | observation | core |
+| `REFERS_TO` | `xeo:refersTo` | open | `Organization` · `Person` | derivation | core |
 | `RELATED_TERM` | `xeo:relatedTerm` | `SerpSnapshot` | `Term` | observation | core |
 | `RELATIVE_TO` | `xeo:relativeTo` | `Gap` | `Brand` · `Domain` · `URL` | interpretation | decision |
 | `REQUIRES_CAPABILITY` | `xeo:requiresCapability` | `Tactic` | `Capability` | entity | decision |
@@ -314,7 +315,7 @@ Generated from XEO 0.6.0. Do not edit between the markers; run `tools/gen_profil
 | `magnitudeUnit` | concept code | `magnitudeUnit` | derivation | decision |
 | `metricType` | concept code | `metricType` | norm | metrics |
 | `onDimension` | concept code |  | interpretation | decision |
-| `organizationKind` | concept code | `organizationKind` | entity | delivery |
+| `organizationKind` | concept code | `organizationKind` | entity | core |
 | `unit` | concept code | `metricUnit` | norm | metrics |
 | `verdict` | concept code | `feedbackVerdict` · `gapVerdict` | interpretation | decision |
 | `absoluteChange` | `xsd:decimal` |  | derivation | decision |

@@ -547,3 +547,59 @@ xeo:termStatus a owl:AnnotationProperty ;
 
 xeo:mappingConfidence a owl:AnnotationProperty ;
     rdfs:comment "How a vendor-field mapping is known: 'documented' (the vendor's own documentation states the field and its meaning), 'inferred' (the meaning is documented but the field name or its role rests on a secondary source or on the mapper's reading), or 'verified' (checked against live API output). Carried by every concept in a vendor scheme. No mapping published so far is verified." .
+
+# --- v0.6.0 (canonical parties, 2026-11-12) ----------------------------------------
+# Appended at the foot, so no line above moves. Decided 2026-11-12: a person and
+# an organization are core, canonical nodes, and every system's record of one
+# points at it the same way.
+#
+# MOVED. Organization, owns and organizationKind were added in 0.6.0 to
+# xeo-delivery.ttl. They were never published, so they move here unchanged in
+# name; clientOf and holdsCapability stay in delivery (agency and scope terms).
+#
+# ADDED. Person, the canonical person, and refersTo, the edge from a system's
+# record of a party to the canonical Person or Organization it represents.
+#
+# VENDOR RECORDS. A HubSpot contact, a Hyros lead or a SegMetrics visitor is a
+# node of its own, labelled by the implementation's vendor-label convention
+# (HUBSPOT_Contact: the vendor's name in capitals, an underscore, the record
+# type as the vendor names it). A vendor label is never an XEO term. The
+# neutral pipeline properties (crmRecordRef, dealAmount, ...) sit on that
+# record; the canonical node carries no vendor's fields. mappings/README.md
+# states the convention. This replaces the CrmRecord class minted on
+# 2026-11-11, which is removed: one class standing for a person, a company, a
+# deal or a task said too little.
+#
+# THE LAYER OF refersTo. An identity match made by a key the systems share is
+# recorded; one made by comparing emails or names is someone's call. One term
+# has one layer, so refersTo takes the weaker one, derivation, and its method
+# says how each match was made.
+
+xeo:Organization a owl:Class ;
+    rdfs:label "Organization" ;
+    xeo:epistemicLayer "entity" ;
+    dct:description "The canonical organization: one node per real organization (an agency, a brand's company, an in-house team, a customer's company), which every system's record of it (a CRM company, an ad account's owner, a billing customer) points at with refersTo. Identified by name. The owner of Websites and Brands (owns), the holder of Capabilities and the client of another Organization (holdsCapability and clientOf, in xeo-delivery), and a tenancy node that activates Frameworks and Playbooks. It copies no vendor's fields: what a CRM knows about the company stays on the CRM's record, which refers to this node. Its kind is a slotted-in concept (organizationKind), never a subclass." .
+
+xeo:Person a owl:Class ;
+    rdfs:label "Person" ;
+    xeo:epistemicLayer "entity" ;
+    dct:description "The canonical person: one node per real person (a contact, a lead, a known visitor, a client's marketer, a team member), which every system's record of that person (a HubSpot contact, a Hyros lead, a SegMetrics visitor) points at with refersTo, so all of a person's representations join the same way. Its identity is a key the implementation mints; an email or a name is how a record is matched to it, not what it is. It copies no vendor's fields: a lifecycle stage, an owner or a source channel stays on the system's record that refers to it." .
+
+xeo:owns a owl:ObjectProperty ;
+    rdfs:label "owns" ;
+    rdfs:domain xeo:Organization ;
+    xeo:epistemicLayer "entity" ;
+    xeo:rangeIncludes xeo:Website , xeo:Brand ;
+    dct:description "A Website or Brand this Organization is responsible for. Ownership in the working sense — whose site it is — not a legal claim. Range left open across Website and Brand." .
+
+xeo:organizationKind a owl:ObjectProperty ;
+    rdfs:label "organization kind" ;
+    rdfs:domain xeo:Organization ; rdfs:range <http://www.w3.org/2004/02/skos/core#Concept> ;
+    xeo:epistemicLayer "entity" ;
+    dct:description "What kind of party an Organization is, as a slotted-in concept (agency, brand, in_house — xeos:organizationKind is a published reference filling). One per Organization." .
+
+xeo:refersTo a owl:ObjectProperty ;
+    rdfs:label "refers to" ;
+    xeo:epistemicLayer "derivation" ;
+    xeo:rangeIncludes xeo:Person , xeo:Organization ;
+    dct:description "From a system's record of a party to the canonical Person or Organization it represents: a HubSpot contact or company, a Hyros lead, a SegMetrics visitor. Many records may refer to one canonical node; a record refers to one. A derivation, because matching a record to a real party is a resolution two resolvers can make differently. It carries method, which says how the match was made: system-key:<key> where the systems share a key (a vendor id carried across an integration, the strongest match and as good as recorded), email-match or name-match where values were compared, manual where a person linked them; and confidence where the method reports one. Domain left open: the record is a vendor-labelled node, and a vendor label is never an XEO term. Range left open across Person and Organization." .

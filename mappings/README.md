@@ -84,6 +84,40 @@ string. A vendor may use one field name for two things in two reports (Profound'
 `share_of_voice`); those are two concepts with the same notation, told apart by their IRIs and
 scope notes.
 
+## Vendor records in a graph: the label convention
+
+A crosswalk says which field fills which slot. In a property graph the record those fields came
+from is a node too, and it gets a **vendor label**: the vendor's name in capitals, an
+underscore, and the record type as the vendor names it.
+
+| Record | Label | Refers to |
+|---|---|---|
+| a HubSpot contact | `HUBSPOT_Contact` | `Person` |
+| a HubSpot company | `HUBSPOT_Company` | `Organization` |
+| a HubSpot deal | `HUBSPOT_Deal` | nothing: not a party |
+| a Hyros lead | `HYROS_Lead` | `Person` |
+| a SegMetrics visitor | `SEGMETRICS_Visitor` | `Person` |
+
+- A record of a person or an organization has one `REFERS_TO` (`xeo:refersTo`) to the canonical
+  `Person` or `Organization`, the core node that exists once per real party. Every system's copy
+  of the same person points at the same node, the same way.
+- A deal, a task or any other record that is not a party is a vendor-labelled node with no
+  canonical counterpart. It links to the parties through the vendor's own associations.
+- The neutral pipeline properties (`crmRecordRef`, `dealAmount`, `stageRef`, `firstTouchChannel`,
+  ...) sit on the vendor-labelled node. The canonical node copies no vendor's fields.
+- `REFERS_TO` is a derivation and carries `method`: `system-key:<key>` where the systems share a
+  key, `email-match` or `name-match` where values were compared, `manual` where a person linked
+  them; and `confidence` where the method gives one.
+- Vendor labels are never XEO terms. They are the implementation's convention, like the files in
+  this folder, and the validator does not check them.
+
+```cypher
+MERGE (p:Person {id: $personId})
+MERGE (c:HUBSPOT_Contact {crmRecordRef: $ref})
+MERGE (c)-[r:REFERS_TO]->(p)
+SET r.method = 'email-match', r.confidence = 0.9
+```
+
 ## Adding a tool
 
 1. Copy `_template.ttl` to `<tool>.ttl`. A file whose name starts with an underscore is skipped by

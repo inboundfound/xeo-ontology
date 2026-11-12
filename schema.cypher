@@ -249,13 +249,18 @@ FOR (s:Stage) ON (s.stageOrder);
 CREATE INDEX evaluated_practice_fired IF NOT EXISTS
 FOR ()-[e:EVALUATED_PRACTICE]-() ON (e.fired);
 
-// ---------- Delivery ----------
-// Organizations are the few parties the graph reasons about, not a CRM mirror.
+// ---------- Canonical parties (core) ----------
+// One node per real person or organization. Each system's record of one is its
+// own vendor-labelled node (HUBSPOT_Contact, HYROS_Lead) with a REFERS_TO here;
+// vendor labels are the implementation's, so they get no constraint in this file.
 CREATE CONSTRAINT organization_id IF NOT EXISTS
 FOR (o:Organization) REQUIRE o.id IS UNIQUE;
 
 CREATE INDEX organization_name IF NOT EXISTS
 FOR (o:Organization) ON (o.name);
+
+CREATE CONSTRAINT person_id IF NOT EXISTS
+FOR (p:Person) REQUIRE p.id IS UNIQUE;
 
 // ---------- Analysis ----------
 CREATE CONSTRAINT algorithm_run_id IF NOT EXISTS

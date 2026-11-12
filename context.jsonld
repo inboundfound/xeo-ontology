@@ -54,6 +54,7 @@
     "Domain": "xeo:Domain",
     "Entity": "xeo:Entity",
     "Organization": "xeo:Organization",
+    "Person": "xeo:Person",
     "Framework": "xeo:Framework",
     "Stage": "xeo:Stage",
     "AlgorithmRun": "xeo:AlgorithmRun",
@@ -147,6 +148,7 @@
     "clientOf": { "@id": "xeo:clientOf", "@type": "@id" },
     "holdsCapability": { "@id": "xeo:holdsCapability", "@type": "@id" },
     "organizationKind": { "@id": "xeo:organizationKind", "@type": "@id" },
+    "refersTo": { "@id": "xeo:refersTo", "@type": "@id" },
     "algorithm": { "@id": "xeo:algorithm", "@type": "@id" },
     "computedBy": { "@id": "xeo:computedBy", "@type": "@id" },
     "similarTo": { "@id": "xeo:similarTo", "@type": "@id" },
@@ -259,7 +261,6 @@
     "OwnerChange": "xeo:OwnerChange",
     "PipelineRollup": "xeo:PipelineRollup",
     "StageTransition": "xeo:StageTransition",
-    "CrmRecord": "xeo:CrmRecord",
 
     "additivity": { "@id": "xeo:additivity", "@type": "@id" },
     "aggregation": { "@id": "xeo:aggregation", "@type": "@id" },
