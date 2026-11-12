@@ -17,9 +17,8 @@ from rdflib.namespace import DCTERMS
 HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 NS = "https://xeoontology.org/xeo#"
 MODULES = [
-    "xeo-core.ttl", "xeo-visibility.ttl", "xeo-engagement.ttl",
-    "xeo-decision.ttl", "xeo-strategy.ttl", "xeo-delivery.ttl", "xeo-analysis.ttl",
-    "xeo-metrics.ttl", "xeo-align.ttl",
+    "xeo-core.ttl", "xeo-visibility.ttl", "xeo-analysis.ttl", "xeo-sales.ttl",
+    "xeo-work.ttl", "xeo-decision.ttl", "xeo-strategy.ttl", "xeo-align.ttl",
 ]
 EPI = URIRef(NS + "epistemicLayer")
 GROUNDED = URIRef(NS + "groundedIn")
@@ -212,18 +211,18 @@ interpretive surface:</p>
 <p class="tag">A term marked <span class="status">extension</span> is declared and usable but
 not something every implementation is expected to support. A term marked
 <span class="status dep">deprecated</span> is still valid; its seeAlso names what to write instead.</p>
-<div class="modnote">Modules: <code>xeo-core</code> (substrate) ·
-<code>xeo-visibility</code> (xEO) · <code>xeo-engagement</code> (draft) ·
-<code>xeo-decision</code> (interpretation tier) · <code>xeo-strategy</code> (norms tier) ·
-<code>xeo-delivery</code> (projects, campaigns, objectives) ·
-<code>xeo-analysis</code> (derived structure) ·
-<code>xeo-metrics</code> (metric definitions and readings) ·
+<div class="modnote">Modules, each needing only core: <code>xeo-core</code> (site, pages, queries, crawls, observations, metrics, website conversions) ·
+<code>xeo-visibility</code> (AI answers, prompts, mentions, citations) ·
+<code>xeo-analysis</code> (graph algorithms and what they computed) ·
+<code>xeo-sales</code> (CRM records and pipeline) ·
+<code>xeo-work</code> (clients, contracts, projects, campaigns, objectives, targets) ·
+<code>xeo-decision</code> (gaps, diagnostics, tactics, recommendations) ·
+<code>xeo-strategy</code> (practices: the standing rules) ·
 <code>xeo-align</code> (schema.org / PROV-O / SKOS bridges). Machine-readable Turtle:
 <a href="xeo-core.ttl">core</a>, <a href="xeo-visibility.ttl">visibility</a>,
-<a href="xeo-engagement.ttl">engagement</a>, <a href="xeo-decision.ttl">decision</a>,
-<a href="xeo-strategy.ttl">strategy</a>, <a href="xeo-delivery.ttl">delivery</a>,
-<a href="xeo-analysis.ttl">analysis</a>, <a href="xeo-metrics.ttl">metrics</a>,
-<a href="xeo-align.ttl">align</a>;
+<a href="xeo-analysis.ttl">analysis</a>, <a href="xeo-sales.ttl">sales</a>,
+<a href="xeo-work.ttl">work</a>, <a href="xeo-decision.ttl">decision</a>,
+<a href="xeo-strategy.ttl">strategy</a>, <a href="xeo-align.ttl">align</a>;
 reference values <a href="xeo-schemes.ttl">schemes</a> (<a href="schemes.json">JSON</a>);
 vendor mappings <a href="https://github.com/inboundfound/xeo-ontology/tree/main/mappings">mappings/</a>, one file per tool, not part of the ontology;
 JSON-LD <a href="context.jsonld">context</a>; Neo4j

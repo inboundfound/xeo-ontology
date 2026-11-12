@@ -62,18 +62,18 @@ interpretive surface:</p>
 <p class="tag">A term marked <span class="status">extension</span> is declared and usable but
 not something every implementation is expected to support. A term marked
 <span class="status dep">deprecated</span> is still valid; its seeAlso names what to write instead.</p>
-<div class="modnote">Modules: <code>xeo-core</code> (substrate) ·
-<code>xeo-visibility</code> (xEO) · <code>xeo-engagement</code> (draft) ·
-<code>xeo-decision</code> (interpretation tier) · <code>xeo-strategy</code> (norms tier) ·
-<code>xeo-delivery</code> (projects, campaigns, objectives) ·
-<code>xeo-analysis</code> (derived structure) ·
-<code>xeo-metrics</code> (metric definitions and readings) ·
+<div class="modnote">Modules, each needing only core: <code>xeo-core</code> (site, pages, queries, crawls, observations, metrics, website conversions) ·
+<code>xeo-visibility</code> (AI answers, prompts, mentions, citations) ·
+<code>xeo-analysis</code> (graph algorithms and what they computed) ·
+<code>xeo-sales</code> (CRM records and pipeline) ·
+<code>xeo-work</code> (clients, contracts, projects, campaigns, objectives, targets) ·
+<code>xeo-decision</code> (gaps, diagnostics, tactics, recommendations) ·
+<code>xeo-strategy</code> (practices: the standing rules) ·
 <code>xeo-align</code> (schema.org / PROV-O / SKOS bridges). Machine-readable Turtle:
 <a href="xeo-core.ttl">core</a>, <a href="xeo-visibility.ttl">visibility</a>,
-<a href="xeo-engagement.ttl">engagement</a>, <a href="xeo-decision.ttl">decision</a>,
-<a href="xeo-strategy.ttl">strategy</a>, <a href="xeo-delivery.ttl">delivery</a>,
-<a href="xeo-analysis.ttl">analysis</a>, <a href="xeo-metrics.ttl">metrics</a>,
-<a href="xeo-align.ttl">align</a>;
+<a href="xeo-analysis.ttl">analysis</a>, <a href="xeo-sales.ttl">sales</a>,
+<a href="xeo-work.ttl">work</a>, <a href="xeo-decision.ttl">decision</a>,
+<a href="xeo-strategy.ttl">strategy</a>, <a href="xeo-align.ttl">align</a>;
 reference values <a href="xeo-schemes.ttl">schemes</a> (<a href="schemes.json">JSON</a>);
 vendor mappings <a href="https://github.com/inboundfound/xeo-ontology/tree/main/mappings">mappings/</a>, one file per tool, not part of the ontology;
 JSON-LD <a href="context.jsonld">context</a>; Neo4j
@@ -99,13 +99,13 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>closeMatch</dt><dd><a href="https://schema.org/Brand" class="ext">schema:Brand</a></dd></div></dl>
 </section>
 <section id="CallToAction" class="term">
-  <h3>Call To Action <span class="layer" style="--h:#718096">entity</span> <span class="status dep">deprecated</span><span class="mod">xeo-engagement</span></h3>
+  <h3>Call To Action <span class="layer" style="--h:#718096">entity</span> <span class="status dep">deprecated</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:CallToAction</code>
   <p>A button or link that asks the visitor to take the next step.</p>
   <dl><div class="row"><dt>subclass of</dt><dd><a href="#ConversionPoint">xeo:ConversionPoint</a></dd></div><div class="row"><dt>seeAlso</dt><dd><a href="#conversionPointType">xeo:conversionPointType</a></dd></div></dl>
 </section>
 <section id="Campaign" class="term">
-  <h3>Campaign <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-delivery</span></h3>
+  <h3>Campaign <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:Campaign</code>
   <p>A body of work inside a Project against one Topic: the URLs and Terms it covers, and the single Objective it is measured by. Recommendations are issuedFor a campaign, and it is the unit an operator plans a cycle around. Soft-deleted like its Project.</p>
   
@@ -123,13 +123,13 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>subclass of</dt><dd><a href="#Engine">xeo:Engine</a></dd></div></dl>
 </section>
 <section id="ConversionEvent" class="term">
-  <h3>Conversion Event <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-engagement</span></h3>
+  <h3>Conversion Event <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:ConversionEvent</code>
   <p>A submission/click/unlock that happened at a time: a visitor&#x27;s action on a ConversionPoint, recorded by the capturing system. Immutable once recorded. Identified by the capturing system and its submission id; one per submission. Not the creation of a CRM record, which may follow, be merged into an existing record, or never happen: events are not leads.</p>
   <dl><div class="row"><dt>subclass of</dt><dd><a href="http://www.w3.org/ns/prov#Activity" class="ext">prov:Activity</a></dd></div></dl>
 </section>
 <section id="ConversionPoint" class="term">
-  <h3>Conversion Point <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-engagement</span></h3>
+  <h3>Conversion Point <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:ConversionPoint</code>
   <p>A durable on-page mechanism that turns attention into a pipeline event. Identified by the URL it sits on and its form id or selector. Its kind is conversionPointType.</p>
   
@@ -159,7 +159,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>grounded in</dt><dd>WHATWG URL Standard (host) · Public Suffix List (registrable domain)</dd></div></dl>
 </section>
 <section id="Engine" class="term">
-  <h3>Engine <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-visibility</span></h3>
+  <h3>Engine <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:Engine</code>
   <p>A system that mediates between a person&#x27;s question and web content. The taxonomy below is operational, not doctrinal — subclass as engines evolve.</p>
   <dl><div class="row"><dt>subclass of</dt><dd><a href="http://www.w3.org/ns/prov#SoftwareAgent" class="ext">prov:SoftwareAgent</a></dd></div></dl>
@@ -201,7 +201,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   
 </section>
 <section id="GatedAsset" class="term">
-  <h3>Gated Asset <span class="layer" style="--h:#718096">entity</span> <span class="status dep">deprecated</span><span class="mod">xeo-engagement</span></h3>
+  <h3>Gated Asset <span class="layer" style="--h:#718096">entity</span> <span class="status dep">deprecated</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:GatedAsset</code>
   <p>Content exchanged for contact information.</p>
   <dl><div class="row"><dt>subclass of</dt><dd><a href="#ConversionPoint">xeo:ConversionPoint</a></dd></div><div class="row"><dt>seeAlso</dt><dd><a href="#conversionPointType">xeo:conversionPointType</a></dd></div></dl>
@@ -225,31 +225,31 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>subclass of</dt><dd><a href="http://www.w3.org/ns/prov#Entity" class="ext">prov:Entity</a></dd></div></dl>
 </section>
 <section id="LeadCaptureForm" class="term">
-  <h3>Lead Capture Form <span class="layer" style="--h:#718096">entity</span> <span class="status dep">deprecated</span><span class="mod">xeo-engagement</span></h3>
+  <h3>Lead Capture Form <span class="layer" style="--h:#718096">entity</span> <span class="status dep">deprecated</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:LeadCaptureForm</code>
   <p>A form that exchanges contact details for a response, a quote or a booking.</p>
   <dl><div class="row"><dt>subclass of</dt><dd><a href="#ConversionPoint">xeo:ConversionPoint</a></dd></div><div class="row"><dt>seeAlso</dt><dd><a href="#conversionPointType">xeo:conversionPointType</a></dd></div></dl>
 </section>
 <section id="Metric" class="term">
-  <h3>Metric <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-metrics</span></h3>
+  <h3>Metric <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:Metric</code>
   <p>A named, reusable definition of a measured quantity: what is counted or computed, over which records, aggregated how, in what unit, and which way is better. A rule, not a number: the number is a MetricReading. One node per definition, identified by its skos:notation within its scheme (xeos:metric is the published reference scheme). Two Metrics are the same when metricType, aggregation, readsSlot or inputs, metricFilter, timeAnchor and unit all match; changing any of them makes a new Metric, never an edit, because readings and targets are anchored to the definition. Carries exactly one metricType, unit, betterDirection and additivity. A simple metric also carries aggregation and readsSlot; a ratio carries numerator and denominator and has unit ratio; a derived metric carries expression and at least one inputMetric. A skos:Concept, so a consumer adds its own metrics as instances without touching the ontology.</p>
   <dl><div class="row"><dt>subclass of</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
 </section>
 <section id="MetricReading" class="term">
-  <h3>Metric Reading <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-metrics</span></h3>
+  <h3>Metric Reading <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:MetricReading</code>
   <p>The value one Metric took over one window, for one scope, from one source. One row per metric, scope, window and source: its identity is readingOf, scope, periodStart, periodEnd, source and, where the source deduplicates in more than one way, aggregationBasis. Requires value, periodStart, periodEnd and readingOf, and should carry websiteId and datasetUri; a ratio reading also carries numeratorValue and denominatorValue. An observation only when the primary API returned exactly that metric, window and scope. When the value was rolled up, recomputed, or taken from a vendor&#x27;s model, the reading is a derivation and carries method and confidence. High-cardinality readings live in the column store; the graph holds the windowed readings a target, an Outcome or an Objective points at.</p>
   <dl><div class="row"><dt>grounded in</dt><dd>The API contract of the system named in the reading&#x27;s source (e.g. GSC searchAnalytics.query, GA4 runReport)</dd></div><div class="row"><dt>canonical store</dt><dd>bigquery</dd></div></dl>
 </section>
 <section id="MetricTarget" class="term">
-  <h3>Metric Target <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-delivery</span></h3>
+  <h3>Metric Target <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:MetricTarget</code>
   <p>One measurable target of an Objective: the Metric it is set on (metric, the code of a Metric in xeos:metric), the targetValue to reach, read per targetKind as an absolute value or as a change from a captured baseline (baselineReading), and whether it isPrimary. Unit and better direction come from its Metric. Named a target and never a key result: xeo:Outcome is &#x27;the measured result an experiment produced&#x27;, an observation, and a goal must not share a name with a reading. Each target is its own node so the experiment loop can hang observations off it; a target dropped on edit is stamped deletedAt, never destroyed, because its id is what measured history is anchored to.</p>
   
 </section>
 <section id="Objective" class="term">
-  <h3>Objective <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-delivery</span></h3>
+  <h3>Objective <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:Objective</code>
   <p>What a Campaign intends to move: an operator-written statement in prose (carried verbatim — the recommendation agent reads it as the goal), a resultsWindowDays every target is measured over, and one or more MetricTargets of which exactly one isPrimary. An intent set at creation. A campaign has one reporting horizon, distinct from the Project&#x27;s work window: a two-month engagement can carry a six-month results window. The window starts on resultsWindowStart, and the objective-level result is one objectiveReading per target over the campaign&#x27;s deduplicated scope, never a sum of Outcomes.</p>
   
@@ -267,7 +267,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>subclass of</dt><dd><a href="http://www.w3.org/ns/prov#Entity" class="ext">prov:Entity</a></dd></div></dl>
 </section>
 <section id="OwnerChange" class="term">
-  <h3>Owner Change <span class="layer" style="--h:#319795">episode</span> <span class="status">extension</span><span class="mod">xeo-engagement</span></h3>
+  <h3>Owner Change <span class="layer" style="--h:#319795">episode</span> <span class="status">extension</span><span class="mod">xeo-sales</span></h3>
   <code class="iri">xeo:OwnerChange</code>
   <p>A CRM record being reassigned from one owner to another: happened at a time, immutable once recorded. Carries crmRecordRef, ownerRef (the owner it was assigned to), occurredAt, and method saying how the row was obtained, as on a StageTransition. One row per reassignment. Read from the CRM&#x27;s history, so every CRM can fill it and none states it as a field.</p>
   <dl><div class="row"><dt>canonical store</dt><dd>bigquery</dd></div></dl>
@@ -279,7 +279,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   
 </section>
 <section id="PipelineRollup" class="term">
-  <h3>Pipeline Rollup <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-engagement</span></h3>
+  <h3>Pipeline Rollup <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-sales</span></h3>
   <code class="iri">xeo:PipelineRollup</code>
   <p>A MetricReading of a pipeline Metric (leads_created, pipeline_created, deals_won, revenue_won, ...) for one website over one window, computed from CRM records. Always a derivation: the records are observed, the windowed number is XEO&#x27;s computation over them, so it carries method. Requires what any reading does (readingOf, value, periodStart, periodEnd) with datasetUri pointing at the authoritative table, and currencyCode when its Metric&#x27;s unit is currency. The graph keeps this rollup; the rows it was computed from stay in the column store.</p>
   <dl><div class="row"><dt>subclass of</dt><dd><a href="#MetricReading">xeo:MetricReading</a></dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
@@ -297,7 +297,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   
 </section>
 <section id="Project" class="term">
-  <h3>Project <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-delivery</span></h3>
+  <h3>Project <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:Project</code>
   <p>The contractual container for a body of work on one Website. Declares its engagementType (retainer or one-off), an interventionQuota (a scope of work with no ceiling is not a scope), a cadence the quota resets over (retainer) or a durationDays it runs for (one-off), and the Interventions and Tactics inScope under the contract. Never destroyed: its campaigns, objectives and targets are the substrate the end-of-campaign report and the experiment loop read, so it is stamped deletedAt and filtered, not deleted.</p>
   <dl><div class="row"><dt>closeMatch</dt><dd><a href="https://schema.org/Project" class="ext">schema:Project</a></dd></div></dl>
@@ -315,13 +315,13 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   
 </section>
 <section id="SearchEngine" class="term">
-  <h3>Search Engine <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-visibility</span></h3>
+  <h3>Search Engine <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:SearchEngine</code>
   <p>Classic ranked-results retrieval (the SEO surface).</p>
   <dl><div class="row"><dt>subclass of</dt><dd><a href="#Engine">xeo:Engine</a></dd></div></dl>
 </section>
 <section id="SearchIntent" class="term">
-  <h3>Search Intent <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-engagement</span></h3>
+  <h3>Search Intent <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:SearchIntent</code>
   <p>Why the person is asking. Modeled as named individuals, not free strings. Since 0.6.0 the same four values are also published as concepts in xeos:searchIntent, each a SearchIntent, which is the form to write.</p>
   <dl><div class="row"><dt>grounded in</dt><dd>Broder (2002), &#x27;A taxonomy of web search&#x27;, as extended in common practice</dd></div></dl>
@@ -345,7 +345,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>closeMatch</dt><dd><a href="https://schema.org/HowToStep" class="ext">schema:HowToStep</a></dd></div></dl>
 </section>
 <section id="StageTransition" class="term">
-  <h3>Stage Transition <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-engagement</span></h3>
+  <h3>Stage Transition <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-sales</span></h3>
   <code class="iri">xeo:StageTransition</code>
   <p>A CRM record entering a stage: happened at a time, immutable once recorded. Identified by crmRecordRef, stageSlot, toStageRef and enteredAt. One row per entry, and a record that returns to a stage enters it again as a new row. Carries fromStageRef where the previous stage is known, exitedAt once it has left, amountAtTransition, datasetUri, and method saying how the row was obtained: vendor-history (the CRM&#x27;s own history rows), vendor-calculated-property (a per-stage entry timestamp the CRM maintains), or snapshot-diff (two reads compared). High-cardinality, so it lives in the column store and the graph holds rollups. A calculated property that is cleared when a record moves backwards, or filled when it skips a stage, is not a record of what happened and never fills this.</p>
   <dl><div class="row"><dt>canonical store</dt><dd>bigquery</dd></div></dl>
@@ -394,7 +394,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>expected on</dt><dd><a href="#Prompt">xeo:Prompt</a> · <a href="#Term">xeo:Term</a> · <a href="#URL">xeo:URL</a></dd></div><div class="row"><dt>expected to point at</dt><dd><a href="#Entity">xeo:Entity</a> · <a href="#Topic">xeo:Topic</a></dd></div><div class="row"><dt>closeMatch</dt><dd><a href="https://schema.org/about" class="ext">schema:about</a></dd></div></dl>
 </section>
 <section id="aboutTopic" class="term">
-  <h3>about topic <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-delivery</span></h3>
+  <h3>about topic <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:aboutTopic</code>
   <p>The topic cluster this campaign works. Topics are site-scoped derivations in core; a campaign binds to one.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Campaign">xeo:Campaign</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Topic">xeo:Topic</a></dd></div></dl>
@@ -406,7 +406,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>expected on</dt><dd><a href="#Campaign">xeo:Campaign</a> · <a href="#Organization">xeo:Organization</a> · <a href="#Project">xeo:Project</a></dd></div><div class="row"><dt>expected to point at</dt><dd><a href="#Framework">xeo:Framework</a> · <a href="#Playbook">xeo:Playbook</a></dd></div></dl>
 </section>
 <section id="additivity" class="term">
-  <h3>additivity <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-metrics</span></h3>
+  <h3>additivity <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:additivity</code>
   <p>Whether readings of this Metric may be summed across windows, pages or terms, as a slotted-in concept (additive, semi_additive, non_additive — xeos:additivity is a published reference filling). Exactly one per Metric. A non-additive reading (a ratio, an average, a rank, a distinct count) is never summed: it is recomputed over the union from the column store.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Metric">xeo:Metric</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
@@ -418,13 +418,13 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Gap">xeo:Gap</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Tactic">xeo:Tactic</a></dd></div></dl>
 </section>
 <section id="aggregation" class="term">
-  <h3>aggregation <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-metrics</span></h3>
+  <h3>aggregation <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:aggregation</code>
   <p>How a simple Metric reduces the values of its readsSlot in a window to one number, as a slotted-in concept (sum, count, count_distinct, mean, weighted_mean, min, max, median, percentile, last — xeos:aggregation is a published reference filling). Required on a simple metric and absent on the others. &#x27;count&#x27; is also a unit; this slot says how the values are combined, unit says what the result is a number of.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Metric">xeo:Metric</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
 </section>
 <section id="aggregationBasis" class="term">
-  <h3>aggregation basis <span class="layer" style="--h:#38A169">observation</span> <span class="status">extension</span><span class="mod">xeo-metrics</span></h3>
+  <h3>aggregation basis <span class="layer" style="--h:#38A169">observation</span> <span class="status">extension</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:aggregationBasis</code>
   <p>How the source deduplicated before it returned the value, as a slotted-in concept (by_property, by_page, auto — xeos:aggregationBasis is a published reference filling). One source documents it, and there it moves every search number: clicks counted by page and by property are different counts under one field name. Part of a reading&#x27;s identity where the source offers the choice; two readings on different bases are not comparable. Not xeo:basis, which says what a similarity compared.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#MetricReading">xeo:MetricReading</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div><div class="row"><dt>grounded in</dt><dd>Google Search Console Search Analytics API (aggregationType)</dd></div><div class="row"><dt>canonical store</dt><dd>bigquery</dd></div></dl>
@@ -478,7 +478,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>expected on</dt><dd><a href="#Diagnostic">xeo:Diagnostic</a> · <a href="#Gap">xeo:Gap</a> · <a href="#Tactic">xeo:Tactic</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Stage">xeo:Stage</a></dd></div></dl>
 </section>
 <section id="attributedResponse" class="term">
-  <h3>attributed response <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-engagement</span></h3>
+  <h3>attributed response <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-visibility</span></h3>
   <code class="iri">xeo:attributedResponse</code>
   <p>The claim that this conversion traces to engine visibility captured in this response episode. Multi-engine attribution is inherently inferential: this edge MUST carry method and confidence, and honest implementations will leave it sparse. Assert it only when the event&#x27;s session, or the linked record&#x27;s first or latest touch, has channel ai_assistant (or a declared assisted-path method applies), and the response cites a URL of the same website within a declared lookback window. Method is referral-match, citation-window or model.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#ConversionEvent">xeo:ConversionEvent</a></dd></div><div class="row"><dt>range</dt><dd><a href="#LLMResponse">xeo:LLMResponse</a></dd></div></dl>
@@ -490,13 +490,13 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Practice">xeo:Practice</a></dd></div></dl>
 </section>
 <section id="baseMetric" class="term">
-  <h3>base metric <span class="layer" style="--h:#D69E2E">norm</span> <span class="status">extension</span><span class="mod">xeo-metrics</span></h3>
+  <h3>base metric <span class="layer" style="--h:#D69E2E">norm</span> <span class="status">extension</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:baseMetric</code>
   <p>On a conversion Metric: the Metric that counts the base events, the ones a conversion may follow.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Metric">xeo:Metric</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Metric">xeo:Metric</a></dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
 </section>
 <section id="baselineReading" class="term">
-  <h3>baseline reading <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-delivery</span></h3>
+  <h3>baseline reading <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:baselineReading</code>
   <p>The reading a change is measured from. On a MetricTarget: the reading of its Metric taken when the target was set, of which xeo:baseline is the cached value. On an Outcome: the reading over the window of equal length immediately before the change was applied. One per subject. It carries what a bare number cannot: the window, the scope and the source, so the comparison can be recomputed. Domain left open across the two terms listed.</p>
   <dl><div class="row"><dt>expected on</dt><dd><a href="#MetricTarget">xeo:MetricTarget</a> · <a href="#Outcome">xeo:Outcome</a></dd></div><div class="row"><dt>range</dt><dd><a href="#MetricReading">xeo:MetricReading</a></dd></div><div class="row"><dt>grounded in</dt><dd>The API contract of the system named in the reading&#x27;s source</dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
@@ -508,13 +508,13 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div></dl>
 </section>
 <section id="betterDirection" class="term">
-  <h3>better direction <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-metrics</span></h3>
+  <h3>better direction <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:betterDirection</code>
   <p>Which way a change in this Metric counts as improvement, as a slotted-in concept (up, down, none — xeos:betterDirection is a published reference filling). Exactly one per Metric, declared here and nowhere else: positions and ranks are 1-based, so a shared &#x27;+20%&#x27; would ask for a rank 20% worse. A change is recorded signed and raw; whether it is an improvement is read through this. Replaces xeo:direction, which stored a copy on each target.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Metric">xeo:Metric</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
 </section>
 <section id="capturedBy" class="term">
-  <h3>captured by <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-engagement</span></h3>
+  <h3>captured by <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:capturedBy</code>
   <p>The conversion point this event happened at.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#ConversionEvent">xeo:ConversionEvent</a></dd></div><div class="row"><dt>range</dt><dd><a href="#ConversionPoint">xeo:ConversionPoint</a></dd></div><div class="row"><dt>grounded in</dt><dd>The capturing system&#x27;s submission payload (per-vendor form or event API contract)</dd></div></dl>
@@ -532,7 +532,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>domain</dt><dd><a href="#LLMResponse">xeo:LLMResponse</a></dd></div><div class="row"><dt>range</dt><dd><a href="#URL">xeo:URL</a></dd></div><div class="row"><dt>grounded in</dt><dd>Engine response citation annotations (per-provider API contract)</dd></div></dl>
 </section>
 <section id="clientOf" class="term">
-  <h3>client of <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-delivery</span></h3>
+  <h3>client of <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:clientOf</code>
   <p>This Organization is served by that one: a brand is the client of an agency. The contract itself is a Project on the client&#x27;s Website; this edge says only who works for whom.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Organization">xeo:Organization</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Organization">xeo:Organization</a></dd></div></dl>
@@ -568,43 +568,43 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Practice">xeo:Practice</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Recommendation">xeo:Recommendation</a></dd></div></dl>
 </section>
 <section id="conversionEntity" class="term">
-  <h3>conversion entity <span class="layer" style="--h:#D69E2E">norm</span> <span class="status">extension</span><span class="mod">xeo-metrics</span></h3>
+  <h3>conversion entity <span class="layer" style="--h:#D69E2E">norm</span> <span class="status">extension</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:conversionEntity</code>
   <p>On a conversion Metric: the identity key that joins a base event to the conversion event that followed it (crmRecordRef, for a lead that became a deal). The metric is the share of that entity&#x27;s base events followed by a conversion event within conversionWindow.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Metric">xeo:Metric</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property" class="ext">http://www.w3.org/1999/02/22-rdf-syntax-ns#Property</a></dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
 </section>
 <section id="conversionMetric" class="term">
-  <h3>conversion metric <span class="layer" style="--h:#D69E2E">norm</span> <span class="status">extension</span><span class="mod">xeo-metrics</span></h3>
+  <h3>conversion metric <span class="layer" style="--h:#D69E2E">norm</span> <span class="status">extension</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:conversionMetric</code>
   <p>On a conversion Metric: the Metric that counts the conversion events.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Metric">xeo:Metric</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Metric">xeo:Metric</a></dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
 </section>
 <section id="coversTerm" class="term">
-  <h3>covers term <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-delivery</span></h3>
+  <h3>covers term <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:coversTerm</code>
   <p>A term inside the campaign&#x27;s cluster — the queries its objective is measured against.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Campaign">xeo:Campaign</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Term">xeo:Term</a></dd></div></dl>
 </section>
 <section id="coversUrl" class="term">
-  <h3>covers URL <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-delivery</span></h3>
+  <h3>covers URL <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:coversUrl</code>
   <p>A page inside the campaign&#x27;s cluster. May carry a priority flag marking the pages the campaign is really about.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Campaign">xeo:Campaign</a></dd></div><div class="row"><dt>range</dt><dd><a href="#URL">xeo:URL</a></dd></div></dl>
 </section>
 <section id="dataState" class="term">
-  <h3>data state <span class="layer" style="--h:#38A169">observation</span> <span class="status">extension</span><span class="mod">xeo-metrics</span></h3>
+  <h3>data state <span class="layer" style="--h:#38A169">observation</span> <span class="status">extension</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:dataState</code>
   <p>Whether the source considered the reading&#x27;s window complete when it answered, as a slotted-in concept (final, partial — xeos:dataState is a published reference filling). A partial reading is expected to change and should not anchor a baseline. Absent where the source does not say.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#MetricReading">xeo:MetricReading</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div><div class="row"><dt>grounded in</dt><dd>Google Search Console Search Analytics API (dataState), as reported by a secondary source</dd></div><div class="row"><dt>canonical store</dt><dd>bigquery</dd></div></dl>
 </section>
 <section id="denominator" class="term">
-  <h3>denominator <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-metrics</span></h3>
+  <h3>denominator <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:denominator</code>
   <p>The Metric a ratio divides by. Required on a ratio, with numerator. Two tools that share a metric&#x27;s name and differ in its denominator are reporting two different metrics.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Metric">xeo:Metric</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Metric">xeo:Metric</a></dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
 </section>
 <section id="effortEstimate" class="term">
-  <h3>effort estimate <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-delivery</span></h3>
+  <h3>effort estimate <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:effortEstimate</code>
   <p>How long executing the recommendation is expected to take, as a slotted-in concept (hours, days, weeks, a quarter — see xeo-schemes). A categorical horizon for planning a cycle, not a scored dimension: impact, risk and time-to-value belong on a TacticAssessment via onDimension.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Recommendation">xeo:Recommendation</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div></dl>
@@ -622,7 +622,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Gap">xeo:Gap</a></dd></div><div class="row"><dt>expected to point at</dt><dd><a href="#LLMResponse">xeo:LLMResponse</a> · <a href="#Prompt">xeo:Prompt</a> · <a href="#SerpSnapshot">xeo:SerpSnapshot</a> · <a href="#Term">xeo:Term</a> · <a href="#URL">xeo:URL</a></dd></div><div class="row"><dt>subproperty of</dt><dd><a href="http://www.w3.org/ns/prov#wasDerivedFrom" class="ext">prov:wasDerivedFrom</a></dd></div></dl>
 </section>
 <section id="execution" class="term">
-  <h3>execution <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-delivery</span></h3>
+  <h3>execution <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:execution</code>
   <p>Who does the work, as a slotted-in concept: ours (spends the project&#x27;s intervention allowance) or advised (the client executes; not agency capacity). The half of the scope gate that says whose hours a recommendation costs.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Recommendation">xeo:Recommendation</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div></dl>
@@ -658,13 +658,13 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Gap">xeo:Gap</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div></dl>
 </section>
 <section id="grainToDate" class="term">
-  <h3>grain to date <span class="layer" style="--h:#D69E2E">norm</span> <span class="status">extension</span><span class="mod">xeo-metrics</span></h3>
+  <h3>grain to date <span class="layer" style="--h:#D69E2E">norm</span> <span class="status">extension</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:grainToDate</code>
   <p>The grain at whose start a cumulative Metric resets, as a slotted-in concept (day, week, month, quarter, year — xeos:timeGrain is a published reference filling): month for a month-to-date total. Used instead of cumulativeWindow, never with it.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Metric">xeo:Metric</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
 </section>
 <section id="hasCampaign" class="term">
-  <h3>has campaign <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-delivery</span></h3>
+  <h3>has campaign <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:hasCampaign</code>
   <p>A campaign run under this Project.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Project">xeo:Project</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Campaign">xeo:Campaign</a></dd></div></dl>
@@ -682,7 +682,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Experiment">xeo:Experiment</a></dd></div><div class="row"><dt>expected to point at</dt><dd><a href="#Term">xeo:Term</a> · <a href="#URL">xeo:URL</a></dd></div></dl>
 </section>
 <section id="hasConversionPoint" class="term">
-  <h3>has conversion point <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-engagement</span></h3>
+  <h3>has conversion point <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:hasConversionPoint</code>
   <p>Observed presence of a conversion point on a page (crawl-attributed, bitemporal like linksTo).</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#URL">xeo:URL</a></dd></div><div class="row"><dt>range</dt><dd><a href="#ConversionPoint">xeo:ConversionPoint</a></dd></div><div class="row"><dt>grounded in</dt><dd>The page&#x27;s markup as one crawl fetched it (WHATWG HTML: the form, a and button elements)</dd></div></dl>
@@ -694,13 +694,13 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Website">xeo:Website</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Crawl">xeo:Crawl</a></dd></div></dl>
 </section>
 <section id="hasObjective" class="term">
-  <h3>has objective <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-delivery</span></h3>
+  <h3>has objective <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:hasObjective</code>
   <p>Exactly one per campaign.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Campaign">xeo:Campaign</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Objective">xeo:Objective</a></dd></div></dl>
 </section>
 <section id="hasProject" class="term">
-  <h3>has project <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-delivery</span></h3>
+  <h3>has project <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:hasProject</code>
   <p>The projects contracted against this website. Tenancy rides on websiteId, as everywhere.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Website">xeo:Website</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Project">xeo:Project</a></dd></div></dl>
@@ -736,7 +736,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Framework">xeo:Framework</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Stage">xeo:Stage</a></dd></div></dl>
 </section>
 <section id="hasTarget" class="term">
-  <h3>has target <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-delivery</span></h3>
+  <h3>has target <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:hasTarget</code>
   <p>The objective&#x27;s measurable targets. Non-empty; exactly one target isPrimary — what the recommendation agent optimises for. The rest are the secondary metrics an impact-radius check widens to.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Objective">xeo:Objective</a></dd></div><div class="row"><dt>range</dt><dd><a href="#MetricTarget">xeo:MetricTarget</a></dd></div></dl>
@@ -748,7 +748,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Brand">xeo:Brand</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Website">xeo:Website</a></dd></div><div class="row"><dt>closeMatch</dt><dd><a href="https://schema.org/url" class="ext">schema:url</a></dd></div></dl>
 </section>
 <section id="holdsCapability" class="term">
-  <h3>holds capability <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-delivery</span></h3>
+  <h3>holds capability <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:holdsCapability</code>
   <p>A Capability this Organization is able to bring: the lever exists in this team. A third question beside the two the scope gate already asks. holdsCapability says the party can do it; approved says the lever is cleared for this engagement; inScope says the contract covers it.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Organization">xeo:Organization</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Capability">xeo:Capability</a></dd></div></dl>
@@ -772,7 +772,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Tactic">xeo:Tactic</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Intervention">xeo:Intervention</a></dd></div></dl>
 </section>
 <section id="inScope" class="term">
-  <h3>in scope <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-delivery</span></h3>
+  <h3>in scope <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:inScope</code>
   <p>What the contract covers: an Intervention (a whole category of work, including tactics added to the catalogue later) or a specific Tactic within one. Range left open across those two terms. The contractual half of the scope gate — requiresCapability + approved asks whether the lever exists; this asks whether it was bought.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Project">xeo:Project</a></dd></div><div class="row"><dt>expected to point at</dt><dd><a href="#Intervention">xeo:Intervention</a> · <a href="#Tactic">xeo:Tactic</a></dd></div></dl>
@@ -790,13 +790,13 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>expected on</dt><dd><a href="#Framework">xeo:Framework</a> · <a href="#Playbook">xeo:Playbook</a></dd></div><div class="row"><dt>expected to point at</dt><dd><a href="#Diagnostic">xeo:Diagnostic</a> · <a href="#Practice">xeo:Practice</a> · <a href="#Tactic">xeo:Tactic</a></dd></div></dl>
 </section>
 <section id="inputMetric" class="term">
-  <h3>input metric <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-metrics</span></h3>
+  <h3>input metric <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:inputMetric</code>
   <p>A Metric a derived metric is computed from. At least one on a derived metric, each named by its notation in expression.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Metric">xeo:Metric</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Metric">xeo:Metric</a></dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
 </section>
 <section id="issuedFor" class="term">
-  <h3>issued for <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-delivery</span></h3>
+  <h3>issued for <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:issuedFor</code>
   <p>The campaign a recommendation was issued into. Its execution lifecycle (xeo:status), effortEstimate and execution live here: a recommendation is a decision-tier call until it lands in a campaign, and delivery state from then on.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Recommendation">xeo:Recommendation</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Campaign">xeo:Campaign</a></dd></div></dl>
@@ -826,7 +826,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Gap">xeo:Gap</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div><div class="row"><dt>seeAlso</dt><dd><a href="#magnitudeMetric">xeo:magnitudeMetric</a></dd></div></dl>
 </section>
 <section id="measures" class="term">
-  <h3>measures <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-delivery</span></h3>
+  <h3>measures <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:measures</code>
   <p>The target an experiment&#x27;s Outcome is read against. Carries a role — primary or secondary — matching the target&#x27;s standing in its objective, and a basis saying which pages were measured (the ones the recommendation applied to, the gap&#x27;s evidence, or the pages actually changed).</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Experiment">xeo:Experiment</a></dd></div><div class="row"><dt>range</dt><dd><a href="#MetricTarget">xeo:MetricTarget</a></dd></div></dl>
@@ -838,7 +838,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>domain</dt><dd><a href="#LLMResponse">xeo:LLMResponse</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Brand">xeo:Brand</a></dd></div></dl>
 </section>
 <section id="metricType" class="term">
-  <h3>metric type <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-metrics</span></h3>
+  <h3>metric type <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:metricType</code>
   <p>How a Metric is computed, as a slotted-in concept (simple, ratio, derived, cumulative, conversion — xeos:metricType is a published reference filling). Exactly one per Metric. The type decides which other properties are required: a simple metric aggregates one slot, a ratio divides one metric by another, a derived metric is arithmetic over others.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Metric">xeo:Metric</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
@@ -850,13 +850,13 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Stage">xeo:Stage</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Stage">xeo:Stage</a></dd></div></dl>
 </section>
 <section id="numerator" class="term">
-  <h3>numerator <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-metrics</span></h3>
+  <h3>numerator <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:numerator</code>
   <p>The Metric a ratio divides. Required on a ratio, with denominator. A filter on the numerator does not apply to the denominator unless it is declared there too. A ratio is rolled up as sum(numerator) divided by sum(denominator), never as a mean of ratios.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Metric">xeo:Metric</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Metric">xeo:Metric</a></dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
 </section>
 <section id="objectiveReading" class="term">
-  <h3>objective reading <span class="layer" style="--h:#805AD5">derivation</span> <span class="status">extension</span><span class="mod">xeo-delivery</span></h3>
+  <h3>objective reading <span class="layer" style="--h:#805AD5">derivation</span> <span class="status">extension</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:objectiveReading</code>
   <p>The reading an Objective is judged on, one per target: the target&#x27;s Metric over the deduplicated union of the campaign&#x27;s coversUrl and coversTerm, across the results window, computed from the column store. Which target a reading belongs to is read from readingOf. The objective-level result is this reading against the target&#x27;s baselineReading. It is never the sum of the campaign&#x27;s Outcomes: overlapping scopes would be counted twice, and a non-additive metric cannot be summed at all.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Objective">xeo:Objective</a></dd></div><div class="row"><dt>range</dt><dd><a href="#MetricReading">xeo:MetricReading</a></dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
@@ -874,7 +874,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>domain</dt><dd><a href="#URL">xeo:URL</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Domain">xeo:Domain</a></dd></div><div class="row"><dt>grounded in</dt><dd>WHATWG URL Standard (host) · Public Suffix List (registrable domain)</dd></div></dl>
 </section>
 <section id="onEngine" class="term">
-  <h3>on engine <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-visibility</span></h3>
+  <h3>on engine <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:onEngine</code>
   <p>Which engine (and, via model/modelVersion properties, which model) produced this response — or, on a SerpSnapshot, served this results page.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="#Engine">xeo:Engine</a></dd></div><div class="row"><dt>subproperty of</dt><dd><a href="http://www.w3.org/ns/prov#wasAttributedTo" class="ext">prov:wasAttributedTo</a></dd></div></dl>
@@ -916,13 +916,13 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>domain</dt><dd><a href="#URL">xeo:URL</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Term">xeo:Term</a></dd></div><div class="row"><dt>grounded in</dt><dd>Google Search Console Search Analytics API</dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
 </section>
 <section id="readingOf" class="term">
-  <h3>reading of <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-metrics</span></h3>
+  <h3>reading of <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:readingOf</code>
   <p>The Metric this reading is a value of. Exactly one per reading. Two readings are comparable only when this matches: a changed definition is a new Metric, and its readings are not continued from the old one&#x27;s.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#MetricReading">xeo:MetricReading</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Metric">xeo:Metric</a></dd></div><div class="row"><dt>grounded in</dt><dd>The API contract of the system named in the reading&#x27;s source</dd></div><div class="row"><dt>canonical store</dt><dd>bigquery</dd></div></dl>
 </section>
 <section id="readsSlot" class="term">
-  <h3>reads slot <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-metrics</span></h3>
+  <h3>reads slot <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:readsSlot</code>
   <p>The XEO property a simple Metric aggregates: clicks, dealAmount, mentionRank. Required on a simple metric. If the slot is a derivation, every reading of the metric is a derivation. Where XEO declares no slot beneath the number, because the source returns it already aggregated (an analytics tool&#x27;s sessions, a vendor&#x27;s modelled traffic value), readsSlot is xeo:value: the metric combines the source&#x27;s own readings, and the vendor scheme says which field that is.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Metric">xeo:Metric</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property" class="ext">http://www.w3.org/1999/02/22-rdf-syntax-ns#Property</a></dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
@@ -988,7 +988,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>domain</dt><dd><a href="#DiagnosticRun">xeo:DiagnosticRun</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Diagnostic">xeo:Diagnostic</a></dd></div></dl>
 </section>
 <section id="scope" class="term">
-  <h3>scope <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-metrics</span></h3>
+  <h3>scope <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:scope</code>
   <p>What the reading covers: a whole Website, one URL or Term, a Topic, a Prompt, a Brand, or the pages and terms of a Campaign. Many per reading where the scope is a set. Range left open across the terms listed. Restricts numerator and denominator alike, which is what separates it from metricFilter. A baseline reading and a result reading are comparable only over the same scope.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#MetricReading">xeo:MetricReading</a></dd></div><div class="row"><dt>expected to point at</dt><dd><a href="#Brand">xeo:Brand</a> · <a href="#Campaign">xeo:Campaign</a> · <a href="#Prompt">xeo:Prompt</a> · <a href="#Term">xeo:Term</a> · <a href="#Topic">xeo:Topic</a> · <a href="#URL">xeo:URL</a> · <a href="#Website">xeo:Website</a></dd></div><div class="row"><dt>grounded in</dt><dd>The API contract of the system named in the reading&#x27;s source</dd></div><div class="row"><dt>canonical store</dt><dd>bigquery</dd></div></dl>
@@ -1024,7 +1024,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Recommendation">xeo:Recommendation</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Experiment">xeo:Experiment</a></dd></div><div class="row"><dt>subproperty of</dt><dd><a href="http://www.w3.org/ns/prov#wasDerivedFrom" class="ext">prov:wasDerivedFrom</a></dd></div></dl>
 </section>
 <section id="targetsIntent" class="term">
-  <h3>targets intent <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-engagement</span></h3>
+  <h3>targets intent <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:targetsIntent</code>
   <p>A URL or Prompt is aimed at this intent. A strategist&#x27;s or model&#x27;s claim — carries method and confidence.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="#SearchIntent">xeo:SearchIntent</a></dd></div></dl>
@@ -1036,7 +1036,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Experiment">xeo:Experiment</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Tactic">xeo:Tactic</a></dd></div></dl>
 </section>
 <section id="timeAnchor" class="term">
-  <h3>time anchor <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-metrics</span></h3>
+  <h3>time anchor <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:timeAnchor</code>
   <p>Which timestamp places a record in a window: recordCreatedAt or dealClosedAt for a deal, capturedAt for a sampled answer. Part of a Metric&#x27;s identity: deals counted by create date and by close date are two metrics. Absent where the source places records itself and offers no choice.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Metric">xeo:Metric</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property" class="ext">http://www.w3.org/1999/02/22-rdf-syntax-ns#Property</a></dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
@@ -1054,7 +1054,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Experiment">xeo:Experiment</a></dd></div><div class="row"><dt>expected to point at</dt><dd><a href="#Term">xeo:Term</a> · <a href="#URL">xeo:URL</a></dd></div></dl>
 </section>
 <section id="unit" class="term">
-  <h3>unit <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-metrics</span></h3>
+  <h3>unit <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:unit</code>
   <p>What a reading of this Metric is a number of, as a slotted-in concept (count, ratio, rank, currency, seconds, days, score_0_100 — xeos:metricUnit is a published reference filling). Exactly one per Metric. A ratio is a 0 to 1 quotient, never a percentage. A rank is 1-based with 1 best. A currency reading carries currencyCode. Distinct from magnitudeUnit, which names the unit of a Gap&#x27;s size.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Metric">xeo:Metric</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
@@ -1085,19 +1085,19 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>domain</dt><dd><a href="#URL">xeo:URL</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>subproperty of</dt><dd><a href="https://schema.org/url" class="ext">schema:url</a></dd></div><div class="row"><dt>grounded in</dt><dd>WHATWG URL Standard (serialized absolute URL)</dd></div></dl>
 </section>
 <section id="agentContext" class="term">
-  <h3>agent context <span class="layer" style="--h:#D69E2E">norm</span> <span class="status">extension</span><span class="mod">xeo-metrics</span></h3>
+  <h3>agent context <span class="layer" style="--h:#D69E2E">norm</span> <span class="status">extension</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:agentContext</code>
   <p>Guidance to an agent on when to use this Metric and when not to, in plain language: what it is commonly mistaken for, which question it answers. Read by a model choosing between metrics; it does not change how the metric is computed.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Metric">xeo:Metric</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
 </section>
 <section id="amountAtTransition" class="term">
-  <h3>amount at transition <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-engagement</span></h3>
+  <h3>amount at transition <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-sales</span></h3>
   <code class="iri">xeo:amountAtTransition</code>
   <p>The deal&#x27;s dealAmount at the moment it entered the stage, in the deal&#x27;s currency, where the source records it. What lets pipeline value be read as it stood at each stage and not as the deal reads today.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#StageTransition">xeo:StageTransition</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>canonical store</dt><dd>bigquery</dd></div></dl>
 </section>
 <section id="amountInReportingCurrency" class="term">
-  <h3>amount in reporting currency <span class="layer" style="--h:#805AD5">derivation</span> <span class="status">extension</span><span class="mod">xeo-engagement</span></h3>
+  <h3>amount in reporting currency <span class="layer" style="--h:#805AD5">derivation</span> <span class="status">extension</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:amountInReportingCurrency</code>
   <p>A dealAmount converted into the account&#x27;s reporting currency. A derivation: the result depends on the rate, the date the rate was taken on and where it came from, and method states all three. CRMs differ on which rate they use for an open deal and a closed one, so totals for the same deals differ between systems.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
@@ -1127,13 +1127,13 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>grounded in</dt><dd>GSC Search Analytics API</dd></div></dl>
 </section>
 <section id="baseline" class="term">
-  <h3>baseline <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-delivery</span></h3>
+  <h3>baseline <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:baseline</code>
   <p>The metric&#x27;s value when the target was set — the anchor &#x27;how far beyond target&#x27; is measured from. An observation captured onto an interpretation; baselineCapturedAt says when, because it is not the same instant as the target&#x27;s creation. The cached value of baselineReading, which carries the window, scope and source a bare number cannot.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#MetricTarget">xeo:MetricTarget</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>seeAlso</dt><dd><a href="#baselineReading">xeo:baselineReading</a></dd></div></dl>
 </section>
 <section id="baselineCapturedAt" class="term">
-  <h3>baseline captured at <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-delivery</span></h3>
+  <h3>baseline captured at <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:baselineCapturedAt</code>
   <p>When baseline was read. Not the same instant as the target&#x27;s creation.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#MetricTarget">xeo:MetricTarget</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div></dl>
@@ -1145,19 +1145,19 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div></dl>
 </section>
 <section id="cadence" class="term">
-  <h3>cadence <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-delivery</span></h3>
+  <h3>cadence <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:cadence</code>
   <p>&#x27;monthly&#x27; or &#x27;quarterly&#x27; — the period a retainer&#x27;s quota resets over. Set for retainer, absent for one-off.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Project">xeo:Project</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
 <section id="campaignInfluenceShare" class="term">
-  <h3>campaign influence share <span class="layer" style="--h:#805AD5">derivation</span> <span class="status">extension</span><span class="mod">xeo-engagement</span></h3>
+  <h3>campaign influence share <span class="layer" style="--h:#805AD5">derivation</span> <span class="status">extension</span><span class="mod">xeo-sales</span></h3>
   <code class="iri">xeo:campaignInfluenceShare</code>
   <p>The share of a deal&#x27;s amount a CRM credits to one marketing campaign, from 0 to 1, under a named attribution model. A derivation: method names the model, and the shares for one deal under one model sum to 1. One CRM of the seven read computes it.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="capturedAt" class="term">
-  <h3>captured at <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-visibility</span></h3>
+  <h3>captured at <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:capturedAt</code>
   <p>When a capture episode was taken: an LLMResponse or a SerpSnapshot. The instant the record was made, after which it is immutable.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div><div class="row"><dt>subproperty of</dt><dd><a href="http://www.w3.org/ns/prov#generatedAtTime" class="ext">prov:generatedAtTime</a></dd></div></dl>
@@ -1211,25 +1211,25 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>RFC 9110 §8.3 (Content-Type)</dd></div></dl>
 </section>
 <section id="conversionPointType" class="term">
-  <h3>conversion point type <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-engagement</span></h3>
+  <h3>conversion point type <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:conversionPointType</code>
   <p>The kind of mechanism a ConversionPoint is, as a code from a slotted-in scheme (cta, lead_form, gated_asset, meeting_booker, chat — xeos:conversionPointType is a published reference filling). One per ConversionPoint. Says with a value what the CallToAction, LeadCaptureForm and GatedAsset subclasses said with a class, so a new kind of mechanism is a new code and not a new term.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#ConversionPoint">xeo:ConversionPoint</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
 <section id="conversionWindow" class="term">
-  <h3>conversion window <span class="layer" style="--h:#D69E2E">norm</span> <span class="status">extension</span><span class="mod">xeo-metrics</span></h3>
+  <h3>conversion window <span class="layer" style="--h:#D69E2E">norm</span> <span class="status">extension</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:conversionWindow</code>
   <p>On a conversion Metric: how long after a base event a conversion event still counts, as an ISO 8601 duration.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Metric">xeo:Metric</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#duration" class="ext">xsd:duration</a></dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
 </section>
 <section id="convertedAt" class="term">
-  <h3>converted at <span class="layer" style="--h:#319795">episode</span> <span class="status">extension</span><span class="mod">xeo-engagement</span></h3>
+  <h3>converted at <span class="layer" style="--h:#319795">episode</span> <span class="status">extension</span><span class="mod">xeo-sales</span></h3>
   <code class="iri">xeo:convertedAt</code>
   <p>When a lead record was converted, in UTC. A source that records the date alone stays at day precision.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="convertedTo" class="term">
-  <h3>converted to <span class="layer" style="--h:#319795">episode</span> <span class="status">extension</span><span class="mod">xeo-engagement</span></h3>
+  <h3>converted to <span class="layer" style="--h:#319795">episode</span> <span class="status">extension</span><span class="mod">xeo-sales</span></h3>
   <code class="iri">xeo:convertedTo</code>
   <p>On a lead record that was converted: the crmRecordRef of the deal (or person) it became. With convertedAt it records a lead conversion, an event that happened once. Absent on an unconverted lead, and in CRMs that have no separate lead record.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
@@ -1247,19 +1247,19 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>RFC 9110 §10.1.5 (User-Agent)</dd></div></dl>
 </section>
 <section id="crmObjectType" class="term">
-  <h3>CRM object type <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-engagement</span></h3>
+  <h3>CRM object type <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-sales</span></h3>
   <code class="iri">xeo:crmObjectType</code>
   <p>The neutral kind of the record a crmRecordRef points at, as a code from a slotted-in scheme (person, organization, lead, deal — xeos:crmObjectType is a published reference filling). Assigned from what the record is, not from what its vendor calls it: one CRM&#x27;s &#x27;lead&#x27; is a company, and another&#x27;s is a deal stage. One per pointer.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="crmRecordRef" class="term">
-  <h3>CRM record reference <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-engagement</span></h3>
+  <h3>CRM record reference <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-sales</span></h3>
   <code class="iri">xeo:crmRecordRef</code>
   <p>Identity key of one record in the CRM that runs a website&#x27;s pipeline, written crmSystem:crmTenantId:crmObjectType:recordId (hubspot:12345:deal:987). Two refs are the same record when all four parts match. Points at a person, organization, lead or deal record only; a form&#x27;s identifier belongs to its ConversionPoint. The join contract to the post-click world — the graph never mirrors the CRM&#x27;s schema. A value written before 0.6.0 as a bare id is still a valid string and should be completed.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>seeAlso</dt><dd><a href="#crmObjectType">xeo:crmObjectType</a> · <a href="#crmSystem">xeo:crmSystem</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="crmSystem" class="term">
-  <h3>CRM system <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-engagement</span></h3>
+  <h3>CRM system <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-sales</span></h3>
   <code class="iri">xeo:crmSystem</code>
   <p>Which CRM product holds the record a crmRecordRef points at, as a code from a slotted-in scheme (hubspot, salesforce, pipedrive, ... — xeos:crmSystem is a published reference filling). The first part of the pointer, also stated on its own so records can be filtered by system. One per pointer.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
@@ -1271,13 +1271,13 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>grounded in</dt><dd>GSC Search Analytics API</dd></div></dl>
 </section>
 <section id="cumulativeWindow" class="term">
-  <h3>cumulative window <span class="layer" style="--h:#D69E2E">norm</span> <span class="status">extension</span><span class="mod">xeo-metrics</span></h3>
+  <h3>cumulative window <span class="layer" style="--h:#D69E2E">norm</span> <span class="status">extension</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:cumulativeWindow</code>
   <p>The trailing window a cumulative Metric accumulates over, as an ISO 8601 duration (P7D for a trailing seven days). Absent on a cumulative metric that accumulates from the start of a grain; that one carries grainToDate.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Metric">xeo:Metric</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#duration" class="ext">xsd:duration</a></dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
 </section>
 <section id="currencyCode" class="term">
-  <h3>currency code <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-engagement</span></h3>
+  <h3>currency code <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:currencyCode</code>
   <p>The ISO 4217 code (three upper-case letters) of the amount it travels with: a dealAmount, or the value of a currency MetricReading. Where a CRM runs in one currency and has no field for it, the account&#x27;s currency is stated here. A vendor&#x27;s internal currency id is not a code and is resolved to one first.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>ISO 4217 · the vendor&#x27;s deal object API contract</dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
@@ -1289,25 +1289,25 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
 <section id="dealAmount" class="term">
-  <h3>deal amount <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-engagement</span></h3>
+  <h3>deal amount <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-sales</span></h3>
   <code class="iri">xeo:dealAmount</code>
   <p>The monetary value the CRM records for a deal, in the deal&#x27;s own currency, zero or more. Always travels with currencyCode. Never a weighted, converted, forecast or recurring-normalized figure: those are weightedAmount, amountInReportingCurrency and recurringValue. One per deal per snapshot; a snapshot carries datasetUri and when it was read.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>grounded in</dt><dd>The vendor&#x27;s deal object API contract</dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="dealClosedAt" class="term">
-  <h3>deal closed at <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-engagement</span></h3>
+  <h3>deal closed at <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-sales</span></h3>
   <code class="iri">xeo:dealClosedAt</code>
   <p>When a deal&#x27;s outcome became won or lost. The time anchor for deals and revenue won. Filled only on a closed deal. A source that records the date alone stays at day precision, written as midnight UTC of that day.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div><div class="row"><dt>grounded in</dt><dd>The vendor&#x27;s deal object API contract (the won, lost or close timestamp of a closed deal)</dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="dealOutcome" class="term">
-  <h3>deal outcome <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-engagement</span></h3>
+  <h3>deal outcome <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-sales</span></h3>
   <code class="iri">xeo:dealOutcome</code>
   <p>Whether a deal is open, won or lost, as a code from a slotted-in scheme (xeos:dealOutcome is a published reference filling). An observation where the CRM states it as a field. Where the CRM states only a stage, the outcome is read through the tenant&#x27;s stageClass mapping, and the assertion is then a derivation with method tenant-stage-map. A deleted deal has no outcome and is left out. Not the stage itself.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>The vendor&#x27;s deal object API contract (won and closed flags, status, state code)</dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="dealProbability" class="term">
-  <h3>deal probability <span class="layer" style="--h:#DD6B20">interpretation</span> <span class="status">extension</span><span class="mod">xeo-engagement</span></h3>
+  <h3>deal probability <span class="layer" style="--h:#DD6B20">interpretation</span> <span class="status">extension</span><span class="mod">xeo-sales</span></h3>
   <code class="iri">xeo:dealProbability</code>
   <p>The likelihood that one deal will close won, from 0 to 1, as the CRM holds it: inherited from the stage or set by the owner. An interpretation. CRMs store it as a fraction or as a percentage; it is normalized to 0 to 1 here.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
@@ -1319,13 +1319,13 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div></dl>
 </section>
 <section id="deletedAt" class="term">
-  <h3>deleted at <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-delivery</span></h3>
+  <h3>deleted at <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:deletedAt</code>
   <p>Soft-delete stamp. XEO never destroys a node something else was derived from — xeo-strategy states the rule for a Practice (destroying it destroys the record of what it vetoed) and it holds here for a Project, a Campaign, or a MetricTarget that measured history hangs off. Absent on a live node; domain left open so any revisable term can carry it.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div></dl>
 </section>
 <section id="denominatorValue" class="term">
-  <h3>denominator value <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-metrics</span></h3>
+  <h3>denominator value <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:denominatorValue</code>
   <p>The denominator behind a ratio reading, or the number of values behind a mean. Compared with the Metric&#x27;s minDenominator to decide whether the reading is reportable.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#MetricReading">xeo:MetricReading</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>grounded in</dt><dd>The API contract of the system named in the reading&#x27;s source</dd></div><div class="row"><dt>canonical store</dt><dd>bigquery</dd></div></dl>
@@ -1337,13 +1337,13 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
 <section id="direction" class="term">
-  <h3>direction <span class="layer" style="--h:#DD6B20">interpretation</span> <span class="status dep">deprecated</span><span class="mod">xeo-delivery</span></h3>
+  <h3>direction <span class="layer" style="--h:#DD6B20">interpretation</span> <span class="status dep">deprecated</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:direction</code>
   <p>&#x27;up&#x27; or &#x27;down&#x27; — which way is better for this metric. DERIVED from metric, never client input: position and rank are 1-based, so a shared &#x27;+20%&#x27; would silently ask for a rank 20% worse. Deprecated in 0.6.0, as advice: the direction is now stated once, on the Metric, as betterDirection, and a copy here is a cache of it that can drift. Still valid where stored.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#MetricTarget">xeo:MetricTarget</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>seeAlso</dt><dd><a href="#betterDirection">xeo:betterDirection</a></dd></div></dl>
 </section>
 <section id="durationDays" class="term">
-  <h3>duration days <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-delivery</span></h3>
+  <h3>duration days <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:durationDays</code>
   <p>Fixed run length of a one-off project. Set for oneoff, absent for retainer.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Project">xeo:Project</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div></dl>
@@ -1379,13 +1379,13 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div><div class="row"><dt>subproperty of</dt><dd><a href="http://www.w3.org/ns/prov#endedAtTime" class="ext">prov:endedAtTime</a></dd></div></dl>
 </section>
 <section id="engagementType" class="term">
-  <h3>engagement type <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-delivery</span></h3>
+  <h3>engagement type <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:engagementType</code>
   <p>&#x27;retainer&#x27; or &#x27;oneoff&#x27; — the discriminator for how scope is expressed. A retainer caps interventions per cadence period; a one-off caps them over durationDays. Sending both cadence and durationDays is a contradiction and is rejected at the edge.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Project">xeo:Project</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
 <section id="enteredAt" class="term">
-  <h3>entered at <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-engagement</span></h3>
+  <h3>entered at <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-sales</span></h3>
   <code class="iri">xeo:enteredAt</code>
   <p>When the record entered the stage, in UTC. Exactly one per transition.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#StageTransition">xeo:StageTransition</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div><div class="row"><dt>canonical store</dt><dd>bigquery</dd></div></dl>
@@ -1397,19 +1397,19 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>closeMatch</dt><dd><a href="https://schema.org/sameAs" class="ext">schema:sameAs</a></dd></div></dl>
 </section>
 <section id="exitedAt" class="term">
-  <h3>exited at <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-engagement</span></h3>
+  <h3>exited at <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-sales</span></h3>
   <code class="iri">xeo:exitedAt</code>
   <p>When the record left the stage, in UTC. Absent while it is still there.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#StageTransition">xeo:StageTransition</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div><div class="row"><dt>canonical store</dt><dd>bigquery</dd></div></dl>
 </section>
 <section id="expectedCloseDate" class="term">
-  <h3>expected close date <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-engagement</span></h3>
+  <h3>expected close date <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-sales</span></h3>
   <code class="iri">xeo:expectedCloseDate</code>
   <p>The date the owner forecasts an open deal will close. A person&#x27;s forecast, not a measurement. Filled only while dealOutcome is open. Several CRMs keep the forecast and the actual close in one field; which this is depends on the deal&#x27;s outcome, and the same field read after the deal closed fills dealClosedAt instead.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#date" class="ext">xsd:date</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="expression" class="term">
-  <h3>expression <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-metrics</span></h3>
+  <h3>expression <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:expression</code>
   <p>On a derived Metric: the arithmetic over its inputMetrics, each named by its notation (&#x27;revenue_won / deals_won&#x27;). Required on a derived metric. On a simple Metric it may state a row-level computation applied before aggregation, where the number is not the slot&#x27;s own value (&#x27;days from recordCreatedAt to dealClosedAt&#x27;). Plain arithmetic in neutral names, never a vendor&#x27;s query syntax.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Metric">xeo:Metric</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
@@ -1433,19 +1433,19 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div></dl>
 </section>
 <section id="firstTouchChannel" class="term">
-  <h3>first-touch channel <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-engagement</span></h3>
+  <h3>first-touch channel <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-sales</span></h3>
   <code class="iri">xeo:firstTouchChannel</code>
   <p>The acquisition channel of the earliest known interaction the CRM attributes to a record, as a code from a slotted-in scheme (organic_search, referral, ai_assistant, ... — xeos:acquisitionChannel is a published reference filling). A derivation, never an observation: a classifier or a person decided it, so it carries method, either vendor-classifier:&lt;vendor&gt; or manual-entry. One per record. A deal usually inherits it from a contact, by a rule that is the vendor&#x27;s.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="forecastCategory" class="term">
-  <h3>forecast category <span class="layer" style="--h:#DD6B20">interpretation</span> <span class="status">extension</span><span class="mod">xeo-engagement</span></h3>
+  <h3>forecast category <span class="layer" style="--h:#DD6B20">interpretation</span> <span class="status">extension</span><span class="mod">xeo-sales</span></h3>
   <code class="iri">xeo:forecastCategory</code>
   <p>The forecast bucket a deal is placed in, as a code from a slotted-in scheme (omitted, pipeline, best_case, commit, closed — xeos:forecastCategory is a published reference filling). An interpretation by the owner or by the stage&#x27;s configuration.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="fromStageRef" class="term">
-  <h3>from stage reference <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-engagement</span></h3>
+  <h3>from stage reference <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-sales</span></h3>
   <code class="iri">xeo:fromStageRef</code>
   <p>The tenant&#x27;s identifier of the stage the record left. Absent on the first entry, and where the source reports entries without what came before.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#StageTransition">xeo:StageTransition</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>bigquery</dd></div></dl>
@@ -1475,13 +1475,13 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#boolean" class="ext">xsd:boolean</a></dd></div></dl>
 </section>
 <section id="interventionQuota" class="term">
-  <h3>intervention quota <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-delivery</span></h3>
+  <h3>intervention quota <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:interventionQuota</code>
   <p>Ceiling on interventions this project may deploy per period (retainer) or in total (one-off). Always present. Recommendations in an open status — pending, in_progress, blocked — consume it; advised work does not.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Project">xeo:Project</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div></dl>
 </section>
 <section id="isPrimary" class="term">
-  <h3>is primary <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-delivery</span></h3>
+  <h3>is primary <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:isPrimary</code>
   <p>Exactly one target per objective. The one the agent optimises for.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#MetricTarget">xeo:MetricTarget</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#boolean" class="ext">xsd:boolean</a></dd></div></dl>
@@ -1499,19 +1499,19 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
 <section id="latestTouchChannel" class="term">
-  <h3>latest-touch channel <span class="layer" style="--h:#805AD5">derivation</span> <span class="status">extension</span><span class="mod">xeo-engagement</span></h3>
+  <h3>latest-touch channel <span class="layer" style="--h:#805AD5">derivation</span> <span class="status">extension</span><span class="mod">xeo-sales</span></h3>
   <code class="iri">xeo:latestTouchChannel</code>
   <p>The acquisition channel of the most recent known interaction the CRM attributes to a record, as a code from xeos:acquisitionChannel. A derivation carrying method, like firstTouchChannel. One CRM of the seven read keeps it.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="leadStatus" class="term">
-  <h3>lead status <span class="layer" style="--h:#DD6B20">interpretation</span> <span class="status">extension</span><span class="mod">xeo-engagement</span></h3>
+  <h3>lead status <span class="layer" style="--h:#DD6B20">interpretation</span> <span class="status">extension</span><span class="mod">xeo-sales</span></h3>
   <code class="iri">xeo:leadStatus</code>
   <p>The sales working state of a lead (new, attempting contact, qualified, ...), as the tenant&#x27;s own value. Tenant configuration with no neutral scheme. Distinct from lifecycleStage: status says where the salesperson is with the lead, the lifecycle stage says where the lead is in the funnel.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="lifecycleStage" class="term">
-  <h3>lifecycle stage <span class="layer" style="--h:#DD6B20">interpretation</span> <span class="status">extension</span><span class="mod">xeo-engagement</span></h3>
+  <h3>lifecycle stage <span class="layer" style="--h:#DD6B20">interpretation</span> <span class="status">extension</span><span class="mod">xeo-sales</span></h3>
   <code class="iri">xeo:lifecycleStage</code>
   <p>The funnel position of a person or organization, as a code from a slotted-in scheme (subscriber, lead, mql, sql, opportunity, customer, evangelist, other — xeos:lifecycleStageClass is a published reference filling). An interpretation: what qualifies a lead as marketing- or sales-qualified is each tenant&#x27;s own rule, so counts by stage are not comparable between tenants. An extension because one CRM of the seven read carries it natively; the others express the idea through a separate lead record and its status.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
@@ -1535,7 +1535,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>BCP 47 (RFC 5646)</dd></div></dl>
 </section>
 <section id="lostReason" class="term">
-  <h3>lost reason <span class="layer" style="--h:#DD6B20">interpretation</span> <span class="status">extension</span><span class="mod">xeo-engagement</span></h3>
+  <h3>lost reason <span class="layer" style="--h:#DD6B20">interpretation</span> <span class="status">extension</span><span class="mod">xeo-sales</span></h3>
   <code class="iri">xeo:lostReason</code>
   <p>The reason a deal was lost, as the salesperson stated it: free text or the tenant&#x27;s own picklist value. An interpretation, with no neutral scheme.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
@@ -1547,7 +1547,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Gap">xeo:Gap</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div></dl>
 </section>
 <section id="marketingCampaignRef" class="term">
-  <h3>marketing campaign reference <span class="layer" style="--h:#718096">entity</span> <span class="status">extension</span><span class="mod">xeo-engagement</span></h3>
+  <h3>marketing campaign reference <span class="layer" style="--h:#718096">entity</span> <span class="status">extension</span><span class="mod">xeo-sales</span></h3>
   <code class="iri">xeo:marketingCampaignRef</code>
   <p>Identity-key pointer to a marketing campaign in the CRM that a record is attributed to. A pointer and nothing more. Never an xeo:Campaign: that is a body of delivery work against a Topic inside a Project, and a CRM campaign is a marketing programme. The two share a word and must not be joined on it.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
@@ -1577,25 +1577,25 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
 <section id="metric" class="term">
-  <h3>metric <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-delivery</span></h3>
+  <h3>metric <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:metric</code>
   <p>Which metric the target is set on, as a code: the skos:notation of an xeo:Metric — clicks, ctr, position, ai_mention_rate, sessions, pipeline_created, ... The code resolves in xeos:metric, the reference scheme of Metrics, which states each one&#x27;s type, unit, better direction and additivity; a consumer may add Metrics of its own. Stays a string in 0.6: the Metric is found by its notation. xeos:objectiveMetric is the earlier list of codes, kept for compatibility.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#MetricTarget">xeo:MetricTarget</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
 <section id="metricFilter" class="term">
-  <h3>metric filter <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-metrics</span></h3>
+  <h3>metric filter <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:metricFilter</code>
   <p>A condition applied to the records before they are aggregated, over neutral names (dealOutcome = &#x27;won&#x27;; firstTouchChannel = &#x27;ai_assistant&#x27;). Part of the Metric&#x27;s identity: sessions and sessions from AI assistants are two metrics. Distinct from scope, which belongs to a reading and restricts numerator and denominator alike; a metricFilter on a numerator restricts only that numerator.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Metric">xeo:Metric</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
 </section>
 <section id="minDenominator" class="term">
-  <h3>minimum denominator <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-metrics</span></h3>
+  <h3>minimum denominator <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:minDenominator</code>
   <p>The smallest denominatorValue at which a reading of this Metric is reportable: for a ratio the denominator, for a mean the number of values averaged. A reading below it is flagged, and an Outcome read from it is inconclusive with resultReason below_volume_floor. An XEO norm: no vendor publishes one. A slot only: XEO ships no value, and the Metrics in xeos:metric carry none. Each implementation sets its own.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Metric">xeo:Metric</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
 </section>
 <section id="model" class="term">
-  <h3>model <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-visibility</span></h3>
+  <h3>model <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:model</code>
   <p>Model identifier + version as reported at capture time. Without this the episode is not comparable across time. Also carried on derivation edges (inTopic, about) to name the model that produced the assignment.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
@@ -1613,19 +1613,19 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
 <section id="numeratorValue" class="term">
-  <h3>numerator value <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-metrics</span></h3>
+  <h3>numerator value <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:numeratorValue</code>
   <p>The numerator behind a ratio or mean reading: the clicks behind a clickthrough rate, the summed positions behind an average. With denominatorValue it is what lets readings be rolled up correctly, as sum(numeratorValue) divided by sum(denominatorValue).</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#MetricReading">xeo:MetricReading</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>grounded in</dt><dd>The API contract of the system named in the reading&#x27;s source</dd></div><div class="row"><dt>canonical store</dt><dd>bigquery</dd></div></dl>
 </section>
 <section id="occurredAt" class="term">
-  <h3>occurred at <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-engagement</span></h3>
+  <h3>occurred at <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:occurredAt</code>
   <p>When an event happened: a ConversionEvent, an ExternalEvent. Domain left open so any dated event can carry it. In UTC, as recorded by the system that captured the event.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div></dl>
 </section>
 <section id="offsetWindow" class="term">
-  <h3>offset window <span class="layer" style="--h:#D69E2E">norm</span> <span class="status">extension</span><span class="mod">xeo-metrics</span></h3>
+  <h3>offset window <span class="layer" style="--h:#D69E2E">norm</span> <span class="status">extension</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:offsetWindow</code>
   <p>A lag applied to the input of a derived Metric, as an ISO 8601 duration (P28D): the input is read over the window that long before the reading&#x27;s own. How a period-over-period metric is defined once instead of being recomputed by each client.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Metric">xeo:Metric</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#duration" class="ext">xsd:duration</a></dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
@@ -1637,7 +1637,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Website">xeo:Website</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>WHATWG URL Standard (origin serialization)</dd></div></dl>
 </section>
 <section id="ownerRef" class="term">
-  <h3>owner reference <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-engagement</span></h3>
+  <h3>owner reference <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-sales</span></h3>
   <code class="iri">xeo:ownerRef</code>
   <p>Identity-key pointer to the CRM user who owns the record. The user is not modelled; this is the key to look them up by. Not the user who created the record or last changed it.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
@@ -1655,7 +1655,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>domain</dt><dd><a href="#AlgorithmRun">xeo:AlgorithmRun</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
 <section id="percentileValue" class="term">
-  <h3>percentile value <span class="layer" style="--h:#D69E2E">norm</span> <span class="status">extension</span><span class="mod">xeo-metrics</span></h3>
+  <h3>percentile value <span class="layer" style="--h:#D69E2E">norm</span> <span class="status">extension</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:percentileValue</code>
   <p>Which percentile a Metric whose aggregation is percentile takes, from 0 to 1 (0.9 for the ninetieth). Required with that aggregation and meaningless with any other.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Metric">xeo:Metric</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
@@ -1673,7 +1673,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#date" class="ext">xsd:date</a></dd></div></dl>
 </section>
 <section id="pipelineRef" class="term">
-  <h3>pipeline reference <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-engagement</span></h3>
+  <h3>pipeline reference <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-sales</span></h3>
   <code class="iri">xeo:pipelineRef</code>
   <p>The tenant&#x27;s identifier of the pipeline a deal is in, as the CRM stores it. Tenant configuration, never a value in a published scheme. &#x27;default&#x27; where the CRM has no pipeline field.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
@@ -1715,25 +1715,25 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Practice">xeo:Practice</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
 <section id="recordCreatedAt" class="term">
-  <h3>record created at <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-engagement</span></h3>
+  <h3>record created at <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-sales</span></h3>
   <code class="iri">xeo:recordCreatedAt</code>
   <p>When the CRM recorded the record as created, in UTC. The time anchor for leads and pipeline created. It is the CRM&#x27;s field, and some CRMs let a user edit it; it is not the time of the form submission that led to the record, which is a ConversionEvent&#x27;s occurredAt.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div><div class="row"><dt>grounded in</dt><dd>The vendor&#x27;s record API contract (the record&#x27;s creation timestamp)</dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="recordOrigin" class="term">
-  <h3>record origin <span class="layer" style="--h:#38A169">observation</span> <span class="status">extension</span><span class="mod">xeo-engagement</span></h3>
+  <h3>record origin <span class="layer" style="--h:#38A169">observation</span> <span class="status">extension</span><span class="mod">xeo-sales</span></h3>
   <code class="iri">xeo:recordOrigin</code>
   <p>How the record came to exist in the CRM, as a code from a slotted-in scheme (manual, import, api, form, integration — xeos:recordOrigin is a published reference filling). Set by the system and not editable, which is what separates it from firstTouchChannel: origin says how the row was made, the channel says where the person came from.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>The vendor&#x27;s record API contract (system-set creation method)</dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="recurringValue" class="term">
-  <h3>recurring value <span class="layer" style="--h:#38A169">observation</span> <span class="status">extension</span><span class="mod">xeo-engagement</span></h3>
+  <h3>recurring value <span class="layer" style="--h:#38A169">observation</span> <span class="status">extension</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:recurringValue</code>
   <p>The recurring revenue a CRM records for a deal, per valuePeriod, in the deal&#x27;s currency. Distinct from dealAmount and never added to it. Always travels with valuePeriod.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>grounded in</dt><dd>The vendor&#x27;s deal object API contract (recurring revenue fields)</dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="referringPlatform" class="term">
-  <h3>referring platform <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-engagement</span></h3>
+  <h3>referring platform <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-sales</span></h3>
   <code class="iri">xeo:referringPlatform</code>
   <p>The host of the platform behind a touch, in lower case (chatgpt.com, perplexity.ai). Says which assistant or site, where the channel says only what kind. A derivation by the same classifier that set the channel. Read beside firstTouchChannel or latestTouchChannel.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
@@ -1775,13 +1775,13 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
 <section id="resultsWindowDays" class="term">
-  <h3>results window days <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-delivery</span></h3>
+  <h3>results window days <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:resultsWindowDays</code>
   <p>The measurement window every target in this objective is read over. One horizon per campaign; per-target windows are deliberately not modelled. Counted in days from resultsWindowStart, that day included.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Objective">xeo:Objective</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div></dl>
 </section>
 <section id="resultsWindowStart" class="term">
-  <h3>results window start <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-delivery</span></h3>
+  <h3>results window start <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:resultsWindowStart</code>
   <p>The first day of the window an Objective&#x27;s targets are read over. The window runs for resultsWindowDays from this day, which is counted. One per Objective. Without it resultsWindowDays is a length with nowhere to start.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Objective">xeo:Objective</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#date" class="ext">xsd:date</a></dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
@@ -1817,13 +1817,13 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
 <section id="stageClass" class="term">
-  <h3>stage class <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-engagement</span></h3>
+  <h3>stage class <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-sales</span></h3>
   <code class="iri">xeo:stageClass</code>
   <p>The neutral class of a tenant&#x27;s stage, as a code from a slotted-in scheme: open, won or lost for a deal stage (xeos:dealStageClass), and a funnel position for a lifecycle stage (xeos:lifecycleStageClass). A standing per-tenant mapping from stageRef, which records who mapped it and when. Usually read from the CRM&#x27;s own stage configuration, where a stage is flagged closed or won, rather than judged.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
 </section>
 <section id="stageDefaultProbability" class="term">
-  <h3>stage default probability <span class="layer" style="--h:#D69E2E">norm</span> <span class="status">extension</span><span class="mod">xeo-engagement</span></h3>
+  <h3>stage default probability <span class="layer" style="--h:#D69E2E">norm</span> <span class="status">extension</span><span class="mod">xeo-sales</span></h3>
   <code class="iri">xeo:stageDefaultProbability</code>
   <p>The win probability a tenant has configured for a stage, from 0 to 1. A standing setting on the stage, not a judgment about any deal. CRMs store it on different scales; it is normalized to 0 to 1 here.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
@@ -1835,13 +1835,13 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Stage">xeo:Stage</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div></dl>
 </section>
 <section id="stageRef" class="term">
-  <h3>stage reference <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-engagement</span></h3>
+  <h3>stage reference <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-sales</span></h3>
   <code class="iri">xeo:stageRef</code>
   <p>The tenant&#x27;s identifier of the stage a record is in, as the CRM stores it. Tenant configuration, never a value in a published scheme: the same stage has a different id in every account. What the stage means is said by stageClass. Not xeo:Stage, which is a step in a Framework.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="stageSlot" class="term">
-  <h3>stage slot <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-engagement</span></h3>
+  <h3>stage slot <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-sales</span></h3>
   <code class="iri">xeo:stageSlot</code>
   <p>Which of a record&#x27;s staged properties moved, as a code from a slotted-in scheme (deal_stage, lifecycle, lead_status — xeos:stageSlot is a published reference filling). One per transition. A record can sit in a deal stage and a lifecycle stage at once; this says which history the row belongs to.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#StageTransition">xeo:StageTransition</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>bigquery</dd></div></dl>
@@ -1877,19 +1877,19 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div></dl>
 </section>
 <section id="targetCurrency" class="term">
-  <h3>target currency <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-delivery</span></h3>
+  <h3>target currency <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:targetCurrency</code>
   <p>The ISO 4217 code (three upper-case letters) a currency target is expressed in. Required when the target&#x27;s Metric has unit currency and is read from deal amounts (pipeline_created, revenue_won); amounts in other currencies are converted before they are compared, and the conversion is a derivation. Absent on any other target.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#MetricTarget">xeo:MetricTarget</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
 </section>
 <section id="targetKind" class="term">
-  <h3>target kind <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-delivery</span></h3>
+  <h3>target kind <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:targetKind</code>
   <p>&#x27;absolute&#x27; (targetValue is a value of the metric) or &#x27;percent&#x27; (a relative change from baseline in the metric&#x27;s better direction). xeos:targetKind also publishes &#x27;relative&#x27; (the same change as a quotient) and &#x27;absolute_change&#x27; (a change from baseline in the metric&#x27;s unit, which for a ratio is points), because &#x27;+2 on ctr&#x27; is otherwise ambiguous.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#MetricTarget">xeo:MetricTarget</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
 <section id="targetValue" class="term">
-  <h3>target value <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-delivery</span></h3>
+  <h3>target value <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:targetValue</code>
   <p>The value the metric should reach, interpreted per targetKind. Bounded per metric and kind at the edge — a percentage, a count, a rank and a currency do not share a range. In the Metric&#x27;s unit, a ratio as a 0 to 1 quotient; a currency target also states targetCurrency.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#MetricTarget">xeo:MetricTarget</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div></dl>
@@ -1913,19 +1913,19 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>WHATWG HTML (the title element)</dd></div></dl>
 </section>
 <section id="toStageRef" class="term">
-  <h3>to stage reference <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-engagement</span></h3>
+  <h3>to stage reference <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-sales</span></h3>
   <code class="iri">xeo:toStageRef</code>
   <p>The tenant&#x27;s identifier of the stage the record entered. Exactly one per transition.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#StageTransition">xeo:StageTransition</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>bigquery</dd></div></dl>
 </section>
 <section id="value" class="term">
-  <h3>value <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-metrics</span></h3>
+  <h3>value <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:value</code>
   <p>The number the Metric took over the reading&#x27;s window and scope, in the Metric&#x27;s unit: a ratio as a 0 to 1 quotient, a rank 1-based, a currency amount in the reading&#x27;s currencyCode. Exactly one per reading. A rate the source computed itself goes here as returned; its parts, where the source gives them, go in numeratorValue and denominatorValue.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#MetricReading">xeo:MetricReading</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>grounded in</dt><dd>The API contract of the system named in the reading&#x27;s source</dd></div><div class="row"><dt>canonical store</dt><dd>bigquery</dd></div></dl>
 </section>
 <section id="valuePeriod" class="term">
-  <h3>value period <span class="layer" style="--h:#38A169">observation</span> <span class="status">extension</span><span class="mod">xeo-engagement</span></h3>
+  <h3>value period <span class="layer" style="--h:#38A169">observation</span> <span class="status">extension</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:valuePeriod</code>
   <p>The period a recurringValue recurs over, as a code from a slotted-in scheme (one_time, monthly, annual — xeos:valuePeriod is a published reference filling).</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>The vendor&#x27;s deal object API contract (recurring revenue fields)</dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
@@ -1943,7 +1943,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
 <section id="weightedAmount" class="term">
-  <h3>weighted amount <span class="layer" style="--h:#805AD5">derivation</span> <span class="status">extension</span><span class="mod">xeo-engagement</span></h3>
+  <h3>weighted amount <span class="layer" style="--h:#805AD5">derivation</span> <span class="status">extension</span><span class="mod">xeo-sales</span></h3>
   <code class="iri">xeo:weightedAmount</code>
   <p>dealAmount multiplied by a named probability, in the deal&#x27;s currency. A derivation: method names which probability (the deal&#x27;s, the stage&#x27;s default, a forecast category&#x27;s), because the same deal has a different weighted amount under each. Never a substitute for dealAmount.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
@@ -1999,25 +1999,25 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 </section>
 <h2 id="individuals">Individuals <span class="n">4</span></h2>
 <section id="CommercialInvestigation" class="term">
-  <h3>Commercial Investigation  <span class="status dep">deprecated</span><span class="mod">xeo-engagement</span></h3>
+  <h3>Commercial Investigation  <span class="status dep">deprecated</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:CommercialInvestigation</code>
   <p></p>
   <dl><div class="row"><dt>seeAlso</dt><dd><a href="https://xeoontology.org/schemes#searchIntent-commercial_investigation" class="ext">xeos:searchIntent-commercial_investigation</a></dd></div></dl>
 </section>
 <section id="Informational" class="term">
-  <h3>Informational  <span class="status dep">deprecated</span><span class="mod">xeo-engagement</span></h3>
+  <h3>Informational  <span class="status dep">deprecated</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:Informational</code>
   <p></p>
   <dl><div class="row"><dt>seeAlso</dt><dd><a href="https://xeoontology.org/schemes#searchIntent-informational" class="ext">xeos:searchIntent-informational</a></dd></div></dl>
 </section>
 <section id="Navigational" class="term">
-  <h3>Navigational  <span class="status dep">deprecated</span><span class="mod">xeo-engagement</span></h3>
+  <h3>Navigational  <span class="status dep">deprecated</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:Navigational</code>
   <p></p>
   <dl><div class="row"><dt>seeAlso</dt><dd><a href="https://xeoontology.org/schemes#searchIntent-navigational" class="ext">xeos:searchIntent-navigational</a></dd></div></dl>
 </section>
 <section id="Transactional" class="term">
-  <h3>Transactional  <span class="status dep">deprecated</span><span class="mod">xeo-engagement</span></h3>
+  <h3>Transactional  <span class="status dep">deprecated</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:Transactional</code>
   <p></p>
   <dl><div class="row"><dt>seeAlso</dt><dd><a href="https://xeoontology.org/schemes#searchIntent-transactional" class="ext">xeos:searchIntent-transactional</a></dd></div></dl>

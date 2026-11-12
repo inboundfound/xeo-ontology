@@ -507,10 +507,55 @@ def check_examples(report: Report, g: Graph, per_module: dict, terms: dict, conc
         f"{len(invalid)} invalid break the {fired_total} rules they should")
 
 
+# --- 2b. modules -------------------------------------------------------------
+
+CORE = "xeo-core.ttl"
+NOT_MODULES = {"xeo-schemes.ttl", "xeo-align.ttl", SHAPES, MAPPINGS}
+HARD_POINTERS = (RDFS.domain, RDFS.range, RDFS.subClassOf, RDFS.subPropertyOf)
+
+
+def check_modules(report: Report, per_module: dict[str, Graph]) -> None:
+    """Every module needs only core.
+
+    Core may not point at an add-on's term with a domain, range, subclass or
+    subproperty link: core loads alone. An open list (domainIncludes,
+    rangeIncludes) may name an add-on's term, since it only says what else may
+    appear. An add-on pointing at another add-on is an optional link, which works
+    when both are loaded; those are listed, not failed.
+    """
+    home = {}
+    for name, mg in per_module.items():
+        if name in NOT_MODULES:
+            continue
+        for s, o in mg.subject_objects(RDF.type):
+            if in_xeo(s) and o != OWL.Ontology:
+                home.setdefault(s, name)
+    problems, optional = [], set()
+    for name, mg in per_module.items():
+        if name in NOT_MODULES:
+            continue
+        for s, p, o in mg:
+            if p not in HARD_POINTERS or o not in home or home[o] in (name, CORE):
+                continue
+            link = f"xeo:{local(s)} {local(p)} xeo:{local(o)} ({home[o]})"
+            if name == CORE:
+                problems.append(f"core points at an add-on: {link}")
+            else:
+                optional.add(f"{name}: {link}")
+    addons = sorted(set(home.values()) - {CORE})
+    report.section("modules", problems,
+                   f"core loads alone; {len(addons)} add-ons, each needing only core")
+    if optional:
+        print(f"note  {len(optional)} optional links between add-ons (they work when both are loaded):")
+        for line in sorted(optional):
+            print(f"        {line}")
+
+
 def main() -> int:
     report = Report()
     g, per_module = parse_all(report)
     terms = check_terms(report, g, per_module)
+    check_modules(report, per_module)
     concepts = check_schemes(report, g, terms, per_module)
     check_status(report, g, per_module, terms, concepts)
     check_context(report, g, terms)
