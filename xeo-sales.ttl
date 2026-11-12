@@ -4,135 +4,23 @@
 @prefix dct:  <http://purl.org/dc/terms/> .
 @prefix xeo:  <https://xeoontology.org/xeo#> .
 
-# XEO Engagement module — DRAFT (v0).
+# XEO Sales module: the CRM side of the pipeline.
 #
-# The seam between web-engine visibility and the pipeline: intents,
-# conversion points, and conversion events, with pointers into whatever CRM
-# you run. Design rule inherited from core: integrate with data sources, not
-# vocabularies — the CRM record is referenced by identity key (crmRecordRef),
-# never mirrored as a vendor vocabulary dependency.
+# Until 0.7 this was the second half of xeo-engagement.ttl. 0.7 split engagement
+# three ways: website conversions went to core, the CRM side is this module, and
+# attribution becomes a module of its own. Nothing here changed but the file.
 #
-# This module deliberately introduces interpretation-layer terms (targetsIntent,
-# attributedResponse). Interpretations carry method and confidence; they are claims,
-# not facts, and agents assembling context can filter them out.
-
-xeo:engagement-module a owl:Ontology ;
-    dct:title "XEO Engagement (draft)" ;
-    dct:description "DRAFT v0. The seam between web-engine visibility and the pipeline: intents, conversion points, conversion events, and identity-key pointers into whatever CRM you run." ;
-    dct:creator "Inbound Found" ;
-    owl:versionInfo "0.6.0" .
-
-# --- Intent ------------------------------------------------------------------
-
-xeo:SearchIntent a owl:Class ;
-    rdfs:label "Search Intent" ;
-    xeo:epistemicLayer "entity" ;
-    xeo:groundedIn "Broder (2002), 'A taxonomy of web search', as extended in common practice" ;
-    dct:description "Why the person is asking. Modeled as named individuals, not free strings. Since 0.6.0 the same four values are also published as concepts in xeos:searchIntent, each a SearchIntent, which is the form to write." .
-
-xeo:Informational a xeo:SearchIntent , owl:NamedIndividual ; rdfs:label "Informational" .
-xeo:Navigational  a xeo:SearchIntent , owl:NamedIndividual ; rdfs:label "Navigational" .
-xeo:CommercialInvestigation a xeo:SearchIntent , owl:NamedIndividual ; rdfs:label "Commercial Investigation" .
-xeo:Transactional a xeo:SearchIntent , owl:NamedIndividual ; rdfs:label "Transactional" .
-
-xeo:targetsIntent a owl:ObjectProperty ;
-    rdfs:range xeo:SearchIntent ;
-    xeo:epistemicLayer "interpretation" ;
-    dct:description "A URL or Prompt is aimed at this intent. A strategist's or model's claim — carries method and confidence." .
-
-# --- Conversion points (entities on the page) ---------------------------------
-
-xeo:ConversionPoint a owl:Class ;
-    rdfs:label "Conversion Point" ;
-    xeo:epistemicLayer "entity" ;
-    dct:description "A durable on-page mechanism that turns attention into a pipeline event. Identified by the URL it sits on and its form id or selector. Its kind is conversionPointType." .
-
-xeo:CallToAction a owl:Class ; rdfs:subClassOf xeo:ConversionPoint ;
-    rdfs:label "Call To Action" .
-
-xeo:LeadCaptureForm a owl:Class ; rdfs:subClassOf xeo:ConversionPoint ;
-    rdfs:label "Lead Capture Form" .
-
-xeo:GatedAsset a owl:Class ; rdfs:subClassOf xeo:ConversionPoint ;
-    rdfs:label "Gated Asset" ;
-    dct:description "Content exchanged for contact information." .
-
-xeo:hasConversionPoint a owl:ObjectProperty ;
-    rdfs:domain xeo:URL ; rdfs:range xeo:ConversionPoint ;
-    xeo:epistemicLayer "observation" ;
-    dct:description "Observed presence of a conversion point on a page (crawl-attributed, bitemporal like linksTo)." .
-
-# --- Conversion events (episodes) ---------------------------------------------
-
-xeo:ConversionEvent a owl:Class ;
-    rdfs:label "Conversion Event" ;
-    xeo:epistemicLayer "episode" ;
-    dct:description "A submission/click/unlock that happened at a time: a visitor's action on a ConversionPoint, recorded by the capturing system. Immutable once recorded. Identified by the capturing system and its submission id; one per submission. Not the creation of a CRM record, which may follow, be merged into an existing record, or never happen: events are not leads." .
-
-xeo:capturedBy a owl:ObjectProperty ;
-    rdfs:domain xeo:ConversionEvent ; rdfs:range xeo:ConversionPoint ;
-    xeo:epistemicLayer "observation" .
-
-xeo:occurredAt a owl:DatatypeProperty ;
-    rdfs:range xsd:dateTime ;  # domain-free since v0.6.0 (was xeo:ConversionEvent): xeo:ExternalEvent carries it too.
-    xeo:epistemicLayer "episode" .
-
-xeo:crmRecordRef a owl:DatatypeProperty ;
-    rdfs:range xsd:string ;
-    xeo:epistemicLayer "entity" ;
-    xeo:canonicalStore "crm" ;
-    dct:description "Identity key of one record in the CRM that runs a website's pipeline, written crmSystem:crmTenantId:crmObjectType:recordId (hubspot:12345:deal:987). Two refs are the same record when all four parts match. Points at a person, organization, lead or deal record only; a form's identifier belongs to its ConversionPoint. The join contract to the post-click world — the graph never mirrors the CRM's schema. A value written before 0.6.0 as a bare id is still a valid string and should be completed." .
-
-# --- Pre-click attribution (an interpretation, and labeled as one) --------------
-
-xeo:attributedResponse a owl:ObjectProperty ;
-    rdfs:domain xeo:ConversionEvent ; rdfs:range xeo:LLMResponse ;
-    xeo:epistemicLayer "interpretation" ;
-    dct:description "The claim that this conversion traces to engine visibility captured in this response episode. Multi-engine attribution is inherently inferential: this edge MUST carry method and confidence, and honest implementations will leave it sparse. Assert it only when the event's session, or the linked record's first or latest touch, has channel ai_assistant (or a declared assisted-path method applies), and the response cites a URL of the same website within a declared lookback window. Method is referral-match, citation-window or model." .
-
-# --- v0.6.0 (kit sync) ---------------------------------------------------------
-# Appended at the foot. No new terms in this module. occurredAt lost
-# `rdfs:domain xeo:ConversionEvent` (in place, above) so xeo:ExternalEvent in
-# xeo-decision can carry it without being typed a conversion. The triples below
-# add the labels, descriptions and layers the declarations above lacked, so
-# tools/validate.py can require all three of every term.
-
-xeo:CallToAction xeo:epistemicLayer "entity" ;
-    dct:description "A button or link that asks the visitor to take the next step." .
-
-xeo:LeadCaptureForm xeo:epistemicLayer "entity" ;
-    dct:description "A form that exchanges contact details for a response, a quote or a booking." .
-
-xeo:GatedAsset xeo:epistemicLayer "entity" .
-
-xeo:capturedBy dct:description "The conversion point this event happened at." .
-
-xeo:occurredAt dct:description "When an event happened: a ConversionEvent, an ExternalEvent. Domain left open so any dated event can carry it. In UTC, as recorded by the system that captured the event." .
-
-# Labels for the properties declared above, which carried none.
-
-xeo:targetsIntent rdfs:label "targets intent" .
-xeo:hasConversionPoint rdfs:label "has conversion point" .
-xeo:capturedBy rdfs:label "captured by" .
-xeo:occurredAt rdfs:label "occurred at" .
-xeo:crmRecordRef rdfs:label "CRM record reference" .
-xeo:attributedResponse rdfs:label "attributed response" .
-
-# --- v0.6.0 (CRM pipeline, 2026-11-10) ---------------------------------------------
-# Appended at the foot, so no line above moves. From the CRM pipeline research
-# report (seven CRMs read; none verified against live API output).
+# THE RULE. The graph never mirrors the CRM, and crmRecordRef is the join. But
+# "pipeline created" and "revenue won" cannot be computed from a pointer alone.
+# All seven CRMs read expose a deal with an owner, a stage, an amount and a
+# creation time, and six an open/won/lost outcome. Those few slots are declared
+# here, once, neutrally. Everything else about a contact, a company or a deal
+# stays behind the pointer.
 #
-# THE RULE HOLDS, AND NEEDS A FEW NEUTRAL TERMS TO BE USEFUL. The graph never
-# mirrors the CRM, and crmRecordRef stays the join. But "pipeline created" and
-# "revenue won" cannot be computed from a pointer alone. All seven CRMs read
-# expose a deal with an owner, a stage, an amount and a creation time, and six
-# an open/won/lost outcome. Those few slots are declared here, once, neutrally.
-# Everything else about a contact, a company or a deal stays behind the pointer.
-#
-# WHAT CARRIES THEM. A pointer node: whatever the graph uses to stand for one
-# CRM record, identified by crmRecordRef. No class is minted for it here. The
-# slots below are domain-free, so an Organization, a ConversionEvent's lead, or
-# a bare pointer node can carry them without being typed as anything else.
+# WHAT CARRIES THEM. A system's record of a party or a deal: a vendor-labelled
+# node (HUBSPOT_Contact, HUBSPOT_Deal), identified by crmRecordRef, which points
+# at the canonical Person or Organization in core with refersTo. The slots below
+# are domain-free, so any such record can carry them.
 #
 # STAGES ARE THE TENANT'S, THEIR CLASS IS NEUTRAL. A stage id is configuration:
 # one account's "closedwon" is another's "258551227". stageRef and pipelineRef
@@ -145,23 +33,35 @@ xeo:attributedResponse rdfs:label "attributed response" .
 # derivation and carries method.
 #
 # A CRM MARKETING CAMPAIGN IS NOT AN xeo:Campaign. xeo:Campaign is a body of
-# delivery work against a Topic. A CRM campaign is a marketing programme a
-# record is attributed to. It is reached by marketingCampaignRef, a pointer.
+# work against a Topic. A CRM campaign is a marketing programme a record is
+# attributed to. It is reached by marketingCampaignRef, a pointer.
 #
-# CONTROLLED STRINGS, NOT CONCEPT RANGES. This module takes no SKOS dependency
-# (see the header), so each closed list below is a string code with a published
-# scheme in xeo-schemes.ttl, the choice core makes for resultType.
+# CONTROLLED STRINGS, NOT CONCEPT RANGES. This module takes no SKOS dependency,
+# so each closed list below is a string code with a published scheme in
+# xeo-schemes.ttl, the choice core makes for resultType.
 #
-# DEPRECATED (advisory). The three ConversionPoint subclasses and the four
-# SearchIntent individuals model values as terms, against "classes, never
-# values". conversionPointType and the xeos:searchIntent scheme say the same
-# with a code. Every one stays declared, typed and valid.
+# NEEDS core only. The money terms a deal's amount travels with (currencyCode,
+# amountInReportingCurrency, recurringValue) and the Metric a PipelineRollup
+# reads are in core.
 #
-# TIGHTENED (in place, above). The descriptions of crmRecordRef, SearchIntent,
-# ConversionPoint, ConversionEvent, attributedResponse and occurredAt, one line
-# each.
+# Source: the CRM pipeline research report of 2026-11-10 (seven CRMs read; none
+# verified against live API output).
 
-# --- The pointer, typed ---------------------------------------------------------------
+xeo:sales-module a owl:Ontology ;
+    dct:title "XEO Sales (CRM records and pipeline)" ;
+    dct:description "The CRM side of the pipeline: the identity-key pointer into whatever CRM you run, the few neutral slots every CRM's deal carries (owner, pipeline, stage, amount, outcome, dates), stage history, and the pipeline numbers computed from them. Was the CRM half of xeo-engagement until 0.7." ;
+    dct:creator "Inbound Found" ;
+    owl:versionInfo "0.6.0" .
+
+# --- The pointer ----------------------------------------------------------------------
+
+xeo:crmRecordRef a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    xeo:epistemicLayer "entity" ;
+    xeo:canonicalStore "crm" ;
+    dct:description "Identity key of one record in the CRM that runs a website's pipeline, written crmSystem:crmTenantId:crmObjectType:recordId (hubspot:12345:deal:987). Two refs are the same record when all four parts match. Points at a person, organization, lead or deal record only; a form's identifier belongs to its ConversionPoint. The join contract to the post-click world — the graph never mirrors the CRM's schema. A value written before 0.6.0 as a bare id is still a valid string and should be completed." ;
+    rdfs:label "CRM record reference" ;
+    rdfs:seeAlso xeo:crmSystem , xeo:crmObjectType .
 
 xeo:crmSystem a owl:DatatypeProperty ;
     rdfs:label "CRM system" ;
@@ -214,14 +114,6 @@ xeo:dealAmount a owl:DatatypeProperty ;
     xeo:groundedIn "The vendor's deal object API contract" ;
     xeo:canonicalStore "crm" ;
     dct:description "The monetary value the CRM records for a deal, in the deal's own currency, zero or more. Always travels with currencyCode. Never a weighted, converted, forecast or recurring-normalized figure: those are weightedAmount, amountInReportingCurrency and recurringValue. One per deal per snapshot; a snapshot carries datasetUri and when it was read." .
-
-xeo:currencyCode a owl:DatatypeProperty ;
-    rdfs:label "currency code" ;
-    rdfs:range xsd:string ;
-    xeo:epistemicLayer "observation" ;
-    xeo:groundedIn "ISO 4217 · the vendor's deal object API contract" ;
-    xeo:canonicalStore "crm" ;
-    dct:description "The ISO 4217 code (three upper-case letters) of the amount it travels with: a dealAmount, or the value of a currency MetricReading. Where a CRM runs in one currency and has no field for it, the account's currency is stated here. A vendor's internal currency id is not a code and is resolved to one first." .
 
 xeo:dealOutcome a owl:DatatypeProperty ;
     rdfs:label "deal outcome" ;
@@ -304,7 +196,7 @@ xeo:amountAtTransition a owl:DatatypeProperty ;
     xeo:canonicalStore "bigquery" ;
     dct:description "The deal's dealAmount at the moment it entered the stage, in the deal's currency, where the source records it. What lets pipeline value be read as it stood at each stage and not as the deal reads today." .
 
-# --- Source and attribution (derivations) -----------------------------------------------------
+# --- Source (derivations) -------------------------------------------------------------------
 
 xeo:firstTouchChannel a owl:DatatypeProperty ;
     rdfs:label "first-touch channel" ;
@@ -319,12 +211,6 @@ xeo:referringPlatform a owl:DatatypeProperty ;
     xeo:epistemicLayer "derivation" ;
     xeo:canonicalStore "crm" ;
     dct:description "The host of the platform behind a touch, in lower case (chatgpt.com, perplexity.ai). Says which assistant or site, where the channel says only what kind. A derivation by the same classifier that set the channel. Read beside firstTouchChannel or latestTouchChannel." .
-
-xeo:conversionPointType a owl:DatatypeProperty ;
-    rdfs:label "conversion point type" ;
-    rdfs:domain xeo:ConversionPoint ; rdfs:range xsd:string ;
-    xeo:epistemicLayer "entity" ;
-    dct:description "The kind of mechanism a ConversionPoint is, as a code from a slotted-in scheme (cta, lead_form, gated_asset, meeting_booker, chat — xeos:conversionPointType is a published reference filling). One per ConversionPoint. Says with a value what the CallToAction, LeadCaptureForm and GatedAsset subclasses said with a class, so a new kind of mechanism is a new code and not a new term." .
 
 # --- A pipeline number over a window -----------------------------------------------------------
 
@@ -387,14 +273,6 @@ xeo:weightedAmount a owl:DatatypeProperty ;
     xeo:termStatus "extension" ;
     dct:description "dealAmount multiplied by a named probability, in the deal's currency. A derivation: method names which probability (the deal's, the stage's default, a forecast category's), because the same deal has a different weighted amount under each. Never a substitute for dealAmount." .
 
-xeo:amountInReportingCurrency a owl:DatatypeProperty ;
-    rdfs:label "amount in reporting currency" ;
-    rdfs:range xsd:decimal ;
-    xeo:epistemicLayer "derivation" ;
-    xeo:canonicalStore "crm" ;
-    xeo:termStatus "extension" ;
-    dct:description "A dealAmount converted into the account's reporting currency. A derivation: the result depends on the rate, the date the rate was taken on and where it came from, and method states all three. CRMs differ on which rate they use for an open deal and a closed one, so totals for the same deals differ between systems." .
-
 xeo:forecastCategory a owl:DatatypeProperty ;
     rdfs:label "forecast category" ;
     rdfs:range xsd:string ;
@@ -402,24 +280,6 @@ xeo:forecastCategory a owl:DatatypeProperty ;
     xeo:canonicalStore "crm" ;
     xeo:termStatus "extension" ;
     dct:description "The forecast bucket a deal is placed in, as a code from a slotted-in scheme (omitted, pipeline, best_case, commit, closed — xeos:forecastCategory is a published reference filling). An interpretation by the owner or by the stage's configuration." .
-
-xeo:recurringValue a owl:DatatypeProperty ;
-    rdfs:label "recurring value" ;
-    rdfs:range xsd:decimal ;
-    xeo:epistemicLayer "observation" ;
-    xeo:groundedIn "The vendor's deal object API contract (recurring revenue fields)" ;
-    xeo:canonicalStore "crm" ;
-    xeo:termStatus "extension" ;
-    dct:description "The recurring revenue a CRM records for a deal, per valuePeriod, in the deal's currency. Distinct from dealAmount and never added to it. Always travels with valuePeriod." .
-
-xeo:valuePeriod a owl:DatatypeProperty ;
-    rdfs:label "value period" ;
-    rdfs:range xsd:string ;
-    xeo:epistemicLayer "observation" ;
-    xeo:groundedIn "The vendor's deal object API contract (recurring revenue fields)" ;
-    xeo:canonicalStore "crm" ;
-    xeo:termStatus "extension" ;
-    dct:description "The period a recurringValue recurs over, as a code from a slotted-in scheme (one_time, monthly, annual — xeos:valuePeriod is a published reference filling)." .
 
 xeo:lostReason a owl:DatatypeProperty ;
     rdfs:label "lost reason" ;
@@ -476,21 +336,3 @@ xeo:OwnerChange a owl:Class ;
     xeo:canonicalStore "bigquery" ;
     xeo:termStatus "extension" ;
     dct:description "A CRM record being reassigned from one owner to another: happened at a time, immutable once recorded. Carries crmRecordRef, ownerRef (the owner it was assigned to), occurredAt, and method saying how the row was obtained, as on a StageTransition. One row per reassignment. Read from the CRM's history, so every CRM can fill it and none states it as a field." .
-
-# --- v0.6.0 advisory deprecations and added grounding ------------------------------------------
-# Extra triples about terms declared above. Nothing is removed or retyped.
-
-xeo:CallToAction owl:deprecated true ; rdfs:seeAlso xeo:conversionPointType .
-xeo:LeadCaptureForm owl:deprecated true ; rdfs:seeAlso xeo:conversionPointType .
-xeo:GatedAsset owl:deprecated true ; rdfs:seeAlso xeo:conversionPointType .
-
-xeo:Informational owl:deprecated true ; rdfs:seeAlso <https://xeoontology.org/schemes#searchIntent-informational> .
-xeo:Navigational owl:deprecated true ; rdfs:seeAlso <https://xeoontology.org/schemes#searchIntent-navigational> .
-xeo:CommercialInvestigation owl:deprecated true ; rdfs:seeAlso <https://xeoontology.org/schemes#searchIntent-commercial_investigation> .
-xeo:Transactional owl:deprecated true ; rdfs:seeAlso <https://xeoontology.org/schemes#searchIntent-transactional> .
-
-xeo:crmRecordRef rdfs:seeAlso xeo:crmSystem , xeo:crmObjectType .
-
-xeo:capturedBy xeo:groundedIn "The capturing system's submission payload (per-vendor form or event API contract)" .
-
-xeo:hasConversionPoint xeo:groundedIn "The page's markup as one crawl fetched it (WHATWG HTML: the form, a and button elements)" .
