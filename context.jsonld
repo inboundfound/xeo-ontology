@@ -259,6 +259,7 @@
     "OwnerChange": "xeo:OwnerChange",
     "PipelineRollup": "xeo:PipelineRollup",
     "StageTransition": "xeo:StageTransition",
+    "CrmRecord": "xeo:CrmRecord",
 
     "additivity": { "@id": "xeo:additivity", "@type": "@id" },
     "aggregation": { "@id": "xeo:aggregation", "@type": "@id" },

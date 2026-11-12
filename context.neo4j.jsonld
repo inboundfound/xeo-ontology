@@ -147,6 +147,7 @@
     "ConversionEvent": "xeo:ConversionEvent",
     "ConversionPoint": "xeo:ConversionPoint",
     "Crawl": "xeo:Crawl",
+    "CrmRecord": "xeo:CrmRecord",
     "DATA_STATE": {
       "@id": "xeo:dataState",
       "@type": "@id"

@@ -79,7 +79,7 @@ vendor mappings <a href="https://github.com/inboundfound/xeo-ontology/tree/main/
 JSON-LD <a href="context.jsonld">context</a>; Neo4j
 <a href="neo4j-profile.json">profile</a> and <a href="context.neo4j.jsonld">context</a>;
 SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
-<h2 id="classes">Classes <span class="n">50</span></h2>
+<h2 id="classes">Classes <span class="n">51</span></h2>
 <section id="AlgorithmRun" class="term">
   <h3>Algorithm Run <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-analysis</span></h3>
   <code class="iri">xeo:AlgorithmRun</code>
@@ -139,6 +139,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <code class="iri">xeo:Crawl</code>
   <p>One crawl run over one Website: time-bounded, agent-attributed, immutable once finished.</p>
   <dl><div class="row"><dt>subclass of</dt><dd><a href="http://www.w3.org/ns/prov#Activity" class="ext">prov:Activity</a></dd></div></dl>
+</section>
+<section id="CrmRecord" class="term">
+  <h3>CRM Record <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-engagement</span></h3>
+  <code class="iri">xeo:CrmRecord</code>
+  <p>A pointer to one record in the CRM that runs a website&#x27;s pipeline: a person, an organization, a lead or a deal. Its only identity is crmRecordRef. It exists so the neutral pipeline properties have a node to sit on and so one query can read records from any CRM; it does not model the CRM&#x27;s own schema. crmSystem says which CRM holds the record and crmObjectType which kind of record it is. An implementation may add the vendor&#x27;s own label beside this one on the same node; a vendor label is that implementation&#x27;s convention and never an XEO term.</p>
+  <dl><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="Diagnostic" class="term">
   <h3>Diagnostic <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-decision</span></h3>
@@ -1088,7 +1094,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <h3>amount in reporting currency <span class="layer" style="--h:#805AD5">derivation</span> <span class="status">extension</span><span class="mod">xeo-engagement</span></h3>
   <code class="iri">xeo:amountInReportingCurrency</code>
   <p>A dealAmount converted into the account&#x27;s reporting currency. A derivation: the result depends on the rate, the date the rate was taken on and where it came from, and method states all three. CRMs differ on which rate they use for an open deal and a closed one, so totals for the same deals differ between systems.</p>
-  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#CrmRecord">xeo:CrmRecord</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="anchorText" class="term">
   <h3>anchor text <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
@@ -1214,13 +1220,13 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <h3>converted at <span class="layer" style="--h:#319795">episode</span> <span class="status">extension</span><span class="mod">xeo-engagement</span></h3>
   <code class="iri">xeo:convertedAt</code>
   <p>When a lead record was converted, in UTC. A source that records the date alone stays at day precision.</p>
-  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#CrmRecord">xeo:CrmRecord</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="convertedTo" class="term">
   <h3>converted to <span class="layer" style="--h:#319795">episode</span> <span class="status">extension</span><span class="mod">xeo-engagement</span></h3>
   <code class="iri">xeo:convertedTo</code>
   <p>On a lead record that was converted: the crmRecordRef of the deal (or person) it became. With convertedAt it records a lead conversion, an event that happened once. Absent on an unconverted lead, and in CRMs that have no separate lead record.</p>
-  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#CrmRecord">xeo:CrmRecord</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="crawlDepth" class="term">
   <h3>crawl depth <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-core</span></h3>
@@ -1238,19 +1244,19 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <h3>CRM object type <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-engagement</span></h3>
   <code class="iri">xeo:crmObjectType</code>
   <p>The neutral kind of the record a crmRecordRef points at, as a code from a slotted-in scheme (person, organization, lead, deal — xeos:crmObjectType is a published reference filling). Assigned from what the record is, not from what its vendor calls it: one CRM&#x27;s &#x27;lead&#x27; is a company, and another&#x27;s is a deal stage. One per pointer.</p>
-  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#CrmRecord">xeo:CrmRecord</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="crmRecordRef" class="term">
   <h3>CRM record reference <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-engagement</span></h3>
   <code class="iri">xeo:crmRecordRef</code>
   <p>Identity key of one record in the CRM that runs a website&#x27;s pipeline, written crmSystem:crmTenantId:crmObjectType:recordId (hubspot:12345:deal:987). Two refs are the same record when all four parts match. Points at a person, organization, lead or deal record only; a form&#x27;s identifier belongs to its ConversionPoint. The join contract to the post-click world — the graph never mirrors the CRM&#x27;s schema. A value written before 0.6.0 as a bare id is still a valid string and should be completed.</p>
-  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>seeAlso</dt><dd><a href="#crmObjectType">xeo:crmObjectType</a> · <a href="#crmSystem">xeo:crmSystem</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#CrmRecord">xeo:CrmRecord</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>seeAlso</dt><dd><a href="#crmObjectType">xeo:crmObjectType</a> · <a href="#crmSystem">xeo:crmSystem</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="crmSystem" class="term">
   <h3>CRM system <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-engagement</span></h3>
   <code class="iri">xeo:crmSystem</code>
   <p>Which CRM product holds the record a crmRecordRef points at, as a code from a slotted-in scheme (hubspot, salesforce, pipedrive, ... — xeos:crmSystem is a published reference filling). The first part of the pointer, also stated on its own so records can be filtered by system. One per pointer.</p>
-  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#CrmRecord">xeo:CrmRecord</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="ctr" class="term">
   <h3>CTR <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
@@ -1268,7 +1274,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <h3>currency code <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-engagement</span></h3>
   <code class="iri">xeo:currencyCode</code>
   <p>The ISO 4217 code (three upper-case letters) of the amount it travels with: a dealAmount, or the value of a currency MetricReading. Where a CRM runs in one currency and has no field for it, the account&#x27;s currency is stated here. A vendor&#x27;s internal currency id is not a code and is resolved to one first.</p>
-  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>ISO 4217 · the vendor&#x27;s deal object API contract</dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#CrmRecord">xeo:CrmRecord</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>ISO 4217 · the vendor&#x27;s deal object API contract</dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="datasetUri" class="term">
   <h3>dataset URI <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-core</span></h3>
@@ -1280,25 +1286,25 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <h3>deal amount <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-engagement</span></h3>
   <code class="iri">xeo:dealAmount</code>
   <p>The monetary value the CRM records for a deal, in the deal&#x27;s own currency, zero or more. Always travels with currencyCode. Never a weighted, converted, forecast or recurring-normalized figure: those are weightedAmount, amountInReportingCurrency and recurringValue. One per deal per snapshot; a snapshot carries datasetUri and when it was read.</p>
-  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>grounded in</dt><dd>The vendor&#x27;s deal object API contract</dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#CrmRecord">xeo:CrmRecord</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>grounded in</dt><dd>The vendor&#x27;s deal object API contract</dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="dealClosedAt" class="term">
   <h3>deal closed at <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-engagement</span></h3>
   <code class="iri">xeo:dealClosedAt</code>
   <p>When a deal&#x27;s outcome became won or lost. The time anchor for deals and revenue won. Filled only on a closed deal. A source that records the date alone stays at day precision, written as midnight UTC of that day.</p>
-  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div><div class="row"><dt>grounded in</dt><dd>The vendor&#x27;s deal object API contract (the won, lost or close timestamp of a closed deal)</dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#CrmRecord">xeo:CrmRecord</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div><div class="row"><dt>grounded in</dt><dd>The vendor&#x27;s deal object API contract (the won, lost or close timestamp of a closed deal)</dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="dealOutcome" class="term">
   <h3>deal outcome <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-engagement</span></h3>
   <code class="iri">xeo:dealOutcome</code>
   <p>Whether a deal is open, won or lost, as a code from a slotted-in scheme (xeos:dealOutcome is a published reference filling). An observation where the CRM states it as a field. Where the CRM states only a stage, the outcome is read through the tenant&#x27;s stageClass mapping, and the assertion is then a derivation with method tenant-stage-map. A deleted deal has no outcome and is left out. Not the stage itself.</p>
-  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>The vendor&#x27;s deal object API contract (won and closed flags, status, state code)</dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#CrmRecord">xeo:CrmRecord</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>The vendor&#x27;s deal object API contract (won and closed flags, status, state code)</dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="dealProbability" class="term">
   <h3>deal probability <span class="layer" style="--h:#DD6B20">interpretation</span> <span class="status">extension</span><span class="mod">xeo-engagement</span></h3>
   <code class="iri">xeo:dealProbability</code>
   <p>The likelihood that one deal will close won, from 0 to 1, as the CRM holds it: inherited from the stage or set by the owner. An interpretation. CRMs store it as a fraction or as a percentage; it is normalized to 0 to 1 here.</p>
-  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#CrmRecord">xeo:CrmRecord</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="degree" class="term">
   <h3>degree <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-analysis</span></h3>
@@ -1394,7 +1400,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <h3>expected close date <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-engagement</span></h3>
   <code class="iri">xeo:expectedCloseDate</code>
   <p>The date the owner forecasts an open deal will close. A person&#x27;s forecast, not a measurement. Filled only while dealOutcome is open. Several CRMs keep the forecast and the actual close in one field; which this is depends on the deal&#x27;s outcome, and the same field read after the deal closed fills dealClosedAt instead.</p>
-  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#date" class="ext">xsd:date</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#CrmRecord">xeo:CrmRecord</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#date" class="ext">xsd:date</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="expression" class="term">
   <h3>expression <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-metrics</span></h3>
@@ -1424,13 +1430,13 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <h3>first-touch channel <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-engagement</span></h3>
   <code class="iri">xeo:firstTouchChannel</code>
   <p>The acquisition channel of the earliest known interaction the CRM attributes to a record, as a code from a slotted-in scheme (organic_search, referral, ai_assistant, ... — xeos:acquisitionChannel is a published reference filling). A derivation, never an observation: a classifier or a person decided it, so it carries method, either vendor-classifier:&lt;vendor&gt; or manual-entry. One per record. A deal usually inherits it from a contact, by a rule that is the vendor&#x27;s.</p>
-  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#CrmRecord">xeo:CrmRecord</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="forecastCategory" class="term">
   <h3>forecast category <span class="layer" style="--h:#DD6B20">interpretation</span> <span class="status">extension</span><span class="mod">xeo-engagement</span></h3>
   <code class="iri">xeo:forecastCategory</code>
   <p>The forecast bucket a deal is placed in, as a code from a slotted-in scheme (omitted, pipeline, best_case, commit, closed — xeos:forecastCategory is a published reference filling). An interpretation by the owner or by the stage&#x27;s configuration.</p>
-  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#CrmRecord">xeo:CrmRecord</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="fromStageRef" class="term">
   <h3>from stage reference <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-engagement</span></h3>
@@ -1490,19 +1496,19 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <h3>latest-touch channel <span class="layer" style="--h:#805AD5">derivation</span> <span class="status">extension</span><span class="mod">xeo-engagement</span></h3>
   <code class="iri">xeo:latestTouchChannel</code>
   <p>The acquisition channel of the most recent known interaction the CRM attributes to a record, as a code from xeos:acquisitionChannel. A derivation carrying method, like firstTouchChannel. One CRM of the seven read keeps it.</p>
-  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#CrmRecord">xeo:CrmRecord</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="leadStatus" class="term">
   <h3>lead status <span class="layer" style="--h:#DD6B20">interpretation</span> <span class="status">extension</span><span class="mod">xeo-engagement</span></h3>
   <code class="iri">xeo:leadStatus</code>
   <p>The sales working state of a lead (new, attempting contact, qualified, ...), as the tenant&#x27;s own value. Tenant configuration with no neutral scheme. Distinct from lifecycleStage: status says where the salesperson is with the lead, the lifecycle stage says where the lead is in the funnel.</p>
-  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#CrmRecord">xeo:CrmRecord</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="lifecycleStage" class="term">
   <h3>lifecycle stage <span class="layer" style="--h:#DD6B20">interpretation</span> <span class="status">extension</span><span class="mod">xeo-engagement</span></h3>
   <code class="iri">xeo:lifecycleStage</code>
   <p>The funnel position of a person or organization, as a code from a slotted-in scheme (subscriber, lead, mql, sql, opportunity, customer, evangelist, other — xeos:lifecycleStageClass is a published reference filling). An interpretation: what qualifies a lead as marketing- or sales-qualified is each tenant&#x27;s own rule, so counts by stage are not comparable between tenants. An extension because one CRM of the seven read carries it natively; the others express the idea through a separate lead record and its status.</p>
-  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#CrmRecord">xeo:CrmRecord</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="lift" class="term">
   <h3>lift <span class="layer" style="--h:#38A169">observation</span> <span class="status dep">deprecated</span><span class="mod">xeo-decision</span></h3>
@@ -1526,7 +1532,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <h3>lost reason <span class="layer" style="--h:#DD6B20">interpretation</span> <span class="status">extension</span><span class="mod">xeo-engagement</span></h3>
   <code class="iri">xeo:lostReason</code>
   <p>The reason a deal was lost, as the salesperson stated it: free text or the tenant&#x27;s own picklist value. An interpretation, with no neutral scheme.</p>
-  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#CrmRecord">xeo:CrmRecord</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="magnitude" class="term">
   <h3>magnitude <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-decision</span></h3>
@@ -1538,7 +1544,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <h3>marketing campaign reference <span class="layer" style="--h:#718096">entity</span> <span class="status">extension</span><span class="mod">xeo-engagement</span></h3>
   <code class="iri">xeo:marketingCampaignRef</code>
   <p>Identity-key pointer to a marketing campaign in the CRM that a record is attributed to. A pointer and nothing more. Never an xeo:Campaign: that is a body of delivery work against a Topic inside a Project, and a CRM campaign is a marketing programme. The two share a word and must not be joined on it.</p>
-  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#CrmRecord">xeo:CrmRecord</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="mentionRank" class="term">
   <h3>mention rank <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-visibility</span></h3>
@@ -1628,7 +1634,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <h3>owner reference <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-engagement</span></h3>
   <code class="iri">xeo:ownerRef</code>
   <p>Identity-key pointer to the CRM user who owns the record. The user is not modelled; this is the key to look them up by. Not the user who created the record or last changed it.</p>
-  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#CrmRecord">xeo:CrmRecord</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="pageRank" class="term">
   <h3>PageRank <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-analysis</span></h3>
@@ -1664,7 +1670,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <h3>pipeline reference <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-engagement</span></h3>
   <code class="iri">xeo:pipelineRef</code>
   <p>The tenant&#x27;s identifier of the pipeline a deal is in, as the CRM stores it. Tenant configuration, never a value in a published scheme. &#x27;default&#x27; where the CRM has no pipeline field.</p>
-  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#CrmRecord">xeo:CrmRecord</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="position" class="term">
   <h3>position <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
@@ -1706,25 +1712,25 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <h3>record created at <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-engagement</span></h3>
   <code class="iri">xeo:recordCreatedAt</code>
   <p>When the CRM recorded the record as created, in UTC. The time anchor for leads and pipeline created. It is the CRM&#x27;s field, and some CRMs let a user edit it; it is not the time of the form submission that led to the record, which is a ConversionEvent&#x27;s occurredAt.</p>
-  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div><div class="row"><dt>grounded in</dt><dd>The vendor&#x27;s record API contract (the record&#x27;s creation timestamp)</dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#CrmRecord">xeo:CrmRecord</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div><div class="row"><dt>grounded in</dt><dd>The vendor&#x27;s record API contract (the record&#x27;s creation timestamp)</dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="recordOrigin" class="term">
   <h3>record origin <span class="layer" style="--h:#38A169">observation</span> <span class="status">extension</span><span class="mod">xeo-engagement</span></h3>
   <code class="iri">xeo:recordOrigin</code>
   <p>How the record came to exist in the CRM, as a code from a slotted-in scheme (manual, import, api, form, integration — xeos:recordOrigin is a published reference filling). Set by the system and not editable, which is what separates it from firstTouchChannel: origin says how the row was made, the channel says where the person came from.</p>
-  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>The vendor&#x27;s record API contract (system-set creation method)</dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#CrmRecord">xeo:CrmRecord</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>The vendor&#x27;s record API contract (system-set creation method)</dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="recurringValue" class="term">
   <h3>recurring value <span class="layer" style="--h:#38A169">observation</span> <span class="status">extension</span><span class="mod">xeo-engagement</span></h3>
   <code class="iri">xeo:recurringValue</code>
   <p>The recurring revenue a CRM records for a deal, per valuePeriod, in the deal&#x27;s currency. Distinct from dealAmount and never added to it. Always travels with valuePeriod.</p>
-  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>grounded in</dt><dd>The vendor&#x27;s deal object API contract (recurring revenue fields)</dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#CrmRecord">xeo:CrmRecord</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>grounded in</dt><dd>The vendor&#x27;s deal object API contract (recurring revenue fields)</dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="referringPlatform" class="term">
   <h3>referring platform <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-engagement</span></h3>
   <code class="iri">xeo:referringPlatform</code>
   <p>The host of the platform behind a touch, in lower case (chatgpt.com, perplexity.ai). Says which assistant or site, where the channel says only what kind. A derivation by the same classifier that set the channel. Read beside firstTouchChannel or latestTouchChannel.</p>
-  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#CrmRecord">xeo:CrmRecord</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="rel" class="term">
   <h3>rel <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
@@ -1808,7 +1814,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <h3>stage class <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-engagement</span></h3>
   <code class="iri">xeo:stageClass</code>
   <p>The neutral class of a tenant&#x27;s stage, as a code from a slotted-in scheme: open, won or lost for a deal stage (xeos:dealStageClass), and a funnel position for a lifecycle stage (xeos:lifecycleStageClass). A standing per-tenant mapping from stageRef, which records who mapped it and when. Usually read from the CRM&#x27;s own stage configuration, where a stage is flagged closed or won, rather than judged.</p>
-  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#CrmRecord">xeo:CrmRecord</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
 </section>
 <section id="stageDefaultProbability" class="term">
   <h3>stage default probability <span class="layer" style="--h:#D69E2E">norm</span> <span class="status">extension</span><span class="mod">xeo-engagement</span></h3>
@@ -1826,7 +1832,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <h3>stage reference <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-engagement</span></h3>
   <code class="iri">xeo:stageRef</code>
   <p>The tenant&#x27;s identifier of the stage a record is in, as the CRM stores it. Tenant configuration, never a value in a published scheme: the same stage has a different id in every account. What the stage means is said by stageClass. Not xeo:Stage, which is a step in a Framework.</p>
-  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#CrmRecord">xeo:CrmRecord</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="stageSlot" class="term">
   <h3>stage slot <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-engagement</span></h3>
@@ -1916,7 +1922,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <h3>value period <span class="layer" style="--h:#38A169">observation</span> <span class="status">extension</span><span class="mod">xeo-engagement</span></h3>
   <code class="iri">xeo:valuePeriod</code>
   <p>The period a recurringValue recurs over, as a code from a slotted-in scheme (one_time, monthly, annual — xeos:valuePeriod is a published reference filling).</p>
-  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>The vendor&#x27;s deal object API contract (recurring revenue fields)</dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#CrmRecord">xeo:CrmRecord</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>The vendor&#x27;s deal object API contract (recurring revenue fields)</dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="webSearchEnabled" class="term">
   <h3>web search enabled <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-visibility</span></h3>
@@ -1934,7 +1940,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <h3>weighted amount <span class="layer" style="--h:#805AD5">derivation</span> <span class="status">extension</span><span class="mod">xeo-engagement</span></h3>
   <code class="iri">xeo:weightedAmount</code>
   <p>dealAmount multiplied by a named probability, in the deal&#x27;s currency. A derivation: method names which probability (the deal&#x27;s, the stage&#x27;s default, a forecast category&#x27;s), because the same deal has a different weighted amount under each. Never a substitute for dealAmount.</p>
-  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#CrmRecord">xeo:CrmRecord</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="wordCount" class="term">
   <h3>word count <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-core</span></h3>
