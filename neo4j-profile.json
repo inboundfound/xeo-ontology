@@ -46,19 +46,6 @@
       "layer": "entity",
       "module": "visibility"
     },
-    "CallToAction": {
-      "definition": "A button or link that asks the visitor to take the next step.",
-      "deprecated": true,
-      "iri": "https://xeoontology.org/xeo#CallToAction",
-      "layer": "entity",
-      "module": "core",
-      "replacedBy": [
-        "conversionPointType"
-      ],
-      "subClassOf": [
-        "ConversionPoint"
-      ]
-    },
     "Campaign": {
       "definition": "A body of work inside a Project against one Topic: the URLs and Terms it covers, and the single Objective it is measured by. Recommendations are issuedFor a campaign, and it is the unit an operator plans a cycle around. Soft-deleted like its Project.",
       "iri": "https://xeoontology.org/xeo#Campaign",
@@ -158,19 +145,6 @@
       "layer": "interpretation",
       "module": "decision"
     },
-    "GatedAsset": {
-      "definition": "Content exchanged for contact information.",
-      "deprecated": true,
-      "iri": "https://xeoontology.org/xeo#GatedAsset",
-      "layer": "entity",
-      "module": "core",
-      "replacedBy": [
-        "conversionPointType"
-      ],
-      "subClassOf": [
-        "ConversionPoint"
-      ]
-    },
     "GenerativeEngine": {
       "definition": "Search-integrated generated answers — AI overviews and AI modes (the GEO surface).",
       "iri": "https://xeoontology.org/xeo#GenerativeEngine",
@@ -191,19 +165,6 @@
       "iri": "https://xeoontology.org/xeo#LLMResponse",
       "layer": "episode",
       "module": "visibility"
-    },
-    "LeadCaptureForm": {
-      "definition": "A form that exchanges contact details for a response, a quote or a booking.",
-      "deprecated": true,
-      "iri": "https://xeoontology.org/xeo#LeadCaptureForm",
-      "layer": "entity",
-      "module": "core",
-      "replacedBy": [
-        "conversionPointType"
-      ],
-      "subClassOf": [
-        "ConversionPoint"
-      ]
     },
     "Metric": {
       "definition": "A named, reusable definition of a measured quantity: what is counted or computed, over which records, aggregated how, in what unit, and which way is better. A rule, not a number: the number is a MetricReading. One node per definition, identified by its skos:notation within its scheme (xeos:metric is the published reference scheme). Two Metrics are the same when metricType, aggregation, readsSlot or inputs, metricFilter, timeAnchor and unit all match; changing any of them makes a new Metric, never an edit, because readings and targets are anchored to the definition. Carries exactly one metricType, unit, betterDirection and additivity. A simple metric also carries aggregation and readsSlot; a ratio carries numerator and denominator and has unit ratio; a derived metric carries expression and at least one inputMetric. A skos:Concept, so a consumer adds its own metrics as instances without touching the ontology.",
@@ -565,13 +526,6 @@
         "cadence"
       ]
     },
-    "campaignInfluenceShare": {
-      "datatype": "xsd:decimal",
-      "iri": "https://xeoontology.org/xeo#campaignInfluenceShare",
-      "layer": "derivation",
-      "module": "sales",
-      "status": "extension"
-    },
     "capturedAt": {
       "datatype": "xsd:dateTime",
       "iri": "https://xeoontology.org/xeo#capturedAt",
@@ -796,19 +750,6 @@
       "module": "core",
       "schemes": [
         "device"
-      ]
-    },
-    "direction": {
-      "datatype": "xsd:string",
-      "deprecated": true,
-      "domain": [
-        "MetricTarget"
-      ],
-      "iri": "https://xeoontology.org/xeo#direction",
-      "layer": "interpretation",
-      "module": "work",
-      "replacedBy": [
-        "betterDirection"
       ]
     },
     "durationDays": {
@@ -1086,20 +1027,6 @@
         "lifecycleStageClass"
       ],
       "status": "extension"
-    },
-    "lift": {
-      "datatype": "xsd:decimal",
-      "deprecated": true,
-      "domain": [
-        "Outcome"
-      ],
-      "iri": "https://xeoontology.org/xeo#lift",
-      "layer": "observation",
-      "module": "decision",
-      "replacedBy": [
-        "absoluteChange",
-        "relativeChange"
-      ]
     },
     "linkPosition": {
       "datatype": "xsd:string",

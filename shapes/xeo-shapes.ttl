@@ -145,21 +145,12 @@ xeosh:LLMResponseShape a sh:NodeShape ;
     ] .
 
 xeosh:MetricTargetShape a sh:NodeShape ;
-    rdfs:label "a metric target names its metric; a direction, where one is kept, is up or down" ;
+    rdfs:label "a metric target names its metric" ;
     sh:targetClass xeo:MetricTarget ;
     sh:property [
         sh:path xeo:metric ;
         sh:minCount 1 ; sh:maxCount 1 ;
         sh:message "A xeo:MetricTarget requires exactly one xeo:metric."
-    ] ;
-    sh:property [
-        # xeo:direction is deprecated in favour of xeo:betterDirection on the
-        # Metric (advisory), so it is no longer required. A stored copy is
-        # still checked.
-        sh:path xeo:direction ;
-        sh:maxCount 1 ;
-        sh:in ( "up" "down" ) ;
-        sh:message "xeo:direction, where a xeo:MetricTarget carries one, is a single 'up' or 'down'."
     ] .
 
 xeosh:OutcomeShape a sh:NodeShape ;

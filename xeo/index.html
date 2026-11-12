@@ -78,7 +78,7 @@ vendor mappings <a href="https://github.com/inboundfound/xeo-ontology/tree/main/
 JSON-LD <a href="context.jsonld">context</a>; Neo4j
 <a href="neo4j-profile.json">profile</a> and <a href="context.neo4j.jsonld">context</a>;
 SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
-<h2 id="classes">Classes <span class="n">51</span></h2>
+<h2 id="classes">Classes <span class="n">48</span></h2>
 <section id="AlgorithmRun" class="term">
   <h3>Algorithm Run <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-analysis</span></h3>
   <code class="iri">xeo:AlgorithmRun</code>
@@ -96,12 +96,6 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <code class="iri">xeo:Brand</code>
   <p>A named market identity that engines may mention, cite, or recommend. Distinct from Website: a brand can be visible on the whole web, not only its own origin.</p>
   <dl><div class="row"><dt>closeMatch</dt><dd><a href="https://schema.org/Brand" class="ext">schema:Brand</a></dd></div></dl>
-</section>
-<section id="CallToAction" class="term">
-  <h3>Call To Action <span class="layer" style="--h:#718096">entity</span> <span class="status dep">deprecated</span><span class="mod">xeo-core</span></h3>
-  <code class="iri">xeo:CallToAction</code>
-  <p>A button or link that asks the visitor to take the next step.</p>
-  <dl><div class="row"><dt>subclass of</dt><dd><a href="#ConversionPoint">xeo:ConversionPoint</a></dd></div><div class="row"><dt>seeAlso</dt><dd><a href="#conversionPointType">xeo:conversionPointType</a></dd></div></dl>
 </section>
 <section id="Campaign" class="term">
   <h3>Campaign <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-work</span></h3>
@@ -199,12 +193,6 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>A diagnosed deficit between current and desired visibility. First-order, but a claim: asserted by a Diagnostic from evidence, never observed directly. Its kind (gapType) is a slotted-in skos:Concept — e.g. a Citation-Waterfall stage — not a subclass baked into the ontology.</p>
   
 </section>
-<section id="GatedAsset" class="term">
-  <h3>Gated Asset <span class="layer" style="--h:#718096">entity</span> <span class="status dep">deprecated</span><span class="mod">xeo-core</span></h3>
-  <code class="iri">xeo:GatedAsset</code>
-  <p>Content exchanged for contact information.</p>
-  <dl><div class="row"><dt>subclass of</dt><dd><a href="#ConversionPoint">xeo:ConversionPoint</a></dd></div><div class="row"><dt>seeAlso</dt><dd><a href="#conversionPointType">xeo:conversionPointType</a></dd></div></dl>
-</section>
 <section id="GenerativeEngine" class="term">
   <h3>Generative Engine <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-visibility</span></h3>
   <code class="iri">xeo:GenerativeEngine</code>
@@ -222,12 +210,6 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <code class="iri">xeo:LLMResponse</code>
   <p>One captured response from one engine/model for one Prompt at a moment: time-bounded, source-attributed, immutable once captured. The visibility sibling of SerpSnapshot.</p>
   <dl><div class="row"><dt>subclass of</dt><dd><a href="http://www.w3.org/ns/prov#Entity" class="ext">prov:Entity</a></dd></div></dl>
-</section>
-<section id="LeadCaptureForm" class="term">
-  <h3>Lead Capture Form <span class="layer" style="--h:#718096">entity</span> <span class="status dep">deprecated</span><span class="mod">xeo-core</span></h3>
-  <code class="iri">xeo:LeadCaptureForm</code>
-  <p>A form that exchanges contact details for a response, a quote or a booking.</p>
-  <dl><div class="row"><dt>subclass of</dt><dd><a href="#ConversionPoint">xeo:ConversionPoint</a></dd></div><div class="row"><dt>seeAlso</dt><dd><a href="#conversionPointType">xeo:conversionPointType</a></dd></div></dl>
 </section>
 <section id="Metric" class="term">
   <h3>Metric <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-core</span></h3>
@@ -1070,7 +1052,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>Windowed rollup of response-level observations for a (prompt, brand) pair: mentionRate, citationRate, responses, periodStart, periodEnd, source, datasetUri. Mirrors the ranksFor rollup pattern — raw responses are the authoritative record; this is the traversal-friendly projection.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Prompt">xeo:Prompt</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Brand">xeo:Brand</a></dd></div><div class="row"><dt>grounded in</dt><dd>The captured LLMResponses the rollup window covers: their text and citation annotations (per-provider API contract)</dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
 </section>
-<h2 id="datatype-properties">Datatype properties <span class="n">147</span></h2>
+<h2 id="datatype-properties">Datatype properties <span class="n">144</span></h2>
 <section id="absoluteChange" class="term">
   <h3>absolute change <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:absoluteChange</code>
@@ -1148,12 +1130,6 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <code class="iri">xeo:cadence</code>
   <p>&#x27;monthly&#x27; or &#x27;quarterly&#x27; — the period a retainer&#x27;s quota resets over. Set for retainer, absent for one-off.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Project">xeo:Project</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
-</section>
-<section id="campaignInfluenceShare" class="term">
-  <h3>campaign influence share <span class="layer" style="--h:#805AD5">derivation</span> <span class="status">extension</span><span class="mod">xeo-sales</span></h3>
-  <code class="iri">xeo:campaignInfluenceShare</code>
-  <p>The share of a deal&#x27;s amount a CRM credits to one marketing campaign, from 0 to 1, under a named attribution model. A derivation: method names the model, and the shares for one deal under one model sum to 1. One CRM of the seven read computes it.</p>
-  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="capturedAt" class="term">
   <h3>captured at <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-core</span></h3>
@@ -1335,12 +1311,6 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>The device class a capture was requested for, as a code from a slotted-in scheme (desktop, mobile, tablet — xeos:device is a published reference filling). Carried on a SerpSnapshot. Results differ by device, so it is part of what makes two snapshots comparable.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
-<section id="direction" class="term">
-  <h3>direction <span class="layer" style="--h:#DD6B20">interpretation</span> <span class="status dep">deprecated</span><span class="mod">xeo-work</span></h3>
-  <code class="iri">xeo:direction</code>
-  <p>&#x27;up&#x27; or &#x27;down&#x27; — which way is better for this metric. DERIVED from metric, never client input: position and rank are 1-based, so a shared &#x27;+20%&#x27; would silently ask for a rank 20% worse. Deprecated in 0.6.0, as advice: the direction is now stated once, on the Metric, as betterDirection, and a copy here is a cache of it that can drift. Still valid where stored.</p>
-  <dl><div class="row"><dt>domain</dt><dd><a href="#MetricTarget">xeo:MetricTarget</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>seeAlso</dt><dd><a href="#betterDirection">xeo:betterDirection</a></dd></div></dl>
-</section>
 <section id="durationDays" class="term">
   <h3>duration days <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:durationDays</code>
@@ -1514,12 +1484,6 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <code class="iri">xeo:lifecycleStage</code>
   <p>The funnel position of a person or organization, as a code from a slotted-in scheme (subscriber, lead, mql, sql, opportunity, customer, evangelist, other — xeos:lifecycleStageClass is a published reference filling). An interpretation: what qualifies a lead as marketing- or sales-qualified is each tenant&#x27;s own rule, so counts by stage are not comparable between tenants. An extension because one CRM of the seven read carries it natively; the others express the idea through a separate lead record and its status.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
-</section>
-<section id="lift" class="term">
-  <h3>lift <span class="layer" style="--h:#38A169">observation</span> <span class="status dep">deprecated</span><span class="mod">xeo-decision</span></h3>
-  <code class="iri">xeo:lift</code>
-  <p>The measured change the experiment recorded on its target metric. Deprecated in 0.6.0, as advice: one number that may be points or a percentage, with nothing to say which. Write absoluteChange and relativeChange. Still valid where stored.</p>
-  <dl><div class="row"><dt>domain</dt><dd><a href="#Outcome">xeo:Outcome</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>seeAlso</dt><dd><a href="#absoluteChange">xeo:absoluteChange</a> · <a href="#relativeChange">xeo:relativeChange</a></dd></div><div class="row"><dt>grounded in</dt><dd>The two MetricReadings its Outcome compares, each grounded in the API contract of the system named in its source</dd></div></dl>
 </section>
 <section id="linkPosition" class="term">
   <h3>link position <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-core</span></h3>
@@ -1758,13 +1722,13 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 <section id="result" class="term">
   <h3>result <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:result</code>
-  <p>&#x27;significant&#x27;, &#x27;no_change&#x27; or &#x27;inconclusive&#x27;. Answers DID THIS MOVE; lift&#x27;s sign answers which way. A regression is significant — the value never smuggles a direction in.</p>
+  <p>&#x27;significant&#x27;, &#x27;no_change&#x27; or &#x27;inconclusive&#x27;. Answers DID THIS MOVE; the sign of absoluteChange answers which way. A regression is significant — the value never smuggles a direction in.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Outcome">xeo:Outcome</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>The two MetricReadings its Outcome compares, read with the test its method names</dd></div></dl>
 </section>
 <section id="resultReason" class="term">
   <h3>result reason <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:resultReason</code>
-  <p>Why an outcome was inconclusive, from a small controlled set (window_incomplete, co_intervention, confounded_external, baseline_unavailable, ...). The two confounder reasons differ on purpose: a co-intervention keeps its lift and shares attribution; an external confounder records none.</p>
+  <p>Why an outcome was inconclusive, from a small controlled set (window_incomplete, co_intervention, confounded_external, baseline_unavailable, ...). The two confounder reasons differ on purpose: a co-intervention keeps its measured change and shares attribution; an external confounder records none.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Outcome">xeo:Outcome</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>The experiment&#x27;s run record: its window, and the co-interventions and ExternalEvents logged against it</dd></div></dl>
 </section>
 <section id="resultType" class="term">
@@ -1996,31 +1960,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>One of: entity, episode, observation, derivation, interpretation, norm. Types every term by the kind of claim it makes; every term carries exactly one. A layer is a kind of claim, not a file: the files are modules, and any module may hold terms of any layer. A graph that stamps instances with their layer uses the same name and values. Named epistemicLayer until 0.7.</p>
   
 </section>
-<h2 id="individuals">Individuals <span class="n">4</span></h2>
-<section id="CommercialInvestigation" class="term">
-  <h3>Commercial Investigation  <span class="status dep">deprecated</span><span class="mod">xeo-core</span></h3>
-  <code class="iri">xeo:CommercialInvestigation</code>
-  <p></p>
-  <dl><div class="row"><dt>seeAlso</dt><dd><a href="https://xeoontology.org/schemes#searchIntent-commercial_investigation" class="ext">xeos:searchIntent-commercial_investigation</a></dd></div></dl>
-</section>
-<section id="Informational" class="term">
-  <h3>Informational  <span class="status dep">deprecated</span><span class="mod">xeo-core</span></h3>
-  <code class="iri">xeo:Informational</code>
-  <p></p>
-  <dl><div class="row"><dt>seeAlso</dt><dd><a href="https://xeoontology.org/schemes#searchIntent-informational" class="ext">xeos:searchIntent-informational</a></dd></div></dl>
-</section>
-<section id="Navigational" class="term">
-  <h3>Navigational  <span class="status dep">deprecated</span><span class="mod">xeo-core</span></h3>
-  <code class="iri">xeo:Navigational</code>
-  <p></p>
-  <dl><div class="row"><dt>seeAlso</dt><dd><a href="https://xeoontology.org/schemes#searchIntent-navigational" class="ext">xeos:searchIntent-navigational</a></dd></div></dl>
-</section>
-<section id="Transactional" class="term">
-  <h3>Transactional  <span class="status dep">deprecated</span><span class="mod">xeo-core</span></h3>
-  <code class="iri">xeo:Transactional</code>
-  <p></p>
-  <dl><div class="row"><dt>seeAlso</dt><dd><a href="https://xeoontology.org/schemes#searchIntent-transactional" class="ext">xeos:searchIntent-transactional</a></dd></div></dl>
-</section>
+
 </div>
 </body>
 </html>

@@ -297,7 +297,7 @@
     },
     {
       "id": "ex:target-1", "type": "MetricTarget",
-      "metric": "ai_citation_rate", "direction": "up", "targetKind": "absolute",
+      "metric": "ai_citation_rate", "targetKind": "absolute",
       "targetValue": "0.40", "baseline": "0.20",
       "baselineCapturedAt": "2026-06-03T09:05:00Z", "isPrimary": true
     },
@@ -368,7 +368,7 @@
     },
     {
       "id": "ex:outcome-1", "type": "Outcome",
-      "result": "significant", "lift": "0.15"
+      "result": "significant", "absoluteChange": "0.15", "relativeChange": "0.75"
     },
 
     {

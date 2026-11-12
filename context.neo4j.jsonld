@@ -140,7 +140,6 @@
       "@id": "xeo:coversUrl",
       "@type": "@id"
     },
-    "CallToAction": "xeo:CallToAction",
     "Campaign": "xeo:Campaign",
     "Capability": "xeo:Capability",
     "ConversationalAgent": "xeo:ConversationalAgent",
@@ -206,7 +205,6 @@
       "@type": "@id"
     },
     "Gap": "xeo:Gap",
-    "GatedAsset": "xeo:GatedAsset",
     "GenerativeEngine": "xeo:GenerativeEngine",
     "HAS_CAMPAIGN": {
       "@id": "xeo:hasCampaign",
@@ -310,7 +308,6 @@
       "@type": "@id"
     },
     "LLMResponse": "xeo:LLMResponse",
-    "LeadCaptureForm": "xeo:LeadCaptureForm",
     "MAGNITUDE_METRIC": {
       "@id": "xeo:magnitudeMetric",
       "@type": "@id"
@@ -606,10 +603,6 @@
       "@type": "xsd:decimal"
     },
     "cadence": "xeo:cadence",
-    "campaignInfluenceShare": {
-      "@id": "xeo:campaignInfluenceShare",
-      "@type": "xsd:decimal"
-    },
     "capturedAt": {
       "@id": "xeo:capturedAt",
       "@type": "xsd:dateTime"
@@ -701,7 +694,6 @@
       "@type": "xsd:decimal"
     },
     "device": "xeo:device",
-    "direction": "xeo:direction",
     "durationDays": {
       "@id": "xeo:durationDays",
       "@type": "xsd:integer"
@@ -827,10 +819,6 @@
     "latestTouchChannel": "xeo:latestTouchChannel",
     "leadStatus": "xeo:leadStatus",
     "lifecycleStage": "xeo:lifecycleStage",
-    "lift": {
-      "@id": "xeo:lift",
-      "@type": "xsd:decimal"
-    },
     "linkPosition": "xeo:linkPosition",
     "locale": "xeo:locale",
     "lostReason": "xeo:lostReason",

@@ -322,13 +322,13 @@ xeo:marketingCampaignRef a owl:DatatypeProperty ;
     xeo:termStatus "extension" ;
     dct:description "Identity-key pointer to a marketing campaign in the CRM that a record is attributed to. A pointer and nothing more. Never an xeo:Campaign: that is a body of delivery work against a Topic inside a Project, and a CRM campaign is a marketing programme. The two share a word and must not be joined on it." .
 
-xeo:campaignInfluenceShare a owl:DatatypeProperty ;
-    rdfs:label "campaign influence share" ;
-    rdfs:range xsd:decimal ;
-    xeo:xeoLayer "derivation" ;
-    xeo:canonicalStore "crm" ;
-    xeo:termStatus "extension" ;
-    dct:description "The share of a deal's amount a CRM credits to one marketing campaign, from 0 to 1, under a named attribution model. A derivation: method names the model, and the shares for one deal under one model sum to 1. One CRM of the seven read computes it." .
+# Removed in 0.7: xeo:campaignInfluenceShare. Use the attribution module's creditShare on an AttributedCredit.
+
+
+
+
+
+
 
 xeo:OwnerChange a owl:Class ;
     rdfs:label "Owner Change" ;

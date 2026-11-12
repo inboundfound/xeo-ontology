@@ -327,7 +327,7 @@
       "iri": "https://xeoontology.org/schemes#betterDirection",
       "label": "Better directions",
       "fillsSlot": "xeo:betterDirection",
-      "description": "Which way a change in a Metric counts as improvement. Stated once, on the Metric. 'up' and 'down' are the two values xeo:direction took on a target; 'none' is new, for a quantity that is neither good nor bad to have more of.",
+      "description": "Which way a change in a Metric counts as improvement. Stated once, on the Metric. 'up' and 'down' are the two values a target's direction took until 0.7, when that property was removed; 'none' is new, for a quantity that is neither good nor bad to have more of.",
       "source": "XEO metrics and KPIs research report, 2026-11-10 · if-control-center packages/contracts/src/objective-metric.ts (METRIC_DIRECTIONS), which this generalises",
       "ordered": false,
       "concepts": [
@@ -382,7 +382,7 @@
       "iri": "https://xeoontology.org/schemes#conversionPointType",
       "label": "Conversion point types",
       "fillsSlot": "xeo:conversionPointType",
-      "description": "The kind of mechanism a ConversionPoint is. The first three say with a code what the CallToAction, LeadCaptureForm and GatedAsset subclasses say with a class; the list was growing, and a growing list is a scheme.",
+      "description": "The kind of mechanism a ConversionPoint is. The first three say with a code what the CallToAction, LeadCaptureForm and GatedAsset subclasses said with a class until 0.7; the list was growing, and a growing list is a scheme.",
       "source": "XEO CRM pipeline research report, 2026-11-10 · the three ConversionPoint subclasses (xeo-engagement until 0.7, now core), as codes, with two kinds the report adds",
       "ordered": false,
       "concepts": [
@@ -398,36 +398,21 @@
           "iri": "https://xeoontology.org/schemes#conversionPointType-cta",
           "label": "Call to action",
           "definition": "A button or link that asks the visitor to take the next step",
-          "note": null,
-          "matches": {
-            "exactMatch": [
-              "xeo:CallToAction"
-            ]
-          }
+          "note": null
         },
         {
           "code": "gated_asset",
           "iri": "https://xeoontology.org/schemes#conversionPointType-gated_asset",
           "label": "Gated asset",
           "definition": "Content exchanged for contact information",
-          "note": null,
-          "matches": {
-            "exactMatch": [
-              "xeo:GatedAsset"
-            ]
-          }
+          "note": null
         },
         {
           "code": "lead_form",
           "iri": "https://xeoontology.org/schemes#conversionPointType-lead_form",
           "label": "Lead capture form",
           "definition": "A form that exchanges contact details for a response, a quote or a booking",
-          "note": null,
-          "matches": {
-            "exactMatch": [
-              "xeo:LeadCaptureForm"
-            ]
-          }
+          "note": null
         },
         {
           "code": "meeting_booker",
@@ -2143,7 +2128,7 @@
       "iri": "https://xeoontology.org/schemes#outcomeResult",
       "label": "Outcome results",
       "fillsSlot": "xeo:result",
-      "description": "Whether an Outcome moved. A regression IS significant: result answers did this move, and the lift's sign answers which way. The labels must not smuggle a direction in.",
+      "description": "Whether an Outcome moved. A regression IS significant: result answers did this move, and the sign of absoluteChange answers which way. The labels must not smuggle a direction in.",
       "source": "if-control-center packages/contracts/src/recommendation.ts (OUTCOME_RESULTS)",
       "ordered": false,
       "concepts": [
@@ -2174,7 +2159,7 @@
       "iri": "https://xeoontology.org/schemes#outcomeResultReason",
       "label": "Why an outcome was inconclusive",
       "fillsSlot": "xeo:resultReason",
-      "description": "Why an Outcome could not be read cleanly. The two confounder reasons read differently on purpose: co_intervention keeps its lift and names the rows it shares attribution with; confounded_external records none. below_volume_floor and no_page_data are not the same sentence — the second asserts an absence, the first says there is data and not yet enough of it.",
+      "description": "Why an Outcome could not be read cleanly. The two confounder reasons read differently on purpose: co_intervention keeps its measured change and names the rows it shares attribution with; confounded_external records none. below_volume_floor and no_page_data are not the same sentence — the second asserts an absence, the first says there is data and not yet enough of it.",
       "source": "if-control-center packages/contracts/src/recommendation.ts (OUTCOME_RESULT_REASONS)",
       "ordered": false,
       "concepts": [
@@ -2196,14 +2181,14 @@
           "code": "co_intervention",
           "iri": "https://xeoontology.org/schemes#outcomeResultReason-co_intervention",
           "label": "Shared with other work of ours",
-          "definition": "Another of our interventions touched the same pages in the window; lift is kept and attribution is shared",
+          "definition": "Another of our interventions touched the same pages in the window; the change is kept and attribution is shared",
           "note": null
         },
         {
           "code": "confounded_external",
           "iri": "https://xeoontology.org/schemes#outcomeResultReason-confounded_external",
           "label": "Something outside our work changed the page",
-          "definition": "An external event confounds the window; no lift is recorded",
+          "definition": "An external event confounds the window; no change is recorded",
           "note": null
         },
         {
@@ -2488,48 +2473,28 @@
           "iri": "https://xeoontology.org/schemes#searchIntent-commercial_investigation",
           "label": "Commercial investigation",
           "definition": "The person is comparing options before a purchase",
-          "note": null,
-          "matches": {
-            "exactMatch": [
-              "xeo:CommercialInvestigation"
-            ]
-          }
+          "note": null
         },
         {
           "code": "informational",
           "iri": "https://xeoontology.org/schemes#searchIntent-informational",
           "label": "Informational",
           "definition": "The person wants to learn something",
-          "note": null,
-          "matches": {
-            "exactMatch": [
-              "xeo:Informational"
-            ]
-          }
+          "note": null
         },
         {
           "code": "navigational",
           "iri": "https://xeoontology.org/schemes#searchIntent-navigational",
           "label": "Navigational",
           "definition": "The person wants to reach a particular site or page",
-          "note": null,
-          "matches": {
-            "exactMatch": [
-              "xeo:Navigational"
-            ]
-          }
+          "note": null
         },
         {
           "code": "transactional",
           "iri": "https://xeoontology.org/schemes#searchIntent-transactional",
           "label": "Transactional",
           "definition": "The person wants to do something now: buy, book, sign up",
-          "note": null,
-          "matches": {
-            "exactMatch": [
-              "xeo:Transactional"
-            ]
-          }
+          "note": null
         }
       ]
     },

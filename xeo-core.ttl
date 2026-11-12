@@ -619,7 +619,7 @@ xeo:refersTo a owl:ObjectProperty ;
 #   From xeo-metrics.ttl: the whole module. Metric and MetricReading are core.
 #
 # Deprecated terms among them (the ConversionPoint subclasses, the four
-# SearchIntent individuals, valuePeriod) moved too; deleting them is a later step.
+# SearchIntent individuals, valuePeriod) moved too, and were deleted later in 0.7.
 
 @prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
@@ -662,17 +662,17 @@ xeo:SearchIntent a owl:Class ;
     xeo:groundedIn "Broder (2002), 'A taxonomy of web search', as extended in common practice" ;
     dct:description "Why the person is asking. Modeled as named individuals, not free strings. Since 0.6.0 the same four values are also published as concepts in xeos:searchIntent, each a SearchIntent, which is the form to write." .
 
-xeo:Informational a xeo:SearchIntent , owl:NamedIndividual ; rdfs:label "Informational" ;
-    owl:deprecated true ; rdfs:seeAlso <https://xeoontology.org/schemes#searchIntent-informational> .
+# Removed in 0.7: xeo:Informational. Use the xeos:searchIntent concept informational.
 
-xeo:Navigational  a xeo:SearchIntent , owl:NamedIndividual ; rdfs:label "Navigational" ;
-    owl:deprecated true ; rdfs:seeAlso <https://xeoontology.org/schemes#searchIntent-navigational> .
 
-xeo:CommercialInvestigation a xeo:SearchIntent , owl:NamedIndividual ; rdfs:label "Commercial Investigation" ;
-    owl:deprecated true ; rdfs:seeAlso <https://xeoontology.org/schemes#searchIntent-commercial_investigation> .
+# Removed in 0.7: xeo:Navigational. Use the xeos:searchIntent concept navigational.
 
-xeo:Transactional a xeo:SearchIntent , owl:NamedIndividual ; rdfs:label "Transactional" ;
-    owl:deprecated true ; rdfs:seeAlso <https://xeoontology.org/schemes#searchIntent-transactional> .
+
+# Removed in 0.7: xeo:CommercialInvestigation. Use the xeos:searchIntent concept commercial_investigation.
+
+
+# Removed in 0.7: xeo:Transactional. Use the xeos:searchIntent concept transactional.
+
 
 xeo:targetsIntent a owl:ObjectProperty ;
     rdfs:range xeo:SearchIntent ;
@@ -689,23 +689,23 @@ xeo:ConversionPoint a owl:Class ;
     xeo:xeoLayer "entity" ;
     dct:description "A durable on-page mechanism that turns attention into a pipeline event. Identified by the URL it sits on and its form id or selector. Its kind is conversionPointType." .
 
-xeo:CallToAction a owl:Class ; rdfs:subClassOf xeo:ConversionPoint ;
-    rdfs:label "Call To Action" ;
-    xeo:xeoLayer "entity" ;
-    dct:description "A button or link that asks the visitor to take the next step." ;
-    owl:deprecated true ; rdfs:seeAlso xeo:conversionPointType .
+# Removed in 0.7: xeo:CallToAction. Use conversionPointType cta.
 
-xeo:LeadCaptureForm a owl:Class ; rdfs:subClassOf xeo:ConversionPoint ;
-    rdfs:label "Lead Capture Form" ;
-    xeo:xeoLayer "entity" ;
-    dct:description "A form that exchanges contact details for a response, a quote or a booking." ;
-    owl:deprecated true ; rdfs:seeAlso xeo:conversionPointType .
 
-xeo:GatedAsset a owl:Class ; rdfs:subClassOf xeo:ConversionPoint ;
-    rdfs:label "Gated Asset" ;
-    dct:description "Content exchanged for contact information." ;
-    xeo:xeoLayer "entity" ;
-    owl:deprecated true ; rdfs:seeAlso xeo:conversionPointType .
+
+
+
+# Removed in 0.7: xeo:LeadCaptureForm. Use conversionPointType lead_form.
+
+
+
+
+
+# Removed in 0.7: xeo:GatedAsset. Use conversionPointType gated_asset.
+
+
+
+
 
 xeo:conversionPointType a owl:DatatypeProperty ;
     rdfs:label "conversion point type" ;

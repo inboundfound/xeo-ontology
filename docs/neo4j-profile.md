@@ -115,14 +115,13 @@ same kind of graph written against the camelCase `context.jsonld`.
 
 Generated from XEO 0.6.0. Do not edit between the markers; run `tools/gen_profile.py`.
 
-### Node labels (51)
+### Node labels (48)
 
 | Label | XEO class | Layer | Module |
 |---|---|---|---|
 | `AlgorithmRun` | `xeo:AlgorithmRun` | episode | analysis |
 | `AnswerEngine` | `xeo:AnswerEngine` | entity | visibility |
 | `Brand` | `xeo:Brand` | entity | visibility |
-| `CallToAction` (deprecated) | `xeo:CallToAction` | entity | core |
 | `Campaign` | `xeo:Campaign` | entity | work |
 | `Capability` | `xeo:Capability` | entity | decision |
 | `ConversationalAgent` | `xeo:ConversationalAgent` | entity | visibility |
@@ -139,11 +138,9 @@ Generated from XEO 0.6.0. Do not edit between the markers; run `tools/gen_profil
 | `Feedback` | `xeo:Feedback` | interpretation | decision |
 | `Framework` | `xeo:Framework` | norm | decision |
 | `Gap` | `xeo:Gap` | interpretation | decision |
-| `GatedAsset` (deprecated) | `xeo:GatedAsset` | entity | core |
 | `GenerativeEngine` | `xeo:GenerativeEngine` | entity | visibility |
 | `Intervention` | `xeo:Intervention` | entity | decision |
 | `LLMResponse` | `xeo:LLMResponse` | episode | visibility |
-| `LeadCaptureForm` (deprecated) | `xeo:LeadCaptureForm` | entity | core |
 | `Metric` | `xeo:Metric` | norm | core |
 | `MetricReading` | `xeo:MetricReading` | observation | core |
 | `MetricTarget` | `xeo:MetricTarget` | interpretation | work |
@@ -292,7 +289,7 @@ Generated from XEO 0.6.0. Do not edit between the markers; run `tools/gen_profil
 | `VERDICT` | `xeo:verdict` | `Feedback` · `Gap` | `skos:Concept` (concept slot) | interpretation | decision |
 | `VISIBILITY_FOR` | `xeo:visibilityFor` | `Prompt` | `Brand` | observation | visibility |
 
-### Property keys (169)
+### Property keys (166)
 
 | Property key | Datatype | Values from | Layer | Module |
 |---|---|---|---|---|
@@ -331,7 +328,6 @@ Generated from XEO 0.6.0. Do not edit between the markers; run `tools/gen_profil
 | `baselineCapturedAt` | `xsd:dateTime` |  | observation | work |
 | `betweenness` | `xsd:decimal` |  | derivation | analysis |
 | `cadence` | `xsd:string` | `cadence` | entity | work |
-| `campaignInfluenceShare` (extension) | `xsd:decimal` |  | derivation | sales |
 | `capturedAt` | `xsd:dateTime` |  | episode | core |
 | `citationRank` | `xsd:integer` |  | observation | visibility |
 | `citationRate` | `xsd:decimal` |  | derivation | visibility |
@@ -362,7 +358,6 @@ Generated from XEO 0.6.0. Do not edit between the markers; run `tools/gen_profil
 | `deletedAt` | `xsd:dateTime` |  | entity | work |
 | `denominatorValue` | `xsd:decimal` |  | observation | core |
 | `device` | `xsd:string` | `device` | episode | core |
-| `direction` (deprecated) | `xsd:string` |  | interpretation | work |
 | `durationDays` | `xsd:integer` |  | entity | work |
 | `embeddedAt` | `xsd:dateTime` |  | derivation | core |
 | `embeddingDim` | `xsd:integer` |  | derivation | core |
@@ -392,7 +387,6 @@ Generated from XEO 0.6.0. Do not edit between the markers; run `tools/gen_profil
 | `latestTouchChannel` (extension) | `xsd:string` |  | derivation | sales |
 | `leadStatus` (extension) | `xsd:string` |  | interpretation | sales |
 | `lifecycleStage` (extension) | `xsd:string` | `lifecycleStageClass` | interpretation | sales |
-| `lift` (deprecated) | `xsd:decimal` |  | observation | decision |
 | `linkPosition` | `xsd:string` | `linkPosition` | derivation | core |
 | `locale` | `xsd:string` |  | episode | core |
 | `lostReason` (extension) | `xsd:string` |  | interpretation | sales |
