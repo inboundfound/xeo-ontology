@@ -202,7 +202,7 @@ xeo:decision-module a owl:Ontology ;
     dct:title "XEO Decision (gaps, tactics, recommendations, and the rules that govern them)" ;
     dct:description "The top stratum of the core sample: where an observed condition becomes a diagnosed Gap, a Gap becomes candidate Tactics, the capability gate filters them to what is in reach, prior Experiments say which tactic has earned trust, and a Recommendation is issued — labeled, honestly, as an interpretation. Ships CLASSES, never VALUES. Since 0.7 it also holds what was xeo-strategy: the standing rules (Practices) that govern how a Recommendation may be made, the Playbooks they travel in, and Frameworks." ;
     dct:creator "Inbound Found" ;
-    owl:versionInfo "0.6.0" .
+    owl:versionInfo "0.7.0" .
 
 # --- Gap disposition and size ------------------------------------------------
 # Appended at the foot (line-stable for the consumers that cite this file by

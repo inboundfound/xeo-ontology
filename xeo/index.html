@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>XEO — the xEO family ontology (terms)</title>
+<title>XEO — terms</title>
 <meta name="description" content="Term reference for the XEO ontology: classes, properties, and individuals across the core, visibility, analysis, sales, attribution, work and decision modules.">
 <link rel="alternate" type="text/turtle" href="xeo-core.ttl">
 <style>
@@ -51,8 +51,8 @@ code { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; }
 </head>
 <body>
 <div class="wrap">
-<h1>XEO — the ontology for the xEO family</h1>
-<p class="tag">Namespace <code>https://xeoontology.org/xeo#</code> · prefix <code>xeo:</code> · v0.6.0 ·
+<h1>XEO — terms</h1>
+<p class="tag">Namespace <code>https://xeoontology.org/xeo#</code> · prefix <code>xeo:</code> · v0.7.0 ·
 <a href="https://github.com/inboundfound/xeo-ontology">repo</a> · CC BY 4.0</p>
 <p class="lead">One standards-grounded vocabulary for how engines — search,
 generative, answer, conversational — see, cite, and serve content. Every term is
@@ -282,7 +282,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 <section id="MetricReading" class="term">
   <h3>Metric Reading <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:MetricReading</code>
-  <p>The value one Metric took over one window, for one scope, from one source. One row per metric, scope, window and source: its identity is readingOf, scope, periodStart, periodEnd, source and, where the source deduplicates in more than one way, aggregationBasis. Requires value, periodStart, periodEnd and readingOf, and should carry websiteId and datasetUri; a ratio reading also carries numeratorValue and denominatorValue. An observation only when the primary API returned exactly that metric, window and scope. When the value was rolled up, recomputed, or taken from a vendor&#x27;s model, the reading is a derivation and carries method and confidence. High-cardinality readings live in the column store; the graph holds the windowed readings a target, an Outcome or an Objective points at.</p>
+  <p>The value one Metric took over one window, for one scope, from one source. One row per metric, scope, window and source: its identity is readingOf, scope, periodStart, periodEnd, source and, where the source deduplicates in more than one way, aggregationBasis. Requires value, periodStart, periodEnd and readingOf, and may carry websiteId and datasetUri; a ratio reading also carries numeratorValue and denominatorValue. An observation only when the primary API returned exactly that metric, window and scope. When the value was rolled up, recomputed, or taken from a vendor&#x27;s model, the reading is a derivation and carries method and confidence. High-cardinality readings live in the column store; the graph holds the windowed readings a target, an Outcome or an Objective points at.</p>
   <dl><div class="row"><dt>grounded in</dt><dd>The API contract of the system named in the reading&#x27;s source (e.g. GSC searchAnalytics.query, GA4 runReport)</dd></div><div class="row"><dt>canonical store</dt><dd>bigquery</dd></div></dl>
 </section>
 <section id="MetricTarget" class="term">
@@ -2402,7 +2402,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 <section id="websiteId" class="term">
   <h3>website id <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:websiteId</code>
-  <p>The tenancy key. Scope lives in this property on every scoped node and edge, never in a dynamic label — the identity half of &#x27;tenancy is data, not schema&#x27;.</p>
+  <p>The tenancy key, where a graph holds more than one tenant: scope lives in this property on the scoped nodes and edges, never in a dynamic label — the identity half of &#x27;tenancy is data, not schema&#x27;. Optional: XEO requires it nowhere, and a single-tenant graph can leave it out.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
 <section id="weightedAmount" class="term">

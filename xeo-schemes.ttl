@@ -36,7 +36,7 @@ xeo:schemes-module a owl:Ontology ;
     dct:description "SKOS concept schemes filling the slots the XEO ontology leaves open — gap types, verdicts, priorities, the intervention catalogue, lifecycles, metrics. Published reference values, not part of the ontology's class vocabulary; adopt, extend, or replace." ;
     dct:creator "Inbound Found" ;
     rdfs:seeAlso <https://xeoontology.org/schemes.json> ;
-    owl:versionInfo "0.6.0" .
+    owl:versionInfo "0.7.0" .
 
 xeo:fillsSlot a owl:AnnotationProperty ;
     rdfs:comment "Names the XEO property whose skos:Concept range (or controlled-string value) this scheme is a reference filling for — xeo:gapType, xeo:atPriority, xeo:inIntervention, xeo:status. A consumer reading a slot property can follow this to a published default; nothing in the ontology requires it." .

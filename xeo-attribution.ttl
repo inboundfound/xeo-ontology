@@ -35,7 +35,7 @@ xeo:attribution-module a owl:Ontology ;
     dct:title "XEO Attribution (touches, journeys, revenue, spend, attribution models)" ;
     dct:description "Which touches get credit for which conversions, and on what rule: Touchpoints and Journeys, identity links, calls and booked meetings, revenue with no pipeline (orders, payments, refunds, subscriptions), ad spend, attribution models described by their structure, and the credits and rollups they produce, each naming its model." ;
     dct:creator "Inbound Found" ;
-    owl:versionInfo "0.6.0" .
+    owl:versionInfo "0.7.0" .
 
 # --- Touches, journeys, identity ------------------------------------------------------
 

@@ -2,7 +2,7 @@
   "$comment": "Generated from xeo-schemes.ttl and mappings/*.ttl by tools/gen_schemes.py — do not edit by hand.",
   "namespace": "https://xeoontology.org/schemes#",
   "ontology": "https://xeoontology.org/xeo#",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "schemes": {
     "acquisitionChannel": {
       "iri": "https://xeoontology.org/schemes#acquisitionChannel",

@@ -51,7 +51,7 @@ xeo:sales-module a owl:Ontology ;
     dct:title "XEO Sales (CRM records and pipeline)" ;
     dct:description "The CRM side of the pipeline: the identity-key pointer into whatever CRM you run, the few neutral slots every CRM's deal carries (owner, pipeline, stage, amount, outcome, dates), stage history, and the pipeline numbers computed from them. Was the CRM half of xeo-engagement until 0.7." ;
     dct:creator "Inbound Found" ;
-    owl:versionInfo "0.6.0" .
+    owl:versionInfo "0.7.0" .
 
 # --- The pointer ----------------------------------------------------------------------
 

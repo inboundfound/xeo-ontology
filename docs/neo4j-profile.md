@@ -113,7 +113,7 @@ same kind of graph written against the camelCase `context.jsonld`.
 
 <!-- BEGIN GENERATED: tools/gen_profile.py -->
 
-Generated from XEO 0.6.0. Do not edit between the markers; run `tools/gen_profile.py`.
+Generated from XEO 0.7.0. Do not edit between the markers; run `tools/gen_profile.py`.
 
 ### Node labels (66)
 

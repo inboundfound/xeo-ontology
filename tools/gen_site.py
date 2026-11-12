@@ -21,6 +21,11 @@ It does three things, and a fourth on request:
    ``src/lib/xeo-schemes.json`` (drives /schemes) from the Turtle, with rdflib.
 3. Writes ``src/lib/xeo-release.json``: the version, the module list and every
    count the pages state, so no page hard-codes a number.
+3b. Writes ``src/lib/xeo-tombstones.json`` from ``tombstones.json``: every
+   removed term and file, with the release that removed it and what to use
+   instead, for /xeo to show at the old address. For each removed module file
+   it also writes a one-comment ``public/<file>`` saying where its terms went,
+   so the old URL still answers.
 4. With ``--freeze``: writes the frozen copy of this release to
    ``public/releases/<version>/`` (the module files, ``schemes.json``,
    ``context.jsonld``, ``neo4j-profile.json``). A frozen copy is never
@@ -390,6 +395,17 @@ def main():
     write_json(os.path.join(out, "xeo-terms.json"), terms)
     write_json(os.path.join(out, "xeo-schemes.json"), schemes)
     write_json(os.path.join(out, "xeo-release.json"), release)
+    tomb_path = os.path.join(onto, "tombstones.json")
+    if os.path.exists(tomb_path):
+        with open(tomb_path, encoding="utf-8") as fh:
+            tombs = json.load(fh)
+        tombs.pop("$comment", None)
+        write_json(os.path.join(out, "xeo-tombstones.json"), tombs)
+        if not a.no_copy:
+            for f in tombs.get("files", []):
+                with open(os.path.join(site, "public", f["file"]), "w", encoding="utf-8") as fh:
+                    fh.write(f"# {f['file']} was removed from XEO in {f['removedIn']}.\n# {f['note']}\n"
+                             f"# Current modules: https://xeoontology.org/xeo\n")
     if not a.no_copy:
         copy_public(onto, modules, site)
     if a.freeze:
