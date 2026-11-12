@@ -7,10 +7,14 @@ projected from it disagree:
   1. PARSE        every xeo-*.ttl module, every mappings/*.ttl file and the
                   SHACL shapes parse as Turtle.
   2. TERMS        every class and property has rdfs:label, dct:description and a
-                  valid xeo:xeoLayer; every annotation property has an
+                  valid xeo:xeoLayer, and an observation names its
+                  xeo:groundedIn; every annotation property has an
                   rdfs:comment; every xeo: term a declaration points at
                   (domain, range, subPropertyOf, ...) is itself declared; all
                   modules carry the same owl:versionInfo.
+  2b. MODULES     core loads alone: it points at no add-on's term with a
+                  domain, range, subclass or subproperty link. Links between
+                  two add-ons are listed as optional.
   3. SCHEMES      every concept has a notation, label and definition; codes are
                   unique within a scheme; every scheme fills a declared slot.
                   In a vendor scheme (one file per tool in mappings/) every
@@ -180,6 +184,8 @@ def check_terms(report: Report, g: Graph, per_module: dict[str, Graph]) -> dict:
                 problems.append(f"{name} has no xeo:xeoLayer")
             elif len(layers) > 1 or not layers <= LAYERS:
                 problems.append(f"{name} has xeo:xeoLayer {sorted(layers)}; expected one of {sorted(LAYERS)}")
+            elif layers == {"observation"} and g.value(s, XEO.groundedIn) is None:
+                problems.append(f"{name} is an observation and names no xeo:groundedIn")
             if len(set(g.objects(s, RDFS.label))) > 1:
                 problems.append(f"{name} has more than one rdfs:label")
             if len(set(g.objects(s, DCTERMS.description))) > 1:
@@ -209,7 +215,7 @@ def check_terms(report: Report, g: Graph, per_module: dict[str, Graph]) -> dict:
     report.section(
         "terms", problems,
         f"{counts['Class']} classes, {counts['ObjectProperty']} object properties, "
-        f"{counts['DatatypeProperty']} datatype properties, all labelled, described and layered; "
+        f"{counts['DatatypeProperty']} datatype properties, all labelled, described, layered and, if observations, grounded; "
         f"version {next(iter(versions.values()), '?')}")
     return terms
 
@@ -561,12 +567,6 @@ def main() -> int:
     check_context(report, g, terms)
     check_generated(report)
     check_examples(report, g, per_module, terms, concepts)
-    # Not a failure: observation terms the ontology has not yet grounded.
-    ungrounded = sorted(local(s) for s, k in terms.items() if k in TERM_KINDS
-                        and str(g.value(s, XEO.xeoLayer)) == "observation"
-                        and g.value(s, XEO.groundedIn) is None)
-    if ungrounded:
-        print(f"note  {len(ungrounded)} observation terms name no xeo:groundedIn: {', '.join(ungrounded)}")
     print()
     if report.failures:
         print(f"FAILED: {report.failures} problem(s)")
