@@ -5,7 +5,9 @@
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix xeo:  <https://xeoontology.org/xeo#> .
 
-# XEO Delivery module — the container the work happens in.
+# XEO Work module — the container the work happens in. Named xeo-delivery until
+# 0.7, when the agency terms it already held (clientOf, holdsCapability, the
+# contract fields on Project) made it the home of client work as a whole.
 #
 # The decision tier says WHAT to do (a Recommendation closes a Gap with a Tactic)
 # and the norms tier says what SHOULD govern that call. Neither says for whom,
@@ -33,20 +35,22 @@
 # when both say yes; advisory when the capability exists but the contract or the
 # allowance does not cover it.
 #
-# Named Project, not Engagement, deliberately: xeo-engagement.ttl already uses
-# "engagement" for the conversion seam (forms, CTAs, the CRM join), and the
-# implementations this module is lifted from call the container a Project.
+# Named Project, not Engagement, deliberately: "engagement" was the name of the
+# conversion seam (forms, CTAs, the CRM join) until 0.7, and the implementations
+# this module is lifted from call the container a Project.
 #
 # DISCIPLINE (unchanged): classes, never values. engagementType, cadence,
 # metric and the rest take their values from xeo-schemes.ttl — published
 # reference schemes a consumer adopts or replaces.
 #
-# DEPENDENCIES, declared honestly: builds on core (Website, URL, Term, Topic),
-# decision (Recommendation, Experiment), and uses SKOS for its slots.
+# NEEDS core only (Website, URL, Term, Topic, Organization, Metric). Its links to
+# decision (issuedFor, measures, effortEstimate, execution, holdsCapability,
+# inScope) are optional: they work when decision is loaded too. Uses SKOS for its
+# slots.
 
-xeo:delivery-module a owl:Ontology ;
-    dct:title "XEO Delivery (projects, campaigns, objectives)" ;
-    dct:description "The container work is delivered in: a Project (the contract — type, quota, scope), its Campaigns (a body of work against one Topic), the Objective each campaign is measured by, and the MetricTargets an Experiment is read against. Lifted from a production implementation; fills the layer the decision and norms tiers left open." ;
+xeo:work-module a owl:Ontology ;
+    dct:title "XEO Work (clients, contracts, projects, campaigns, objectives)" ;
+    dct:description "The container work is delivered in: a Project (the contract — type, quota, scope), its Campaigns (a body of work against one Topic), the Objective each campaign is measured by, and the MetricTargets an Experiment is read against. Also the agency side: which Organization is whose client, and what it holds. Lifted from a production implementation. Named xeo-delivery until 0.7." ;
     dct:creator "Inbound Found" ;
     owl:versionInfo "0.6.0" .
 

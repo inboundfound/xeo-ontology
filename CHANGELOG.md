@@ -7,6 +7,37 @@ and corrects prose; a domain or range is not narrowed.
 
 Versions before 0.6.0 are reconstructed from the git history.
 
+## 0.7.0 — unreleased
+
+0.7 lands as four pull requests: the repackaging, the deletions, core and sales, and the
+attribution module. This section grows with each.
+
+### Modules (pull request 1)
+
+Every module now needs only core. A link between two add-ons (a practice constraining a
+recommendation, a recommendation issued for a campaign) is optional and works when both are
+loaded. `tools/validate.py` checks that core loads alone and lists those links. "Layer" now
+means only the kind of claim a term makes; the files are modules.
+
+No term was added or removed and no term's meaning changed. `tools/term_list.py --against
+<0.6 ref> --rename epistemicLayer=xeoLayer` finds the same 324 terms, and the only
+statements that differ are wording that named the old files or the old property name.
+
+| Module | 0.6 | 0.7 |
+|---|---|---|
+| core | `xeo-core.ttl` | also holds `Engine` and `SearchEngine` (with `onEngine`, `capturedAt` and `model`, which a core `SerpSnapshot` carries), `SearchIntent`, website conversions (`ConversionPoint`, `ConversionEvent` and their properties), the money terms (`currencyCode`, `recurringValue`, `valuePeriod`, `amountInReportingCurrency`), and everything that was `xeo-metrics.ttl` |
+| visibility | `xeo-visibility.ttl` | gains `attributedResponse` from engagement; loses the five engine terms to core |
+| sales | the CRM half of `xeo-engagement.ttl` | `xeo-sales.ttl` |
+| work | `xeo-delivery.ttl` | `xeo-work.ttl`, renamed: it already held the agency terms |
+| analysis, decision, strategy | unchanged | unchanged |
+
+`xeo-engagement.ttl`, `xeo-delivery.ttl` and `xeo-metrics.ttl` no longer exist. Terms moved
+into core were appended at its foot, so line citations into core still resolve.
+
+**Renamed.** `xeo:epistemicLayer` is now `xeo:xeoLayer`, the name the kit already stamps on
+every node. The scheme of its six values is `xeos:xeoLayer`, its concepts
+`xeos:xeoLayer-entity` and so on. A consumer that reads the old name reads nothing: rename it.
+
 ## 0.6.0 — kit sync (2026-11-09)
 
 The partner repository `xeo-graph-kit` is gaining three courses that teach graphs to SEOs, and

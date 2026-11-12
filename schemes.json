@@ -383,7 +383,7 @@
       "label": "Conversion point types",
       "fillsSlot": "xeo:conversionPointType",
       "description": "The kind of mechanism a ConversionPoint is. The first three say with a code what the CallToAction, LeadCaptureForm and GatedAsset subclasses say with a class; the list was growing, and a growing list is a scheme.",
-      "source": "XEO CRM pipeline research report, 2026-11-10 · the three ConversionPoint subclasses of xeo-engagement, as codes, with two kinds the report adds",
+      "source": "XEO CRM pipeline research report, 2026-11-10 · the three ConversionPoint subclasses (xeo-engagement until 0.7, now core), as codes, with two kinds the report adds",
       "ordered": false,
       "concepts": [
         {
@@ -2479,8 +2479,8 @@
       "iri": "https://xeoontology.org/schemes#searchIntent",
       "label": "Search intents",
       "fillsSlot": "xeo:targetsIntent",
-      "description": "Why the person is asking. The same four values xeo-engagement declares as named individuals, published as concepts so that a value is a code and not a term. Each concept is also an xeo:SearchIntent, so targetsIntent may point at it without any change to that property.",
-      "source": "Broder (2002), 'A taxonomy of web search', as extended in common practice · the four SearchIntent individuals of xeo-engagement, as concepts",
+      "description": "Why the person is asking. The same four values core declares as named individuals, published as concepts so that a value is a code and not a term. Each concept is also an xeo:SearchIntent, so targetsIntent may point at it without any change to that property.",
+      "source": "Broder (2002), 'A taxonomy of web search', as extended in common practice · the four SearchIntent individuals (xeo-engagement until 0.7, now core), as concepts",
       "ordered": false,
       "concepts": [
         {
