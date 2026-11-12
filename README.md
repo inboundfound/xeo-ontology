@@ -254,7 +254,7 @@ slot is what XEO defines; a scheme is one answer.
 | `practiceKind` · `practiceSource` · `practiceOutcome` | the norms tier | how a rule acts, where it came from, what it did |
 | `outcomeResult` · `outcomeResultReason` | `xeo:result` · `xeo:resultReason` | did it move, and why it couldn't be judged |
 | `objectiveMetric` · `targetKind` · `engagementType` · `cadence` · `effort` · `execution` | the delivery layer | `objectiveMetric` is the earlier list of metric codes, kept for compatibility; each is an exactMatch of its Metric in `metric` |
-| `metric` | `xeo:metric` | 37 — **the Metrics**: each an `xeo:Metric` with a type, unit, better direction and additivity. Search, AI visibility, analytics, CRM pipeline |
+| `metric` | `xeo:metric` | 35 — **the Metrics**: each an `xeo:Metric` with a type, unit, better direction and additivity. Search, AI visibility, analytics, CRM pipeline |
 | `metricType` · `aggregation` · `metricUnit` · `betterDirection` · `additivity` | the Metric's own slots | how a metric is computed, in what unit, which way is better, whether it sums |
 | `crmSystem` · `crmObjectType` · `dealOutcome` · `dealStageClass` · `stageSlot` · `acquisitionChannel` · `conversionPointType` · `searchIntent` | the CRM seam | the few closed lists the pipeline slots need; `acquisitionChannel` includes `ai_assistant` |
 | `timeGrain` · `aggregationBasis` · `dataState` · `lifecycleStageClass` · `forecastCategory` · `recordOrigin` · `valuePeriod` | extension slots | marked `xeo:termStatus "extension"` |
