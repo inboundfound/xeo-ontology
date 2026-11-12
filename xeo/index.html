@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>XEO — the xEO family ontology (terms)</title>
-<meta name="description" content="Term reference for the XEO ontology: classes, properties, and individuals across the core, visibility, analysis, sales, work and decision modules.">
+<meta name="description" content="Term reference for the XEO ontology: classes, properties, and individuals across the core, visibility, analysis, sales, attribution, work and decision modules.">
 <link rel="alternate" type="text/turtle" href="xeo-core.ttl">
 <style>
 :root { color-scheme: light dark; --bg:#f7f5ef; --surface:#fffdf8; --text:#17181c;
@@ -66,11 +66,13 @@ not something every implementation is expected to support. A term marked
 <code>xeo-visibility</code> (AI answers, prompts, mentions, citations) ·
 <code>xeo-analysis</code> (graph algorithms and what they computed) ·
 <code>xeo-sales</code> (CRM records and pipeline) ·
+<code>xeo-attribution</code> (touches, journeys, revenue, spend, attribution models; <code>xeo-attribution-sales</code> bridges it to sales) ·
 <code>xeo-work</code> (clients, contracts, projects, campaigns, objectives, targets) ·
 <code>xeo-decision</code> (gaps, diagnostics, tactics, recommendations, and the practices that govern them) ·
 <code>xeo-align</code> (schema.org / PROV-O / SKOS bridges). Machine-readable Turtle:
 <a href="xeo-core.ttl">core</a>, <a href="xeo-visibility.ttl">visibility</a>,
 <a href="xeo-analysis.ttl">analysis</a>, <a href="xeo-sales.ttl">sales</a>,
+<a href="xeo-attribution.ttl">attribution</a>, <a href="xeo-attribution-sales.ttl">attribution-sales</a>,
 <a href="xeo-work.ttl">work</a>, <a href="xeo-decision.ttl">decision</a>,
 <a href="xeo-align.ttl">align</a>;
 reference values <a href="xeo-schemes.ttl">schemes</a> (<a href="schemes.json">JSON</a>);
@@ -78,7 +80,7 @@ vendor mappings <a href="https://github.com/inboundfound/xeo-ontology/tree/main/
 JSON-LD <a href="context.jsonld">context</a>; Neo4j
 <a href="neo4j-profile.json">profile</a> and <a href="context.neo4j.jsonld">context</a>;
 SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
-<h2 id="classes">Classes <span class="n">50</span></h2>
+<h2 id="classes">Classes <span class="n">66</span></h2>
 <section id="AlgorithmRun" class="term">
   <h3>Algorithm Run <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-analysis</span></h3>
   <code class="iri">xeo:AlgorithmRun</code>
@@ -91,11 +93,41 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>An assistant that answers a person in its own interface, with or without web search and citations: ChatGPT, Perplexity, Claude, and multi-turn agents and voice surfaces acting for a user (ConversationalAgent until 0.7). The AEO surface.</p>
   <dl><div class="row"><dt>subclass of</dt><dd><a href="#Engine">xeo:Engine</a></dd></div></dl>
 </section>
+<section id="AttributedCredit" class="term">
+  <h3>Attributed Credit <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:AttributedCredit</code>
+  <p>One touch&#x27;s credit for one conversion under one model: creditedTouchpoint, creditFor, usesAttributionModel, creditShare, and attributedRevenue and attributedConversions where they apply. The credits of one conversion under one model sum to 1 (or, for full_credit_each, each is 1).</p>
+  
+</section>
+<section id="AttributionModel" class="term">
+  <h3>Attribution Model <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:AttributionModel</code>
+  <p>A rule for giving conversions&#x27; credit to touches, described by its structure, not its name: creditRule, its CreditAnchors (positions and weights), lookbackWindow, the touch types eligible, deduplicationRule, dateBasis and revenueBasis. Vendor names such as &#x27;U-shaped&#x27; are mapped in mappings/, not trusted: two vendors&#x27; U-shaped can put the remaining credit on different touches. A rule, so a norm; a changed rule is a new AttributionModel.</p>
+  
+</section>
+<section id="AttributionRollup" class="term">
+  <h3>Attribution Rollup <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:AttributionRollup</code>
+  <p>Credited totals for one channel, campaign, ad set or ad over one window under one model: attributedRevenue and attributedConversions, with periodStart, periodEnd, usesAttributionModel and method. A MetricReading of an attribution Metric. The graph keeps rollups; the per-touch credits may live in the column store.</p>
+  <dl><div class="row"><dt>subclass of</dt><dd><a href="#MetricReading">xeo:MetricReading</a></dd></div></dl>
+</section>
+<section id="BookedMeeting" class="term">
+  <h3>Booked Meeting <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:BookedMeeting</code>
+  <p>A meeting booked through a scheduler or by a salesperson: a kind of ConversionEvent. Its outcome (held, no-show) is callOutcome.</p>
+  <dl><div class="row"><dt>subclass of</dt><dd><a href="#ConversionEvent">xeo:ConversionEvent</a></dd></div></dl>
+</section>
 <section id="Brand" class="term">
   <h3>Brand <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-visibility</span></h3>
   <code class="iri">xeo:Brand</code>
   <p>A named market identity that engines may mention, cite, or recommend. Distinct from Website: a brand can be visible on the whole web, not only its own origin.</p>
   <dl><div class="row"><dt>closeMatch</dt><dd><a href="https://schema.org/Brand" class="ext">schema:Brand</a></dd></div></dl>
+</section>
+<section id="Call" class="term">
+  <h3>Call <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:Call</code>
+  <p>A phone call that happened: a kind of ConversionEvent, captured by a call-tracking system. Carries occurredAt and, once judged, callOutcome.</p>
+  <dl><div class="row"><dt>subclass of</dt><dd><a href="#ConversionEvent">xeo:ConversionEvent</a></dd></div></dl>
 </section>
 <section id="Campaign" class="term">
   <h3>Campaign <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-work</span></h3>
@@ -108,6 +140,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <code class="iri">xeo:Capability</code>
   <p>A lever or strength a party can bring to bear (content, technical, PR, brand, ...). The unit of the scope gate: a Tactic is in reach only when every Capability it requires is approved. Specific capabilities are instances, not subclasses.</p>
   
+</section>
+<section id="Chargeback" class="term">
+  <h3>Chargeback <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:Chargeback</code>
+  <p>A payment reversed by the buyer&#x27;s bank against an Order (refundsOrder). Carries refundedAmount. Its grounding is provisional: chargeback records differ most between processors.</p>
+  <dl><div class="row"><dt>subclass of</dt><dd><a href="#RevenueEvent">xeo:RevenueEvent</a></dd></div></dl>
 </section>
 <section id="Consent" class="term">
   <h3>Consent <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
@@ -132,6 +170,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <code class="iri">xeo:Crawl</code>
   <p>One crawl run over one Website: time-bounded, agent-attributed, immutable once finished.</p>
   <dl><div class="row"><dt>subclass of</dt><dd><a href="http://www.w3.org/ns/prov#Activity" class="ext">prov:Activity</a></dd></div></dl>
+</section>
+<section id="CreditAnchor" class="term">
+  <h3>Credit Anchor <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:CreditAnchor</code>
+  <p>One fixed position a position-based model gives a share to, and the share: anchorPosition and anchorWeight. A U-shaped model has two (first_touch 0.4, lead_created 0.4); the rest is spread by the model&#x27;s rule.</p>
+  
 </section>
 <section id="Diagnostic" class="term">
   <h3>Diagnostic <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-decision</span></h3>
@@ -199,6 +243,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>A search engine&#x27;s generated answer on its own results page: Google&#x27;s AI Overviews and AI Mode, Bing&#x27;s generated answers. Tied to the SearchEngine it appears on (shownOnSearchEngine). The GEO surface. Was GenerativeEngine until 0.7.</p>
   <dl><div class="row"><dt>subclass of</dt><dd><a href="#Engine">xeo:Engine</a></dd></div></dl>
 </section>
+<section id="IdentityLink" class="term">
+  <h3>Identity Link <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:IdentityLink</code>
+  <p>The claim that an identifier (a cookie id, a device id, an email hash, a click id, an IP address) belongs to a Person or Organization. Carries linkedIdentifier, identityResolvesTo, identityMethod and confidence. A derivation, because two resolvers can link the same identifier differently.</p>
+  
+</section>
 <section id="InboundReference" class="term">
   <h3>Inbound Reference <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:InboundReference</code>
@@ -210,6 +260,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <code class="iri">xeo:Intervention</code>
   <p>A category of tactic in a controlled vocabulary you bring. A skos:Concept, so a whole intervention taxonomy slots in without touching the ontology.</p>
   <dl><div class="row"><dt>subclass of</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div></dl>
+</section>
+<section id="Journey" class="term">
+  <h3>Journey <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:Journey</code>
+  <p>The ordered Touchpoints of one Person or Organization (journeyOf) leading to their conversions. A derivation: stitching touches to one party is a resolution, so it carries method, and the IdentityLinks it used. Account-level journeys (an Organization&#x27;s) and person-level ones are both journeys.</p>
+  
 </section>
 <section id="LLMResponse" class="term">
   <h3>LLM Response <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-visibility</span></h3>
@@ -247,6 +303,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>What a Campaign intends to move: an operator-written statement in prose (carried verbatim — the recommendation agent reads it as the goal), a resultsWindowDays every target is measured over, and one or more MetricTargets of which exactly one isPrimary. An intent set at creation. A campaign has one reporting horizon, distinct from the Project&#x27;s work window: a two-month engagement can carry a six-month results window. The window starts on resultsWindowStart, and the objective-level result is one objectiveReading per target over the campaign&#x27;s deduplicated scope, never a sum of Outcomes.</p>
   
 </section>
+<section id="Order" class="term">
+  <h3>Order <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:Order</code>
+  <p>A purchase placed: what was bought, for how much, before payment settles. Carries grossAmount, discountAmount, taxAmount, shippingAmount and, once paid, paidAmount.</p>
+  <dl><div class="row"><dt>subclass of</dt><dd><a href="#RevenueEvent">xeo:RevenueEvent</a></dd></div></dl>
+</section>
 <section id="Organization" class="term">
   <h3>Organization <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:Organization</code>
@@ -264,6 +326,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <code class="iri">xeo:OwnerChange</code>
   <p>A CRM record being reassigned from one owner to another: happened at a time, immutable once recorded. Carries crmRecordRef, ownerRef (the owner it was assigned to), occurredAt, and method saying how the row was obtained, as on a StageTransition. One row per reassignment. Read from the CRM&#x27;s history, so every CRM can fill it and none states it as a field.</p>
   <dl><div class="row"><dt>canonical store</dt><dd>bigquery</dd></div></dl>
+</section>
+<section id="Payment" class="term">
+  <h3>Payment <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:Payment</code>
+  <p>Money received against an Order or a Subscription. Carries paidAmount.</p>
+  <dl><div class="row"><dt>subclass of</dt><dd><a href="#RevenueEvent">xeo:RevenueEvent</a></dd></div></dl>
 </section>
 <section id="Person" class="term">
   <h3>Person <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-core</span></h3>
@@ -307,6 +375,18 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>The labeled claim the whole chain exists to produce: deploy this Tactic to close this Gap, supported by these Experiments, at a given priority. An interpretation — carries method, confidence, and who/what issued it.</p>
   
 </section>
+<section id="Refund" class="term">
+  <h3>Refund <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:Refund</code>
+  <p>Money returned to the buyer against an Order (refundsOrder). Carries refundedAmount.</p>
+  <dl><div class="row"><dt>subclass of</dt><dd><a href="#RevenueEvent">xeo:RevenueEvent</a></dd></div></dl>
+</section>
+<section id="RevenueEvent" class="term">
+  <h3>Revenue Event <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:RevenueEvent</code>
+  <p>Money moving at a time, recorded by a store or a payment processor: the parent of Order, Payment, Refund and Chargeback. Immutable once recorded. Carries occurredAt, currencyCode, the amounts that apply, revenueSubject and, where known, customerStatus.</p>
+  
+</section>
 <section id="SearchEngine" class="term">
   <h3>Search Engine <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:SearchEngine</code>
@@ -331,6 +411,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>One observation of a search results page for a Term at a moment, for a stated engine, locale, and device.</p>
   <dl><div class="row"><dt>subclass of</dt><dd><a href="http://www.w3.org/ns/prov#Entity" class="ext">prov:Entity</a></dd></div></dl>
 </section>
+<section id="SpendRollup" class="term">
+  <h3>Spend Rollup <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:SpendRollup</code>
+  <p>What an ad platform reports for one campaign, ad set or ad (spendLevel and its pointer) over one window: spendAmount in currencyCode, impressions and clicks, with periodStart, periodEnd and source. The column store keeps the daily rows; the graph keeps windowed rollups.</p>
+  <dl><div class="row"><dt>grounded in</dt><dd>The ad platform&#x27;s or store&#x27;s reporting API contract (per-vendor, mapped in mappings/)</dd></div></dl>
+</section>
 <section id="Stage" class="term">
   <h3>Stage <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:Stage</code>
@@ -342,6 +428,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <code class="iri">xeo:StageTransition</code>
   <p>A CRM record entering a stage: happened at a time, immutable once recorded. Identified by crmRecordRef, stageSlot, toStageRef and enteredAt. One row per entry, and a record that returns to a stage enters it again as a new row. Carries fromStageRef where the previous stage is known, exitedAt once it has left, amountAtTransition, datasetUri, and method saying how the row was obtained: vendor-history (the CRM&#x27;s own history rows), vendor-calculated-property (a per-stage entry timestamp the CRM maintains), or snapshot-diff (two reads compared). High-cardinality, so it lives in the column store and the graph holds rollups. A calculated property that is cleared when a record moves backwards, or filled when it skips a stage, is not a record of what happened and never fills this.</p>
   <dl><div class="row"><dt>canonical store</dt><dd>bigquery</dd></div></dl>
+</section>
+<section id="Subscription" class="term">
+  <h3>Subscription <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:Subscription</code>
+  <p>An agreement to pay a recurringValue every billing period (billingInterval and billingIntervalCount), from a start date until cancelled. Its Payments are RevenueEvents.</p>
+  
 </section>
 <section id="Tactic" class="term">
   <h3>Tactic <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-decision</span></h3>
@@ -367,6 +459,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>A named grouping of Terms and/or URLs produced by a clustering or labeling process. Site-scoped. Assignments (inTopic for a Term, about for a URL or Prompt) carry method, model, and confidence.</p>
   <dl><div class="row"><dt>subclass of</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div></dl>
 </section>
+<section id="Touchpoint" class="term">
+  <h3>Touchpoint <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:Touchpoint</code>
+  <p>One interaction a person or organization had with your marketing at a time: an ad click or view, a visit, an email or an email open, a text message, a call, a form, a meeting. Immutable once recorded. Carries touchType, occurredAt, touchChannel, and what the source gives: the UTM fields, clickIdentifier, adCampaignRef, adSetRef, adRef, referringPlatform, touchLandingUrl. Belongs to a Journey.</p>
+  
+</section>
 <section id="URL" class="term">
   <h3>URL <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:URL</code>
@@ -379,7 +477,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>A site under observation, identified by its origin. The tenancy scope for URLs, crawls, and topics.</p>
   <dl><div class="row"><dt>closeMatch</dt><dd><a href="https://schema.org/WebSite" class="ext">schema:WebSite</a></dd></div><div class="row"><dt>grounded in</dt><dd>WHATWG URL Standard (origin)</dd></div></dl>
 </section>
-<h2 id="object-properties">Object properties <span class="n">121</span></h2>
+<h2 id="object-properties">Object properties <span class="n">132</span></h2>
 <section id="about" class="term">
   <h3>about <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:about</code>
@@ -596,6 +694,18 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>A page inside the campaign&#x27;s cluster. May carry a priority flag marking the pages the campaign is really about.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Campaign">xeo:Campaign</a></dd></div><div class="row"><dt>range</dt><dd><a href="#URL">xeo:URL</a></dd></div></dl>
 </section>
+<section id="creditFor" class="term">
+  <h3>credit for <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:creditFor</code>
+  <p>The conversion or revenue event an AttributedCredit is a share of.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#AttributedCredit">xeo:AttributedCredit</a></dd></div><div class="row"><dt>expected to point at</dt><dd><a href="#ConversionEvent">xeo:ConversionEvent</a> · <a href="#RevenueEvent">xeo:RevenueEvent</a></dd></div></dl>
+</section>
+<section id="creditedTouchpoint" class="term">
+  <h3>credited touchpoint <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:creditedTouchpoint</code>
+  <p>The Touchpoint an AttributedCredit credits.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#AttributedCredit">xeo:AttributedCredit</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Touchpoint">xeo:Touchpoint</a></dd></div></dl>
+</section>
 <section id="dataState" class="term">
   <h3>data state <span class="layer" style="--h:#38A169">observation</span> <span class="status">extension</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:dataState</code>
@@ -698,6 +808,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>A crawl run over this Website.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Website">xeo:Website</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Crawl">xeo:Crawl</a></dd></div></dl>
 </section>
+<section id="hasCreditAnchor" class="term">
+  <h3>has credit anchor <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:hasCreditAnchor</code>
+  <p>A CreditAnchor of this AttributionModel.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#AttributionModel">xeo:AttributionModel</a></dd></div><div class="row"><dt>range</dt><dd><a href="#CreditAnchor">xeo:CreditAnchor</a></dd></div></dl>
+</section>
 <section id="hasObjective" class="term">
   <h3>has objective <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:hasObjective</code>
@@ -746,6 +862,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>The objective&#x27;s measurable targets. Non-empty; exactly one target isPrimary — what the recommendation agent optimises for. The rest are the secondary metrics an impact-radius check widens to.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Objective">xeo:Objective</a></dd></div><div class="row"><dt>range</dt><dd><a href="#MetricTarget">xeo:MetricTarget</a></dd></div></dl>
 </section>
+<section id="hasTouchpoint" class="term">
+  <h3>has touchpoint <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:hasTouchpoint</code>
+  <p>A Touchpoint stitched into this Journey.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Journey">xeo:Journey</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Touchpoint">xeo:Touchpoint</a></dd></div></dl>
+</section>
 <section id="hasWebsite" class="term">
   <h3>has website <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-visibility</span></h3>
   <code class="iri">xeo:hasWebsite</code>
@@ -757,6 +879,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <code class="iri">xeo:holdsCapability</code>
   <p>A Capability this Organization is able to bring: the lever exists in this team. A third question beside the two the scope gate already asks. holdsCapability says the party can do it; approved says the lever is cleared for this engagement; inScope says the contract covers it.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Organization">xeo:Organization</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Capability">xeo:Capability</a></dd></div></dl>
+</section>
+<section id="identityResolvesTo" class="term">
+  <h3>identity resolves to <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:identityResolvesTo</code>
+  <p>The Person or Organization an IdentityLink says the identifier belongs to.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#IdentityLink">xeo:IdentityLink</a></dd></div><div class="row"><dt>expected to point at</dt><dd><a href="#Organization">xeo:Organization</a> · <a href="#Person">xeo:Person</a></dd></div></dl>
 </section>
 <section id="implementedAs" class="term">
   <h3>implemented as <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-decision</span></h3>
@@ -805,6 +933,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <code class="iri">xeo:issuedFor</code>
   <p>The campaign a recommendation was issued into. Its execution lifecycle (xeo:status), effortEstimate and execution live here: a recommendation is a decision-tier call until it lands in a campaign, and delivery state from then on.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Recommendation">xeo:Recommendation</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Campaign">xeo:Campaign</a></dd></div></dl>
+</section>
+<section id="journeyOf" class="term">
+  <h3>journey of <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:journeyOf</code>
+  <p>The Person or Organization a Journey belongs to. One per Journey.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Journey">xeo:Journey</a></dd></div><div class="row"><dt>expected to point at</dt><dd><a href="#Organization">xeo:Organization</a> · <a href="#Person">xeo:Person</a></dd></div></dl>
 </section>
 <section id="learnedFrom" class="term">
   <h3>learned from <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-decision</span></h3>
@@ -968,6 +1102,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>From a system&#x27;s record of a party to the canonical Person or Organization it represents: a HubSpot contact or company, a Hyros lead, a SegMetrics visitor. Many records may refer to one canonical node; a record refers to one. A derivation, because matching a record to a real party is a resolution two resolvers can make differently. It carries method, which says how the match was made: system-key:&lt;key&gt; where the systems share a key (a vendor id carried across an integration, the strongest match and as good as recorded), email-match or name-match where values were compared, manual where a person linked them; and confidence where the method reports one. Domain left open: the record is a vendor-labelled node, and a vendor label is never an XEO term. Range left open across Person and Organization.</p>
   <dl><div class="row"><dt>expected to point at</dt><dd><a href="#Organization">xeo:Organization</a> · <a href="#Person">xeo:Person</a></dd></div></dl>
 </section>
+<section id="refundsOrder" class="term">
+  <h3>refunds order <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:refundsOrder</code>
+  <p>The Order a Refund or Chargeback reverses, in whole or part.</p>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#Chargeback">xeo:Chargeback</a> · <a href="#Refund">xeo:Refund</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Order">xeo:Order</a></dd></div><div class="row"><dt>grounded in</dt><dd>The store&#x27;s or payment processor&#x27;s order and payment API contract (per-vendor)</dd></div></dl>
+</section>
 <section id="relatedTerm" class="term">
   <h3>related term <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:relatedTerm</code>
@@ -1003,6 +1143,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <code class="iri">xeo:reveals</code>
   <p>A diagnostic asserts this gap. Carries the assessment method.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Diagnostic">xeo:Diagnostic</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Gap">xeo:Gap</a></dd></div></dl>
+</section>
+<section id="revenueSubject" class="term">
+  <h3>revenue subject <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:revenueSubject</code>
+  <p>The Person or Organization who paid, or was refunded. One per RevenueEvent or Subscription.</p>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#RevenueEvent">xeo:RevenueEvent</a> · <a href="#Subscription">xeo:Subscription</a></dd></div><div class="row"><dt>expected to point at</dt><dd><a href="#Organization">xeo:Organization</a> · <a href="#Person">xeo:Person</a></dd></div><div class="row"><dt>grounded in</dt><dd>The store&#x27;s or payment processor&#x27;s order and payment API contract (per-vendor)</dd></div></dl>
 </section>
 <section id="runOf" class="term">
   <h3>run of <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-decision</span></h3>
@@ -1076,6 +1222,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>Which timestamp places a record in a window: recordCreatedAt or dealClosedAt for a deal, capturedAt for a sampled answer. Part of a Metric&#x27;s identity: deals counted by create date and by close date are two metrics. Absent where the source places records itself and offers no choice.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Metric">xeo:Metric</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property" class="ext">http://www.w3.org/1999/02/22-rdf-syntax-ns#Property</a></dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
 </section>
+<section id="touchLandingUrl" class="term">
+  <h3>touch landing URL <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:touchLandingUrl</code>
+  <p>The page the Touchpoint landed on, where it was a visit or a click.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Touchpoint">xeo:Touchpoint</a></dd></div><div class="row"><dt>range</dt><dd><a href="#URL">xeo:URL</a></dd></div><div class="row"><dt>grounded in</dt><dd>The landing URL&#x27;s query string, by the UTM convention (utm_source, utm_medium, utm_campaign, utm_term, utm_content)</dd></div></dl>
+</section>
 <section id="tracksPrompt" class="term">
   <h3>tracks prompt <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-visibility</span></h3>
   <code class="iri">xeo:tracksPrompt</code>
@@ -1094,11 +1246,23 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>What a reading of this Metric is a number of, as a slotted-in concept (count, ratio, rank, currency, seconds, days, score_0_100 — xeos:metricUnit is a published reference filling). Exactly one per Metric. A ratio is a 0 to 1 quotient, never a percentage. A rank is 1-based with 1 best. A currency reading carries currencyCode. Distinct from magnitudeUnit, which names the unit of a Gap&#x27;s size.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Metric">xeo:Metric</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
 </section>
+<section id="usesAttributionModel" class="term">
+  <h3>uses attribution model <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:usesAttributionModel</code>
+  <p>The AttributionModel an attributed number was computed under. Required on every AttributedCredit and AttributionRollup (a shape checks it): a credited number without its model cannot be read or compared.</p>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#AttributedCredit">xeo:AttributedCredit</a> · <a href="#AttributionRollup">xeo:AttributionRollup</a></dd></div><div class="row"><dt>range</dt><dd><a href="#AttributionModel">xeo:AttributionModel</a></dd></div></dl>
+</section>
 <section id="verdict" class="term">
   <h3>verdict <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:verdict</code>
   <p>The operator&#x27;s disposition on a diagnosed gap, as a slotted-in concept (attack, fix_first, defend, hold, ignore — see xeo-schemes). Distinct from gapType, which says what KIND of deficit it is; the verdict says what we intend to do about it. Carried by one finding per topic per analysis: it is a property of the topic&#x27;s scoreboard row, not of every finding beneath it. The value vocabulary is subject-specific: on a Feedback the verdict is the operator&#x27;s judgment of the claim (accepted, rejected, needs_work — xeos:feedbackVerdict), and the domain is left open for that reason.</p>
   <dl><div class="row"><dt>expected on</dt><dd><a href="#Feedback">xeo:Feedback</a> · <a href="#Gap">xeo:Gap</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div></dl>
+</section>
+<section id="viaTouchpoint" class="term">
+  <h3>via touchpoint <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:viaTouchpoint</code>
+  <p>The Touchpoint a ConversionEvent came through, where it is known: matched by click id, session or time. A derivation carrying method.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#ConversionEvent">xeo:ConversionEvent</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Touchpoint">xeo:Touchpoint</a></dd></div></dl>
 </section>
 <section id="visibilityFor" class="term">
   <h3>visibility for <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-visibility</span></h3>
@@ -1106,12 +1270,30 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>Windowed rollup of response-level observations for a (prompt, brand) pair: mentionRate, citationRate, responses, periodStart, periodEnd, source, datasetUri. Mirrors the ranksFor rollup pattern — raw responses are the authoritative record; this is the traversal-friendly projection.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Prompt">xeo:Prompt</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Brand">xeo:Brand</a></dd></div><div class="row"><dt>grounded in</dt><dd>The captured LLMResponses the rollup window covers: their text and citation annotations (per-provider API contract)</dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
 </section>
-<h2 id="datatype-properties">Datatype properties <span class="n">152</span></h2>
+<h2 id="datatype-properties">Datatype properties <span class="n">191</span></h2>
 <section id="absoluteChange" class="term">
   <h3>absolute change <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:absoluteChange</code>
   <p>The result reading&#x27;s value minus the baseline reading&#x27;s, in the Metric&#x27;s unit. For a ratio this is points: 0.02 is two points of clickthrough rate, not two percent of it. Signed and raw: a rank that went from 6 to 3 is -3, and whether that is an improvement is read through the Metric&#x27;s betterDirection. Never summed across Outcomes: an Objective is read from one objectiveReading over its whole scope, because overlapping Outcomes would count the same clicks twice.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Outcome">xeo:Outcome</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
+</section>
+<section id="adCampaignRef" class="term">
+  <h3>ad campaign reference <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:adCampaignRef</code>
+  <p>Identity-key pointer to an ad campaign in the ad platform, written platform:accountId:id. A pointer and nothing more: the ad platform&#x27;s own objects are not mirrored. Carried by a Touchpoint and a SpendRollup. Not a CRM marketing campaign (marketingCampaignRef, sales) and not an xeo:Campaign (work).</p>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#SpendRollup">xeo:SpendRollup</a> · <a href="#Touchpoint">xeo:Touchpoint</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
+<section id="adRef" class="term">
+  <h3>ad reference <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:adRef</code>
+  <p>Identity-key pointer to one ad in the ad platform, written platform:accountId:id. A pointer and nothing more: the ad platform&#x27;s own objects are not mirrored. Carried by a Touchpoint and a SpendRollup. Not a CRM marketing campaign (marketingCampaignRef, sales) and not an xeo:Campaign (work).</p>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#SpendRollup">xeo:SpendRollup</a> · <a href="#Touchpoint">xeo:Touchpoint</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
+<section id="adSetRef" class="term">
+  <h3>ad set reference <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:adSetRef</code>
+  <p>Identity-key pointer to an ad set or ad group in the ad platform, written platform:accountId:id. A pointer and nothing more: the ad platform&#x27;s own objects are not mirrored. Carried by a Touchpoint and a SpendRollup. Not a CRM marketing campaign (marketingCampaignRef, sales) and not an xeo:Campaign (work).</p>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#SpendRollup">xeo:SpendRollup</a> · <a href="#Touchpoint">xeo:Touchpoint</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
 <section id="address" class="term">
   <h3>address <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-core</span></h3>
@@ -1137,11 +1319,29 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>A dealAmount converted into the account&#x27;s reporting currency. A derivation: the result depends on the rate, the date the rate was taken on and where it came from, and method states all three. CRMs differ on which rate they use for an open deal and a closed one, so totals for the same deals differ between systems.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
+<section id="anchorPosition" class="term">
+  <h3>anchor position <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:anchorPosition</code>
+  <p>Which touch an anchor is, as a code from a slotted-in scheme (first_touch, lead_created, qualified, opportunity_created, customer_close, last_touch — xeos:anchorPosition is a published reference filling).</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#CreditAnchor">xeo:CreditAnchor</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
+<section id="anchorStageRef" class="term">
+  <h3>anchor stage reference <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-attribution-sales</span></h3>
+  <code class="iri">xeo:anchorStageRef</code>
+  <p>The tenant&#x27;s stage id (as stageRef holds it) that marks a CreditAnchor&#x27;s position: which stage counts as opportunity_created or qualified in this CRM. Per tenant, never a published value.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#CreditAnchor">xeo:CreditAnchor</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
 <section id="anchorText" class="term">
   <h3>anchor text <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:anchorText</code>
   <p>The text content of an observed hyperlink. Carried on linksTo.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>WHATWG HTML §4.5.1</dd></div></dl>
+</section>
+<section id="anchorWeight" class="term">
+  <h3>anchor weight <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:anchorWeight</code>
+  <p>The share of credit an anchor receives, from 0 to 1. The anchors of one model sum to 1 or less.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#CreditAnchor">xeo:CreditAnchor</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div></dl>
 </section>
 <section id="approved" class="term">
   <h3>approved <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-decision</span></h3>
@@ -1154,6 +1354,18 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <code class="iri">xeo:assignedAt</code>
   <p>When a derivation edge was written (e.g. a topic assignment). Carried on inTopic alongside method, model and confidence.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div></dl>
+</section>
+<section id="attributedConversions" class="term">
+  <h3>attributed conversions <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:attributedConversions</code>
+  <p>Conversions credited under one model: on an AttributedCredit, its share (equal to creditShare); on an AttributionRollup, the sum, so a fraction is normal.</p>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#AttributedCredit">xeo:AttributedCredit</a> · <a href="#AttributionRollup">xeo:AttributionRollup</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div></dl>
+</section>
+<section id="attributedRevenue" class="term">
+  <h3>attributed revenue <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:attributedRevenue</code>
+  <p>Revenue credited under one model: on an AttributedCredit, its share of the conversion&#x27;s revenue (per the model&#x27;s revenueBasis); on an AttributionRollup, the sum. In currencyCode.</p>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#AttributedCredit">xeo:AttributedCredit</a> · <a href="#AttributionRollup">xeo:AttributionRollup</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div></dl>
 </section>
 <section id="avgPosition" class="term">
   <h3>average position <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
@@ -1197,6 +1409,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>&#x27;monthly&#x27; or &#x27;quarterly&#x27; — the period a retainer&#x27;s quota resets over. Set for retainer, absent for one-off.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Project">xeo:Project</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
+<section id="callOutcome" class="term">
+  <h3>call outcome <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:callOutcome</code>
+  <p>What a call or meeting came to, as a code from a slotted-in scheme (qualified, unqualified, cancelled, no_show, good_lead, not_a_lead, previously_marked_good_lead — xeos:callOutcome is a published reference filling). Someone judged it, after the fact, so an interpretation; outcomeJudgedBy says who.</p>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#BookedMeeting">xeo:BookedMeeting</a> · <a href="#Call">xeo:Call</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
 <section id="capturedAt" class="term">
   <h3>captured at <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:capturedAt</code>
@@ -1214,6 +1432,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <code class="iri">xeo:citationRate</code>
   <p>Share of captured responses in the window that cite the brand&#x27;s owned URLs. Cited and mentioned diverge — a page can ground an answer that names someone else.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div></dl>
+</section>
+<section id="clickIdentifier" class="term">
+  <h3>click identifier <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:clickIdentifier</code>
+  <p>The ad platform&#x27;s click id carried on the landing URL, written parameter=value (gclid=..., fbclid=..., msclkid=...), so the platform is known. The strongest key from a touch to the ad that caused it.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Touchpoint">xeo:Touchpoint</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>The ad platform&#x27;s click-id URL parameter (gclid, fbclid, msclkid, ...)</dd></div></dl>
 </section>
 <section id="clicks" class="term">
   <h3>clicks <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
@@ -1287,6 +1511,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>The kind of mechanism a ConversionPoint is, as a code from a slotted-in scheme (cta, lead_form, gated_asset, meeting_booker, chat — xeos:conversionPointType is a published reference filling). One per ConversionPoint. Says with a value what the CallToAction, LeadCaptureForm and GatedAsset subclasses said with a class, so a new kind of mechanism is a new code and not a new term.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#ConversionPoint">xeo:ConversionPoint</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
+<section id="conversionRole" class="term">
+  <h3>conversion role <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:conversionRole</code>
+  <p>What a conversion counts as for attribution, as a code from a slotted-in scheme (lead, qualified_lead, opportunity, sale, other — xeos:conversionRole is a published reference filling). The tenant&#x27;s mapping from its own events, so an interpretation.</p>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#ConversionEvent">xeo:ConversionEvent</a> · <a href="#RevenueEvent">xeo:RevenueEvent</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
 <section id="conversionWindow" class="term">
   <h3>conversion window <span class="layer" style="--h:#D69E2E">norm</span> <span class="status">extension</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:conversionWindow</code>
@@ -1316,6 +1546,24 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <code class="iri">xeo:crawler</code>
   <p>The agent that ran a Crawl: its product token and version as sent in User-Agent, or the tool&#x27;s name and version. Carried on the Crawl. Without it two crawls of one site are not comparable, because rendering, depth limits and counting rules differ by tool.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>RFC 9110 §10.1.5 (User-Agent)</dd></div></dl>
+</section>
+<section id="creditForDeal" class="term">
+  <h3>credit for deal <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-attribution-sales</span></h3>
+  <code class="iri">xeo:creditForDeal</code>
+  <p>The crmRecordRef of the deal an AttributedCredit is a share of, where the credited conversion is a CRM deal rather than a ConversionEvent or RevenueEvent.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#AttributedCredit">xeo:AttributedCredit</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
+<section id="creditRule" class="term">
+  <h3>credit rule <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:creditRule</code>
+  <p>How credit is split, as a code from a slotted-in scheme (first_touch, last_touch, linear, time_decay, position_based, full_credit_each, algorithmic, custom — xeos:creditRule is a published reference filling). full_credit_each is what vendors report as &#x27;influenced&#x27;. One per AttributionModel.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#AttributionModel">xeo:AttributionModel</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
+<section id="creditShare" class="term">
+  <h3>credit share <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:creditShare</code>
+  <p>The share of the conversion this credit carries, from 0 to 1. Replaces campaignInfluenceShare (removed in 0.7).</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#AttributedCredit">xeo:AttributedCredit</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div></dl>
 </section>
 <section id="crmObjectType" class="term">
   <h3>CRM object type <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-sales</span></h3>
@@ -1353,11 +1601,23 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>The ISO 4217 code (three upper-case letters) of the amount it travels with: a dealAmount, or the value of a currency MetricReading. Where a CRM runs in one currency and has no field for it, the account&#x27;s currency is stated here. A vendor&#x27;s internal currency id is not a code and is resolved to one first.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>ISO 4217 · the vendor&#x27;s deal object API contract</dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
+<section id="customerStatus" class="term">
+  <h3>customer status <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:customerStatus</code>
+  <p>Whether the buyer was new or repeat at the time of an order or conversion (xeos:customerStatus). A derivation: it depends on how far back the history reaches and how buyers are matched, so it carries method.</p>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#ConversionEvent">xeo:ConversionEvent</a> · <a href="#RevenueEvent">xeo:RevenueEvent</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
 <section id="datasetUri" class="term">
   <h3>dataset URI <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:datasetUri</code>
   <p>Pointer to the authoritative table a windowed rollup was projected from (e.g. a BigQuery table URI). The provenance contract for ranksFor and visibilityFor: the graph keeps the traversable projection, this says where the ground truth lives.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
+<section id="dateBasis" class="term">
+  <h3>date basis <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:dateBasis</code>
+  <p>Which date a credited conversion is counted on: touch_date or conversion_date (xeos:dateBasis). The same credit lands in different months under each.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#AttributionModel">xeo:AttributionModel</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
 <section id="dealAmount" class="term">
   <h3>deal amount <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-sales</span></h3>
@@ -1383,6 +1643,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>The likelihood that one deal will close won, from 0 to 1, as the CRM holds it: inherited from the stage or set by the owner. An interpretation. CRMs store it as a fraction or as a percentage; it is normalized to 0 to 1 here.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
+<section id="deduplicationRule" class="term">
+  <h3>deduplication rule <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:deduplicationRule</code>
+  <p>How repeated touches are collapsed before credit is given, in the model&#x27;s own words (one per channel per day; one per session). Free text: vendors&#x27; rules have no common set yet.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#AttributionModel">xeo:AttributionModel</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
 <section id="degree" class="term">
   <h3>degree <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-analysis</span></h3>
   <code class="iri">xeo:degree</code>
@@ -1407,11 +1673,23 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>The device class a capture was requested for, as a code from a slotted-in scheme (desktop, mobile, tablet — xeos:device is a published reference filling). Carried on a SerpSnapshot. Results differ by device, so it is part of what makes two snapshots comparable.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
+<section id="discountAmount" class="term">
+  <h3>discount amount <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:discountAmount</code>
+  <p>The discount applied, as a positive number, in its currencyCode. Always travels with currencyCode.</p>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#RevenueEvent">xeo:RevenueEvent</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>grounded in</dt><dd>The store&#x27;s or payment processor&#x27;s order and payment API contract (per-vendor)</dd></div></dl>
+</section>
 <section id="durationDays" class="term">
   <h3>duration days <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:durationDays</code>
   <p>Fixed run length of a one-off project. Set for oneoff, absent for retainer.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Project">xeo:Project</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div></dl>
+</section>
+<section id="eligibleTouchType" class="term">
+  <h3>eligible touch type <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:eligibleTouchType</code>
+  <p>A touchType this model gives credit to; one value per type. Absent means every type except email_open.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#AttributionModel">xeo:AttributionModel</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
 <section id="embeddedAt" class="term">
   <h3>embedded at <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-core</span></h3>
@@ -1498,9 +1776,9 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div><div class="row"><dt>grounded in</dt><dd>The crawl records in which the edge was observed (each Crawl&#x27;s own run log)</dd></div></dl>
 </section>
 <section id="firstTouchChannel" class="term">
-  <h3>first-touch channel <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-sales</span></h3>
+  <h3>first-touch channel <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-attribution</span></h3>
   <code class="iri">xeo:firstTouchChannel</code>
-  <p>The acquisition channel of the earliest known interaction the CRM attributes to a record, as a code from a slotted-in scheme (organic_search, referral, ai_assistant, ... — xeos:acquisitionChannel is a published reference filling). A derivation, never an observation: a classifier or a person decided it, so it carries method, either vendor-classifier:&lt;vendor&gt; or manual-entry. One per record. A deal usually inherits it from a contact, by a rule that is the vendor&#x27;s.</p>
+  <p>Since 0.7 a derivation that names its model: method is the AttributionModel or the vendor classifier that chose the touch. The acquisition channel of the earliest known interaction the CRM attributes to a record, as a code from a slotted-in scheme (organic_search, referral, ai_assistant, ... — xeos:acquisitionChannel is a published reference filling). A derivation, never an observation: a classifier or a person decided it, so it carries method, either vendor-classifier:&lt;vendor&gt; or manual-entry. One per record. A deal usually inherits it from a contact, by a rule that is the vendor&#x27;s.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="forecastCategory" class="term">
@@ -1515,6 +1793,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>The tenant&#x27;s identifier of the stage the record left. Absent on the first entry, and where the source reports entries without what came before.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#StageTransition">xeo:StageTransition</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>bigquery</dd></div></dl>
 </section>
+<section id="grossAmount" class="term">
+  <h3>gross amount <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:grossAmount</code>
+  <p>The order&#x27;s total before discounts, in its currencyCode. Always travels with currencyCode.</p>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#RevenueEvent">xeo:RevenueEvent</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>grounded in</dt><dd>The store&#x27;s or payment processor&#x27;s order and payment API contract (per-vendor)</dd></div></dl>
+</section>
 <section id="h1" class="term">
   <h3>h1 <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:h1</code>
@@ -1526,6 +1810,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <code class="iri">xeo:halfLife</code>
   <p>Optional decay window for a Practice whose source is &#x27;claimed&#x27;: how long the assertion is trusted absent supporting Outcomes. Encodes the reality that today&#x27;s answer-engine tactics may not survive the year — a claim nobody&#x27;s experiments confirm ages out on its own.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Practice">xeo:Practice</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#duration" class="ext">xsd:duration</a></dd></div></dl>
+</section>
+<section id="identityMethod" class="term">
+  <h3>identity method <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:identityMethod</code>
+  <p>How an IdentityLink was made, as a code from a slotted-in scheme (login, form_fill, email_match, click_id, fingerprint, ip_to_company, vendor_graph — xeos:identityMethod is a published reference filling). ip_to_company resolves to an Organization only.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#IdentityLink">xeo:IdentityLink</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
 <section id="impressions" class="term">
   <h3>impressions <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
@@ -1564,9 +1854,9 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
 <section id="latestTouchChannel" class="term">
-  <h3>latest-touch channel <span class="layer" style="--h:#805AD5">derivation</span> <span class="status">extension</span><span class="mod">xeo-sales</span></h3>
+  <h3>latest-touch channel <span class="layer" style="--h:#805AD5">derivation</span> <span class="status">extension</span><span class="mod">xeo-attribution</span></h3>
   <code class="iri">xeo:latestTouchChannel</code>
-  <p>The acquisition channel of the most recent known interaction the CRM attributes to a record, as a code from xeos:acquisitionChannel. A derivation carrying method, like firstTouchChannel. One CRM of the seven read keeps it.</p>
+  <p>Since 0.7 a derivation that names its model: method is the AttributionModel or the vendor classifier that chose the touch. The acquisition channel of the most recent known interaction the CRM attributes to a record, as a code from xeos:acquisitionChannel. A derivation carrying method, like firstTouchChannel. One CRM of the seven read keeps it.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
 </section>
 <section id="leadStatus" class="term">
@@ -1587,11 +1877,23 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>Where on the source page an observed hyperlink sits, as a code from a slotted-in scheme (content, navigation, header, footer, sidebar, other — xeos:linkPosition is a published reference filling). A derivation: the crawler classifies it from the markup around the link. Carried on linksTo. It is what separates an editorial link from a template link, which is why role and authority derivations read it.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
+<section id="linkedIdentifier" class="term">
+  <h3>linked identifier <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:linkedIdentifier</code>
+  <p>The identifier an IdentityLink resolves, written type:value (cookie:..., email_sha256:..., ip:...).</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#IdentityLink">xeo:IdentityLink</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>The ad platform&#x27;s or store&#x27;s reporting API contract (per-vendor, mapped in mappings/)</dd></div></dl>
+</section>
 <section id="locale" class="term">
   <h3>locale <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:locale</code>
   <p>The language and region a capture was requested for, as a BCP 47 tag (en-GB, de-DE). Carried on a SerpSnapshot, and on an LLMResponse where the engine takes one. Part of what makes two captures comparable: never pool across locales silently. A finer location (a city, coordinates) is the capturing tool&#x27;s parameter and is not modelled here.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>BCP 47 (RFC 5646)</dd></div></dl>
+</section>
+<section id="lookbackWindow" class="term">
+  <h3>lookback window <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:lookbackWindow</code>
+  <p>How far before a conversion a touch may be and still get credit, as a duration (P30D). Absent means no limit.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#AttributionModel">xeo:AttributionModel</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#duration" class="ext">xsd:duration</a></dd></div></dl>
 </section>
 <section id="lostReason" class="term">
   <h3>lost reason <span class="layer" style="--h:#DD6B20">interpretation</span> <span class="status">extension</span><span class="mod">xeo-sales</span></h3>
@@ -1701,6 +2003,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>The serialized origin (scheme, host, port) that identifies a Website, e.g. https://www.example.com. One per Website.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Website">xeo:Website</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>WHATWG URL Standard (origin serialization)</dd></div></dl>
 </section>
+<section id="outcomeJudgedBy" class="term">
+  <h3>outcome judged by <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:outcomeJudgedBy</code>
+  <p>Who judged a callOutcome: person, rule or ai (xeos:outcomeJudgedBy).</p>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#BookedMeeting">xeo:BookedMeeting</a> · <a href="#Call">xeo:Call</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
 <section id="ownerRef" class="term">
   <h3>owner reference <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-sales</span></h3>
   <code class="iri">xeo:ownerRef</code>
@@ -1712,6 +2020,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <code class="iri">xeo:pageRank</code>
   <p>A node&#x27;s PageRank score over a stated projection: the share of a random walk over the projected edges that comes to rest on it. Carried on the node, typically a URL. Meaningless without the projection it was computed on — internal links only and all links give different numbers — and comparable only within one run. The node&#x27;s computedBy edge or its method says which AlgorithmRun wrote it. This is a score computed on your own graph; it is not any engine&#x27;s ranking signal.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div></dl>
+</section>
+<section id="paidAmount" class="term">
+  <h3>paid amount <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:paidAmount</code>
+  <p>What was actually paid, in its currencyCode. Always travels with currencyCode.</p>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#RevenueEvent">xeo:RevenueEvent</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>grounded in</dt><dd>The store&#x27;s or payment processor&#x27;s order and payment API contract (per-vendor)</dd></div></dl>
 </section>
 <section id="parameters" class="term">
   <h3>parameters <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-analysis</span></h3>
@@ -1767,6 +2081,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>What the algorithm ran on, stated so the subgraph can be rebuilt: which node classes, which relationship types and in which orientation, any weight property, any filter (one websiteId, internal links only, linkPosition = content), and the crawl or window the data was taken from. Free text or a serialized JSON object. The part of a run a score is least meaningful without.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#AlgorithmRun">xeo:AlgorithmRun</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
+<section id="quoteValue" class="term">
+  <h3>quote value <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:quoteValue</code>
+  <p>The value a salesperson quoted on a lead or a call, beside and never added to what was sold: a person&#x27;s estimate, so an interpretation. In the record&#x27;s currencyCode.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div></dl>
+</section>
 <section id="ranAt" class="term">
   <h3>ran at <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-analysis</span></h3>
   <code class="iri">xeo:ranAt</code>
@@ -1804,10 +2124,16 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <dl><div class="row"><dt>domain</dt><dd><a href="#InboundReference">xeo:InboundReference</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>The other site&#x27;s page as a crawl or a backlink index fetched it (WHATWG HTML: the a element, or the page text)</dd></div></dl>
 </section>
 <section id="referringPlatform" class="term">
-  <h3>referring platform <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-sales</span></h3>
+  <h3>referring platform <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-attribution</span></h3>
   <code class="iri">xeo:referringPlatform</code>
-  <p>The host of the platform behind a touch, in lower case (chatgpt.com, perplexity.ai). Says which assistant or site, where the channel says only what kind. A derivation by the same classifier that set the channel. Read beside firstTouchChannel or latestTouchChannel.</p>
-  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
+  <p>The host of the platform behind a touch, in lower case (chatgpt.com, perplexity.ai). Says which assistant or site, where the channel says only what kind. A derivation by the same classifier that set the channel. Read beside touchChannel on a Touchpoint (since 0.7), or beside firstTouchChannel or latestTouchChannel on a record.</p>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#Touchpoint">xeo:Touchpoint</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
+</section>
+<section id="refundedAmount" class="term">
+  <h3>refunded amount <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:refundedAmount</code>
+  <p>The amount returned, as a positive number, in its currencyCode. Always travels with currencyCode.</p>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#RevenueEvent">xeo:RevenueEvent</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>grounded in</dt><dd>The store&#x27;s or payment processor&#x27;s order and payment API contract (per-vendor)</dd></div></dl>
 </section>
 <section id="rel" class="term">
   <h3>rel <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
@@ -1857,6 +2183,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>The first day of the window an Objective&#x27;s targets are read over. The window runs for resultsWindowDays from this day, which is counted. One per Objective. Without it resultsWindowDays is a length with nowhere to start.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Objective">xeo:Objective</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#date" class="ext">xsd:date</a></dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
 </section>
+<section id="revenueBasis" class="term">
+  <h3>revenue basis <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:revenueBasis</code>
+  <p>Which amount is credited: gross, paid or net_of_refunds (xeos:revenueBasis).</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#AttributionModel">xeo:AttributionModel</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
 <section id="robotsMeta" class="term">
   <h3>robots meta <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:robotsMeta</code>
@@ -1875,6 +2207,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>The polarity with which a response speaks of a brand, as a code from a slotted-in scheme (positive, neutral, negative, mixed — xeos:sentiment is a published reference filling). Carried on mentions. Always a derivation: a model or a rule read the text, so the edge carries method, and confidence where the method reports one. A tool&#x27;s proprietary sentiment score is a different derivation with that tool as its method, and does not belong in this slot.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
+<section id="shippingAmount" class="term">
+  <h3>shipping amount <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:shippingAmount</code>
+  <p>The shipping charged, in its currencyCode. Always travels with currencyCode.</p>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#RevenueEvent">xeo:RevenueEvent</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>grounded in</dt><dd>The store&#x27;s or payment processor&#x27;s order and payment API contract (per-vendor)</dd></div></dl>
+</section>
 <section id="similarity" class="term">
   <h3>similarity <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-analysis</span></h3>
   <code class="iri">xeo:similarity</code>
@@ -1886,6 +2224,18 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <code class="iri">xeo:source</code>
   <p>Provenance of an assertion. The value vocabulary is subject-specific. On a Practice: &#x27;authored&#x27; (a human SOP or best-practice — high standing, durable), &#x27;learned&#x27; (earned from the experiment ledger — confidence ratchets with Outcomes), or &#x27;claimed&#x27; (an unproven assertion, e.g. a current answer-engine tactic — ships low-confidence with a halfLife and decays unless experiments promote it); this lets one class hold a firm SOP and a fragile claim without conflating their trust. On a ranksFor or visibilityFor rollup: the data source the window was built from. DOMAIN LEFT OPEN deliberately — rdfs:domain is an entailment rule, not a constraint, so naming xeo:Practice here would silently type every rollup edge carrying a source as a Practice.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
+<section id="spendAmount" class="term">
+  <h3>spend amount <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:spendAmount</code>
+  <p>What was spent over the rollup&#x27;s window, in its currencyCode.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#SpendRollup">xeo:SpendRollup</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>grounded in</dt><dd>The ad platform&#x27;s or store&#x27;s reporting API contract (per-vendor, mapped in mappings/)</dd></div></dl>
+</section>
+<section id="spendLevel" class="term">
+  <h3>spend level <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:spendLevel</code>
+  <p>Which level a SpendRollup is reported at: campaign, ad_set or ad (xeos:spendLevel).</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#SpendRollup">xeo:SpendRollup</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>The ad platform&#x27;s or store&#x27;s reporting API contract (per-vendor, mapped in mappings/)</dd></div></dl>
 </section>
 <section id="stageClass" class="term">
   <h3>stage class <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-sales</span></h3>
@@ -1965,6 +2315,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>The value the metric should reach, interpreted per targetKind. Bounded per metric and kind at the edge — a percentage, a count, a rank and a currency do not share a range. In the Metric&#x27;s unit, a ratio as a 0 to 1 quotient; a currency target also states targetCurrency.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#MetricTarget">xeo:MetricTarget</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div></dl>
 </section>
+<section id="taxAmount" class="term">
+  <h3>tax amount <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:taxAmount</code>
+  <p>The tax charged, in its currencyCode. Always travels with currencyCode.</p>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#RevenueEvent">xeo:RevenueEvent</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>grounded in</dt><dd>The store&#x27;s or payment processor&#x27;s order and payment API contract (per-vendor)</dd></div></dl>
+</section>
 <section id="test" class="term">
   <h3>test <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:test</code>
@@ -1988,6 +2344,48 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <code class="iri">xeo:toStageRef</code>
   <p>The tenant&#x27;s identifier of the stage the record entered. Exactly one per transition.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#StageTransition">xeo:StageTransition</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>bigquery</dd></div></dl>
+</section>
+<section id="touchChannel" class="term">
+  <h3>touch channel <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:touchChannel</code>
+  <p>The acquisition channel of one Touchpoint, as a code from xeos:acquisitionChannel. A derivation: a classifier read the source, medium, referrer or click id and decided, so it carries method naming that classifier (a vendor&#x27;s rule or your own). One per Touchpoint.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Touchpoint">xeo:Touchpoint</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
+<section id="touchType" class="term">
+  <h3>touch type <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:touchType</code>
+  <p>What kind of interaction a Touchpoint was, as a code from a slotted-in scheme (ad_click, ad_view, visit, email, email_open, text_message, call, form, chat, meeting, offline, other — xeos:touchType is a published reference filling). One per Touchpoint. An email_open is not eligible for credit unless a model says so.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Touchpoint">xeo:Touchpoint</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>The ad platform&#x27;s or store&#x27;s reporting API contract (per-vendor, mapped in mappings/)</dd></div></dl>
+</section>
+<section id="utmCampaign" class="term">
+  <h3>UTM campaign <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:utmCampaign</code>
+  <p>utm_campaign: the campaign name as the link&#x27;s author wrote it. As written in the landing URL, unnormalized: what it means is the touchChannel&#x27;s derivation.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Touchpoint">xeo:Touchpoint</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>The landing URL&#x27;s query string, by the UTM convention (utm_source, utm_medium, utm_campaign, utm_term, utm_content)</dd></div></dl>
+</section>
+<section id="utmContent" class="term">
+  <h3>UTM content <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:utmContent</code>
+  <p>utm_content: which ad or link, where the link&#x27;s author set it. As written in the landing URL, unnormalized: what it means is the touchChannel&#x27;s derivation.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Touchpoint">xeo:Touchpoint</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>The landing URL&#x27;s query string, by the UTM convention (utm_source, utm_medium, utm_campaign, utm_term, utm_content)</dd></div></dl>
+</section>
+<section id="utmMedium" class="term">
+  <h3>UTM medium <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:utmMedium</code>
+  <p>utm_medium: the marketing medium as the link&#x27;s author named it (cpc, email). As written in the landing URL, unnormalized: what it means is the touchChannel&#x27;s derivation.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Touchpoint">xeo:Touchpoint</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>The landing URL&#x27;s query string, by the UTM convention (utm_source, utm_medium, utm_campaign, utm_term, utm_content)</dd></div></dl>
+</section>
+<section id="utmSource" class="term">
+  <h3>UTM source <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:utmSource</code>
+  <p>utm_source: the referrer as the link&#x27;s author named it (google, newsletter). As written in the landing URL, unnormalized: what it means is the touchChannel&#x27;s derivation.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Touchpoint">xeo:Touchpoint</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>The landing URL&#x27;s query string, by the UTM convention (utm_source, utm_medium, utm_campaign, utm_term, utm_content)</dd></div></dl>
+</section>
+<section id="utmTerm" class="term">
+  <h3>UTM term <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-attribution</span></h3>
+  <code class="iri">xeo:utmTerm</code>
+  <p>utm_term: the paid keyword, where the link&#x27;s author set it. As written in the landing URL, unnormalized: what it means is the touchChannel&#x27;s derivation.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Touchpoint">xeo:Touchpoint</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>The landing URL&#x27;s query string, by the UTM convention (utm_source, utm_medium, utm_campaign, utm_term, utm_content)</dd></div></dl>
 </section>
 <section id="value" class="term">
   <h3>value <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>

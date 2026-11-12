@@ -406,3 +406,23 @@ xeosh:ConsentShape a sh:NodeShape ;
         sh:path xeo:consentRecordedAt ; sh:minCount 1 ; sh:maxCount 1 ;
         sh:message "A xeo:Consent requires exactly one xeo:consentRecordedAt."
     ] .
+
+# --- Attribution (0.7) -----------------------------------------------------------
+
+xeosh:AttributedNumberNamesItsModel a sh:NodeShape ;
+    rdfs:label "an attributed number names its attribution model" ;
+    rdfs:seeAlso xeo:usesAttributionModel ;
+    sh:targetClass xeo:AttributedCredit , xeo:AttributionRollup ;
+    sh:property [
+        sh:path xeo:usesAttributionModel ; sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "An xeo:AttributedCredit or xeo:AttributionRollup requires exactly one xeo:usesAttributionModel: a credited number without its model cannot be read."
+    ] .
+
+xeosh:CreditShareIsAShare a sh:NodeShape ;
+    rdfs:label "a credit share is between 0 and 1" ;
+    sh:targetSubjectsOf xeo:creditShare ;
+    sh:property [
+        sh:path xeo:creditShare ; sh:maxCount 1 ;
+        sh:minInclusive 0 ; sh:maxInclusive 1 ;
+        sh:message "xeo:creditShare is one number from 0 to 1."
+    ] .

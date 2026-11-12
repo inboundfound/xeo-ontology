@@ -57,7 +57,8 @@ XEOS = "https://xeoontology.org/schemes#"
 # that states anything about it (the rule gen_docs.py uses), so a module that
 # only adds triples about an older term (align, a deprecation) never claims it.
 MODULE_ORDER = [
-    "xeo-core", "xeo-visibility", "xeo-analysis", "xeo-sales", "xeo-work",
+    "xeo-core", "xeo-visibility", "xeo-analysis", "xeo-sales", "xeo-attribution",
+    "xeo-attribution-sales", "xeo-work",
     "xeo-decision", "xeo-schemes", "xeo-align",
 ]
 

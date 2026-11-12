@@ -344,6 +344,58 @@
         }
       ]
     },
+    "anchorPosition": {
+      "iri": "https://xeoontology.org/schemes#anchorPosition",
+      "label": "Anchor positions",
+      "fillsSlot": "xeo:anchorPosition",
+      "description": "Which touch a position-based model's anchor is.",
+      "source": "XEO 0.7 plan of record, 2026-11-11 (attribution module and its follow-up research) · CallRail milestones",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "customer_close",
+          "iri": "https://xeoontology.org/schemes#anchorPosition-customer_close",
+          "label": "Customer close",
+          "definition": "The touch at which the deal was won or the order placed",
+          "note": null
+        },
+        {
+          "code": "first_touch",
+          "iri": "https://xeoontology.org/schemes#anchorPosition-first_touch",
+          "label": "First touch",
+          "definition": "The first eligible touch",
+          "note": null
+        },
+        {
+          "code": "last_touch",
+          "iri": "https://xeoontology.org/schemes#anchorPosition-last_touch",
+          "label": "Last touch",
+          "definition": "The last eligible touch",
+          "note": null
+        },
+        {
+          "code": "lead_created",
+          "iri": "https://xeoontology.org/schemes#anchorPosition-lead_created",
+          "label": "Lead created",
+          "definition": "The touch that created the lead",
+          "note": null
+        },
+        {
+          "code": "opportunity_created",
+          "iri": "https://xeoontology.org/schemes#anchorPosition-opportunity_created",
+          "label": "Opportunity created",
+          "definition": "The touch that opened the deal",
+          "note": null
+        },
+        {
+          "code": "qualified",
+          "iri": "https://xeoontology.org/schemes#anchorPosition-qualified",
+          "label": "Qualified",
+          "definition": "The touch at which the lead was qualified",
+          "note": null
+        }
+      ]
+    },
     "betterDirection": {
       "iri": "https://xeoontology.org/schemes#betterDirection",
       "label": "Better directions",
@@ -433,6 +485,65 @@
           "iri": "https://xeoontology.org/schemes#cadence-quarterly",
           "label": "Quarterly",
           "definition": "Quota resets each quarter",
+          "note": null
+        }
+      ]
+    },
+    "callOutcome": {
+      "iri": "https://xeoontology.org/schemes#callOutcome",
+      "label": "Call outcomes",
+      "fillsSlot": "xeo:callOutcome",
+      "description": "What a call or meeting came to, as someone judged it after the fact.",
+      "source": "XEO 0.7 plan of record, 2026-11-11 (attribution module and its follow-up research) · Hyros call states; CallRail lead status",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "cancelled",
+          "iri": "https://xeoontology.org/schemes#callOutcome-cancelled",
+          "label": "Cancelled",
+          "definition": "Called off before it happened",
+          "note": null
+        },
+        {
+          "code": "good_lead",
+          "iri": "https://xeoontology.org/schemes#callOutcome-good_lead",
+          "label": "Good lead",
+          "definition": "Marked a good lead (CallRail)",
+          "note": null
+        },
+        {
+          "code": "no_show",
+          "iri": "https://xeoontology.org/schemes#callOutcome-no_show",
+          "label": "No-show",
+          "definition": "Booked, and the person did not attend",
+          "note": null
+        },
+        {
+          "code": "not_a_lead",
+          "iri": "https://xeoontology.org/schemes#callOutcome-not_a_lead",
+          "label": "Not a lead",
+          "definition": "Marked not a lead (CallRail)",
+          "note": null
+        },
+        {
+          "code": "previously_marked_good_lead",
+          "iri": "https://xeoontology.org/schemes#callOutcome-previously_marked_good_lead",
+          "label": "Previously marked good lead",
+          "definition": "Marked a good lead on an earlier call (CallRail)",
+          "note": null
+        },
+        {
+          "code": "qualified",
+          "iri": "https://xeoontology.org/schemes#callOutcome-qualified",
+          "label": "Qualified",
+          "definition": "Worth pursuing",
+          "note": null
+        },
+        {
+          "code": "unqualified",
+          "iri": "https://xeoontology.org/schemes#callOutcome-unqualified",
+          "label": "Unqualified",
+          "definition": "Not worth pursuing",
           "note": null
         }
       ]
@@ -624,6 +735,117 @@
         }
       ]
     },
+    "conversionRole": {
+      "iri": "https://xeoontology.org/schemes#conversionRole",
+      "label": "Conversion roles",
+      "fillsSlot": "xeo:conversionRole",
+      "description": "What a conversion counts as for attribution, by the tenant's mapping.",
+      "source": "XEO 0.7 plan of record, 2026-11-11 (attribution module and its follow-up research)",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "lead",
+          "iri": "https://xeoontology.org/schemes#conversionRole-lead",
+          "label": "Lead",
+          "definition": "A new contact who could buy",
+          "note": null
+        },
+        {
+          "code": "opportunity",
+          "iri": "https://xeoontology.org/schemes#conversionRole-opportunity",
+          "label": "Opportunity",
+          "definition": "A deal opened",
+          "note": null
+        },
+        {
+          "code": "other",
+          "iri": "https://xeoontology.org/schemes#conversionRole-other",
+          "label": "Other",
+          "definition": "Any other conversion",
+          "note": null
+        },
+        {
+          "code": "qualified_lead",
+          "iri": "https://xeoontology.org/schemes#conversionRole-qualified_lead",
+          "label": "Qualified lead",
+          "definition": "A lead someone judged worth pursuing",
+          "note": null
+        },
+        {
+          "code": "sale",
+          "iri": "https://xeoontology.org/schemes#conversionRole-sale",
+          "label": "Sale",
+          "definition": "A purchase or a deal won",
+          "note": null
+        }
+      ]
+    },
+    "creditRule": {
+      "iri": "https://xeoontology.org/schemes#creditRule",
+      "label": "Credit rules",
+      "fillsSlot": "xeo:creditRule",
+      "description": "How an attribution model splits credit.",
+      "source": "XEO 0.7 plan of record, 2026-11-11 (attribution module and its follow-up research) · Hyros (last_click, first_click, scientific); HockeyStack (predictive); Dreamdata (influenced)",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "algorithmic",
+          "iri": "https://xeoontology.org/schemes#creditRule-algorithmic",
+          "label": "Algorithmic",
+          "definition": "A fitted model decides the shares: 'data-driven', 'predictive'",
+          "note": null
+        },
+        {
+          "code": "custom",
+          "iri": "https://xeoontology.org/schemes#creditRule-custom",
+          "label": "Custom",
+          "definition": "A rule of the tenant's own",
+          "note": null
+        },
+        {
+          "code": "first_touch",
+          "iri": "https://xeoontology.org/schemes#creditRule-first_touch",
+          "label": "First touch",
+          "definition": "All credit to the first eligible touch",
+          "note": null
+        },
+        {
+          "code": "full_credit_each",
+          "iri": "https://xeoontology.org/schemes#creditRule-full_credit_each",
+          "label": "Full credit each",
+          "definition": "Every eligible touch gets full credit: what vendors report as 'influenced'",
+          "note": null
+        },
+        {
+          "code": "last_touch",
+          "iri": "https://xeoontology.org/schemes#creditRule-last_touch",
+          "label": "Last touch",
+          "definition": "All credit to the last eligible touch",
+          "note": null
+        },
+        {
+          "code": "linear",
+          "iri": "https://xeoontology.org/schemes#creditRule-linear",
+          "label": "Linear",
+          "definition": "Equal credit to every eligible touch",
+          "note": null
+        },
+        {
+          "code": "position_based",
+          "iri": "https://xeoontology.org/schemes#creditRule-position_based",
+          "label": "Position based",
+          "definition": "Fixed shares to anchor touches, the rest spread (U-shaped, W-shaped)",
+          "note": null
+        },
+        {
+          "code": "time_decay",
+          "iri": "https://xeoontology.org/schemes#creditRule-time_decay",
+          "label": "Time decay",
+          "definition": "More credit to touches nearer the conversion",
+          "note": null
+        }
+      ]
+    },
     "crmObjectType": {
       "iri": "https://xeoontology.org/schemes#crmObjectType",
       "label": "CRM object types",
@@ -721,6 +943,30 @@
         }
       ]
     },
+    "customerStatus": {
+      "iri": "https://xeoontology.org/schemes#customerStatus",
+      "label": "Customer statuses",
+      "fillsSlot": "xeo:customerStatus",
+      "description": "Whether a buyer was new or repeat at the time of an order.",
+      "source": "XEO 0.7 plan of record, 2026-11-11 (attribution module and its follow-up research) · Rockerbox new and repeat",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "new",
+          "iri": "https://xeoontology.org/schemes#customerStatus-new",
+          "label": "New",
+          "definition": "First purchase in the history available",
+          "note": null
+        },
+        {
+          "code": "repeat",
+          "iri": "https://xeoontology.org/schemes#customerStatus-repeat",
+          "label": "Repeat",
+          "definition": "Has bought before",
+          "note": null
+        }
+      ]
+    },
     "dataState": {
       "iri": "https://xeoontology.org/schemes#dataState",
       "label": "Data states",
@@ -745,6 +991,30 @@
         }
       ],
       "status": "extension"
+    },
+    "dateBasis": {
+      "iri": "https://xeoontology.org/schemes#dateBasis",
+      "label": "Date bases",
+      "fillsSlot": "xeo:dateBasis",
+      "description": "Which date a credited conversion is counted on.",
+      "source": "XEO 0.7 plan of record, 2026-11-11 (attribution module and its follow-up research) · Hyros dayOfAttribution",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "conversion_date",
+          "iri": "https://xeoontology.org/schemes#dateBasis-conversion_date",
+          "label": "Conversion date",
+          "definition": "The date of the conversion or sale",
+          "note": null
+        },
+        {
+          "code": "touch_date",
+          "iri": "https://xeoontology.org/schemes#dateBasis-touch_date",
+          "label": "Touch date",
+          "definition": "The date of the credited touch",
+          "note": null
+        }
+      ]
     },
     "dealOutcome": {
       "iri": "https://xeoontology.org/schemes#dealOutcome",
@@ -1231,6 +1501,65 @@
         }
       ]
     },
+    "identityMethod": {
+      "iri": "https://xeoontology.org/schemes#identityMethod",
+      "label": "Identity methods",
+      "fillsSlot": "xeo:identityMethod",
+      "description": "How an identifier was linked to a party.",
+      "source": "XEO 0.7 plan of record, 2026-11-11 (attribution module and its follow-up research) · Factors.ai (IP-to-company)",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "click_id",
+          "iri": "https://xeoontology.org/schemes#identityMethod-click_id",
+          "label": "Click id",
+          "definition": "An ad platform's click id carried through",
+          "note": null
+        },
+        {
+          "code": "email_match",
+          "iri": "https://xeoontology.org/schemes#identityMethod-email_match",
+          "label": "Email match",
+          "definition": "The same email or email hash in two systems",
+          "note": null
+        },
+        {
+          "code": "fingerprint",
+          "iri": "https://xeoontology.org/schemes#identityMethod-fingerprint",
+          "label": "Fingerprint",
+          "definition": "Device and browser traits compared",
+          "note": null
+        },
+        {
+          "code": "form_fill",
+          "iri": "https://xeoontology.org/schemes#identityMethod-form_fill",
+          "label": "Form fill",
+          "definition": "The person typed an identifying detail into a form",
+          "note": null
+        },
+        {
+          "code": "ip_to_company",
+          "iri": "https://xeoontology.org/schemes#identityMethod-ip_to_company",
+          "label": "IP to company",
+          "definition": "An IP address looked up to a company; resolves to an Organization only",
+          "note": null
+        },
+        {
+          "code": "login",
+          "iri": "https://xeoontology.org/schemes#identityMethod-login",
+          "label": "Login",
+          "definition": "The person signed in",
+          "note": null
+        },
+        {
+          "code": "vendor_graph",
+          "iri": "https://xeoontology.org/schemes#identityMethod-vendor_graph",
+          "label": "Vendor graph",
+          "definition": "A vendor's identity graph, by its own method",
+          "note": null
+        }
+      ]
+    },
     "intervention": {
       "iri": "https://xeoontology.org/schemes#intervention",
       "label": "Interventions — the service catalogue",
@@ -1491,6 +1820,21 @@
       "ordered": false,
       "concepts": [
         {
+          "code": "ad_spend",
+          "iri": "https://xeoontology.org/schemes#metric-ad_spend",
+          "label": "Ad spend",
+          "definition": "What was spent on advertising in the window, in one stated currency",
+          "note": "reading: an observation where the ad platform returned it for this window; a derivation when summed across platforms. Added in 0.7 as the denominator of the spend ratios",
+          "metric": {
+            "metricType": "simple",
+            "aggregation": "sum",
+            "readsSlot": "xeo:spendAmount",
+            "unit": "currency",
+            "betterDirection": "none",
+            "additivity": "additive"
+          }
+        },
+        {
           "code": "ai_answers_citing_owned",
           "iri": "https://xeoontology.org/schemes#metric-ai_answers_citing_owned",
           "label": "AI answers citing an owned URL",
@@ -1747,6 +2091,36 @@
           }
         },
         {
+          "code": "attributed_revenue",
+          "iri": "https://xeoontology.org/schemes#metric-attributed_revenue",
+          "label": "Attributed revenue",
+          "definition": "Revenue credited to touches under one attribution model, in one stated currency",
+          "note": "reading: a derivation, and it names its model (usesAttributionModel). Sums within one model only; never across models",
+          "metric": {
+            "metricType": "simple",
+            "aggregation": "sum",
+            "readsSlot": "xeo:attributedRevenue",
+            "unit": "currency",
+            "betterDirection": "up",
+            "additivity": "additive"
+          }
+        },
+        {
+          "code": "blended_roas",
+          "iri": "https://xeoontology.org/schemes#metric-blended_roas",
+          "label": "Blended ROAS",
+          "definition": "All revenue in the window divided by all ad spend in the window, with no attribution model",
+          "note": "reading: a derivation. Needs no model, which is why it is reported beside ROAS",
+          "metric": {
+            "metricType": "derived",
+            "inputMetric": "ad_spend",
+            "expression": "sum(paidAmount of RevenueEvents in the window, less refundedAmount) / ad_spend",
+            "unit": "ratio",
+            "betterDirection": "up",
+            "additivity": "non_additive"
+          }
+        },
+        {
           "code": "clicks",
           "iri": "https://xeoontology.org/schemes#metric-clicks",
           "label": "Clicks",
@@ -1777,6 +2151,39 @@
             "unit": "count",
             "betterDirection": "up",
             "additivity": "additive"
+          }
+        },
+        {
+          "code": "cost_per_acquisition",
+          "iri": "https://xeoontology.org/schemes#metric-cost_per_acquisition",
+          "label": "Cost per acquisition",
+          "definition": "Ad spend divided by conversions credited under one attribution model, in one stated currency",
+          "note": "reading: a derivation that names its model",
+          "metric": {
+            "metricType": "derived",
+            "inputMetric": "ad_spend",
+            "expression": "ad_spend / sum(attributedConversions)",
+            "unit": "currency",
+            "betterDirection": "down",
+            "additivity": "non_additive"
+          }
+        },
+        {
+          "code": "cost_per_lead",
+          "iri": "https://xeoontology.org/schemes#metric-cost_per_lead",
+          "label": "Cost per lead",
+          "definition": "Ad spend divided by leads created in the window, in one stated currency",
+          "note": "reading: a derivation. Rolled up as sum(spend) over sum(leads)",
+          "metric": {
+            "metricType": "derived",
+            "inputMetric": [
+              "ad_spend",
+              "leads_created"
+            ],
+            "expression": "ad_spend / leads_created",
+            "unit": "currency",
+            "betterDirection": "down",
+            "additivity": "non_additive"
           }
         },
         {
@@ -1947,6 +2354,36 @@
           }
         },
         {
+          "code": "lifetime_value",
+          "iri": "https://xeoontology.org/schemes#metric-lifetime_value",
+          "label": "Lifetime value",
+          "definition": "The mean revenue per customer over the history available: paid less refunded, per revenueSubject, in one stated currency",
+          "note": "reading: a derivation. Depends on how far back the history reaches; state the window",
+          "metric": {
+            "metricType": "derived",
+            "inputMetric": "attributed_revenue",
+            "expression": "sum(paidAmount - refundedAmount) / count_distinct(revenueSubject)",
+            "unit": "currency",
+            "betterDirection": "up",
+            "additivity": "non_additive"
+          }
+        },
+        {
+          "code": "payback_period",
+          "iri": "https://xeoontology.org/schemes#metric-payback_period",
+          "label": "Payback period",
+          "definition": "Days until a customer's cumulative paid revenue covers what it cost to acquire them",
+          "note": "reading: a derivation that names its model, through cost_per_acquisition",
+          "metric": {
+            "metricType": "derived",
+            "inputMetric": "cost_per_acquisition",
+            "expression": "days from first order until cumulative (paidAmount - refundedAmount) >= cost_per_acquisition",
+            "unit": "days",
+            "betterDirection": "down",
+            "additivity": "non_additive"
+          }
+        },
+        {
           "code": "pipeline_created",
           "iri": "https://xeoontology.org/schemes#metric-pipeline_created",
           "label": "Pipeline created",
@@ -2011,6 +2448,21 @@
             "unit": "currency",
             "betterDirection": "up",
             "additivity": "additive"
+          }
+        },
+        {
+          "code": "roas",
+          "iri": "https://xeoontology.org/schemes#metric-roas",
+          "label": "Return on ad spend",
+          "definition": "Attributed revenue divided by ad spend, under one attribution model, as a quotient",
+          "note": "reading: a derivation that names its model. Rolled up as sum(attributed revenue) over sum(spend), never a mean of ROAS",
+          "metric": {
+            "metricType": "ratio",
+            "numerator": "attributed_revenue",
+            "denominator": "ad_spend",
+            "unit": "ratio",
+            "betterDirection": "up",
+            "additivity": "non_additive"
           }
         },
         {
@@ -2377,6 +2829,37 @@
         }
       ]
     },
+    "outcomeJudgedBy": {
+      "iri": "https://xeoontology.org/schemes#outcomeJudgedBy",
+      "label": "Outcome judges",
+      "fillsSlot": "xeo:outcomeJudgedBy",
+      "description": "Who judged a call or meeting's outcome.",
+      "source": "XEO 0.7 plan of record, 2026-11-11 (attribution module and its follow-up research) · Invoca signals",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "ai",
+          "iri": "https://xeoontology.org/schemes#outcomeJudgedBy-ai",
+          "label": "AI",
+          "definition": "A model set it",
+          "note": null
+        },
+        {
+          "code": "person",
+          "iri": "https://xeoontology.org/schemes#outcomeJudgedBy-person",
+          "label": "Person",
+          "definition": "A person set it",
+          "note": null
+        },
+        {
+          "code": "rule",
+          "iri": "https://xeoontology.org/schemes#outcomeJudgedBy-rule",
+          "label": "Rule",
+          "definition": "A rule set it",
+          "note": null
+        }
+      ]
+    },
     "outcomeResult": {
       "iri": "https://xeoontology.org/schemes#outcomeResult",
       "label": "Outcome results",
@@ -2737,6 +3220,37 @@
         }
       ]
     },
+    "revenueBasis": {
+      "iri": "https://xeoontology.org/schemes#revenueBasis",
+      "label": "Revenue bases",
+      "fillsSlot": "xeo:revenueBasis",
+      "description": "Which amount an attribution model credits.",
+      "source": "XEO 0.7 plan of record, 2026-11-11 (attribution module and its follow-up research)",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "gross",
+          "iri": "https://xeoontology.org/schemes#revenueBasis-gross",
+          "label": "Gross",
+          "definition": "The order's grossAmount",
+          "note": null
+        },
+        {
+          "code": "net_of_refunds",
+          "iri": "https://xeoontology.org/schemes#revenueBasis-net_of_refunds",
+          "label": "Net of refunds",
+          "definition": "What was paid less refunds and chargebacks",
+          "note": null
+        },
+        {
+          "code": "paid",
+          "iri": "https://xeoontology.org/schemes#revenueBasis-paid",
+          "label": "Paid",
+          "definition": "What was paid",
+          "note": null
+        }
+      ]
+    },
     "searchIntent": {
       "iri": "https://xeoontology.org/schemes#searchIntent",
       "label": "Search intents",
@@ -2952,6 +3466,37 @@
         }
       ]
     },
+    "spendLevel": {
+      "iri": "https://xeoontology.org/schemes#spendLevel",
+      "label": "Spend levels",
+      "fillsSlot": "xeo:spendLevel",
+      "description": "The level an ad platform's spend is reported at.",
+      "source": "XEO 0.7 plan of record, 2026-11-11 (attribution module and its follow-up research) · Rockerbox spend partition",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "ad",
+          "iri": "https://xeoontology.org/schemes#spendLevel-ad",
+          "label": "Ad",
+          "definition": "One ad",
+          "note": null
+        },
+        {
+          "code": "ad_set",
+          "iri": "https://xeoontology.org/schemes#spendLevel-ad_set",
+          "label": "Ad set",
+          "definition": "An ad set or ad group",
+          "note": null
+        },
+        {
+          "code": "campaign",
+          "iri": "https://xeoontology.org/schemes#spendLevel-campaign",
+          "label": "Campaign",
+          "definition": "An ad campaign",
+          "note": null
+        }
+      ]
+    },
     "stageSlot": {
       "iri": "https://xeoontology.org/schemes#stageSlot",
       "label": "Stage slots",
@@ -3072,6 +3617,100 @@
         }
       ],
       "status": "extension"
+    },
+    "touchType": {
+      "iri": "https://xeoontology.org/schemes#touchType",
+      "label": "Touch types",
+      "fillsSlot": "xeo:touchType",
+      "description": "What kind of interaction a Touchpoint was. email_open is recorded but not credited unless a model lists it in eligibleTouchType.",
+      "source": "XEO 0.7 plan of record, 2026-11-11 (attribution module and its follow-up research) · Hyros journey event types; WhatConverts lead types",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "ad_click",
+          "iri": "https://xeoontology.org/schemes#touchType-ad_click",
+          "label": "Ad click",
+          "definition": "Clicked an advertisement",
+          "note": null
+        },
+        {
+          "code": "ad_view",
+          "iri": "https://xeoontology.org/schemes#touchType-ad_view",
+          "label": "Ad view",
+          "definition": "Saw an advertisement without clicking",
+          "note": null
+        },
+        {
+          "code": "call",
+          "iri": "https://xeoontology.org/schemes#touchType-call",
+          "label": "Call",
+          "definition": "A phone call",
+          "note": null
+        },
+        {
+          "code": "chat",
+          "iri": "https://xeoontology.org/schemes#touchType-chat",
+          "label": "Chat",
+          "definition": "A chat conversation",
+          "note": null
+        },
+        {
+          "code": "email",
+          "iri": "https://xeoontology.org/schemes#touchType-email",
+          "label": "Email",
+          "definition": "Clicked through from an email",
+          "note": null
+        },
+        {
+          "code": "email_open",
+          "iri": "https://xeoontology.org/schemes#touchType-email_open",
+          "label": "Email open",
+          "definition": "Opened an email; not credited by default",
+          "note": null
+        },
+        {
+          "code": "form",
+          "iri": "https://xeoontology.org/schemes#touchType-form",
+          "label": "Form",
+          "definition": "Submitted a form",
+          "note": null
+        },
+        {
+          "code": "meeting",
+          "iri": "https://xeoontology.org/schemes#touchType-meeting",
+          "label": "Meeting",
+          "definition": "A booked or held meeting",
+          "note": null
+        },
+        {
+          "code": "offline",
+          "iri": "https://xeoontology.org/schemes#touchType-offline",
+          "label": "Offline",
+          "definition": "An event, a letter, a conversation in person",
+          "note": null
+        },
+        {
+          "code": "other",
+          "iri": "https://xeoontology.org/schemes#touchType-other",
+          "label": "Other",
+          "definition": "A touch none of the codes above covers",
+          "note": null
+        },
+        {
+          "code": "text_message",
+          "iri": "https://xeoontology.org/schemes#touchType-text_message",
+          "label": "Text message",
+          "definition": "Replied to or clicked from a text message",
+          "note": null
+        },
+        {
+          "code": "visit",
+          "iri": "https://xeoontology.org/schemes#touchType-visit",
+          "label": "Visit",
+          "definition": "Arrived on the site",
+          "note": null
+        }
+      ]
     },
     "xeoLayer": {
       "iri": "https://xeoontology.org/schemes#xeoLayer",
