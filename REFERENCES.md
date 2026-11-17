@@ -39,8 +39,8 @@ keywords, on-page structure — expressed as linked data so agents and apps can 
 That is real and useful ground, and where XEO touches it we should relate terms rather than
 restate them.
 
-**XEO is AI-native and xEO-scoped.** The subject is web *engine* optimization across the whole
-xEO family — SEO, GEO and AEO together — where the consuming system is as often an answer engine
+**XEO is AI-native and covers every engine.** The subject is web *engine* optimization across the
+whole family — SEO, GEO and AEO together — where the consuming system is as often an answer engine
 or an assistant as a search engine. That changes what has to be modelled.
 
 Two areas extend past SEOntology's scope, and they are the reason XEO exists rather than being a

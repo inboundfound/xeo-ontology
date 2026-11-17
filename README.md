@@ -9,6 +9,8 @@ decisions. Every term states the kind of claim it makes and what it is grounded 
 · **Status:** v0.7 — open draft. Issues and PRs welcome.
 What changed and why: [`CHANGELOG.md`](CHANGELOG.md).
 
+**The name** is written `XEO` in prose and `xeo` in prefixes, file names and code. No other casing is used.
+
 > **Namespace note.** Term IRIs resolve at `xeoontology.org`, not at this repo.
 > Whoever serves that domain must publish `/xeo` (the term docs), `/schemes`,
 > `/context.jsonld`, `/schemes.json`, `/neo4j-profile.json`,
@@ -110,7 +112,7 @@ Two rollup patterns rhyme on purpose:
 - `(:Prompt)-[:VISIBILITY_FOR {mentionRate, citationRate, responses, periodStart, periodEnd, datasetUri}]->(:Brand)`
 
 The first summarizes the SEO world (facts in your column store); the second
-summarizes the xEO world (facts in your response archive). Same discipline,
+summarizes the AI-answer world (facts in your response archive). Same discipline,
 new engine.
 
 ## Example queries the model is shaped for
