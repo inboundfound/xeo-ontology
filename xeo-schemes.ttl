@@ -786,7 +786,7 @@ xeos:engagementType a skos:ConceptScheme ;
     skos:prefLabel "Engagement types"@en ;
     xeo:fillsSlot xeo:engagementType ;
     dct:source "if-control-center packages/contracts/src/objective-metric.ts (ENGAGEMENT_TYPES) · launch-guardian LG_ENGAGEMENT_TYPES" ;
-    dct:description "The shape of a Project's contract — the discriminator for how its scope is expressed. A retainer caps interventions per recurring period (cadence); a one-off caps them over a fixed run (durationDays). The intervention quota is common to both and always required: a scope of work with no ceiling is not a scope." .
+    dct:description "The shape of a Project's contract — the discriminator for how its scope is expressed. A retainer caps interventions per recurring period (cadence); a one-off caps them over a fixed run (durationDays). The intervention quota is common to both where a contract states one. A Project need not be a contract of either kind, and then has no engagementType." .
 
 xeos:engagementType-retainer a skos:Concept ;
     skos:inScheme xeos:engagementType ;

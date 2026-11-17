@@ -72,6 +72,7 @@ PUBLIC_FILES = [
     "schemes.json", "context.jsonld", "context.neo4j.jsonld",
     "neo4j-profile.json", "schema.cypher", "LICENSE",
     os.path.join("shapes", "xeo-shapes.ttl"),
+    os.path.join("shapes", "profiles", "agency-delivery.ttl"),  # optional profile
 ]
 
 EPI = URIRef(NS + "xeoLayer")

@@ -53,6 +53,12 @@
       "id": "ex:item-by-hand", "type": "WorkItem", "name": "Check the list against the navigation by hand",
       "tracesTo": "ex:spec"
     },
+    { "id": "ex:project-internal", "type": "Project", "name": "Rebuild the content-audit skill" },
+    {
+      "id": "ex:spec-internal", "type": "Spec", "name": "Content-audit skill, version 2", "specKind": "design",
+      "withinProject": "ex:project-internal",
+      "artifactUri": "https://example.com/repo/blob/4f2a9c1/specs/audit-skill-v2/design.md"
+    },
 
     {
       "id": "ex:config", "type": "InvocationConfig", "modelProvider": "example-provider",

@@ -152,7 +152,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 <section id="Campaign" class="term">
   <h3>Campaign <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:Campaign</code>
-  <p>A body of work inside a Project against one Topic: the URLs and Terms it covers, and the single Objective it is measured by. Recommendations are issuedFor a campaign, and it is the unit an operator plans a cycle around. Soft-deleted like its Project.</p>
+  <p>A body of work inside a Project, usually against one Topic: the URLs and Terms it covers and, where it is measured, the one Objective it is measured by. Recommendations are issuedFor a campaign, and it is the unit an operator plans a cycle around. A campaign need not have a Topic, an Objective, targets or a results window; a team that requires them checks them with the optional profile shapes/profiles/agency-delivery.ttl. Soft-deleted like its Project.</p>
   
 </section>
 <section id="Capability" class="term">
@@ -368,7 +368,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 <section id="Objective" class="term">
   <h3>Objective <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:Objective</code>
-  <p>What a Campaign intends to move: an operator-written statement in prose (carried verbatim — the recommendation agent reads it as the goal), a resultsWindowDays every target is measured over, and one or more MetricTargets of which exactly one isPrimary. An intent set at creation. A campaign has one reporting horizon, distinct from the Project&#x27;s work window: a two-month engagement can carry a six-month results window. The window starts on resultsWindowStart, and the objective-level result is one objectiveReading per target over the campaign&#x27;s deduplicated scope, never a sum of Outcomes.</p>
+  <p>What a Campaign intends to move: an operator-written statement in prose (carried verbatim — the recommendation agent reads it as the goal), and, where they are set, a resultsWindowDays every target is measured over and MetricTargets, of which at most one isPrimary. An intent set at creation. A campaign has one reporting horizon, distinct from the Project&#x27;s work window: a two-month engagement can carry a six-month results window. The window starts on resultsWindowStart, and the objective-level result is one objectiveReading per target over the campaign&#x27;s deduplicated scope, never a sum of Outcomes.</p>
   
 </section>
 <section id="Order" class="term">
@@ -428,7 +428,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 <section id="Project" class="term">
   <h3>Project <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:Project</code>
-  <p>The contractual container for a body of work on one Website. Declares its engagementType (retainer or one-off), an interventionQuota (a scope of work with no ceiling is not a scope), a cadence the quota resets over (retainer) or a durationDays it runs for (one-off), and the Interventions and Tactics inScope under the contract. Never destroyed: its campaigns, objectives and targets are the substrate the end-of-campaign report and the experiment loop read, so it is stamped deletedAt and filtered, not deleted.</p>
+  <p>A bounded body of work, set apart and named so that what is done under it can be planned, counted and reported together. Often a client contract on one Website (hasProject), and as often not: an internal build, a piece of research or a product is a Project too, and a Spec sits withinProject either way. Nothing is required of it. Where it is a contract it may state its engagementType (retainer or one-off), an interventionQuota, the cadence the quota resets over or the durationDays it runs for, and the Interventions and Tactics inScope. Those are the terms of one way of selling work, not conditions of being a Project: a Project need not have a Website, a Campaign, a quota or an end date. A team that does require them checks them with the optional profile shapes/profiles/agency-delivery.ttl. Never destroyed: its campaigns, objectives and targets are the substrate the end-of-campaign report and the experiment loop read, so it is stamped deletedAt and filtered, not deleted.</p>
   <dl><div class="row"><dt>closeMatch</dt><dd><a href="https://schema.org/Project" class="ext">schema:Project</a></dd></div></dl>
 </section>
 <section id="Prompt" class="term">
@@ -573,7 +573,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 <section id="aboutTopic" class="term">
   <h3>about topic <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:aboutTopic</code>
-  <p>The topic cluster this campaign works. Topics are site-scoped derivations in core; a campaign binds to one.</p>
+  <p>The topic cluster this campaign works, where it works one. Topics are site-scoped derivations in core; a campaign binds to at most one.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Campaign">xeo:Campaign</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Topic">xeo:Topic</a></dd></div></dl>
 </section>
 <section id="acquiredByTactic" class="term">
@@ -723,7 +723,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 <section id="clientOf" class="term">
   <h3>client of <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:clientOf</code>
-  <p>This Organization is served by that one: a brand is the client of an agency. The contract itself is a Project on the client&#x27;s Website; this edge says only who works for whom.</p>
+  <p>This Organization is served by that one: a brand is the client of an agency. The contract, where one is modelled, is a Project on the client&#x27;s Website; this edge says only who works for whom.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Organization">xeo:Organization</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Organization">xeo:Organization</a></dd></div></dl>
 </section>
 <section id="closesGap" class="term">
@@ -837,7 +837,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 <section id="execution" class="term">
   <h3>execution <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:execution</code>
-  <p>Who does the work, as a slotted-in concept: ours (spends the project&#x27;s intervention allowance) or advised (the client executes; not agency capacity). The half of the scope gate that says whose hours a recommendation costs.</p>
+  <p>Who does the work, as a slotted-in concept: ours (spends the project&#x27;s intervention allowance, where it has one) or advised (the client executes; not agency capacity). The half of the scope gate that says whose hours a recommendation costs.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Recommendation">xeo:Recommendation</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div></dl>
 </section>
 <section id="expressesPractice" class="term">
@@ -945,13 +945,13 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 <section id="hasObjective" class="term">
   <h3>has objective <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:hasObjective</code>
-  <p>Exactly one per campaign.</p>
+  <p>The Objective a campaign is measured by. At most one per campaign, because a campaign has one reporting horizon; a campaign with no stated objective has none.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Campaign">xeo:Campaign</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Objective">xeo:Objective</a></dd></div></dl>
 </section>
 <section id="hasProject" class="term">
   <h3>has project <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:hasProject</code>
-  <p>The projects contracted against this website. Tenancy rides on websiteId, as everywhere.</p>
+  <p>A Project whose work is on this Website: a client contract, or any other body of work about the site. A Project that is not about one website (internal work) has no such link. Tenancy rides on websiteId, as everywhere.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Website">xeo:Website</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Project">xeo:Project</a></dd></div></dl>
 </section>
 <section id="hasResponse" class="term">
@@ -987,7 +987,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 <section id="hasTarget" class="term">
   <h3>has target <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:hasTarget</code>
-  <p>The objective&#x27;s measurable targets. Non-empty; exactly one target isPrimary — what the recommendation agent optimises for. The rest are the secondary metrics an impact-radius check widens to.</p>
+  <p>The objective&#x27;s measurable targets, where it has any. Where one isPrimary it is what the recommendation agent optimises for, and the rest are the secondary metrics an impact-radius check widens to.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Objective">xeo:Objective</a></dd></div><div class="row"><dt>range</dt><dd><a href="#MetricTarget">xeo:MetricTarget</a></dd></div></dl>
 </section>
 <section id="hasToolCall" class="term">
@@ -1047,7 +1047,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 <section id="inScope" class="term">
   <h3>in scope <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:inScope</code>
-  <p>What the contract covers: an Intervention (a whole category of work, including tactics added to the catalogue later) or a specific Tactic within one. Range left open across those two terms. The contractual half of the scope gate — requiresCapability + approved asks whether the lever exists; this asks whether it was bought.</p>
+  <p>What a Project&#x27;s contract covers, where it states one: an Intervention (a whole category of work, including tactics added to the catalogue later) or a specific Tactic within one. Range left open across those two terms. The contractual half of the scope gate — requiresCapability + approved asks whether the lever exists; this asks whether it was bought. A Project with no inScope states no contract scope, which is not the same as nothing being in scope.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Project">xeo:Project</a></dd></div><div class="row"><dt>expected to point at</dt><dd><a href="#Intervention">xeo:Intervention</a> · <a href="#Tactic">xeo:Tactic</a></dd></div></dl>
 </section>
 <section id="inSession" class="term">
@@ -1461,7 +1461,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 <section id="withinProject" class="term">
   <h3>within project <span class="layer" style="--h:#718096">entity</span> <span class="status">draft</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:withinProject</code>
-  <p>The Project a Spec belongs to, where the work is done under one. A spec for work outside any Project has none.</p>
+  <p>The Project a Spec belongs to, where the work is done under one: client work or internal work alike. A spec for work outside any Project has none.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Spec">xeo:Spec</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Project">xeo:Project</a></dd></div></dl>
 </section>
 <h2 id="datatype-properties">Datatype properties <span class="n">237</span></h2>
@@ -1624,7 +1624,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 <section id="cadence" class="term">
   <h3>cadence <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:cadence</code>
-  <p>&#x27;monthly&#x27; or &#x27;quarterly&#x27; — the period a retainer&#x27;s quota resets over. Set for retainer, absent for one-off.</p>
+  <p>&#x27;monthly&#x27; or &#x27;quarterly&#x27; — the period a retainer&#x27;s quota resets over. For a retainer that has a quota; absent on a one-off, and on a Project with no quota.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Project">xeo:Project</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
 <section id="callOutcome" class="term">
@@ -1942,7 +1942,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 <section id="durationDays" class="term">
   <h3>duration days <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:durationDays</code>
-  <p>Fixed run length of a one-off project. Set for oneoff, absent for retainer.</p>
+  <p>Fixed run length of a project that has an end date, in days. For a one-off; absent on a retainer, and on a Project with no set end.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Project">xeo:Project</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div></dl>
 </section>
 <section id="eligibleTouchType" class="term">
@@ -1996,7 +1996,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 <section id="engagementType" class="term">
   <h3>engagement type <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:engagementType</code>
-  <p>&#x27;retainer&#x27; or &#x27;oneoff&#x27; — the discriminator for how scope is expressed. A retainer caps interventions per cadence period; a one-off caps them over durationDays. Sending both cadence and durationDays is a contradiction and is rejected at the edge.</p>
+  <p>&#x27;retainer&#x27; or &#x27;oneoff&#x27; — the discriminator for how a contract&#x27;s scope is expressed. Optional: a Project that is not a contract of either kind has none. A retainer caps interventions per cadence period; a one-off caps them over durationDays. A Project carrying both cadence and durationDays contradicts itself.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Project">xeo:Project</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
 <section id="enteredAt" class="term">
@@ -2134,13 +2134,13 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 <section id="interventionQuota" class="term">
   <h3>intervention quota <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:interventionQuota</code>
-  <p>Ceiling on interventions this project may deploy per period (retainer) or in total (one-off). Always present. Recommendations in an open status — pending, in_progress, blocked — consume it; advised work does not.</p>
+  <p>Ceiling on interventions this project may deploy per period (retainer) or in total (one-off). Optional: a Project without one states no ceiling, which is not a ceiling of zero. Where it is set, Recommendations in an open status — pending, in_progress, blocked — consume it; advised work does not.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Project">xeo:Project</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div></dl>
 </section>
 <section id="isPrimary" class="term">
   <h3>is primary <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:isPrimary</code>
-  <p>Exactly one target per objective. The one the agent optimises for.</p>
+  <p>Marks the target the agent optimises for. At most one target per objective is primary; an objective may have none.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#MetricTarget">xeo:MetricTarget</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#boolean" class="ext">xsd:boolean</a></dd></div></dl>
 </section>
 <section id="lastSeenAt" class="term">
