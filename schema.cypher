@@ -46,7 +46,7 @@ FOR ()-[l:LINKS_TO]-() ON (l.lastSeenCrawlId);
 CREATE INDEX fetched_status IF NOT EXISTS
 FOR ()-[f:FETCHED]-() ON (f.statusCode);
 
-// ========== VISIBILITY (the xEO layer) ==========
+// ========== VISIBILITY (AI answers: GEO and AEO) ==========
 
 // ---------- Entities ----------
 CREATE CONSTRAINT engine_id IF NOT EXISTS

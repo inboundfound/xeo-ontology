@@ -21,7 +21,7 @@
 #     genuine specialization of the target (e.g. xeo:Crawl is-a prov:Activity).
 #
 # None of this depends on any third-party SEO vocabulary; schema.org, PROV-O and
-# SKOS are neutral web standards, not competitors in the xEO space.
+# SKOS are neutral web standards, not competitors in the SEO, GEO and AEO space.
 
 xeo:align-module a owl:Ontology ;
     dct:title "XEO Alignment (schema.org · PROV-O · SKOS)" ;

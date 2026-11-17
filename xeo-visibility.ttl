@@ -4,7 +4,7 @@
 @prefix dct:  <http://purl.org/dc/terms/> .
 @prefix xeo:  <https://xeoontology.org/xeo#> .
 
-# XEO Visibility module — the xEO layer.
+# XEO Visibility module — AI answers (GEO and AEO).
 #
 # Extends XEO Core with the terms needed once "the engine" stops being a
 # results page and starts being an answer: generative overviews, answer
@@ -15,7 +15,7 @@
 # tracker + response-capture + Neo4j implementation before publication.
 
 xeo:visibility-module a owl:Ontology ;
-    dct:title "XEO Visibility (the xEO layer)" ;
+    dct:title "XEO Visibility (AI answers: GEO and AEO)" ;
     dct:description "Extends XEO Core with the terms needed once the engine stops being a results page and starts being an answer: engines, prompts, captured responses, citations, mentions, and the visibility rollups over them." ;
     dct:creator "Inbound Found" ;
     owl:versionInfo "0.7.1" .
@@ -75,7 +75,7 @@ xeo:fansOutTo a owl:ObjectProperty ;
     rdfs:domain xeo:Prompt ; rdfs:range xeo:Term ;
     xeo:xeoLayer "observation" ;
     xeo:groundedIn "Engine-reported retrieval queries (per-provider API contract)" ;
-    dct:description "A retrieval query the engine reported issuing while answering this prompt. Fan-out queries ARE Terms — the join between the xEO layer and classic rank data. Carries the reporting engine and capture episode." .
+    dct:description "A retrieval query the engine reported issuing while answering this prompt. Fan-out queries ARE Terms — the join between AI-answer visibility and classic rank data. Carries the reporting engine and capture episode." .
 
 xeo:visibilityFor a owl:ObjectProperty ;
     rdfs:domain xeo:Prompt ; rdfs:range xeo:Brand ;
