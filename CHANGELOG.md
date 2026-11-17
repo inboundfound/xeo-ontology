@@ -7,17 +7,20 @@ and corrects prose; a domain or range is not narrowed.
 
 Versions before 0.6.0 are reconstructed from the git history.
 
-## 0.7.1 — agentic engineering module, draft (2026-11-17)
+## 0.7.1 — agentic engineering module (draft), a looser Project, the name (2026-11-17)
 
-A new add-on module for the agents that do the work, and the terms it shares with the rest:
-the settings a model was called with go to core, and specs, work items and deliverables go to
-the work module. Everything added is marked draft. Nothing existing is renamed, removed or
-redefined, and every module still needs only core. From the XEO research report on agent
-harnesses and AI-assisted development (10 November) and its handoff.
+A new add-on module for the agents that do the work; specs, work items and deliverables in
+the work module; and a `Project` that no longer has to be a client contract. Everything added
+is marked draft. No released term is renamed, removed or retyped, and every module still needs
+only core. The new terms are from the XEO research report on agent harnesses and AI-assisted
+development (10 November) and its handoff.
 
-**Why a patch number.** Nothing published in 0.7.0 changes, and everything added is draft, so
-a consumer of 0.7.0 has nothing to do. Every module file carries 0.7.1, as one release carries
-one version, including the modules this release does not touch.
+**Why a patch number.** No term published in 0.7.0 goes away or changes type, and everything
+added is draft. What does change in released terms is prose: the descriptions of `Project`,
+`Campaign`, `Objective` and their properties are loosened, and those of `Practice` and
+`Recommendation` are widened. Data that was valid in 0.7.0 is valid in 0.7.1. Every module
+file carries 0.7.1, as one release carries one version, including the modules this release
+does not touch.
 
 ### A third term status, `draft`
 
@@ -25,13 +28,13 @@ one version, including the modules this release does not touch.
 still being written: it is declared so it can be tried against data, and it may change or be
 removed without a deprecation step. A class stays draft until an example file loads it and its
 maintainer lifts the mark; `tools/validate.py` lists each draft class with the example that
-loads it. The profile, the term docs and `schemes.json` carry the mark. All 79 terms and 11
+loads it. The profile, the term docs and `schemes.json` carry the mark. All 81 terms and 11
 schemes below are draft.
 
 ### New module `xeo-agentic.ttl`
 
-Only what exists because an agent ran. 10 classes, 14 object properties, 38 datatype
-properties and one annotation property.
+What exists because an agent ran or a model was called. 11 classes, 15 object properties, 46
+datatype properties and one annotation property.
 
 - **The harness:** `Harness` (two identities: `name` with `harnessVersion`, and a
   `harnessDigest` of the files actually loaded), `HarnessComponent` (`componentKind`,
@@ -40,11 +43,21 @@ properties and one annotation property.
   `continuesSession`), `AgentTurn` (`turnRef`), `ModelCall` (`modelCallRef`), `ToolCall`
   (`toolCallRef`, `toolName`, `toolSource`, `succeeded`, `errorClass`, `failureSignature`);
   `hasTurn`, `hasModelCall`, `hasToolCall`, and `inSession` for a record with no turn.
+- **The settings a model was called with:** `InvocationConfig` (`modelProvider`,
+  `requestedModel`, `reasoningLevel`, `temperature`, `maxOutputTokens`, `toolSetDigest`), and
+  `usedConfig`, which links a `ModelCall` to it. A captured `LLMResponse` (visibility) can
+  carry `usedConfig` too: an optional link that works when both modules are loaded. These are
+  here and not in core because they are detail about one model call. What every graph needs
+  in order to say which build answered, `Model` and `producedByModel`, stays in core.
 - **Usage:** `uncachedInputTokens`, `cacheReadTokens`, `cacheWriteTokens` and `outputTokens`
   never overlap, and `reasoningTokens` is a part of output. A field named `input_tokens`
   excludes cached tokens at one provider and includes them at another, so it is mapped by
   vendor and that vendor's `tokenAccounting`, never by its name. Also `latencyMs`,
   `timeToFirstTokenMs`, `attemptCount`, `stopReason`.
+- **Cache writes by lifetime:** `cacheWriteDefaultLifetimeTokens` and
+  `cacheWriteExtendedLifetimeTokens`, the two parts of `cacheWriteTokens`, for a provider that
+  charges more to write a cache entry it keeps longer. They sum to the total and are never
+  added to it. A cost figure for such a provider is computed from the parts.
 - **Cost:** `costAmount` with `costBasis` and core's `currencyCode`. A derivation, unless the
   basis is an invoice.
 - **Rules firing:** `EnforcementEvent` (`enforcementDecision`, `decisionSource`, `reasonText`,
@@ -56,25 +69,70 @@ properties and one annotation property.
   (`parentAgentId`, `childAgentId`, `returnsControl`, `childSession`).
 - `producedInSession`: the session a `Deliverable` came out of.
 
-Its links to decision (four) and to work (one) are optional and work when both are loaded.
+Its links to decision (four), to work (one) and to visibility (`usedConfig` on an
+`LLMResponse`) are optional and work when both are loaded.
 
 ### Core
 
-- **`InvocationConfig`**, the settings a model was called with: `modelProvider`,
-  `requestedModel`, `reasoningLevel`, `temperature`, `maxOutputTokens`, `toolSetDigest`.
-  `usedConfig` links a captured `LLMResponse` or a `ModelCall` to it. It is in core because two
-  add-ons use it. The build that answered is still `producedByModel`.
-- **`artifactUri`**: where the file behind a node is kept. The sibling of `datasetUri`.
+- **`artifactUri`** (draft): where the file behind a node is kept. The sibling of
+  `datasetUri`. The one new term in core.
 
 ### Work
 
 - **`Spec`** (`specKind`, `withinProject`), **`WorkItem`** (`tracesTo` a Spec or a
-  Recommendation) and **`Deliverable`** (`fulfils` a WorkItem). They are in work, not in the
-  agentic module, because a person writes a spec and hands back a deliverable as often as an
-  agent does.
+  Recommendation) and **`Deliverable`** (`fulfils` a WorkItem), all draft. They are in work,
+  not in the agentic module, because a person writes a spec and hands back a deliverable as
+  often as an agent does.
 - How they sit beside what was there: an `Objective` says what should move and a `Spec` what
   is to be built; a `Recommendation` is the call to do something and a `WorkItem` one step of
   doing it; a `Deliverable` is what was handed back and an `Outcome` what was measured after.
+
+### `Project`, `Campaign` and `Objective` are loosened
+
+Until now their descriptions carried one agency's operating rules as if they were what the
+terms mean. They were prose, never shapes, and they are now optional in the prose too.
+
+- **A `Project` is a bounded body of work**, client or internal. It need not be a contract,
+  sit on one `Website`, have a `Campaign`, an `interventionQuota` or an end date. An internal
+  `Spec` can sit `withinProject`. `engagementType`, `interventionQuota`, `cadence`,
+  `durationDays` and `inScope` are all still declared and all optional.
+- **A `Campaign`** need not have a `Topic` or an `Objective`. **An `Objective`** need not have
+  targets or a results window.
+- **Absence means "not stated".** No `interventionQuota` is no stated ceiling, not a ceiling of
+  zero. No `inScope` is no stated contract scope, not an empty one. A consumer that computes
+  room left in a quota must read it that way.
+- **Kept**, because other terms lean on them: at most one `Objective` per `Campaign`, at most
+  one primary target per `Objective`, exactly one `targetMetric` per `MetricTarget`.
+- Descriptions edited in place, one line for one line: `Project`, `Campaign`, `Objective`,
+  `hasProject`, `inScope`, `aboutTopic`, `hasObjective`, `hasTarget`, `execution`,
+  `engagementType`, `interventionQuota`, `cadence`, `durationDays`, `isPrimary`, `clientOf`;
+  the scheme `xeos:engagementType`; the `schema:Project` note in `xeo-align.ttl`.
+
+**The old rules are kept as an optional profile**, `shapes/profiles/agency-delivery.ttl`: eight
+SHACL shapes a team loads beside the base shapes if its every project is a contract (a type
+and a quota on every project, on exactly one website; a cadence for a retainer and a run
+length for a one-off; one topic and one objective per campaign; a results window, at least one
+target and exactly one primary target per objective). `tools/validate.py` checks each profile
+against its own test data in `examples/profiles/`; the examples in `examples/` are never held
+to one. A graph that fails a profile is still valid XEO.
+
+### Decision
+
+- **`Practice`**: its description said it governs how recommendations are made, while four
+  new terms treat a rule a harness states or enforces as a `Practice`. It now says a Practice
+  governs a class of choices: a `Recommendation` in the decision chain, an agent's action
+  under a harness. `constrains` is unchanged.
+- **`Recommendation`**: its description now says `closesGap` and `supportedBy` are optional. A
+  call a person or an agent makes from tacit or general knowledge, with no diagnosed `Gap` and
+  no `Experiment` behind it, is a `Recommendation`, and its `method` says so. No shape ever
+  required either link.
+
+### The name
+
+`XEO` in prose, `xeo` in prefixes, file names and code. The spelling with a lowercase x and
+capital EO is gone from the modules and the docs. Where it stood for SEO, GEO and AEO taken
+together, the text now says that; the title of the visibility module is "XEO Visibility (AI
+answers: GEO and AEO)".
 
 ### Reference schemes
 
@@ -85,15 +143,23 @@ Eleven, 51 concepts: `harnessComponentKind`, `loadMode`, `startType`, `toolSourc
 ### Example
 
 `examples/agent-session.jsonld`: one harness, one session under it, the spec it worked from,
-and one deliverable from the agent beside one made by hand. It loads all 14 new classes.
+and one deliverable from the agent beside one made by hand. It loads all 14 new classes, shows
+a model call's cache writes split by lifetime, and has an internal `Project`, with a name and
+nothing else, holding a `Spec`.
+
+### Tombstones
+
+`tombstones.json` gains `epistemicLayer`, renamed `xeoLayer` in 0.7.0 and missing from the
+list until now. Nothing is removed in 0.7.1.
 
 ### Not in this release
 
 `Requirement`, `AcceptanceCriterion` and `ReviewVerdict`; `Handoff`, `McpServer` and
 `AgentFramework`; the experiment design terms (arms, trials, benchmarks, claims), which belong
-to an experiments module; the widening of `Practice` and `constrains` to cover an agent's
-actions; cache writes split by how long the entry is kept; moving `webSearchEnabled` onto the
-configuration; any vendor mapping; SHACL shapes and Neo4j constraints for the new classes.
+to an experiments module; widening the range of `constrains` to cover an agent's actions;
+moving `webSearchEnabled` onto the configuration; any vendor mapping; SHACL shapes in the base
+file and Neo4j constraints for the new classes, including a shape that checks the two
+cache-write parts sum to the total.
 
 ## 0.7.0 — modules, deletions, core and sales, attribution (2026-11-12)
 
