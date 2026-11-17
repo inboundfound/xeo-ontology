@@ -7,13 +7,17 @@ and corrects prose; a domain or range is not narrowed.
 
 Versions before 0.6.0 are reconstructed from the git history.
 
-## Unreleased — agentic engineering module, draft
+## 0.7.1 — agentic engineering module, draft (2026-11-17)
 
 A new add-on module for the agents that do the work, and the terms it shares with the rest:
 the settings a model was called with go to core, and specs, work items and deliverables go to
 the work module. Everything added is marked draft. Nothing existing is renamed, removed or
 redefined, and every module still needs only core. From the XEO research report on agent
 harnesses and AI-assisted development (10 November) and its handoff.
+
+**Why a patch number.** Nothing published in 0.7.0 changes, and everything added is draft, so
+a consumer of 0.7.0 has nothing to do. Every module file carries 0.7.1, as one release carries
+one version, including the modules this release does not touch.
 
 ### A third term status, `draft`
 
