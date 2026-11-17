@@ -135,7 +135,7 @@ xeo:supportedBy rdfs:subPropertyOf prov:wasDerivedFrom ;
 # ===========================================================================
 
 xeo:Project skos:closeMatch schema:Project ;
-    rdfs:comment "An XEO Project is a contracted body of work on one website with a quota and a scope; schema:Project is the closest published class. closeMatch, not equivalence: XEO's carries an engagement shape schema.org has no notion of." .
+    rdfs:comment "An XEO Project is a bounded body of work, client or internal, often a contract on one website; schema:Project is the closest published class. closeMatch, not equivalence: XEO's may carry contract terms (a type, a quota, a scope) schema.org has no notion of." .
 
 # ===========================================================================
 # v0.6.0 (kit sync) — bridges for the terms added in 0.6.0, appended at the

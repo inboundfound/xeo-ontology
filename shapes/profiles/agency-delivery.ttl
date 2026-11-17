@@ -1,0 +1,143 @@
+@prefix sh:   <http://www.w3.org/ns/shacl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix dct:  <http://purl.org/dc/terms/> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix xeo:  <https://xeoontology.org/xeo#> .
+@prefix xeoad: <https://xeoontology.org/shapes/agency-delivery#> .
+
+# XEO optional profile: agency delivery.
+#
+# OPTIONAL. Not part of shapes/xeo-shapes.ttl, and nothing in the ontology
+# depends on it. The base shapes check only what XEO says is true of every
+# graph. This file checks the operating rules of one way of running client
+# work: every Project is a contract on one Website with a type and a ceiling,
+# every Campaign works one Topic toward one Objective, and every Objective has a
+# results window and one primary target.
+#
+# WHERE THESE RULES CAME FROM. Until 0.7.1 they were written into the
+# descriptions of Project, Campaign, Objective and their properties in
+# xeo-work.ttl, as if they were what those terms mean. They are how Inbound
+# Found runs retainers and one-off projects, and they were lifted from its
+# implementations with the terms. 0.7.1 took them out of the descriptions, where
+# they bound everyone, and put them here, where they bind whoever loads them.
+#
+# WHO SHOULD LOAD IT. A team whose every Project is a client contract with a
+# quota, and who wants a graph that breaks that rule to fail validation. A team
+# with internal projects, projects with no campaign yet, or campaigns with no
+# measurable objective should not: those are valid XEO and fail here by design.
+#
+# Run:  pyshacl -s shapes/xeo-shapes.ttl -s shapes/profiles/agency-delivery.ttl <your-data>
+#   or: tools/validate.py, which holds examples/profiles/agency-delivery/ to it.
+
+xeoad: a owl:Ontology ;
+    dct:title "XEO profile: agency delivery" ;
+    dct:description "Optional SHACL shapes for the contract rules one agency runs client work under: a Project is a contract on one Website with an engagement type and an intervention quota; a retainer has a cadence and a one-off a run length; a Campaign works one Topic toward one Objective; an Objective has a results window and exactly one primary target. Load beside shapes/xeo-shapes.ttl. Not required by XEO." ;
+    dct:creator "Inbound Found" ;
+    owl:versionInfo "0.7.1" .
+
+# --- Project: a contract ---------------------------------------------------------
+
+xeoad:ProjectIsAContract a sh:NodeShape ;
+    rdfs:label "a project states its engagement type and its intervention quota" ;
+    rdfs:seeAlso xeo:engagementType , xeo:interventionQuota ;
+    sh:targetClass xeo:Project ;
+    sh:property [
+        sh:path xeo:engagementType ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:in ( "retainer" "oneoff" ) ;
+        sh:message "Agency profile: a xeo:Project requires exactly one xeo:engagementType, retainer or oneoff."
+    ] ;
+    sh:property [
+        sh:path xeo:interventionQuota ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:minInclusive 0 ;
+        sh:message "Agency profile: a xeo:Project requires exactly one xeo:interventionQuota, zero or more. A scope of work with no ceiling is not a scope."
+    ] .
+
+xeoad:ProjectOnOneWebsite a sh:NodeShape ;
+    rdfs:label "a project is contracted against exactly one website" ;
+    rdfs:seeAlso xeo:hasProject ;
+    sh:targetClass xeo:Project ;
+    sh:property [
+        sh:path [ sh:inversePath xeo:hasProject ] ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "Agency profile: a xeo:Project is reached by xeo:hasProject from exactly one xeo:Website."
+    ] .
+
+xeoad:RetainerHasCadence a sh:NodeShape ;
+    rdfs:label "a retainer has a cadence and no run length" ;
+    rdfs:seeAlso xeo:cadence ;
+    sh:targetClass xeo:Project ;
+    sh:or (
+        [ sh:not [ sh:path xeo:engagementType ; sh:hasValue "retainer" ] ]
+        [ sh:and (
+            [ sh:path xeo:cadence ; sh:minCount 1 ; sh:maxCount 1 ]
+            [ sh:path xeo:durationDays ; sh:maxCount 0 ]
+        ) ]
+    ) ;
+    sh:message "Agency profile: a retainer xeo:Project requires one xeo:cadence and carries no xeo:durationDays." .
+
+xeoad:OneOffHasDuration a sh:NodeShape ;
+    rdfs:label "a one-off has a run length and no cadence" ;
+    rdfs:seeAlso xeo:durationDays ;
+    sh:targetClass xeo:Project ;
+    sh:or (
+        [ sh:not [ sh:path xeo:engagementType ; sh:hasValue "oneoff" ] ]
+        [ sh:and (
+            [ sh:path xeo:durationDays ; sh:minCount 1 ; sh:maxCount 1 ]
+            [ sh:path xeo:cadence ; sh:maxCount 0 ]
+        ) ]
+    ) ;
+    sh:message "Agency profile: a one-off xeo:Project requires one xeo:durationDays and carries no xeo:cadence." .
+
+# --- Campaign: one topic, one objective ---------------------------------------------
+
+xeoad:CampaignWorksOneTopic a sh:NodeShape ;
+    rdfs:label "a campaign works exactly one topic" ;
+    rdfs:seeAlso xeo:aboutTopic ;
+    sh:targetClass xeo:Campaign ;
+    sh:property [
+        sh:path xeo:aboutTopic ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "Agency profile: a xeo:Campaign requires exactly one xeo:aboutTopic."
+    ] .
+
+xeoad:CampaignHasOneObjective a sh:NodeShape ;
+    rdfs:label "a campaign is measured by exactly one objective" ;
+    rdfs:seeAlso xeo:hasObjective ;
+    sh:targetClass xeo:Campaign ;
+    sh:property [
+        sh:path xeo:hasObjective ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "Agency profile: a xeo:Campaign requires exactly one xeo:hasObjective."
+    ] .
+
+# --- Objective: a window, targets, one of them primary --------------------------------
+
+xeoad:ObjectiveHasWindowAndTargets a sh:NodeShape ;
+    rdfs:label "an objective has a results window and at least one target" ;
+    rdfs:seeAlso xeo:resultsWindowDays , xeo:hasTarget ;
+    sh:targetClass xeo:Objective ;
+    sh:property [
+        sh:path xeo:resultsWindowDays ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:minInclusive 1 ;
+        sh:message "Agency profile: a xeo:Objective requires exactly one xeo:resultsWindowDays, one day or more."
+    ] ;
+    sh:property [
+        sh:path xeo:hasTarget ;
+        sh:minCount 1 ;
+        sh:message "Agency profile: a xeo:Objective requires at least one xeo:hasTarget."
+    ] .
+
+xeoad:ObjectiveHasOnePrimaryTarget a sh:NodeShape ;
+    rdfs:label "exactly one of an objective's targets is primary" ;
+    rdfs:seeAlso xeo:isPrimary ;
+    sh:targetClass xeo:Objective ;
+    sh:property [
+        sh:path xeo:hasTarget ;
+        sh:qualifiedValueShape [ sh:path xeo:isPrimary ; sh:hasValue true ] ;
+        sh:qualifiedMinCount 1 ; sh:qualifiedMaxCount 1 ;
+        sh:message "Agency profile: exactly one of a xeo:Objective's targets carries xeo:isPrimary true."
+    ] .

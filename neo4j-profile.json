@@ -110,7 +110,7 @@
       ]
     },
     "Campaign": {
-      "definition": "A body of work inside a Project against one Topic: the URLs and Terms it covers, and the single Objective it is measured by. Recommendations are issuedFor a campaign, and it is the unit an operator plans a cycle around. Soft-deleted like its Project.",
+      "definition": "A body of work inside a Project, usually against one Topic: the URLs and Terms it covers and, where it is measured, the one Objective it is measured by. Recommendations are issuedFor a campaign, and it is the unit an operator plans a cycle around. A campaign need not have a Topic, an Objective, targets or a results window; a team that requires them checks them with the optional profile shapes/profiles/agency-delivery.ttl. Soft-deleted like its Project.",
       "iri": "https://xeoontology.org/xeo#Campaign",
       "layer": "entity",
       "module": "work"
@@ -340,7 +340,7 @@
       "status": "draft"
     },
     "Objective": {
-      "definition": "What a Campaign intends to move: an operator-written statement in prose (carried verbatim — the recommendation agent reads it as the goal), a resultsWindowDays every target is measured over, and one or more MetricTargets of which exactly one isPrimary. An intent set at creation. A campaign has one reporting horizon, distinct from the Project's work window: a two-month engagement can carry a six-month results window. The window starts on resultsWindowStart, and the objective-level result is one objectiveReading per target over the campaign's deduplicated scope, never a sum of Outcomes.",
+      "definition": "What a Campaign intends to move: an operator-written statement in prose (carried verbatim — the recommendation agent reads it as the goal), and, where they are set, a resultsWindowDays every target is measured over and MetricTargets, of which at most one isPrimary. An intent set at creation. A campaign has one reporting horizon, distinct from the Project's work window: a two-month engagement can carry a six-month results window. The window starts on resultsWindowStart, and the objective-level result is one objectiveReading per target over the campaign's deduplicated scope, never a sum of Outcomes.",
       "iri": "https://xeoontology.org/xeo#Objective",
       "layer": "interpretation",
       "module": "work"
@@ -410,7 +410,7 @@
       "module": "decision"
     },
     "Project": {
-      "definition": "The contractual container for a body of work on one Website. Declares its engagementType (retainer or one-off), an interventionQuota (a scope of work with no ceiling is not a scope), a cadence the quota resets over (retainer) or a durationDays it runs for (one-off), and the Interventions and Tactics inScope under the contract. Never destroyed: its campaigns, objectives and targets are the substrate the end-of-campaign report and the experiment loop read, so it is stamped deletedAt and filtered, not deleted.",
+      "definition": "A bounded body of work, set apart and named so that what is done under it can be planned, counted and reported together. Often a client contract on one Website (hasProject), and as often not: an internal build, a piece of research or a product is a Project too, and a Spec sits withinProject either way. Nothing is required of it. Where it is a contract it may state its engagementType (retainer or one-off), an interventionQuota, the cadence the quota resets over or the durationDays it runs for, and the Interventions and Tactics inScope. Those are the terms of one way of selling work, not conditions of being a Project: a Project need not have a Website, a Campaign, a quota or an end date. A team that does require them checks them with the optional profile shapes/profiles/agency-delivery.ttl. Never destroyed: its campaigns, objectives and targets are the substrate the end-of-campaign report and the experiment loop read, so it is stamped deletedAt and filtered, not deleted.",
       "iri": "https://xeoontology.org/xeo#Project",
       "layer": "entity",
       "module": "work"

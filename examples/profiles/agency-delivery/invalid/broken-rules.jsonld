@@ -1,0 +1,45 @@
+{
+  "@context": [
+    "../../../../context.jsonld",
+    {
+      "ex": "https://example.com/graph/",
+      "expect": "https://xeoontology.org/shapes#expectedViolation"
+    }
+  ],
+  "@graph": [
+    {
+      "id": "ex:site", "type": "Website", "origin": "https://www.example.com", "websiteId": "example-com",
+      "hasProject": ["ex:bad-retainer", "ex:bad-oneoff"]
+    },
+    {
+      "id": "ex:internal-project", "type": "Project", "name": "Rebuild the audit skill",
+      "expect": ["ProjectIsAContract", "ProjectOnOneWebsite"]
+    },
+    {
+      "id": "ex:bad-retainer", "type": "Project", "engagementType": "retainer", "interventionQuota": 4,
+      "durationDays": 30,
+      "expect": "RetainerHasCadence"
+    },
+    {
+      "id": "ex:bad-oneoff", "type": "Project", "engagementType": "oneoff", "interventionQuota": 2,
+      "cadence": "monthly",
+      "expect": "OneOffHasDuration"
+    },
+    {
+      "id": "ex:bare-campaign", "type": "Campaign", "websiteId": "example-com",
+      "expect": ["CampaignWorksOneTopic", "CampaignHasOneObjective"]
+    },
+    {
+      "id": "ex:prose-objective", "type": "Objective",
+      "statement": "Get the documentation into shape before the launch.",
+      "expect": ["ObjectiveHasWindowAndTargets", "ObjectiveHasOnePrimaryTarget"]
+    },
+    {
+      "id": "ex:two-primaries", "type": "Objective", "resultsWindowDays": 90,
+      "hasTarget": ["ex:target-a", "ex:target-b"],
+      "expect": "ObjectiveHasOnePrimaryTarget"
+    },
+    { "id": "ex:target-a", "type": "MetricTarget", "targetMetric": "xeos:metric-clicks", "isPrimary": true },
+    { "id": "ex:target-b", "type": "MetricTarget", "targetMetric": "xeos:metric-ctr", "isPrimary": true }
+  ]
+}

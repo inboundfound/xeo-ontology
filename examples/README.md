@@ -12,6 +12,7 @@ must conform to `shapes/xeo-shapes.ttl`.
 | `neo4j-export.jsonld` | A few of the same nodes written the way Neo4j names things (UPPER_SNAKE relationship types, concept slots stored as codes), lifted by `context.neo4j.jsonld`. Includes a `Metric`, a `MetricReading` and a `MetricTarget`. |
 | `agent-session.jsonld` | The draft terms of 0.7.1: one harness, one agent session under it, the spec it worked from, and a deliverable from the agent beside one made by hand. Loads all fourteen draft classes. |
 | `invalid/broken-rules.jsonld` | One deliberately wrong node or edge per SHACL shape, each tagged with the shape it must break. The validator fails if a shape stops firing. |
+| `profiles/agency-delivery/` | Test data for the optional profile `shapes/profiles/agency-delivery.ttl`, and for nothing else: a retainer and a one-off that meet one agency's contract rules, and in `invalid/` the graphs that break them (an internal project among them, which is valid XEO). The files above are never held to a profile. |
 
 ## What `learn-graph.jsonld` walks through
 
@@ -70,7 +71,9 @@ Every new term in it is draft. The runtime, provider and model are invented.
    file that is always loaded, a skill loaded on demand, and a hook. The hook
    `expressesPractice`: the rule itself is a `Practice`, enforced at `hook`, failing open.
 2. **The work** (`xeo-work.ttl`). A `Spec` of kind `plan` within a `Project`, and two
-   `WorkItem`s that `tracesTo` it.
+   `WorkItem`s that `tracesTo` it. That Project is a client retainer on the site. A second
+   `Project` is internal work: it has a name and nothing else (no Website, contract type or
+   quota), and a `Spec` sits `withinProject` it the same way.
 3. **A session.** An `AgentSession` with the runtime's own `sessionRef`, the harness it ran
    under and the runtime it ran on. One `AgentTurn`, and one `ModelCall` under a shared
    `InvocationConfig`: `requestedModel` is an alias, and `producedByModel` names the

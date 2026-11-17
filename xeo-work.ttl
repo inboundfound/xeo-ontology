@@ -13,17 +13,17 @@
 # and the norms tier says what SHOULD govern that call. Neither says for whom,
 # under which contract, against which goal, or with how much room left this
 # month. That is delivery, and until this module it lived only in the
-# implementations: a Project with a quota and a scope, a Campaign against a
-# topic with an Objective, and the targets an experiment is finally read against.
+# implementations: a Project, a Campaign against a topic with an Objective, and
+# the targets an experiment is finally read against. (Loosened in 0.7.1: see foot.)
 #
-#   Website hasProject Project                     (the contract: type, quota, scope)
-#   Project hasCampaign Campaign                   (a body of work against one Topic)
-#   Campaign hasObjective Objective hasTarget MetricTarget   (the intent, as targets)
+#   Website hasProject Project                     (a bounded body of work; contract terms optional)
+#   Project hasCampaign Campaign                   (a body of work, usually against one Topic)
+#   Campaign hasObjective Objective hasTarget MetricTarget   (the intent, as targets, where set)
 #   Recommendation issuedFor Campaign              (a call lands in a campaign)
 #   Experiment measures MetricTarget               (and is read against its target)
 #
 # Two layers meet here and are kept apart on purpose. Project and Campaign are
-# ENTITIES: they exist because a contract was signed and a topic was chosen.
+# ENTITIES: they exist because someone set a body of work apart and named it.
 # Objective and MetricTarget are INTERPRETATIONS: an intent set at creation, a
 # call about what should move. A target is named a target and never a result —
 # xeo:Outcome is the measured side, an observation, and the two must never share
@@ -33,7 +33,7 @@
 # asks CAN we (is the lever available); this module's inScope + execution asks
 # DID THEY BUY IT and WHOSE HOURS DOES IT COST. A recommendation is deliverable
 # when both say yes; advisory when the capability exists but the contract or the
-# allowance does not cover it.
+# allowance does not cover it. A Project that states no contract has no second half.
 #
 # Named Project, not Engagement, deliberately: "engagement" was the name of the
 # conversion seam (forms, CTAs, the CRM join) until 0.7, and the implementations
@@ -50,7 +50,7 @@
 
 xeo:work-module a owl:Ontology ;
     dct:title "XEO Work (clients, contracts, projects, campaigns, objectives)" ;
-    dct:description "The container work is delivered in: a Project (the contract — type, quota, scope), its Campaigns (a body of work against one Topic), the Objective each campaign is measured by, and the MetricTargets an Experiment is read against. Also the agency side: which Organization is whose client, and what it holds. Lifted from a production implementation. Named xeo-delivery until 0.7. Since 0.7.1 also, as draft terms: what is to be built (Spec), the steps (WorkItem) and what was handed back (Deliverable), whoever does the work." ;
+    dct:description "The container work is delivered in: a Project (a bounded body of work, client or internal; where it is a contract, its type, quota and scope), its Campaigns (a body of work, usually against one Topic), the Objective a campaign is measured by, and the MetricTargets an Experiment is read against. None of those parts is required of the one above it. Also the agency side: which Organization is whose client, and what it holds. Lifted from a production implementation. Named xeo-delivery until 0.7. Since 0.7.1 also, as draft terms: what is to be built (Spec), the steps (WorkItem) and what was handed back (Deliverable), whoever does the work." ;
     dct:creator "Inbound Found" ;
     owl:versionInfo "0.7.1" .
 
@@ -59,17 +59,17 @@ xeo:work-module a owl:Ontology ;
 xeo:Project a owl:Class ;
     rdfs:label "Project" ;
     xeo:xeoLayer "entity" ;
-    dct:description "The contractual container for a body of work on one Website. Declares its engagementType (retainer or one-off), an interventionQuota (a scope of work with no ceiling is not a scope), a cadence the quota resets over (retainer) or a durationDays it runs for (one-off), and the Interventions and Tactics inScope under the contract. Never destroyed: its campaigns, objectives and targets are the substrate the end-of-campaign report and the experiment loop read, so it is stamped deletedAt and filtered, not deleted." .
+    dct:description "A bounded body of work, set apart and named so that what is done under it can be planned, counted and reported together. Often a client contract on one Website (hasProject), and as often not: an internal build, a piece of research or a product is a Project too, and a Spec sits withinProject either way. Nothing is required of it. Where it is a contract it may state its engagementType (retainer or one-off), an interventionQuota, the cadence the quota resets over or the durationDays it runs for, and the Interventions and Tactics inScope. Those are the terms of one way of selling work, not conditions of being a Project: a Project need not have a Website, a Campaign, a quota or an end date. A team that does require them checks them with the optional profile shapes/profiles/agency-delivery.ttl. Never destroyed: its campaigns, objectives and targets are the substrate the end-of-campaign report and the experiment loop read, so it is stamped deletedAt and filtered, not deleted." .
 
 xeo:Campaign a owl:Class ;
     rdfs:label "Campaign" ;
     xeo:xeoLayer "entity" ;
-    dct:description "A body of work inside a Project against one Topic: the URLs and Terms it covers, and the single Objective it is measured by. Recommendations are issuedFor a campaign, and it is the unit an operator plans a cycle around. Soft-deleted like its Project." .
+    dct:description "A body of work inside a Project, usually against one Topic: the URLs and Terms it covers and, where it is measured, the one Objective it is measured by. Recommendations are issuedFor a campaign, and it is the unit an operator plans a cycle around. A campaign need not have a Topic, an Objective, targets or a results window; a team that requires them checks them with the optional profile shapes/profiles/agency-delivery.ttl. Soft-deleted like its Project." .
 
 xeo:Objective a owl:Class ;
     rdfs:label "Objective" ;
     xeo:xeoLayer "interpretation" ;
-    dct:description "What a Campaign intends to move: an operator-written statement in prose (carried verbatim — the recommendation agent reads it as the goal), a resultsWindowDays every target is measured over, and one or more MetricTargets of which exactly one isPrimary. An intent set at creation. A campaign has one reporting horizon, distinct from the Project's work window: a two-month engagement can carry a six-month results window. The window starts on resultsWindowStart, and the objective-level result is one objectiveReading per target over the campaign's deduplicated scope, never a sum of Outcomes." .
+    dct:description "What a Campaign intends to move: an operator-written statement in prose (carried verbatim — the recommendation agent reads it as the goal), and, where they are set, a resultsWindowDays every target is measured over and MetricTargets, of which at most one isPrimary. An intent set at creation. A campaign has one reporting horizon, distinct from the Project's work window: a two-month engagement can carry a six-month results window. The window starts on resultsWindowStart, and the objective-level result is one objectiveReading per target over the campaign's deduplicated scope, never a sum of Outcomes." .
 
 xeo:MetricTarget a owl:Class ;
     rdfs:label "Metric Target" ;
@@ -81,7 +81,7 @@ xeo:MetricTarget a owl:Class ;
 xeo:hasProject a owl:ObjectProperty ;
     rdfs:domain xeo:Website ; rdfs:range xeo:Project ;
     xeo:xeoLayer "entity" ;
-    dct:description "The projects contracted against this website. Tenancy rides on websiteId, as everywhere." .
+    dct:description "A Project whose work is on this Website: a client contract, or any other body of work about the site. A Project that is not about one website (internal work) has no such link. Tenancy rides on websiteId, as everywhere." .
 
 xeo:hasCampaign a owl:ObjectProperty ;
     rdfs:domain xeo:Project ; rdfs:range xeo:Campaign ;
@@ -90,12 +90,12 @@ xeo:hasCampaign a owl:ObjectProperty ;
 xeo:inScope a owl:ObjectProperty ;
     rdfs:domain xeo:Project ;
     xeo:xeoLayer "entity" ;
-    dct:description "What the contract covers: an Intervention (a whole category of work, including tactics added to the catalogue later) or a specific Tactic within one. Range left open across those two terms. The contractual half of the scope gate — requiresCapability + approved asks whether the lever exists; this asks whether it was bought." .
+    dct:description "What a Project's contract covers, where it states one: an Intervention (a whole category of work, including tactics added to the catalogue later) or a specific Tactic within one. Range left open across those two terms. The contractual half of the scope gate — requiresCapability + approved asks whether the lever exists; this asks whether it was bought. A Project with no inScope states no contract scope, which is not the same as nothing being in scope." .
 
 xeo:aboutTopic a owl:ObjectProperty ;
     rdfs:domain xeo:Campaign ; rdfs:range xeo:Topic ;
     xeo:xeoLayer "entity" ;
-    dct:description "The topic cluster this campaign works. Topics are site-scoped derivations in core; a campaign binds to one." .
+    dct:description "The topic cluster this campaign works, where it works one. Topics are site-scoped derivations in core; a campaign binds to at most one." .
 
 xeo:coversUrl a owl:ObjectProperty ;
     rdfs:domain xeo:Campaign ; rdfs:range xeo:URL ;
@@ -110,12 +110,12 @@ xeo:coversTerm a owl:ObjectProperty ;
 xeo:hasObjective a owl:ObjectProperty ;
     rdfs:domain xeo:Campaign ; rdfs:range xeo:Objective ;
     xeo:xeoLayer "interpretation" ;
-    dct:description "Exactly one per campaign." .
+    dct:description "The Objective a campaign is measured by. At most one per campaign, because a campaign has one reporting horizon; a campaign with no stated objective has none." .
 
 xeo:hasTarget a owl:ObjectProperty ;
     rdfs:domain xeo:Objective ; rdfs:range xeo:MetricTarget ;
     xeo:xeoLayer "interpretation" ;
-    dct:description "The objective's measurable targets. Non-empty; exactly one target isPrimary — what the recommendation agent optimises for. The rest are the secondary metrics an impact-radius check widens to." .
+    dct:description "The objective's measurable targets, where it has any. Where one isPrimary it is what the recommendation agent optimises for, and the rest are the secondary metrics an impact-radius check widens to." .
 
 xeo:issuedFor a owl:ObjectProperty ;
     rdfs:domain xeo:Recommendation ; rdfs:range xeo:Campaign ;
@@ -135,7 +135,7 @@ xeo:effortEstimate a owl:ObjectProperty ;
 xeo:execution a owl:ObjectProperty ;
     rdfs:domain xeo:Recommendation ; rdfs:range skos:Concept ;
     xeo:xeoLayer "interpretation" ;
-    dct:description "Who does the work, as a slotted-in concept: ours (spends the project's intervention allowance) or advised (the client executes; not agency capacity). The half of the scope gate that says whose hours a recommendation costs." .
+    dct:description "Who does the work, as a slotted-in concept: ours (spends the project's intervention allowance, where it has one) or advised (the client executes; not agency capacity). The half of the scope gate that says whose hours a recommendation costs." .
 
 # --- Datatype properties -----------------------------------------------------
 # xeo:status on a Recommendation is its execution lifecycle (pending, in_progress,
@@ -146,22 +146,22 @@ xeo:execution a owl:ObjectProperty ;
 xeo:engagementType a owl:DatatypeProperty ;
     rdfs:domain xeo:Project ; rdfs:range xsd:string ;
     xeo:xeoLayer "entity" ;
-    dct:description "'retainer' or 'oneoff' — the discriminator for how scope is expressed. A retainer caps interventions per cadence period; a one-off caps them over durationDays. Sending both cadence and durationDays is a contradiction and is rejected at the edge." .
+    dct:description "'retainer' or 'oneoff' — the discriminator for how a contract's scope is expressed. Optional: a Project that is not a contract of either kind has none. A retainer caps interventions per cadence period; a one-off caps them over durationDays. A Project carrying both cadence and durationDays contradicts itself." .
 
 xeo:interventionQuota a owl:DatatypeProperty ;
     rdfs:domain xeo:Project ; rdfs:range xsd:integer ;
     xeo:xeoLayer "entity" ;
-    dct:description "Ceiling on interventions this project may deploy per period (retainer) or in total (one-off). Always present. Recommendations in an open status — pending, in_progress, blocked — consume it; advised work does not." .
+    dct:description "Ceiling on interventions this project may deploy per period (retainer) or in total (one-off). Optional: a Project without one states no ceiling, which is not a ceiling of zero. Where it is set, Recommendations in an open status — pending, in_progress, blocked — consume it; advised work does not." .
 
 xeo:cadence a owl:DatatypeProperty ;
     rdfs:domain xeo:Project ; rdfs:range xsd:string ;
     xeo:xeoLayer "entity" ;
-    dct:description "'monthly' or 'quarterly' — the period a retainer's quota resets over. Set for retainer, absent for one-off." .
+    dct:description "'monthly' or 'quarterly' — the period a retainer's quota resets over. For a retainer that has a quota; absent on a one-off, and on a Project with no quota." .
 
 xeo:durationDays a owl:DatatypeProperty ;
     rdfs:domain xeo:Project ; rdfs:range xsd:integer ;
     xeo:xeoLayer "entity" ;
-    dct:description "Fixed run length of a one-off project. Set for oneoff, absent for retainer." .
+    dct:description "Fixed run length of a project that has an end date, in days. For a one-off; absent on a retainer, and on a Project with no set end." .
 
 xeo:resultsWindowDays a owl:DatatypeProperty ;
     rdfs:domain xeo:Objective ; rdfs:range xsd:integer ;
@@ -200,7 +200,7 @@ xeo:baselineCapturedAt a owl:DatatypeProperty ;
 xeo:isPrimary a owl:DatatypeProperty ;
     rdfs:domain xeo:MetricTarget ; rdfs:range xsd:boolean ;
     xeo:xeoLayer "interpretation" ;
-    dct:description "Exactly one target per objective. The one the agent optimises for." .
+    dct:description "Marks the target the agent optimises for. At most one target per objective is primary; an objective may have none." .
 
 xeo:deletedAt a owl:DatatypeProperty ;
     rdfs:range xsd:dateTime ;
@@ -220,7 +220,7 @@ xeo:clientOf a owl:ObjectProperty ;
     rdfs:label "client of" ;
     rdfs:domain xeo:Organization ; rdfs:range xeo:Organization ;
     xeo:xeoLayer "entity" ;
-    dct:description "This Organization is served by that one: a brand is the client of an agency. The contract itself is a Project on the client's Website; this edge says only who works for whom." .
+    dct:description "This Organization is served by that one: a brand is the client of an agency. The contract, where one is modelled, is a Project on the client's Website; this edge says only who works for whom." .
 
 xeo:holdsCapability a owl:ObjectProperty ;
     rdfs:label "holds capability" ;
@@ -397,7 +397,7 @@ xeo:withinProject a owl:ObjectProperty ;
     rdfs:domain xeo:Spec ; rdfs:range xeo:Project ;
     xeo:xeoLayer "entity" ;
     xeo:termStatus "draft" ;
-    dct:description "The Project a Spec belongs to, where the work is done under one. A spec for work outside any Project has none." .
+    dct:description "The Project a Spec belongs to, where the work is done under one: client work or internal work alike. A spec for work outside any Project has none." .
 
 xeo:tracesTo a owl:ObjectProperty ;
     rdfs:label "traces to" ;
@@ -420,3 +420,31 @@ xeo:specKind a owl:DatatypeProperty ;
     xeo:xeoLayer "entity" ;
     xeo:termStatus "draft" ;
     dct:description "What kind of document a Spec is: prd, plan, design or functional_requirements (xeos:specKind). A design document is a Spec of kind design, not a class of its own." .
+
+# --- v0.7.1 (Project and Campaign loosened, 2026-11-17) -------------------------------
+# Appended at the foot; the edits it describes are in place above, one line for
+# one line, so no line moved.
+#
+# WHAT CHANGED. Until 0.7.1 the descriptions above carried one agency's operating
+# rules as if they were what a Project is: a contract on one Website, with a type
+# and a quota ("always present"), a cadence or a run length; a Campaign against
+# one Topic with exactly one Objective; an Objective with a results window and a
+# non-empty set of targets, exactly one of them primary. None of that was ever a
+# shape. It was prose, and it is now optional in the prose too.
+#
+# A Project is a bounded body of work. It need not be a contract, sit on one
+# Website, have a Campaign, a quota or an end date, and an internal spec can sit
+# withinProject. A Campaign need not have a Topic or an Objective. An Objective
+# need not have targets or a window.
+#
+# WHAT WAS KEPT, because other terms lean on it. A Campaign has at most one
+# Objective (objectiveReading is one reading per target over one campaign's
+# scope and one window). An Objective has at most one primary target (measures
+# carries a primary or secondary role, and the agent optimises for one thing).
+# A MetricTarget still names exactly one Metric (xeosh:MetricTargetShape).
+# Absence now means "not stated": no interventionQuota is no stated ceiling, not
+# a ceiling of zero, and no inScope is no stated contract scope, not an empty one.
+#
+# WHERE THE OLD RULES WENT. shapes/profiles/agency-delivery.ttl, an optional
+# SHACL profile: load it beside shapes/xeo-shapes.ttl to hold a graph to them.
+# No term, scheme or code was removed.

@@ -41,6 +41,13 @@ projected from it disagree:
                   and conforms to shapes/xeo-shapes.ttl; every
                   examples/invalid/*.jsonld breaks exactly the shapes it says
                   it breaks, so a shape that stops firing is caught too.
+  6b. PROFILES    every optional profile in shapes/profiles/*.ttl parses,
+                  carries the release's version, constrains only declared
+                  terms and declares none; the data in
+                  examples/profiles/<name>/ conforms to the base shapes and the
+                  profile together, and the data in its invalid/ folder breaks
+                  exactly the profile shapes it says it breaks. A profile is
+                  optional: the examples in examples/ are never held to one.
 
 Exits non-zero on any failure.
 
@@ -73,6 +80,7 @@ XEOSH = Namespace("https://xeoontology.org/shapes#")
 SH = Namespace("http://www.w3.org/ns/shacl#")
 LAYERS = set(gen_profile.LAYERS)
 SHAPES = os.path.join("shapes", "xeo-shapes.ttl")
+PROFILES = os.path.join("shapes", "profiles")  # optional SHACL profiles, one file each
 MAPPINGS = "mappings"  # per-tool vendor schemes; one key in per_module holds them all
 MATCHES = (SKOS.exactMatch, SKOS.closeMatch, SKOS.narrowMatch, SKOS.broadMatch, SKOS.relatedMatch)
 CONFIDENCES = {"documented", "inferred", "verified"}
@@ -450,23 +458,19 @@ def undeclared_in(data: Graph, terms: dict, concepts: set) -> list[str]:
     return sorted(out)
 
 
-def check_examples(report: Report, g: Graph, per_module: dict, terms: dict, concepts: set) -> None:
+def run_cases(shapes: Graph, valid: list[str], invalid: list[str], g: Graph, reference: Graph,
+              terms: dict, concepts: set, also: Graph | None = None):
+    """Hold data files to a shapes graph: the valid ones conform, the invalid ones
+    break exactly the shapes they say they break, and every shape has a failing case.
+
+    `also` is a second shapes graph the valid files must conform to as well (the
+    base shapes, when `shapes` is an optional profile).
+    Returns (problems, triples in the valid files, rules fired, shape names).
+    """
     from pyshacl import validate as shacl_validate
 
-    shapes = per_module.get(SHAPES)
-    if shapes is None:
-        report.section("examples", ["shapes did not parse; examples not checked"], "")
-        return
     problems = []
-    # An example points at published concepts (xeos:metric-ctr) without restating
-    # them. A rule that reads through such a pointer, like "a reading of a
-    # currency metric names its currency", needs the concept's own triples in the
-    # graph being validated, so the reference schemes are validated with it.
-    reference = per_module.get("xeo-schemes.ttl", Graph())
-    valid = sorted(glob.glob(os.path.join(HERE, "examples", "*.jsonld")))
-    invalid = sorted(glob.glob(os.path.join(HERE, "examples", "invalid", "*.jsonld")))
-    if not valid:
-        problems.append("no examples/*.jsonld found")
+    conform_to = shapes + also if also is not None else shapes
     triples = 0
     for path in valid:
         rel = os.path.relpath(path, HERE)
@@ -479,18 +483,21 @@ def check_examples(report: Report, g: Graph, per_module: dict, terms: dict, conc
         if not len(data):
             problems.append(f"{rel}: parsed to no triples")
         problems += [f"{rel} {m}" for m in undeclared_in(data, terms, concepts)]
-        conforms, results, _ = shacl_validate(data + reference, shacl_graph=shapes, ont_graph=g,
+        conforms, results, _ = shacl_validate(data + reference, shacl_graph=conform_to, ont_graph=g,
                                               inference="none", advanced=False)
         if not conforms:
             for r in results.subjects(RDF.type, SH.ValidationResult):
                 problems.append(f"{rel}: {results.value(r, SH.focusNode)} — "
                                 f"{results.value(r, SH.resultMessage)}")
     fired_total = 0
+    exercised = set()
     for path in invalid:
         rel = os.path.relpath(path, HERE)
         data = load_jsonld(path)
         expected = {(s, str(o)) for s, o in data.subject_objects(XEOSH.expectedViolation)}
+        exercised |= {shape for _, shape in expected}
         data.remove((None, XEOSH.expectedViolation, None))
+        problems += [f"{rel} {m}" for m in undeclared_in(data, terms, concepts)]
         _, results, _ = shacl_validate(data + reference, shacl_graph=shapes, ont_graph=g,
                                        inference="none", advanced=False)
         fired = set()
@@ -505,15 +512,75 @@ def check_examples(report: Report, g: Graph, per_module: dict, terms: dict, conc
         for focus, shape in sorted(fired - expected, key=str):
             problems.append(f"{rel}: {focus} breaks {shape}, which the file does not expect")
     all_shapes = {local(s) for s in shapes.subjects(RDF.type, SH.NodeShape)}
-    exercised = set()
-    for path in invalid:
-        exercised |= {str(o) for o in load_jsonld(path).objects(None, XEOSH.expectedViolation)}
     for shape in sorted(all_shapes - exercised):
-        problems.append(f"shape {shape} has no failing case in examples/invalid/")
+        problems.append(f"shape {shape} has no failing case in its invalid/ folder")
+    return problems, triples, fired_total, all_shapes
+
+
+def check_examples(report: Report, g: Graph, per_module: dict, terms: dict, concepts: set) -> None:
+    shapes = per_module.get(SHAPES)
+    if shapes is None:
+        report.section("examples", ["shapes did not parse; examples not checked"], "")
+        return
+    # An example points at published concepts (xeos:metric-ctr) without restating
+    # them. A rule that reads through such a pointer, like "a reading of a
+    # currency metric names its currency", needs the concept's own triples in the
+    # graph being validated, so the reference schemes are validated with it.
+    reference = per_module.get("xeo-schemes.ttl", Graph())
+    valid = sorted(glob.glob(os.path.join(HERE, "examples", "*.jsonld")))
+    invalid = sorted(glob.glob(os.path.join(HERE, "examples", "invalid", "*.jsonld")))
+    problems = [] if valid else ["no examples/*.jsonld found"]
+    found, triples, fired_total, all_shapes = run_cases(shapes, valid, invalid, g, reference, terms, concepts)
     report.section(
-        "examples", problems,
+        "examples", problems + found,
         f"{len(valid)} valid ({triples} triples) conform to {len(all_shapes)} shapes; "
         f"{len(invalid)} invalid break the {fired_total} rules they should")
+
+
+# --- 6b. optional profiles -----------------------------------------------------
+
+def check_profiles(report: Report, g: Graph, per_module: dict, terms: dict, concepts: set) -> None:
+    """Optional SHACL profiles: one team's operating rules, kept out of the base shapes.
+
+    A profile binds only whoever loads it, so the examples in examples/ are never
+    held to one. Each profile has its own test data in examples/profiles/<name>/.
+    """
+    paths = sorted(glob.glob(os.path.join(HERE, PROFILES, "*.ttl")))
+    if not paths:
+        return
+    base = per_module.get(SHAPES)
+    reference = per_module.get("xeo-schemes.ttl", Graph())
+    versions = {str(mg.value(ont, OWL.versionInfo)) for name, mg in per_module.items()
+                if name not in (SHAPES, MAPPINGS) for ont in mg.subjects(RDF.type, OWL.Ontology)}
+    problems, lines = [], []
+    for path in paths:
+        rel = os.path.relpath(path, HERE)
+        name = os.path.splitext(os.path.basename(path))[0]
+        profile = Graph()
+        try:
+            profile.parse(path, format="turtle")
+        except Exception as exc:
+            problems.append(f"{rel}: {exc}")
+            continue
+        for s, p, o in profile:
+            if in_xeo(s):
+                problems.append(f"{rel} describes xeo:{local(s)}; a profile constrains terms and may not declare or describe one")
+            for node in (p, o):
+                if in_xeo(node) and node not in terms:
+                    problems.append(f"{rel} names undeclared xeo:{local(node)}")
+        stated = {str(profile.value(ont, OWL.versionInfo)) for ont in profile.subjects(RDF.type, OWL.Ontology)}
+        if stated != versions:
+            problems.append(f"{rel} carries owl:versionInfo {sorted(stated)}; the modules carry {sorted(versions)}")
+        folder = os.path.join(HERE, "examples", "profiles", name)
+        valid = sorted(glob.glob(os.path.join(folder, "*.jsonld")))
+        invalid = sorted(glob.glob(os.path.join(folder, "invalid", "*.jsonld")))
+        if not valid:
+            problems.append(f"{rel}: no conforming data in examples/profiles/{name}/")
+        found, _, fired_total, all_shapes = run_cases(profile, valid, invalid, g, reference, terms, concepts, also=base)
+        problems += found
+        lines.append(f"{name}: {len(all_shapes)} shapes, {len(valid)} valid conform, "
+                     f"{len(invalid)} invalid break the {fired_total} rules they should")
+    report.section("profiles", problems, f"{len(paths)} optional ({'; '.join(lines)})")
 
 
 # --- 2b. modules -------------------------------------------------------------
@@ -612,6 +679,7 @@ def main() -> int:
     check_context(report, g, terms)
     check_generated(report)
     check_examples(report, g, per_module, terms, concepts)
+    check_profiles(report, g, per_module, terms, concepts)
     note_drafts(g, terms)
     print()
     if report.failures:

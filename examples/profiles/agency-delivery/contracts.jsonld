@@ -1,0 +1,46 @@
+{
+  "@context": [
+    "../../../context.jsonld",
+    { "ex": "https://example.com/graph/" }
+  ],
+  "@graph": [
+    {
+      "id": "ex:site", "type": "Website", "origin": "https://www.example.com", "websiteId": "example-com",
+      "hasProject": ["ex:retainer", "ex:audit"]
+    },
+    { "id": "ex:topic-calibration", "type": "Topic", "name": "Torque wrench calibration", "websiteId": "example-com" },
+
+    {
+      "id": "ex:retainer", "type": "Project", "websiteId": "example-com",
+      "engagementType": "retainer", "interventionQuota": 4, "cadence": "monthly",
+      "inScope": "xeos:intervention-content-optimization",
+      "hasCampaign": "ex:campaign"
+    },
+    {
+      "id": "ex:campaign", "type": "Campaign", "websiteId": "example-com",
+      "aboutTopic": "ex:topic-calibration",
+      "hasObjective": "ex:objective"
+    },
+    {
+      "id": "ex:objective", "type": "Objective",
+      "statement": "Be the page answer engines cite for torque wrench calibration.",
+      "resultsWindowDays": 90, "resultsWindowStart": "2026-06-01",
+      "hasTarget": ["ex:target-citations", "ex:target-clicks"]
+    },
+    {
+      "id": "ex:target-citations", "type": "MetricTarget",
+      "targetMetric": "xeos:metric-ai_citation_rate", "targetKind": "absolute",
+      "targetValue": "0.40", "isPrimary": true
+    },
+    {
+      "id": "ex:target-clicks", "type": "MetricTarget",
+      "targetMetric": "xeos:metric-clicks", "targetKind": "percent",
+      "targetValue": "10", "isPrimary": false
+    },
+
+    {
+      "id": "ex:audit", "type": "Project", "websiteId": "example-com",
+      "engagementType": "oneoff", "interventionQuota": 6, "durationDays": 60
+    }
+  ]
+}
