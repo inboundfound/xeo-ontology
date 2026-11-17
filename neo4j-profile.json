@@ -333,7 +333,7 @@
       "module": "core"
     },
     "ModelCall": {
-      "definition": "One request to a model API and its final response, retries included. Identified by modelCallRef. Carries usedConfig (the settings it ran under), producedByModel (core: the Model that answered), the four disjoint token counts with reasoningTokens, latencyMs and, where it is known, costAmount with costBasis and currencyCode.",
+      "definition": "One request to a model API and its final response, retries included. Identified by modelCallRef. Carries usedConfig (the settings it ran under), producedByModel (core: the Model that answered), the four disjoint token counts with reasoningTokens and, where the provider reports it, cache writes by lifetime, latencyMs and, where it is known, costAmount with costBasis and currencyCode.",
       "iri": "https://xeoontology.org/xeo#ModelCall",
       "layer": "episode",
       "module": "agentic",
@@ -866,6 +866,26 @@
         "ModelCall"
       ],
       "iri": "https://xeoontology.org/xeo#cacheReadTokens",
+      "layer": "observation",
+      "module": "agentic",
+      "status": "draft"
+    },
+    "cacheWriteDefaultLifetimeTokens": {
+      "datatype": "xsd:integer",
+      "domain": [
+        "ModelCall"
+      ],
+      "iri": "https://xeoontology.org/xeo#cacheWriteDefaultLifetimeTokens",
+      "layer": "observation",
+      "module": "agentic",
+      "status": "draft"
+    },
+    "cacheWriteExtendedLifetimeTokens": {
+      "datatype": "xsd:integer",
+      "domain": [
+        "ModelCall"
+      ],
+      "iri": "https://xeoontology.org/xeo#cacheWriteExtendedLifetimeTokens",
       "layer": "observation",
       "module": "agentic",
       "status": "draft"

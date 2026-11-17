@@ -43,6 +43,14 @@
 # (reasoningTokens, inside outputTokens). A loader maps by vendor and by that
 # vendor's xeo:tokenAccounting, and subtracts where the source is inclusive.
 #
+# CACHE WRITES ARE ALSO KEPT BY LIFETIME. Some providers charge more to write a
+# cache entry that is kept longer, and report the two counts apart.
+# cacheWriteTokens stays the total, and is the one of the four disjoint counts.
+# Its two parts are cacheWriteDefaultLifetimeTokens and
+# cacheWriteExtendedLifetimeTokens, recorded where the provider reports them.
+# They sum to the total and are never added to it. A cost worked out from the
+# total alone is wrong for such a provider; it needs the two parts.
+#
 # COST IS A DERIVATION UNLESS AN INVOICE SAYS IT. A cost worked out from usage
 # and a price table is computed; costBasis says which it was.
 #
@@ -183,7 +191,7 @@ xeo:ModelCall a owl:Class ;
     rdfs:label "Model Call" ;
     xeo:xeoLayer "episode" ;
     xeo:termStatus "draft" ;
-    dct:description "One request to a model API and its final response, retries included. Identified by modelCallRef. Carries usedConfig (the settings it ran under), producedByModel (core: the Model that answered), the four disjoint token counts with reasoningTokens, latencyMs and, where it is known, costAmount with costBasis and currencyCode." .
+    dct:description "One request to a model API and its final response, retries included. Identified by modelCallRef. Carries usedConfig (the settings it ran under), producedByModel (core: the Model that answered), the four disjoint token counts with reasoningTokens and, where the provider reports it, cache writes by lifetime, latencyMs and, where it is known, costAmount with costBasis and currencyCode." .
 
 xeo:ToolCall a owl:Class ;
     rdfs:label "Tool Call" ;
@@ -294,7 +302,23 @@ xeo:cacheWriteTokens a owl:DatatypeProperty ;
     xeo:xeoLayer "observation" ;
     xeo:groundedIn "OpenTelemetry GenAI semantic conventions, gen_ai.usage.cache_write.input_tokens, earlier cache_creation.input_tokens (status: Development) · the provider's usage contract" ;
     xeo:termStatus "draft" ;
-    dct:description "Input tokens of one model call that were written to the provider's prompt cache. Never negative. Disjoint from uncachedInputTokens and cacheReadTokens. Where a provider splits the count by how long the entry is kept, this is the sum; the split, which is priced differently, has no slot yet." .
+    dct:description "Input tokens of one model call that were written to the provider's prompt cache. Never negative. Disjoint from uncachedInputTokens and cacheReadTokens. The total: where a provider reports the count split by how long the entry is kept, this is the sum of cacheWriteDefaultLifetimeTokens and cacheWriteExtendedLifetimeTokens, which are recorded beside it." .
+
+xeo:cacheWriteDefaultLifetimeTokens a owl:DatatypeProperty ;
+    rdfs:label "cache write tokens, default lifetime" ;
+    rdfs:domain xeo:ModelCall ; rdfs:range xsd:integer ;
+    xeo:xeoLayer "observation" ;
+    xeo:groundedIn "The provider's usage contract, where it reports cache writes by how long the entry is kept (per-provider, to be mapped in mappings/)" ;
+    xeo:termStatus "draft" ;
+    dct:description "The part of cacheWriteTokens one model call wrote to the provider's prompt cache at the provider's default lifetime, the retention a cache write gets when no longer one is asked for (five minutes, for example). Never negative. A part of cacheWriteTokens, never added to it: with cacheWriteExtendedLifetimeTokens it sums to that total. Recorded only where the provider reports the split. A cost figure needs it wherever the provider prices the two lifetimes differently." .
+
+xeo:cacheWriteExtendedLifetimeTokens a owl:DatatypeProperty ;
+    rdfs:label "cache write tokens, extended lifetime" ;
+    rdfs:domain xeo:ModelCall ; rdfs:range xsd:integer ;
+    xeo:xeoLayer "observation" ;
+    xeo:groundedIn "The provider's usage contract, where it reports cache writes by how long the entry is kept (per-provider, to be mapped in mappings/)" ;
+    xeo:termStatus "draft" ;
+    dct:description "The part of cacheWriteTokens one model call wrote to the provider's prompt cache at a lifetime longer than the default (an hour, for example), which costs more to write. Never negative. A part of cacheWriteTokens, never added to it: with cacheWriteDefaultLifetimeTokens it sums to that total. One count for every lifetime longer than the default; a provider with several would need a further split. Recorded only where the provider reports the split." .
 
 xeo:outputTokens a owl:DatatypeProperty ;
     rdfs:label "output tokens" ;
@@ -350,7 +374,7 @@ xeo:costAmount a owl:DatatypeProperty ;
     xeo:domainIncludes xeo:ModelCall , xeo:AgentSession ;
     xeo:xeoLayer "derivation" ;
     xeo:termStatus "draft" ;
-    dct:description "What a model call or a session cost, in its currencyCode. Always travels with currencyCode and costBasis. A derivation: usage multiplied by a price table, so it carries method naming the table and its date. A runtime's own cost figure is an estimate of this kind. Only where costBasis is invoice was the amount read, not computed." .
+    dct:description "What a model call or a session cost, in its currencyCode. Always travels with currencyCode and costBasis. A derivation: usage multiplied by a price table, so it carries method naming the table and its date. A runtime's own cost figure is an estimate of this kind. Where the provider prices cache writes by how long the entry is kept, the computation reads cacheWriteDefaultLifetimeTokens and cacheWriteExtendedLifetimeTokens, not the cacheWriteTokens total. Only where costBasis is invoice was the amount read, not computed." .
 
 xeo:costBasis a owl:DatatypeProperty ;
     rdfs:label "cost basis" ;

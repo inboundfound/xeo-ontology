@@ -362,7 +362,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 <section id="ModelCall" class="term">
   <h3>Model Call <span class="layer" style="--h:#319795">episode</span> <span class="status">draft</span><span class="mod">xeo-agentic</span></h3>
   <code class="iri">xeo:ModelCall</code>
-  <p>One request to a model API and its final response, retries included. Identified by modelCallRef. Carries usedConfig (the settings it ran under), producedByModel (core: the Model that answered), the four disjoint token counts with reasoningTokens, latencyMs and, where it is known, costAmount with costBasis and currencyCode.</p>
+  <p>One request to a model API and its final response, retries included. Identified by modelCallRef. Carries usedConfig (the settings it ran under), producedByModel (core: the Model that answered), the four disjoint token counts with reasoningTokens and, where the provider reports it, cache writes by lifetime, latencyMs and, where it is known, costAmount with costBasis and currencyCode.</p>
   
 </section>
 <section id="Objective" class="term">
@@ -1464,7 +1464,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>The Project a Spec belongs to, where the work is done under one: client work or internal work alike. A spec for work outside any Project has none.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Spec">xeo:Spec</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Project">xeo:Project</a></dd></div></dl>
 </section>
-<h2 id="datatype-properties">Datatype properties <span class="n">237</span></h2>
+<h2 id="datatype-properties">Datatype properties <span class="n">239</span></h2>
 <section id="absoluteChange" class="term">
   <h3>absolute change <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:absoluteChange</code>
@@ -1615,10 +1615,22 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>Input tokens of one model call that the provider served from its prompt cache. Never negative. Disjoint from uncachedInputTokens and cacheWriteTokens.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#ModelCall">xeo:ModelCall</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div><div class="row"><dt>grounded in</dt><dd>OpenTelemetry GenAI semantic conventions, gen_ai.usage.cache_read.input_tokens (status: Development) · the provider&#x27;s usage contract</dd></div></dl>
 </section>
+<section id="cacheWriteDefaultLifetimeTokens" class="term">
+  <h3>cache write tokens, default lifetime <span class="layer" style="--h:#38A169">observation</span> <span class="status">draft</span><span class="mod">xeo-agentic</span></h3>
+  <code class="iri">xeo:cacheWriteDefaultLifetimeTokens</code>
+  <p>The part of cacheWriteTokens one model call wrote to the provider&#x27;s prompt cache at the provider&#x27;s default lifetime, the retention a cache write gets when no longer one is asked for (five minutes, for example). Never negative. A part of cacheWriteTokens, never added to it: with cacheWriteExtendedLifetimeTokens it sums to that total. Recorded only where the provider reports the split. A cost figure needs it wherever the provider prices the two lifetimes differently.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#ModelCall">xeo:ModelCall</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div><div class="row"><dt>grounded in</dt><dd>The provider&#x27;s usage contract, where it reports cache writes by how long the entry is kept (per-provider, to be mapped in mappings/)</dd></div></dl>
+</section>
+<section id="cacheWriteExtendedLifetimeTokens" class="term">
+  <h3>cache write tokens, extended lifetime <span class="layer" style="--h:#38A169">observation</span> <span class="status">draft</span><span class="mod">xeo-agentic</span></h3>
+  <code class="iri">xeo:cacheWriteExtendedLifetimeTokens</code>
+  <p>The part of cacheWriteTokens one model call wrote to the provider&#x27;s prompt cache at a lifetime longer than the default (an hour, for example), which costs more to write. Never negative. A part of cacheWriteTokens, never added to it: with cacheWriteDefaultLifetimeTokens it sums to that total. One count for every lifetime longer than the default; a provider with several would need a further split. Recorded only where the provider reports the split.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#ModelCall">xeo:ModelCall</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div><div class="row"><dt>grounded in</dt><dd>The provider&#x27;s usage contract, where it reports cache writes by how long the entry is kept (per-provider, to be mapped in mappings/)</dd></div></dl>
+</section>
 <section id="cacheWriteTokens" class="term">
   <h3>cache write tokens <span class="layer" style="--h:#38A169">observation</span> <span class="status">draft</span><span class="mod">xeo-agentic</span></h3>
   <code class="iri">xeo:cacheWriteTokens</code>
-  <p>Input tokens of one model call that were written to the provider&#x27;s prompt cache. Never negative. Disjoint from uncachedInputTokens and cacheReadTokens. Where a provider splits the count by how long the entry is kept, this is the sum; the split, which is priced differently, has no slot yet.</p>
+  <p>Input tokens of one model call that were written to the provider&#x27;s prompt cache. Never negative. Disjoint from uncachedInputTokens and cacheReadTokens. The total: where a provider reports the count split by how long the entry is kept, this is the sum of cacheWriteDefaultLifetimeTokens and cacheWriteExtendedLifetimeTokens, which are recorded beside it.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#ModelCall">xeo:ModelCall</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div><div class="row"><dt>grounded in</dt><dd>OpenTelemetry GenAI semantic conventions, gen_ai.usage.cache_write.input_tokens, earlier cache_creation.input_tokens (status: Development) · the provider&#x27;s usage contract</dd></div></dl>
 </section>
 <section id="cadence" class="term">
@@ -1780,7 +1792,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 <section id="costAmount" class="term">
   <h3>cost amount <span class="layer" style="--h:#805AD5">derivation</span> <span class="status">draft</span><span class="mod">xeo-agentic</span></h3>
   <code class="iri">xeo:costAmount</code>
-  <p>What a model call or a session cost, in its currencyCode. Always travels with currencyCode and costBasis. A derivation: usage multiplied by a price table, so it carries method naming the table and its date. A runtime&#x27;s own cost figure is an estimate of this kind. Only where costBasis is invoice was the amount read, not computed.</p>
+  <p>What a model call or a session cost, in its currencyCode. Always travels with currencyCode and costBasis. A derivation: usage multiplied by a price table, so it carries method naming the table and its date. A runtime&#x27;s own cost figure is an estimate of this kind. Where the provider prices cache writes by how long the entry is kept, the computation reads cacheWriteDefaultLifetimeTokens and cacheWriteExtendedLifetimeTokens, not the cacheWriteTokens total. Only where costBasis is invoice was the amount read, not computed.</p>
   <dl><div class="row"><dt>expected on</dt><dd><a href="#AgentSession">xeo:AgentSession</a> · <a href="#ModelCall">xeo:ModelCall</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div></dl>
 </section>
 <section id="costBasis" class="term">

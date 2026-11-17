@@ -78,7 +78,8 @@ Every new term in it is draft. The runtime, provider and model are invented.
    under and the runtime it ran on. One `AgentTurn`, and one `ModelCall` under a shared
    `InvocationConfig`: `requestedModel` is an alias, and `producedByModel` names the
    build that answered. Its four token counts do not overlap, and `reasoningTokens` is part of
-   `outputTokens`. Its cost is an estimate (`costBasis`), with the price table in `method`.
+   `outputTokens`. Its cache writes are also given by lifetime: 1,500 at the default
+   lifetime and 600 at an extended one, which sum to the `cacheWriteTokens` total of 2,100. Its cost is an estimate (`costBasis`), with the price table in `method`.
 4. **A rule firing.** Three `ToolCall`s. The first was denied: an `EnforcementEvent` with its
    `enforcementDecision`, the reason given, the call it was about and the `Practice` that
    fired. The second succeeded. The third failed, which is `succeeded` false with an

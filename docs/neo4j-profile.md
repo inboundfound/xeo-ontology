@@ -359,7 +359,7 @@ Generated from XEO 0.7.1. Do not edit between the markers; run `tools/gen_profil
 | `VISIBILITY_FOR` | `xeo:visibilityFor` | `Prompt` | `Brand` | observation | visibility |
 | `WITHIN_PROJECT` (draft) | `xeo:withinProject` | `Spec` | `Project` | entity | work |
 
-### Property keys (259)
+### Property keys (261)
 
 | Property key | Datatype | Values from | Layer | Module |
 |---|---|---|---|---|
@@ -410,6 +410,8 @@ Generated from XEO 0.7.1. Do not edit between the markers; run `tools/gen_profil
 | `billingInterval` | `xsd:string` | `billingInterval` | observation | core |
 | `billingIntervalCount` | `xsd:positiveInteger` |  | observation | core |
 | `cacheReadTokens` (draft) | `xsd:integer` |  | observation | agentic |
+| `cacheWriteDefaultLifetimeTokens` (draft) | `xsd:integer` |  | observation | agentic |
+| `cacheWriteExtendedLifetimeTokens` (draft) | `xsd:integer` |  | observation | agentic |
 | `cacheWriteTokens` (draft) | `xsd:integer` |  | observation | agentic |
 | `cadence` | `xsd:string` | `cadence` | entity | work |
 | `callOutcome` | `xsd:string` | `callOutcome` | interpretation | attribution |
