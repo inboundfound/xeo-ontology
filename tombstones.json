@@ -14,7 +14,8 @@
     {"term": "GenerativeEngine", "removedIn": "0.7.0", "useInstead": ["GenerativeOverview"], "note": "A rename."},
     {"term": "ConversationalAgent", "removedIn": "0.7.0", "useInstead": ["AnswerEngine"]},
     {"term": "metric", "removedIn": "0.7.0", "useInstead": ["targetMetric"], "note": "A link to the Metric node instead of its code."},
-    {"term": "valuePeriod", "removedIn": "0.7.0", "useInstead": ["billingInterval", "billingIntervalCount"], "note": "The scheme xeos:valuePeriod is removed with it."}
+    {"term": "valuePeriod", "removedIn": "0.7.0", "useInstead": ["billingInterval", "billingIntervalCount"], "note": "The scheme xeos:valuePeriod is removed with it."},
+    {"term": "epistemicLayer", "removedIn": "0.7.0", "useInstead": ["xeoLayer"], "note": "A rename, of the annotation property and of the scheme xeos:epistemicLayer, now xeos:xeoLayer. The six values are unchanged. Listed in 0.7.1; the rename shipped in 0.7.0."}
   ],
   "files": [
     {"file": "xeo-engagement.ttl", "removedIn": "0.7.0", "note": "Split in 0.7: search intent, website conversions and the money terms are in xeo-core.ttl; the CRM side is xeo-sales.ttl; attributedResponse is in xeo-visibility.ttl."},
