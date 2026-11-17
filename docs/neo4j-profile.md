@@ -80,6 +80,8 @@ with the reference schemes that fill it.
   `READING_OF`, `NUMERATOR` and the other relationship types instead.
 - **Read `status` and `deprecated` where present.** `"status": "extension"` marks a term that is
   declared and usable but that not every implementation is expected to support.
+  `"status": "draft"` marks a term of a module still being written, which may change or be
+  removed without a deprecation step.
   `"deprecated": true` marks a term that still works and that XEO will not remove;
   `"replacedBy"` names what to write instead. An entry with neither is a current core term.
 - **Vendor crosswalks are not in the profile.** Which vendor field fills which slot is in
@@ -115,10 +117,13 @@ same kind of graph written against the camelCase `context.jsonld`.
 
 Generated from XEO 0.7.0. Do not edit between the markers; run `tools/gen_profile.py`.
 
-### Node labels (66)
+### Node labels (80)
 
 | Label | XEO class | Layer | Module |
 |---|---|---|---|
+| `AgentRuntime` (draft) | `xeo:AgentRuntime` | entity | agentic |
+| `AgentSession` (draft) | `xeo:AgentSession` | episode | agentic |
+| `AgentTurn` (draft) | `xeo:AgentTurn` | episode | agentic |
 | `AlgorithmRun` | `xeo:AlgorithmRun` | episode | analysis |
 | `AnswerEngine` | `xeo:AnswerEngine` | entity | visibility |
 | `AttributedCredit` | `xeo:AttributedCredit` | derivation | attribution |
@@ -130,14 +135,18 @@ Generated from XEO 0.7.0. Do not edit between the markers; run `tools/gen_profil
 | `Campaign` | `xeo:Campaign` | entity | work |
 | `Capability` | `xeo:Capability` | entity | decision |
 | `Chargeback` | `xeo:Chargeback` | episode | attribution |
+| `Compaction` (draft) | `xeo:Compaction` | episode | agentic |
 | `Consent` | `xeo:Consent` | observation | core |
 | `ConversionEvent` | `xeo:ConversionEvent` | episode | core |
 | `ConversionPoint` | `xeo:ConversionPoint` | entity | core |
 | `Crawl` | `xeo:Crawl` | episode | core |
 | `CreditAnchor` | `xeo:CreditAnchor` | norm | attribution |
+| `Delegation` (draft) | `xeo:Delegation` | episode | agentic |
+| `Deliverable` (draft) | `xeo:Deliverable` | episode | work |
 | `Diagnostic` | `xeo:Diagnostic` | entity | decision |
 | `DiagnosticRun` | `xeo:DiagnosticRun` | episode | decision |
 | `Domain` | `xeo:Domain` | entity | core |
+| `EnforcementEvent` (draft) | `xeo:EnforcementEvent` | episode | agentic |
 | `Engine` | `xeo:Engine` | entity | core |
 | `Entity` | `xeo:Entity` | entity | core |
 | `Experiment` | `xeo:Experiment` | episode | decision |
@@ -146,15 +155,19 @@ Generated from XEO 0.7.0. Do not edit between the markers; run `tools/gen_profil
 | `Framework` | `xeo:Framework` | norm | decision |
 | `Gap` | `xeo:Gap` | interpretation | decision |
 | `GenerativeOverview` | `xeo:GenerativeOverview` | entity | visibility |
+| `Harness` (draft) | `xeo:Harness` | entity | agentic |
+| `HarnessComponent` (draft) | `xeo:HarnessComponent` | entity | agentic |
 | `IdentityLink` | `xeo:IdentityLink` | derivation | attribution |
 | `InboundReference` | `xeo:InboundReference` | observation | core |
 | `Intervention` | `xeo:Intervention` | entity | decision |
+| `InvocationConfig` (draft) | `xeo:InvocationConfig` | entity | core |
 | `Journey` | `xeo:Journey` | derivation | attribution |
 | `LLMResponse` | `xeo:LLMResponse` | episode | visibility |
 | `Metric` | `xeo:Metric` | norm | core |
 | `MetricReading` | `xeo:MetricReading` | observation | core |
 | `MetricTarget` | `xeo:MetricTarget` | interpretation | work |
 | `Model` | `xeo:Model` | entity | core |
+| `ModelCall` (draft) | `xeo:ModelCall` | episode | agentic |
 | `Objective` | `xeo:Objective` | interpretation | work |
 | `Order` | `xeo:Order` | episode | attribution |
 | `Organization` | `xeo:Organization` | entity | core |
@@ -174,6 +187,7 @@ Generated from XEO 0.7.0. Do not edit between the markers; run `tools/gen_profil
 | `SearchIntent` | `xeo:SearchIntent` | entity | core |
 | `SearchPerformanceFact` | `xeo:SearchPerformanceFact` | observation | core |
 | `SerpSnapshot` | `xeo:SerpSnapshot` | episode | core |
+| `Spec` (draft) | `xeo:Spec` | entity | work |
 | `SpendRollup` | `xeo:SpendRollup` | observation | attribution |
 | `Stage` | `xeo:Stage` | norm | decision |
 | `StageTransition` | `xeo:StageTransition` | episode | sales |
@@ -181,12 +195,14 @@ Generated from XEO 0.7.0. Do not edit between the markers; run `tools/gen_profil
 | `Tactic` | `xeo:Tactic` | entity | decision |
 | `TacticAssessment` | `xeo:TacticAssessment` | interpretation | decision |
 | `Term` | `xeo:Term` | entity | core |
+| `ToolCall` (draft) | `xeo:ToolCall` | episode | agentic |
 | `Topic` | `xeo:Topic` | derivation | core |
 | `Touchpoint` | `xeo:Touchpoint` | episode | attribution |
 | `URL` | `xeo:URL` | entity | core |
 | `Website` | `xeo:Website` | entity | core |
+| `WorkItem` (draft) | `xeo:WorkItem` | entity | work |
 
-### Relationship types (132)
+### Relationship types (150)
 
 `open` means the ontology leaves that side unconstrained. A concept slot may also be stored as a property key holding the concept's code.
 
@@ -216,6 +232,7 @@ Generated from XEO 0.7.0. Do not edit between the markers; run `tools/gen_profil
 | `BETTER_DIRECTION` | `xeo:betterDirection` | `Metric` | `skos:Concept` (concept slot) | norm | core |
 | `CAPTURED_BY` | `xeo:capturedBy` | `ConversionEvent` | `ConversionPoint` | observation | core |
 | `CHILD_OF` | `xeo:childOf` | `Topic` | `Topic` | derivation | core |
+| `CHILD_SESSION` (draft) | `xeo:childSession` | `Delegation` | `AgentSession` | episode | agentic |
 | `CITES` | `xeo:cites` | `LLMResponse` | `URL` | observation | visibility |
 | `CLIENT_OF` | `xeo:clientOf` | `Organization` | `Organization` | entity | work |
 | `CLOSES_GAP` | `xeo:closesGap` | `Recommendation` | `Gap` | interpretation | decision |
@@ -224,6 +241,7 @@ Generated from XEO 0.7.0. Do not edit between the markers; run `tools/gen_profil
 | `CONFOUNDED_BY` | `xeo:confoundedBy` | `Experiment` · `Outcome` | `ExternalEvent` | interpretation | decision |
 | `CONSENT_SUBJECT` | `xeo:consentSubject` | `Consent` | `Organization` · `Person` | observation | core |
 | `CONSTRAINS` | `xeo:constrains` | `Practice` | `Recommendation` | norm | decision |
+| `CONTINUES_SESSION` (draft) | `xeo:continuesSession` | `AgentSession` | `AgentSession` | episode | agentic |
 | `CONVERSION_ENTITY` (extension) | `xeo:conversionEntity` | `Metric` | `http://www.w3.org/1999/02/22-rdf-syntax-ns#Property` | norm | core |
 | `CONVERSION_METRIC` (extension) | `xeo:conversionMetric` | `Metric` | `Metric` | norm | core |
 | `COVERS_TERM` | `xeo:coversTerm` | `Campaign` | `Term` | entity | work |
@@ -236,18 +254,23 @@ Generated from XEO 0.7.0. Do not edit between the markers; run `tools/gen_profil
 | `EVALUATED_PRACTICE` | `xeo:evaluatedPractice` | `Recommendation` | `Practice` | derivation | decision |
 | `EVIDENCED_BY` | `xeo:evidencedBy` | `Gap` | `LLMResponse` · `Prompt` · `SerpSnapshot` · `Term` · `URL` | derivation | decision |
 | `EXECUTION` | `xeo:execution` | `Recommendation` | `skos:Concept` (concept slot) | interpretation | work |
+| `EXPRESSES_PRACTICE` (draft) | `xeo:expressesPractice` | `HarnessComponent` | `Practice` | norm | agentic |
 | `FANS_OUT_TO` | `xeo:fansOutTo` | `Prompt` | `Term` | observation | visibility |
 | `FEEDBACK_ON` | `xeo:feedbackOn` | `Feedback` | `Gap` · `Recommendation` | interpretation | decision |
 | `FETCHED` | `xeo:fetched` | `Crawl` | `URL` | observation | core |
+| `FIRED_PRACTICE` (draft) | `xeo:firedPractice` | `EnforcementEvent` | `Practice` | episode | agentic |
 | `FRAMEWORK_KIND` | `xeo:frameworkKind` | `Framework` | `skos:Concept` (concept slot) | norm | decision |
+| `FULFILS` (draft) | `xeo:fulfils` | `Deliverable` | `WorkItem` | episode | work |
 | `GAP_TYPE` | `xeo:gapType` | `Gap` | `skos:Concept` (concept slot) | derivation | decision |
 | `GRAIN_TO_DATE` (extension) | `xeo:grainToDate` | `Metric` | `skos:Concept` (concept slot) | norm | core |
 | `HAS_CAMPAIGN` | `xeo:hasCampaign` | `Project` | `Campaign` | entity | work |
 | `HAS_CANONICAL` | `xeo:hasCanonical` | `URL` | `URL` | observation | core |
+| `HAS_COMPONENT` (draft) | `xeo:hasComponent` | `Harness` | `HarnessComponent` | entity | agentic |
 | `HAS_CONTROL` | `xeo:hasControl` | `Experiment` | `Term` · `URL` | episode | decision |
 | `HAS_CONVERSION_POINT` | `xeo:hasConversionPoint` | `URL` | `ConversionPoint` | observation | core |
 | `HAS_CRAWL` | `xeo:hasCrawl` | `Website` | `Crawl` | episode | core |
 | `HAS_CREDIT_ANCHOR` | `xeo:hasCreditAnchor` | `AttributionModel` | `CreditAnchor` | norm | attribution |
+| `HAS_MODEL_CALL` (draft) | `xeo:hasModelCall` | `AgentTurn` | `ModelCall` | episode | agentic |
 | `HAS_OBJECTIVE` | `xeo:hasObjective` | `Campaign` | `Objective` | interpretation | work |
 | `HAS_PROJECT` | `xeo:hasProject` | `Website` | `Project` | entity | work |
 | `HAS_RESPONSE` | `xeo:hasResponse` | `Prompt` | `LLMResponse` | episode | visibility |
@@ -256,7 +279,9 @@ Generated from XEO 0.7.0. Do not edit between the markers; run `tools/gen_profil
 | `HAS_SNAPSHOT` | `xeo:hasSnapshot` | `Term` | `SerpSnapshot` | episode | core |
 | `HAS_STAGE` | `xeo:hasStage` | `Framework` | `Stage` | norm | decision |
 | `HAS_TARGET` | `xeo:hasTarget` | `Objective` | `MetricTarget` | interpretation | work |
+| `HAS_TOOL_CALL` (draft) | `xeo:hasToolCall` | `AgentTurn` | `ToolCall` | episode | agentic |
 | `HAS_TOUCHPOINT` | `xeo:hasTouchpoint` | `Journey` | `Touchpoint` | derivation | attribution |
+| `HAS_TURN` (draft) | `xeo:hasTurn` | `AgentSession` | `AgentTurn` | episode | agentic |
 | `HAS_WEBSITE` | `xeo:hasWebsite` | `Brand` | `Website` | entity | visibility |
 | `HOLDS_CAPABILITY` | `xeo:holdsCapability` | `Organization` | `Capability` | entity | work |
 | `IDENTITY_RESOLVES_TO` | `xeo:identityResolvesTo` | `IdentityLink` | `Organization` · `Person` | derivation | attribution |
@@ -264,6 +289,7 @@ Generated from XEO 0.7.0. Do not edit between the markers; run `tools/gen_profil
 | `IN_CONTEXT` | `xeo:inContext` | `Experiment` | `Gap` | observation | decision |
 | `IN_INTERVENTION` | `xeo:inIntervention` | `Tactic` | `Intervention` | derivation | decision |
 | `IN_SCOPE` | `xeo:inScope` | `Project` | `Intervention` · `Tactic` | entity | work |
+| `IN_SESSION` (draft) | `xeo:inSession` | `Compaction` · `Delegation` · `EnforcementEvent` · `ModelCall` · `ToolCall` | `AgentSession` | episode | agentic |
 | `IN_TOPIC` | `xeo:inTopic` | `Term` | `Topic` | derivation | core |
 | `INCLUDES` | `xeo:includes` | `Framework` · `Playbook` | `Diagnostic` · `Practice` · `Tactic` | entity | decision |
 | `INPUT_METRIC` | `xeo:inputMetric` | `Metric` | `Metric` | norm | core |
@@ -282,11 +308,14 @@ Generated from XEO 0.7.0. Do not edit between the markers; run `tools/gen_profil
 | `ON_DIMENSION` | `xeo:onDimension` | `TacticAssessment` | `skos:Concept` (concept slot) | interpretation | decision |
 | `ON_DOMAIN` | `xeo:onDomain` | `URL` | `Domain` | entity | core |
 | `ON_ENGINE` | `xeo:onEngine` | open | `Engine` | episode | core |
+| `ON_RUNTIME` (draft) | `xeo:onRuntime` | `AgentSession` | `AgentRuntime` | episode | agentic |
+| `ON_TOOL_CALL` (draft) | `xeo:onToolCall` | `EnforcementEvent` | `ToolCall` | episode | agentic |
 | `ORGANIZATION_KIND` | `xeo:organizationKind` | `Organization` | `skos:Concept` (concept slot) | entity | core |
 | `OWNS` | `xeo:owns` | `Organization` | `Brand` · `Website` | entity | core |
 | `PART_OF` | `xeo:partOf` | `URL` | `Website` | entity | core |
 | `PRECEDENT_FOR` | `xeo:precedentFor` | `Experiment` | `Experiment` | derivation | analysis |
 | `PRODUCED_BY_MODEL` | `xeo:producedByModel` | open | `Model` | observation | core |
+| `PRODUCED_IN_SESSION` (draft) | `xeo:producedInSession` | `Deliverable` | `AgentSession` | episode | agentic |
 | `PRODUCED_OUTCOME` | `xeo:producedOutcome` | `Experiment` | `Outcome` | observation | decision |
 | `RANKS_FOR` | `xeo:ranksFor` | `URL` | `Term` | observation | core |
 | `READING_OF` | `xeo:readingOf` | `MetricReading` | `Metric` | observation | core |
@@ -305,6 +334,7 @@ Generated from XEO 0.7.0. Do not edit between the markers; run `tools/gen_profil
 | `REVEALS` | `xeo:reveals` | `Diagnostic` | `Gap` | interpretation | decision |
 | `REVENUE_SUBJECT` | `xeo:revenueSubject` | `RevenueEvent` · `Subscription` | `Organization` · `Person` | observation | attribution |
 | `RUN_OF` | `xeo:runOf` | `DiagnosticRun` | `Diagnostic` | episode | decision |
+| `RUNS_ON` (draft) | `xeo:runsOn` | `Harness` | `AgentRuntime` | entity | agentic |
 | `SCOPE` | `xeo:scope` | `MetricReading` | `Brand` · `Campaign` · `Prompt` · `Term` · `Topic` · `URL` · `Website` | observation | core |
 | `SCOPED_TO` | `xeo:scopedTo` | `Topic` | `Website` | entity | core |
 | `SHOWN_ON_SEARCH_ENGINE` | `xeo:shownOnSearchEngine` | `GenerativeOverview` | `SearchEngine` | entity | visibility |
@@ -317,15 +347,19 @@ Generated from XEO 0.7.0. Do not edit between the markers; run `tools/gen_profil
 | `TESTS` | `xeo:tests` | `Experiment` | `Tactic` | episode | decision |
 | `TIME_ANCHOR` | `xeo:timeAnchor` | `Metric` | `http://www.w3.org/1999/02/22-rdf-syntax-ns#Property` | norm | core |
 | `TOUCH_LANDING_URL` | `xeo:touchLandingUrl` | `Touchpoint` | `URL` | observation | attribution |
+| `TRACES_TO` (draft) | `xeo:tracesTo` | `WorkItem` | `Recommendation` · `Spec` | entity | work |
 | `TRACKS_PROMPT` | `xeo:tracksPrompt` | `Website` | `Prompt` | entity | visibility |
 | `TREATS` | `xeo:treats` | `Experiment` | `Term` · `URL` | episode | decision |
+| `UNDER_HARNESS` (draft) | `xeo:underHarness` | `AgentSession` | `Harness` | episode | agentic |
 | `UNIT` | `xeo:unit` | `Metric` | `skos:Concept` (concept slot) | norm | core |
+| `USED_CONFIG` (draft) | `xeo:usedConfig` | `LLMResponse` · `ModelCall` | `InvocationConfig` | episode | core |
 | `USES_ATTRIBUTION_MODEL` | `xeo:usesAttributionModel` | `AttributedCredit` · `AttributionRollup` | `AttributionModel` | derivation | attribution |
 | `VERDICT` | `xeo:verdict` | `Feedback` · `Gap` | `skos:Concept` (concept slot) | interpretation | decision |
 | `VIA_TOUCHPOINT` | `xeo:viaTouchpoint` | `ConversionEvent` | `Touchpoint` | derivation | attribution |
 | `VISIBILITY_FOR` | `xeo:visibilityFor` | `Prompt` | `Brand` | observation | visibility |
+| `WITHIN_PROJECT` (draft) | `xeo:withinProject` | `Spec` | `Project` | entity | work |
 
-### Property keys (213)
+### Property keys (259)
 
 | Property key | Datatype | Values from | Layer | Module |
 |---|---|---|---|---|
@@ -364,7 +398,9 @@ Generated from XEO 0.7.0. Do not edit between the markers; run `tools/gen_profil
 | `anchorText` | `xsd:string` |  | observation | core |
 | `anchorWeight` | `xsd:decimal` |  | norm | attribution |
 | `approved` | `xsd:boolean` |  | interpretation | decision |
+| `artifactUri` (draft) | `xsd:string` |  | entity | core |
 | `assignedAt` | `xsd:dateTime` |  | derivation | core |
+| `attemptCount` (draft) | `xsd:integer` |  | observation | agentic |
 | `attributedConversions` | `xsd:decimal` |  | derivation | attribution |
 | `attributedRevenue` | `xsd:decimal` |  | derivation | attribution |
 | `avgPosition` | `xsd:decimal` |  | observation | core |
@@ -373,14 +409,20 @@ Generated from XEO 0.7.0. Do not edit between the markers; run `tools/gen_profil
 | `betweenness` | `xsd:decimal` |  | derivation | analysis |
 | `billingInterval` | `xsd:string` | `billingInterval` | observation | core |
 | `billingIntervalCount` | `xsd:positiveInteger` |  | observation | core |
+| `cacheReadTokens` (draft) | `xsd:integer` |  | observation | agentic |
+| `cacheWriteTokens` (draft) | `xsd:integer` |  | observation | agentic |
 | `cadence` | `xsd:string` | `cadence` | entity | work |
 | `callOutcome` | `xsd:string` | `callOutcome` | interpretation | attribution |
 | `capturedAt` | `xsd:dateTime` |  | episode | core |
+| `childAgentId` (draft) | `xsd:string` |  | episode | agentic |
 | `citationRank` | `xsd:integer` |  | observation | visibility |
 | `citationRate` | `xsd:decimal` |  | derivation | visibility |
 | `clickIdentifier` | `xsd:string` |  | observation | attribution |
 | `clicks` | `xsd:integer` |  | observation | core |
 | `communityId` | `xsd:integer` |  | derivation | analysis |
+| `compactionTrigger` (draft) | `xsd:string` | `compactionTrigger` | episode | agentic |
+| `componentDigest` (draft) | `xsd:string` |  | entity | agentic |
+| `componentKind` (draft) | `xsd:string` | `harnessComponentKind` | entity | agentic |
 | `concludedAt` | `xsd:dateTime` |  | episode | decision |
 | `confidence` | `xsd:decimal` |  | derivation | core |
 | `consentCapturedBy` | `xsd:string` |  | observation | core |
@@ -395,6 +437,8 @@ Generated from XEO 0.7.0. Do not edit between the markers; run `tools/gen_profil
 | `conversionWindow` (extension) | `xsd:duration` |  | norm | core |
 | `convertedAt` (extension) | `xsd:dateTime` |  | episode | sales |
 | `convertedTo` (extension) | `xsd:string` |  | episode | sales |
+| `costAmount` (draft) | `xsd:decimal` |  | derivation | agentic |
+| `costBasis` (draft) | `xsd:string` | `costBasis` | derivation | agentic |
 | `crawlDepth` | `xsd:integer` |  | derivation | core |
 | `crawler` | `xsd:string` |  | episode | core |
 | `creditForDeal` | `xsd:string` |  | derivation | attribution-sales |
@@ -413,6 +457,7 @@ Generated from XEO 0.7.0. Do not edit between the markers; run `tools/gen_profil
 | `dealClosedAt` | `xsd:dateTime` |  | observation | sales |
 | `dealOutcome` | `xsd:string` | `dealOutcome` | observation | sales |
 | `dealProbability` (extension) | `xsd:decimal` |  | interpretation | sales |
+| `decisionSource` (draft) | `xsd:string` | `decisionSource` | episode | agentic |
 | `deduplicationRule` | `xsd:string` |  | norm | attribution |
 | `degree` | `xsd:integer` |  | derivation | analysis |
 | `deletedAt` | `xsd:dateTime` |  | entity | work |
@@ -426,12 +471,17 @@ Generated from XEO 0.7.0. Do not edit between the markers; run `tools/gen_profil
 | `embeddingModel` | `xsd:string` |  | derivation | core |
 | `embeddingRef` | `xsd:string` |  | derivation | core |
 | `endedAt` | `xsd:dateTime` |  | episode | core |
+| `enforcementDecision` (draft) | `xsd:string` | `hookDecision` | episode | agentic |
+| `enforcementPoint` (draft) | `xsd:string` | `enforcementPoint` | norm | agentic |
 | `engagementType` | `xsd:string` | `engagementType` | entity | work |
 | `enteredAt` | `xsd:dateTime` |  | episode | sales |
 | `entityRef` | `xsd:string` |  | entity | core |
+| `errorClass` (draft) | `xsd:string` |  | observation | agentic |
 | `exitedAt` | `xsd:dateTime` |  | episode | sales |
 | `expectedCloseDate` | `xsd:date` |  | interpretation | sales |
 | `expression` | `xsd:string` |  | norm | core |
+| `failureMode` (draft) | `xsd:string` | `failureMode` | norm | agentic |
+| `failureSignature` (draft) | `xsd:string` |  | derivation | agentic |
 | `fetchedAt` | `xsd:dateTime` |  | observation | core |
 | `fired` | `xsd:boolean` |  | derivation | decision |
 | `firstSeenAt` | `xsd:dateTime` |  | observation | core |
@@ -441,6 +491,8 @@ Generated from XEO 0.7.0. Do not edit between the markers; run `tools/gen_profil
 | `grossAmount` | `xsd:decimal` |  | observation | attribution |
 | `h1` | `xsd:string` |  | observation | core |
 | `halfLife` | `xsd:duration` |  | norm | decision |
+| `harnessDigest` (draft) | `xsd:string` |  | entity | agentic |
+| `harnessVersion` (draft) | `xsd:string` |  | entity | agentic |
 | `identityMethod` | `xsd:string` | `identityMethod` | derivation | attribution |
 | `impressions` | `xsd:integer` |  | observation | core |
 | `indexable` | `xsd:boolean` |  | derivation | core |
@@ -448,16 +500,19 @@ Generated from XEO 0.7.0. Do not edit between the markers; run `tools/gen_profil
 | `isPrimary` | `xsd:boolean` |  | interpretation | work |
 | `lastSeenAt` | `xsd:dateTime` |  | observation | core |
 | `lastSeenCrawlId` | `xsd:string` |  | episode | core |
+| `latencyMs` (draft) | `xsd:decimal` |  | observation | agentic |
 | `latestTouchChannel` (extension) | `xsd:string` |  | derivation | attribution |
 | `leadStatus` (extension) | `xsd:string` |  | interpretation | sales |
 | `lifecycleStage` (extension) | `xsd:string` | `lifecycleStageClass` | interpretation | sales |
 | `linkPosition` | `xsd:string` | `linkPosition` | derivation | core |
 | `linkedIdentifier` | `xsd:string` |  | observation | attribution |
+| `loadMode` (draft) | `xsd:string` | `loadMode` | entity | agentic |
 | `locale` | `xsd:string` |  | episode | core |
 | `lookbackWindow` | `xsd:duration` |  | norm | attribution |
 | `lostReason` (extension) | `xsd:string` |  | interpretation | sales |
 | `magnitude` | `xsd:decimal` |  | derivation | decision |
 | `marketingCampaignRef` (extension) | `xsd:string` |  | entity | sales |
+| `maxOutputTokens` (draft) | `xsd:integer` |  | entity | core |
 | `mentionRank` | `xsd:integer` |  | observation | visibility |
 | `mentionRate` | `xsd:decimal` |  | derivation | visibility |
 | `metaDescription` | `xsd:string` |  | observation | core |
@@ -465,8 +520,10 @@ Generated from XEO 0.7.0. Do not edit between the markers; run `tools/gen_profil
 | `metricFilter` | `xsd:string` |  | norm | core |
 | `minDenominator` | `xsd:integer` |  | norm | core |
 | `model` | `xsd:string` |  | episode | core |
+| `modelCallRef` (draft) | `xsd:string` |  | episode | agentic |
 | `modelFamily` | `xsd:string` |  | entity | core |
 | `modelKind` | `xsd:string` | `modelKind` | entity | core |
+| `modelProvider` (draft) | `xsd:string` |  | entity | core |
 | `modelVersion` | `xsd:string` |  | entity | core |
 | `name` | `xsd:string` |  | entity | core |
 | `numeratorValue` | `xsd:decimal` |  | observation | core |
@@ -474,10 +531,12 @@ Generated from XEO 0.7.0. Do not edit between the markers; run `tools/gen_profil
 | `offsetWindow` (extension) | `xsd:duration` |  | norm | core |
 | `origin` | `xsd:string` |  | entity | core |
 | `outcomeJudgedBy` | `xsd:string` | `outcomeJudgedBy` | interpretation | attribution |
+| `outputTokens` (draft) | `xsd:integer` |  | observation | agentic |
 | `ownerRef` | `xsd:string` |  | entity | sales |
 | `pageRank` | `xsd:decimal` |  | derivation | analysis |
 | `paidAmount` | `xsd:decimal` |  | observation | attribution |
 | `parameters` | `xsd:string` |  | episode | analysis |
+| `parentAgentId` (draft) | `xsd:string` |  | episode | agentic |
 | `percentileValue` (extension) | `xsd:decimal` |  | norm | core |
 | `periodEnd` | `xsd:date` |  | derivation | core |
 | `periodStart` | `xsd:date` |  | derivation | core |
@@ -489,6 +548,9 @@ Generated from XEO 0.7.0. Do not edit between the markers; run `tools/gen_profil
 | `quoteValue` | `xsd:decimal` |  | interpretation | attribution |
 | `ranAt` | `xsd:dateTime` |  | episode | analysis |
 | `rationale` | `xsd:string` |  | norm | decision |
+| `reasonText` (draft) | `xsd:string` |  | episode | agentic |
+| `reasoningLevel` (draft) | `xsd:string` |  | entity | core |
+| `reasoningTokens` (draft) | `xsd:integer` |  | observation | agentic |
 | `recordCreatedAt` | `xsd:dateTime` |  | observation | sales |
 | `recordOrigin` (extension) | `xsd:string` | `recordOrigin` | observation | sales |
 | `recurringValue` (extension) | `xsd:decimal` |  | observation | core |
@@ -497,19 +559,24 @@ Generated from XEO 0.7.0. Do not edit between the markers; run `tools/gen_profil
 | `refundedAmount` | `xsd:decimal` |  | observation | attribution |
 | `rel` | `xsd:string` |  | observation | core |
 | `relativeChange` | `xsd:decimal` |  | derivation | decision |
+| `requestedModel` (draft) | `xsd:string` |  | entity | core |
 | `responses` | `xsd:integer` |  | observation | visibility |
 | `result` | `xsd:string` | `outcomeResult` | observation | decision |
 | `resultReason` | `xsd:string` | `outcomeResultReason` | observation | decision |
 | `resultType` | `xsd:string` | `serpResultType` | observation | core |
 | `resultsWindowDays` | `xsd:integer` |  | interpretation | work |
 | `resultsWindowStart` | `xsd:date` |  | interpretation | work |
+| `returnsControl` (draft) | `xsd:boolean` |  | episode | agentic |
 | `revenueBasis` | `xsd:string` | `revenueBasis` | norm | attribution |
 | `robotsMeta` | `xsd:string` |  | observation | core |
+| `runtimeVersion` (draft) | `xsd:string` |  | entity | agentic |
 | `score` | `xsd:decimal` |  | interpretation | decision |
 | `sentiment` | `xsd:string` | `sentiment` | derivation | visibility |
+| `sessionRef` (draft) | `xsd:string` |  | episode | agentic |
 | `shippingAmount` | `xsd:decimal` |  | observation | attribution |
 | `similarity` | `xsd:decimal` |  | derivation | analysis |
 | `source` | `xsd:string` | `practiceSource` | norm | decision |
+| `specKind` (draft) | `xsd:string` | `specKind` | entity | work |
 | `spendAmount` | `xsd:decimal` |  | observation | attribution |
 | `spendLevel` | `xsd:string` | `spendLevel` | observation | attribution |
 | `stageClass` | `xsd:string` | `dealStageClass` | norm | sales |
@@ -517,21 +584,34 @@ Generated from XEO 0.7.0. Do not edit between the markers; run `tools/gen_profil
 | `stageOrder` | `xsd:integer` |  | norm | decision |
 | `stageRef` | `xsd:string` |  | entity | sales |
 | `stageSlot` | `xsd:string` | `stageSlot` | episode | sales |
+| `startType` (draft) | `xsd:string` | `startType` | episode | agentic |
 | `startedAt` | `xsd:dateTime` |  | episode | core |
 | `statement` | `xsd:string` |  | norm | decision |
 | `status` | `xsd:string` | `experimentStatus` · `practiceStatus` · `recommendationStatus` | norm | decision |
 | `statusCode` | `xsd:integer` |  | observation | core |
+| `stopReason` (draft) | `xsd:string` |  | observation | agentic |
+| `succeeded` (draft) | `xsd:boolean` |  | observation | agentic |
 | `syncedAt` | `xsd:dateTime` |  | derivation | core |
 | `targetCurrency` | `xsd:string` |  | interpretation | work |
 | `targetKind` | `xsd:string` | `targetKind` | interpretation | work |
 | `targetValue` | `xsd:decimal` |  | interpretation | work |
 | `taxAmount` | `xsd:decimal` |  | observation | attribution |
+| `temperature` (draft) | `xsd:decimal` |  | entity | core |
 | `test` | `xsd:string` |  | norm | decision |
 | `text` | `xsd:string` |  | entity | visibility |
+| `timeToFirstTokenMs` (draft) | `xsd:decimal` |  | observation | agentic |
 | `title` | `xsd:string` |  | observation | core |
 | `toStageRef` | `xsd:string` |  | episode | sales |
+| `tokensAfter` (draft) | `xsd:integer` |  | observation | agentic |
+| `tokensBefore` (draft) | `xsd:integer` |  | observation | agentic |
+| `toolCallRef` (draft) | `xsd:string` |  | episode | agentic |
+| `toolName` (draft) | `xsd:string` |  | episode | agentic |
+| `toolSetDigest` (draft) | `xsd:string` |  | entity | core |
+| `toolSource` (draft) | `xsd:string` | `toolSource` | episode | agentic |
 | `touchChannel` | `xsd:string` |  | derivation | attribution |
 | `touchType` | `xsd:string` | `touchType` | observation | attribution |
+| `turnRef` (draft) | `xsd:string` |  | episode | agentic |
+| `uncachedInputTokens` (draft) | `xsd:integer` |  | observation | agentic |
 | `utmCampaign` | `xsd:string` |  | observation | attribution |
 | `utmContent` | `xsd:string` |  | observation | attribution |
 | `utmMedium` | `xsd:string` |  | observation | attribution |
@@ -543,7 +623,7 @@ Generated from XEO 0.7.0. Do not edit between the markers; run `tools/gen_profil
 | `weightedAmount` (extension) | `xsd:decimal` |  | derivation | sales |
 | `wordCount` | `xsd:integer` |  | derivation | core |
 
-### Reference schemes (66)
+### Reference schemes (77)
 
 | Scheme | Codes |
 |---|---|
@@ -557,11 +637,13 @@ Generated from XEO 0.7.0. Do not edit between the markers; run `tools/gen_profil
 | `billingInterval` | `day` · `month` · `week` · `year` |
 | `cadence` | `monthly` · `quarterly` |
 | `callOutcome` | `cancelled` · `good_lead` · `no_show` · `not_a_lead` · `previously_marked_good_lead` · `qualified` · `unqualified` |
+| `compactionTrigger` | `auto` · `manual` |
 | `consentPurpose` | `ad_personalization` · `ad_storage` · `ad_user_data` · `ai_data_use` · `analytics_cookies` · `email_marketing` · `model_training` · `other` |
 | `consentSource` | `api` · `banner` · `contract` · `form` · `inferred_default` |
 | `consentStatus` | `denied` · `granted` · `unspecified` |
 | `conversionPointType` | `chat` · `cta` · `gated_asset` · `lead_form` · `meeting_booker` |
 | `conversionRole` | `lead` · `opportunity` · `other` · `qualified_lead` · `sale` |
+| `costBasis` | `configured_rate` · `estimated_list_price` · `invoice` |
 | `creditRule` | `algorithmic` · `custom` · `first_touch` · `full_credit_each` · `last_touch` · `linear` · `position_based` · `time_decay` |
 | `crmObjectType` | `deal` · `lead` · `organization` · `person` |
 | `crmSystem` | `attio` · `close` · `dynamics365` · `hubspot` · `pipedrive` · `salesforce` · `zoho` |
@@ -570,20 +652,26 @@ Generated from XEO 0.7.0. Do not edit between the markers; run `tools/gen_profil
 | `dateBasis` | `conversion_date` · `touch_date` |
 | `dealOutcome` | `lost` · `open` · `won` |
 | `dealStageClass` | `lost` · `open` · `won` |
+| `decisionSource` | `classifier` · `config` · `hook` · `user` |
 | `device` | `desktop` · `mobile` · `tablet` |
 | `effort` | `hours` · `days` · `weeks` · `quarter` |
+| `enforcementPoint` | `config` · `hook` · `permission_rule` · `prompt` · `proxy` · `tool` |
 | `engagementType` | `oneoff` · `retainer` |
 | `execution` | `advised` · `ours` |
 | `experimentStatus` | `measuring` · `concluded` · `cancelled` · `unmeasurable` |
+| `failureMode` | `fail_closed` · `fail_open` |
 | `feedbackVerdict` | `accepted` · `needs_work` · `rejected` |
 | `forecastCategory` | `best_case` · `closed` · `commit` · `omitted` · `pipeline` |
 | `frameworkKind` | `checklist` · `diagnostic` · `playbook` · `tactic_matrix` |
 | `gapType` | `missing_page` · `orphaned` · `buried` · `thin_content` · `split` · `content_subtopic` · `content_format_asset` · `content_proof` · `content_intent_fit` · `visibility_deficit` · `position_climb` · `zero_click` · `project_footprint` · `domain_authority_deficit` |
 | `gapVerdict` | `attack` · `defend` · `fix_first` · `hold` · `ignore` |
+| `harnessComponentKind` | `hook` · `instruction_file` · `mcp_server` · `memory` · `middleware` · `permission_rule` · `plugin` · `script` · `settings` · `skill` · `subagent_definition` · `tool_guidance` |
+| `hookDecision` | `allow` · `ask` · `block_after` · `defer` · `deny` · `override` · `rewrite_input` · `rewrite_output` · `trim` |
 | `identityMethod` | `click_id` · `email_match` · `fingerprint` · `form_fill` · `ip_to_company` · `login` · `vendor_graph` |
 | `intervention` | `brand-entity-ops` · `community-mobilization` · `content-optimization` · `editorial-placement` · `local-placement` · `onsite-content-advisory` · `owned-content-creation` · `technical-onsite` |
 | `lifecycleStageClass` | `customer` · `evangelist` · `lead` · `mql` · `opportunity` · `other` · `sql` · `subscriber` |
 | `linkPosition` | `content` · `footer` · `header` · `navigation` · `other` · `sidebar` |
+| `loadMode` | `always_loaded` · `event_triggered` · `on_demand` |
 | `magnitudeUnit` | `clicks` · `impressions` · `inlinks` · `keywords` · `positions` · `referring_domains` · `sessions_estimated` · `words` |
 | `metric` | `ad_spend` · `ai_answers_citing_owned` · `ai_answers_mentioning` · `ai_answers_sampled` · `ai_assistant_sessions` · `ai_average_position` · `ai_brand_mentions` · `ai_citation_rate` · `ai_citation_share` · `ai_citations` · `ai_mention_rate` · `ai_owned_citations` · `ai_referred_leads` · `ai_sentiment` · `ai_share_of_voice` · `ai_tracked_brand_mentions` · `attributed_revenue` · `blended_roas` · `clicks` · `converting_sessions` · `cost_per_acquisition` · `cost_per_lead` · `ctr` · `deals_closed` · `deals_created` · `deals_won` · `engaged_sessions` · `engagement_rate` · `etv` · `impressions` · `key_events` · `leads_created` · `lifetime_value` · `payback_period` · `pipeline_created` · `position` · `rank_absolute` · `revenue_won` · `roas` · `sales_cycle_days` · `session_conversion_rate` · `sessions` · `win_rate` |
 | `metricType` | `conversion` · `cumulative` · `derived` · `ratio` · `simple` |
@@ -607,10 +695,13 @@ Generated from XEO 0.7.0. Do not edit between the markers; run `tools/gen_profil
 | `sentiment` | `mixed` · `negative` · `neutral` · `positive` |
 | `serpResultType` | `ai_overview` · `featured_snippet` · `image` · `knowledge_panel` · `local_pack` · `organic` · `paid` · `people_also_ask` · `related_search` · `shopping` · `top_stories` · `video` |
 | `similarityBasis` | `lexical` · `links` · `shared_terms` · `structural_embedding` · `text_embedding` |
+| `specKind` | `design` · `functional_requirements` · `plan` · `prd` |
 | `spendLevel` | `ad` · `ad_set` · `campaign` |
 | `stageSlot` | `deal_stage` · `lead_status` · `lifecycle` |
+| `startType` | `continue` · `fresh` · `resume` |
 | `targetKind` | `absolute` · `absolute_change` · `percent` · `relative` |
 | `timeGrain` | `day` · `month` · `quarter` · `week` · `year` |
+| `toolSource` | `builtin` · `mcp` · `plugin` |
 | `touchType` | `ad_click` · `ad_view` · `call` · `chat` · `email` · `email_open` · `form` · `meeting` · `offline` · `other` · `text_message` · `visit` |
 | `xeoLayer` | `entity` · `episode` · `observation` · `derivation` · `interpretation` · `norm` |
 

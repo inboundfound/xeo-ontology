@@ -32,6 +32,8 @@ MetricTarget.metric names an xeo:Metric without being an object property.
 Two optional markers, present only where the Turtle states them, so an entry
 without them is a current core term:
     "status": "extension"     the term carries xeo:termStatus "extension"
+    "status": "draft"         the term carries xeo:termStatus "draft": its module
+                              is still being written and it may change or go
     "deprecated": true        the term carries owl:deprecated true; advisory,
                               with "replacedBy" naming what rdfs:seeAlso points at
 
@@ -65,7 +67,7 @@ XEOS = Namespace("https://xeoontology.org/schemes#")
 TERM_MODULES = [
     "xeo-core.ttl", "xeo-visibility.ttl", "xeo-analysis.ttl",
     "xeo-sales.ttl", "xeo-attribution.ttl", "xeo-attribution-sales.ttl",
-    "xeo-work.ttl", "xeo-decision.ttl",
+    "xeo-work.ttl", "xeo-decision.ttl", "xeo-agentic.ttl",
 ]
 SCHEMES_MODULE = "xeo-schemes.ttl"
 LAYERS = ["entity", "episode", "observation", "derivation", "interpretation", "norm"]

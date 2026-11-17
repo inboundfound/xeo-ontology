@@ -1,0 +1,540 @@
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix dct:  <http://purl.org/dc/terms/> .
+@prefix xeo:  <https://xeoontology.org/xeo#> .
+
+# XEO Agentic Engineering module: the harness an agent runs under, and what it
+# did in a session.
+#
+# New in 0.7.1, and DRAFT. Every term here carries xeo:termStatus "draft":
+# declared so it can be tried against real data, and free to change or go
+# without a deprecation step. A class stays draft until an example file loads it
+# and its maintainer lifts the mark. examples/agent-session.jsonld loads all ten,
+# and tools/validate.py says so in a note.
+#
+#   Harness - hasComponent -> HarnessComponent - expressesPractice -> Practice
+#   Harness - runsOn -> AgentRuntime
+#   AgentSession - underHarness -> Harness, - onRuntime -> AgentRuntime,
+#                  - continuesSession -> AgentSession
+#   AgentSession - hasTurn -> AgentTurn - hasModelCall -> ModelCall
+#                                       - hasToolCall  -> ToolCall
+#   ModelCall - usedConfig -> InvocationConfig, - producedByModel -> Model  (both core)
+#   EnforcementEvent - onToolCall -> ToolCall, - firedPractice -> Practice
+#   EnforcementEvent, Compaction, Delegation - inSession -> AgentSession
+#   Delegation - childSession -> AgentSession
+#   Deliverable (work) - producedInSession -> AgentSession
+#
+# WHAT IS NOT HERE, ON PURPOSE. A spec, a work item and a deliverable are made
+# by people as well as by agents, so they are in xeo-work.ttl. The settings a
+# model was called with are shared with captured AI answers, so InvocationConfig
+# is in core. This module holds only what exists because an agent ran.
+#
+# TOKENS ARE STORED DISJOINT. A field named input_tokens excludes cached tokens
+# at one provider and includes them at another, so it cannot be mapped by its
+# name. XEO keeps four counts that never overlap (uncachedInputTokens,
+# cacheReadTokens, cacheWriteTokens, outputTokens) and one subset
+# (reasoningTokens, inside outputTokens). A loader maps by vendor and by that
+# vendor's xeo:tokenAccounting, and subtracts where the source is inclusive.
+#
+# COST IS A DERIVATION UNLESS AN INVOICE SAYS IT. A cost worked out from usage
+# and a price table is computed; costBasis says which it was.
+#
+# A COMPONENT IS NOT A RULE. A skill file or a hook is an entity. The rule it
+# states is a Practice it points at; the moment the rule fired is an
+# EnforcementEvent, an episode written by the enforcement point itself.
+#
+# NEEDS core only (InvocationConfig and usedConfig, Model and producedByModel,
+# artifactUri, name, startedAt, endedAt, occurredAt, currencyCode). Its links to
+# decision (firedPractice, expressesPractice, enforcementPoint, failureMode) and
+# to work (producedInSession) are optional: they work when that module is loaded
+# too.
+#
+# VENDOR FIELD NAMES ARE NOT HERE. session.id, turn_id, permissionDecision and
+# cache_creation_input_tokens belong in mappings/, one file per tool. None is
+# written yet.
+#
+# Sources: the XEO research report on agent harnesses and AI-assisted
+# development and its handoff (2026-11-10; seventeen products read from their
+# documentation, none verified against live output), cited below by section as
+# "research §n"; and the 0.7 plan of record for the naming rule and the Model
+# decision. A name the research does not give is marked "name ours".
+
+xeo:agentic-module a owl:Ontology ;
+    dct:title "XEO Agentic Engineering (harnesses, runtimes, sessions, model and tool calls, enforcement)" ;
+    dct:description "Draft. The harness an agent runs under (its components and the runtime that loads them) and what happened in a session: turns, model calls with their token counts and cost, tool calls, rule firings, compactions and delegations. Grounded in the OpenTelemetry GenAI conventions and provider usage contracts. Needs only core. Every term is marked draft." ;
+    dct:creator "Inbound Found" ;
+    owl:versionInfo "0.7.0" .
+
+xeo:tokenAccounting a owl:AnnotationProperty ;
+    xeo:termStatus "draft" ;
+    rdfs:comment "How a vendor counts input tokens: 'inclusive' (its input count includes tokens read from or written to a prompt cache, so a loader subtracts them) or 'disjoint' (its input count excludes them, so a loader copies it). Carried by a vendor scheme in mappings/. The four token counts in this module are stored disjoint, and a field is mapped to them by vendor and this value, never by its name. Research §6 conflict 1 and recommendation 2." .
+
+# --- The harness ------------------------------------------------------------
+# Research §4.1, cards Harness, HarnessComponent and AgentRuntime, and the
+# handoff's §2 and §4.1. A harness's two identities (name and version, and a
+# digest) are the plan of record's.
+
+xeo:Harness a owl:Class ;
+    rdfs:label "Harness" ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "Everything around a model that makes it act as an agent: instructions, tool guidance, memory, skills, subagent definitions, hooks, plugins, scripts, permission rules, settings. A named, versioned bundle of HarnessComponents (hasComponent), written for an AgentRuntime (runsOn). It has two identities: name with harnessVersion, for people, and harnessDigest, computed from the files actually loaded, so a session can show which harness it really ran under. No subtypes." .
+
+xeo:HarnessComponent a owl:Class ;
+    rdfs:label "Harness Component" ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "One separately loadable, editable part of a Harness: an instruction file, a skill, a hook, an MCP server configuration, a subagent definition. Identified by where it is kept (artifactUri, core) with componentDigest; componentKind says what it is and loadMode when it loads. A component is a file, never a rule: the rule it states is a Practice it points at with expressesPractice." .
+
+xeo:AgentRuntime a owl:Class ;
+    rdfs:label "Agent Runtime" ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "The product that runs the agent loop and loads a harness (Claude Code, Codex CLI, Gemini CLI, OpenCode). Identified by name with runtimeVersion: one node per version. Not a library for building agents, and not a harness: the runtime is the vendor's program, the harness is what is loaded into it." .
+
+xeo:hasComponent a owl:ObjectProperty ;
+    rdfs:label "has component" ;
+    rdfs:domain xeo:Harness ; rdfs:range xeo:HarnessComponent ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "A HarnessComponent this Harness loads. Changing, adding or removing one makes a different harness, with a different harnessDigest." .
+
+xeo:runsOn a owl:ObjectProperty ;
+    rdfs:label "runs on" ;
+    rdfs:domain xeo:Harness ; rdfs:range xeo:AgentRuntime ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "The AgentRuntime a Harness is written to be loaded by. Which runtime, at which version, a given session actually ran on is the session's onRuntime." .
+
+xeo:expressesPractice a owl:ObjectProperty ;
+    rdfs:label "expresses practice" ;
+    rdfs:domain xeo:HarnessComponent ; rdfs:range xeo:Practice ;
+    xeo:xeoLayer "norm" ;
+    xeo:termStatus "draft" ;
+    dct:description "The Practice (decision) a component states or enforces: the rule written in an instruction file, the rule a hook checks. The component is where the rule lives; the Practice is the rule. Optional: it works when decision is loaded. The research names it expresses." .
+
+xeo:harnessVersion a owl:DatatypeProperty ;
+    rdfs:label "harness version" ;
+    rdfs:domain xeo:Harness ; rdfs:range xsd:string ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "The version its author gave a Harness, for people (v3). With name, one of its two identities. A version is a claim: harnessDigest is what shows whether the files loaded were that version's. Name ours." .
+
+xeo:harnessDigest a owl:DatatypeProperty ;
+    rdfs:label "harness digest" ;
+    rdfs:domain xeo:Harness ; rdfs:range xsd:string ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "A fingerprint of a Harness, computed from the exact components it resolved to when loaded, and the key two harnesses are told apart by. If a component is edited and the version is not raised, the digest changes, so a test can show it did not run the harness it names. The value names its algorithm (sha256:...) and is only comparable with digests made the same way." .
+
+xeo:runtimeVersion a owl:DatatypeProperty ;
+    rdfs:label "runtime version" ;
+    rdfs:domain xeo:AgentRuntime ; rdfs:range xsd:string ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "The version of an AgentRuntime, as the product reports it. With name, its identity." .
+
+xeo:componentKind a owl:DatatypeProperty ;
+    rdfs:label "component kind" ;
+    rdfs:domain xeo:HarnessComponent ; rdfs:range xsd:string ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "What a HarnessComponent is, as a code from a slotted-in scheme (instruction_file, tool_guidance, mcp_server, skill, subagent_definition, hook, plugin, script, memory, permission_rule, settings, middleware — xeos:harnessComponentKind is a published reference filling). One per component." .
+
+xeo:loadMode a owl:DatatypeProperty ;
+    rdfs:label "load mode" ;
+    rdfs:domain xeo:HarnessComponent ; rdfs:range xsd:string ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "When a component enters the agent's context: always_loaded, on_demand or event_triggered (xeos:loadMode)." .
+
+xeo:componentDigest a owl:DatatypeProperty ;
+    rdfs:label "component digest" ;
+    rdfs:domain xeo:HarnessComponent ; rdfs:range xsd:string ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "A hash of a component's content, naming its algorithm (sha256:...). With artifactUri, its identity: two components at one address with different digests are different components. Name ours; the research reuses contentHash, which core defines as the digest of a fetched page." .
+
+# --- What happened: sessions, turns, calls -----------------------------------------
+# Research §4.1, cards AgentSession, AgentTurn, ModelCall, the token
+# observations, latency, costAmount and ToolCall; the handoff's §4.2 and §4.3;
+# §3 for the ids every record carries; §6 conflicts 1, 4, 7 and 11.
+
+xeo:AgentSession a owl:Class ;
+    rdfs:label "Agent Session" ;
+    xeo:xeoLayer "episode" ;
+    xeo:termStatus "draft" ;
+    dct:description "One continuous run of an AgentRuntime under one Harness, from its start to its end: immutable once ended. Identified by sessionRef. Carries startedAt, endedAt, startType, underHarness and onRuntime, and its turns (hasTurn). A resumed session keeps its sessionRef; a session begun after a clear or a handoff is a new one, which points at the old with continuesSession. High-volume: the column store keeps the rows of its calls, the graph keeps the session and what is traversed from it." .
+
+xeo:AgentTurn a owl:Class ;
+    rdfs:label "Agent Turn" ;
+    xeo:xeoLayer "episode" ;
+    xeo:termStatus "draft" ;
+    dct:description "All the work one prompt set off within a session: the model calls (hasModelCall) and tool calls (hasToolCall) between one prompt and the next. Identified by turnRef. A turn here is one prompt's worth of work; a framework that calls each pass of the model loop a turn is describing a ModelCall." .
+
+xeo:ModelCall a owl:Class ;
+    rdfs:label "Model Call" ;
+    xeo:xeoLayer "episode" ;
+    xeo:termStatus "draft" ;
+    dct:description "One request to a model API and its final response, retries included. Identified by modelCallRef. Carries usedConfig (core: the settings it ran under), producedByModel (core: the Model that answered), the four disjoint token counts with reasoningTokens, latencyMs and, where it is known, costAmount with costBasis and currencyCode." .
+
+xeo:ToolCall a owl:Class ;
+    rdfs:label "Tool Call" ;
+    xeo:xeoLayer "episode" ;
+    xeo:termStatus "draft" ;
+    dct:description "One invocation of a tool by the model. Identified by toolCallRef. Carries toolName, toolSource and succeeded. A failure is a ToolCall with succeeded false and an errorClass, never a class of its own." .
+
+xeo:underHarness a owl:ObjectProperty ;
+    rdfs:label "under harness" ;
+    rdfs:domain xeo:AgentSession ; rdfs:range xeo:Harness ;
+    xeo:xeoLayer "episode" ;
+    xeo:termStatus "draft" ;
+    dct:description "The Harness a session ran under, as resolved when the session started: the one whose harnessDigest matches the files actually loaded. One per session." .
+
+xeo:onRuntime a owl:ObjectProperty ;
+    rdfs:label "on runtime" ;
+    rdfs:domain xeo:AgentSession ; rdfs:range xeo:AgentRuntime ;
+    xeo:xeoLayer "episode" ;
+    xeo:termStatus "draft" ;
+    dct:description "The AgentRuntime, at its version, a session ran on. One per session. Without it two sessions are not comparable: the loop, the built-in tools and the defaults differ by runtime and by version." .
+
+xeo:continuesSession a owl:ObjectProperty ;
+    rdfs:label "continues session" ;
+    rdfs:domain xeo:AgentSession ; rdfs:range xeo:AgentSession ;
+    xeo:xeoLayer "episode" ;
+    xeo:termStatus "draft" ;
+    dct:description "From a new session to the earlier one whose work it carries on, after a clear or a handoff between sessions. A resumed session is not a new session and has no such link. The research names it continues." .
+
+xeo:hasTurn a owl:ObjectProperty ;
+    rdfs:label "has turn" ;
+    rdfs:domain xeo:AgentSession ; rdfs:range xeo:AgentTurn ;
+    xeo:xeoLayer "episode" ;
+    xeo:termStatus "draft" ;
+    dct:description "A turn of this session. A turn belongs to one session." .
+
+xeo:hasModelCall a owl:ObjectProperty ;
+    rdfs:label "has model call" ;
+    rdfs:domain xeo:AgentTurn ; rdfs:range xeo:ModelCall ;
+    xeo:xeoLayer "episode" ;
+    xeo:termStatus "draft" ;
+    dct:description "A ModelCall made during this turn. Where the runtime reports no turn, the call carries inSession." .
+
+xeo:hasToolCall a owl:ObjectProperty ;
+    rdfs:label "has tool call" ;
+    rdfs:domain xeo:AgentTurn ; rdfs:range xeo:ToolCall ;
+    xeo:xeoLayer "episode" ;
+    xeo:termStatus "draft" ;
+    dct:description "A ToolCall made during this turn. Where the runtime reports no turn, the call carries inSession." .
+
+xeo:inSession a owl:ObjectProperty ;
+    rdfs:label "in session" ;
+    rdfs:range xeo:AgentSession ;
+    xeo:domainIncludes xeo:ModelCall , xeo:ToolCall , xeo:EnforcementEvent , xeo:Compaction , xeo:Delegation ;
+    xeo:xeoLayer "episode" ;
+    xeo:termStatus "draft" ;
+    dct:description "The AgentSession a record belongs to, for a record that is not reached through a turn: an EnforcementEvent, a Compaction, a Delegation, and a ModelCall or ToolCall from a runtime that reports no turns. Every runtime read stamps its records with a session id, so this is the one link every record can carry. Domain left open across the terms listed. The research names it on a turn and gives a compaction and a delegation a link each from the session; this is one link for all of them." .
+
+xeo:sessionRef a owl:DatatypeProperty ;
+    rdfs:label "session reference" ;
+    rdfs:domain xeo:AgentSession ; rdfs:range xsd:string ;
+    xeo:xeoLayer "episode" ;
+    xeo:groundedIn "OpenTelemetry GenAI semantic conventions, gen_ai.conversation.id (status: Development) · the runtime's own session id" ;
+    xeo:termStatus "draft" ;
+    dct:description "The runtime's own id for a session, as it stamps it on every record. Unique within one runtime, so two sessions are the same when sessionRef and the runtime match. The key that joins the graph's session to its rows in the column store. Name ours." .
+
+xeo:startType a owl:DatatypeProperty ;
+    rdfs:label "start type" ;
+    rdfs:domain xeo:AgentSession ; rdfs:range xsd:string ;
+    xeo:xeoLayer "episode" ;
+    xeo:termStatus "draft" ;
+    dct:description "How a session began: fresh, resume or continue (xeos:startType). A resume reopens an earlier session under the same sessionRef; a continue is a new session that carries on from an earlier one." .
+
+xeo:turnRef a owl:DatatypeProperty ;
+    rdfs:label "turn reference" ;
+    rdfs:domain xeo:AgentTurn ; rdfs:range xsd:string ;
+    xeo:xeoLayer "episode" ;
+    xeo:groundedIn "The runtime's own prompt or turn id (per-runtime, to be mapped in mappings/). The OpenTelemetry GenAI conventions name no turn id" ;
+    xeo:termStatus "draft" ;
+    dct:description "The runtime's own id for a turn, unique within its session. Name ours." .
+
+xeo:modelCallRef a owl:DatatypeProperty ;
+    rdfs:label "model call reference" ;
+    rdfs:domain xeo:ModelCall ; rdfs:range xsd:string ;
+    xeo:xeoLayer "episode" ;
+    xeo:groundedIn "OpenTelemetry GenAI semantic conventions, gen_ai.response.id (status: Development) · the provider's response id" ;
+    xeo:termStatus "draft" ;
+    dct:description "The provider's id for the response to one model call. Name ours." .
+
+xeo:uncachedInputTokens a owl:DatatypeProperty ;
+    rdfs:label "uncached input tokens" ;
+    rdfs:domain xeo:ModelCall ; rdfs:range xsd:integer ;
+    xeo:xeoLayer "observation" ;
+    xeo:groundedIn "OpenTelemetry GenAI semantic conventions, gen_ai.usage.* (status: Development) · the provider's usage contract" ;
+    xeo:termStatus "draft" ;
+    dct:description "Input tokens of one model call that were neither read from nor written to a prompt cache. Never negative. Disjoint from cacheReadTokens and cacheWriteTokens: the three sum to the context the call sent. A source whose input count includes cached tokens is not copied here; the cached counts are subtracted first (tokenAccounting)." .
+
+xeo:cacheReadTokens a owl:DatatypeProperty ;
+    rdfs:label "cache read tokens" ;
+    rdfs:domain xeo:ModelCall ; rdfs:range xsd:integer ;
+    xeo:xeoLayer "observation" ;
+    xeo:groundedIn "OpenTelemetry GenAI semantic conventions, gen_ai.usage.cache_read.input_tokens (status: Development) · the provider's usage contract" ;
+    xeo:termStatus "draft" ;
+    dct:description "Input tokens of one model call that the provider served from its prompt cache. Never negative. Disjoint from uncachedInputTokens and cacheWriteTokens." .
+
+xeo:cacheWriteTokens a owl:DatatypeProperty ;
+    rdfs:label "cache write tokens" ;
+    rdfs:domain xeo:ModelCall ; rdfs:range xsd:integer ;
+    xeo:xeoLayer "observation" ;
+    xeo:groundedIn "OpenTelemetry GenAI semantic conventions, gen_ai.usage.cache_write.input_tokens, earlier cache_creation.input_tokens (status: Development) · the provider's usage contract" ;
+    xeo:termStatus "draft" ;
+    dct:description "Input tokens of one model call that were written to the provider's prompt cache. Never negative. Disjoint from uncachedInputTokens and cacheReadTokens. Where a provider splits the count by how long the entry is kept, this is the sum; the split, which is priced differently, has no slot yet." .
+
+xeo:outputTokens a owl:DatatypeProperty ;
+    rdfs:label "output tokens" ;
+    rdfs:domain xeo:ModelCall ; rdfs:range xsd:integer ;
+    xeo:xeoLayer "observation" ;
+    xeo:groundedIn "OpenTelemetry GenAI semantic conventions, gen_ai.usage.output_tokens (status: Development) · the provider's usage contract" ;
+    xeo:termStatus "draft" ;
+    dct:description "Tokens one model call generated, reasoning included. Never negative." .
+
+xeo:reasoningTokens a owl:DatatypeProperty ;
+    rdfs:label "reasoning tokens" ;
+    rdfs:domain xeo:ModelCall ; rdfs:range xsd:integer ;
+    xeo:xeoLayer "observation" ;
+    xeo:groundedIn "OpenTelemetry GenAI semantic conventions, gen_ai.usage.reasoning.output_tokens (status: Development) · the provider's usage contract" ;
+    xeo:termStatus "draft" ;
+    dct:description "The part of outputTokens one model call spent on reasoning. A subset of outputTokens, never added to it: adding the two counts the reasoning twice." .
+
+xeo:latencyMs a owl:DatatypeProperty ;
+    rdfs:label "latency in milliseconds" ;
+    rdfs:domain xeo:ModelCall ; rdfs:range xsd:decimal ;
+    xeo:xeoLayer "observation" ;
+    xeo:groundedIn "OpenTelemetry GenAI semantic conventions, gen_ai.client.inference.duration (status: Development) · the runtime's request record" ;
+    xeo:termStatus "draft" ;
+    dct:description "How long one model call took from request to final response, in milliseconds. A source that reports another unit is converted." .
+
+xeo:timeToFirstTokenMs a owl:DatatypeProperty ;
+    rdfs:label "time to first token in milliseconds" ;
+    rdfs:domain xeo:ModelCall ; rdfs:range xsd:decimal ;
+    xeo:xeoLayer "observation" ;
+    xeo:groundedIn "OpenTelemetry GenAI semantic conventions, time to first chunk or token (status: Development) · the runtime's request record" ;
+    xeo:termStatus "draft" ;
+    dct:description "How long one model call took from request until the first output arrived, in milliseconds." .
+
+xeo:attemptCount a owl:DatatypeProperty ;
+    rdfs:label "attempt count" ;
+    rdfs:domain xeo:ModelCall ; rdfs:range xsd:integer ;
+    xeo:xeoLayer "observation" ;
+    xeo:groundedIn "The runtime's request record (per-runtime, to be mapped in mappings/)" ;
+    xeo:termStatus "draft" ;
+    dct:description "How many attempts one model call took, the first included: 1 means it was not retried. The retries are part of the one ModelCall. One runtime read reports it." .
+
+xeo:stopReason a owl:DatatypeProperty ;
+    rdfs:label "stop reason" ;
+    rdfs:domain xeo:ModelCall ; rdfs:range xsd:string ;
+    xeo:xeoLayer "observation" ;
+    xeo:groundedIn "The provider's API response (its stop or finish reason field)" ;
+    xeo:termStatus "draft" ;
+    dct:description "Why the model stopped generating, as the provider names it. Free text: providers' lists differ, and none is published as a scheme." .
+
+xeo:costAmount a owl:DatatypeProperty ;
+    rdfs:label "cost amount" ;
+    rdfs:range xsd:decimal ;
+    xeo:domainIncludes xeo:ModelCall , xeo:AgentSession ;
+    xeo:xeoLayer "derivation" ;
+    xeo:termStatus "draft" ;
+    dct:description "What a model call or a session cost, in its currencyCode. Always travels with currencyCode and costBasis. A derivation: usage multiplied by a price table, so it carries method naming the table and its date. A runtime's own cost figure is an estimate of this kind. Only where costBasis is invoice was the amount read, not computed." .
+
+xeo:costBasis a owl:DatatypeProperty ;
+    rdfs:label "cost basis" ;
+    rdfs:range xsd:string ;
+    xeo:domainIncludes xeo:ModelCall , xeo:AgentSession ;
+    xeo:xeoLayer "derivation" ;
+    xeo:termStatus "draft" ;
+    dct:description "Where a costAmount came from: estimated_list_price, configured_rate or invoice (xeos:costBasis). The first two are computed; invoice was read from what the provider billed. Amounts on different bases are not summed." .
+
+xeo:toolCallRef a owl:DatatypeProperty ;
+    rdfs:label "tool call reference" ;
+    rdfs:domain xeo:ToolCall ; rdfs:range xsd:string ;
+    xeo:xeoLayer "episode" ;
+    xeo:groundedIn "OpenTelemetry GenAI semantic conventions, gen_ai.tool.call.id (status: Development) · the provider's tool-use id" ;
+    xeo:termStatus "draft" ;
+    dct:description "The id the provider or runtime gave one tool call, which its result carries back. Name ours." .
+
+xeo:toolName a owl:DatatypeProperty ;
+    rdfs:label "tool name" ;
+    rdfs:domain xeo:ToolCall ; rdfs:range xsd:string ;
+    xeo:xeoLayer "episode" ;
+    xeo:termStatus "draft" ;
+    dct:description "The name of the tool called, as the model named it in the call." .
+
+xeo:toolSource a owl:DatatypeProperty ;
+    rdfs:label "tool source" ;
+    rdfs:domain xeo:ToolCall ; rdfs:range xsd:string ;
+    xeo:xeoLayer "episode" ;
+    xeo:termStatus "draft" ;
+    dct:description "Where the tool came from: builtin, mcp or plugin (xeos:toolSource)." .
+
+xeo:succeeded a owl:DatatypeProperty ;
+    rdfs:label "succeeded" ;
+    rdfs:domain xeo:ToolCall ; rdfs:range xsd:boolean ;
+    xeo:xeoLayer "observation" ;
+    xeo:groundedIn "The runtime's tool result record (per-runtime, to be mapped in mappings/) · OpenTelemetry error.type, where an error is reported" ;
+    xeo:termStatus "draft" ;
+    dct:description "Whether a tool call returned a result and not an error. False is how a failure is recorded." .
+
+xeo:errorClass a owl:DatatypeProperty ;
+    rdfs:label "error class" ;
+    rdfs:domain xeo:ToolCall ; rdfs:range xsd:string ;
+    xeo:xeoLayer "observation" ;
+    xeo:groundedIn "The runtime's tool result record (per-runtime, to be mapped in mappings/) · OpenTelemetry error.type" ;
+    xeo:termStatus "draft" ;
+    dct:description "The kind of error a failed tool call reported, as the source names it. Present only where succeeded is false. Free text: the runtimes read share no list." .
+
+xeo:failureSignature a owl:DatatypeProperty ;
+    rdfs:label "failure signature" ;
+    rdfs:domain xeo:ToolCall ; rdfs:range xsd:string ;
+    xeo:xeoLayer "derivation" ;
+    xeo:termStatus "draft" ;
+    dct:description "A fingerprint of a failed tool call, so that repeats of the same failure can be counted and a retry loop seen. A derivation: what is hashed (the tool, its input, the start of the error) is the implementer's choice, so it carries method." .
+
+# --- Rules firing ---------------------------------------------------------------
+# Research §4.1, card EnforcementEvent; recommendations 3, 4 and 5; §6 conflicts
+# 6 and 9. The plan of record renames decision to enforcementDecision.
+
+xeo:EnforcementEvent a owl:Class ;
+    rdfs:label "Enforcement Event" ;
+    xeo:xeoLayer "episode" ;
+    xeo:termStatus "draft" ;
+    dct:description "The record that a harness rule was evaluated at an enforcement point and returned a decision: a hook denied a tool call, a permission rule asked the user, a guard trimmed an output. Carries enforcementDecision, decisionSource, reasonText, occurredAt, inSession, the ToolCall it was about (onToolCall) and, where the rule is modelled, the Practice that fired (firedPractice). An episode, written by the enforcement point itself at the time. A rule judged afterwards to have applied is appliedPractice (decision), a derivation." .
+
+xeo:onToolCall a owl:ObjectProperty ;
+    rdfs:label "on tool call" ;
+    rdfs:domain xeo:EnforcementEvent ; rdfs:range xeo:ToolCall ;
+    xeo:xeoLayer "episode" ;
+    xeo:termStatus "draft" ;
+    dct:description "The ToolCall an EnforcementEvent decided about. Absent where the rule fired on something else, such as a prompt." .
+
+xeo:firedPractice a owl:ObjectProperty ;
+    rdfs:label "fired practice" ;
+    rdfs:domain xeo:EnforcementEvent ; rdfs:range xeo:Practice ;
+    xeo:xeoLayer "episode" ;
+    xeo:termStatus "draft" ;
+    dct:description "The Practice (decision) whose enforcement produced this event. An episode, recorded when the rule fired, beside appliedPractice, which stays a derivation for evaluation after the fact. Optional: it works when decision is loaded." .
+
+xeo:enforcementDecision a owl:DatatypeProperty ;
+    rdfs:label "enforcement decision" ;
+    rdfs:domain xeo:EnforcementEvent ; rdfs:range xsd:string ;
+    xeo:xeoLayer "episode" ;
+    xeo:termStatus "draft" ;
+    dct:description "What the rule decided, as a code from a slotted-in scheme (allow, deny, ask, defer, override, trim, rewrite_input, rewrite_output, block_after — xeos:hookDecision is a published reference filling). One per event. A runtime with two vocabularies for decisions fills this one slot from both, through two mappings. The research names it decision." .
+
+xeo:decisionSource a owl:DatatypeProperty ;
+    rdfs:label "decision source" ;
+    rdfs:domain xeo:EnforcementEvent ; rdfs:range xsd:string ;
+    xeo:xeoLayer "episode" ;
+    xeo:termStatus "draft" ;
+    dct:description "Who or what made an enforcement decision: config, hook, user or classifier (xeos:decisionSource)." .
+
+xeo:reasonText a owl:DatatypeProperty ;
+    rdfs:label "reason text" ;
+    rdfs:domain xeo:EnforcementEvent ; rdfs:range xsd:string ;
+    xeo:xeoLayer "episode" ;
+    xeo:termStatus "draft" ;
+    dct:description "The reason the enforcement point gave for its decision, in its own words, as shown to the agent or the user." .
+
+xeo:enforcementPoint a owl:DatatypeProperty ;
+    rdfs:label "enforcement point" ;
+    rdfs:domain xeo:Practice ; rdfs:range xsd:string ;
+    xeo:xeoLayer "norm" ;
+    xeo:termStatus "draft" ;
+    dct:description "Where a Practice (decision) is enforced: prompt, hook, proxy, config, permission_rule or tool (xeos:enforcementPoint). A rule that lives only in a prompt can be ignored by the model, so it is guidance in effect whatever its practiceKind says. Optional: it works when decision is loaded." .
+
+xeo:failureMode a owl:DatatypeProperty ;
+    rdfs:label "failure mode" ;
+    rdfs:domain xeo:Practice ; rdfs:range xsd:string ;
+    xeo:xeoLayer "norm" ;
+    xeo:termStatus "draft" ;
+    dct:description "What happens when the enforcement of a Practice (decision) itself errors: fail_open (the action goes ahead) or fail_closed (it is blocked) (xeos:failureMode). A fail-open rule that did not load is switched off without saying so. Optional: it works when decision is loaded." .
+
+# --- Compaction and delegation ---------------------------------------------------
+# Research §4.1, cards Compaction and Delegation; §6 conflict 8. The plan of
+# record renames trigger to compactionTrigger, links a compaction to the summary
+# it wrote, and has a delegation start a child session.
+
+xeo:Compaction a owl:Class ;
+    rdfs:label "Compaction" ;
+    xeo:xeoLayer "episode" ;
+    xeo:termStatus "draft" ;
+    dct:description "The replacement of a session's conversation history by a summary, at a time. Carries compactionTrigger, occurredAt, inSession and, where the runtime reports them, tokensBefore and tokensAfter. Where the runtime keeps the summary it wrote, artifactUri (core) points at it: the summary is what the next turn loads." .
+
+xeo:Delegation a owl:Class ;
+    rdfs:label "Delegation" ;
+    xeo:xeoLayer "episode" ;
+    xeo:termStatus "draft" ;
+    dct:description "A parent agent starting a subagent with its own context. Carries parentAgentId and childAgentId as the runtime reports them, occurredAt, the session it happened in (inSession) and, where the subagent ran as a session of its own, childSession. Carrying work from one session to the next is not a delegation: that is continuesSession." .
+
+xeo:compactionTrigger a owl:DatatypeProperty ;
+    rdfs:label "compaction trigger" ;
+    rdfs:domain xeo:Compaction ; rdfs:range xsd:string ;
+    xeo:xeoLayer "episode" ;
+    xeo:termStatus "draft" ;
+    dct:description "What set a Compaction off: auto or manual (xeos:compactionTrigger). The research names it trigger." .
+
+xeo:tokensBefore a owl:DatatypeProperty ;
+    rdfs:label "tokens before" ;
+    rdfs:domain xeo:Compaction ; rdfs:range xsd:integer ;
+    xeo:xeoLayer "observation" ;
+    xeo:groundedIn "The runtime's compaction event (per-runtime, to be mapped in mappings/)" ;
+    xeo:termStatus "draft" ;
+    dct:description "The size of the session's context in tokens just before a Compaction, as the runtime reports it." .
+
+xeo:tokensAfter a owl:DatatypeProperty ;
+    rdfs:label "tokens after" ;
+    rdfs:domain xeo:Compaction ; rdfs:range xsd:integer ;
+    xeo:xeoLayer "observation" ;
+    xeo:groundedIn "The runtime's compaction event (per-runtime, to be mapped in mappings/)" ;
+    xeo:termStatus "draft" ;
+    dct:description "The size of the session's context in tokens just after a Compaction, as the runtime reports it." .
+
+xeo:childSession a owl:ObjectProperty ;
+    rdfs:label "child session" ;
+    rdfs:domain xeo:Delegation ; rdfs:range xeo:AgentSession ;
+    xeo:xeoLayer "episode" ;
+    xeo:termStatus "draft" ;
+    dct:description "The AgentSession a delegated subagent ran in, where the runtime gives it one. Absent where a subagent runs inside its parent's session and is told apart only by childAgentId. Name ours; the plan of record says a delegation starts a child session." .
+
+xeo:parentAgentId a owl:DatatypeProperty ;
+    rdfs:label "parent agent id" ;
+    rdfs:domain xeo:Delegation ; rdfs:range xsd:string ;
+    xeo:xeoLayer "episode" ;
+    xeo:groundedIn "OpenTelemetry GenAI semantic conventions, gen_ai.agent.id and gen_ai.main_agent.* (status: Development) · the runtime's own agent ids" ;
+    xeo:termStatus "draft" ;
+    dct:description "The id of the agent that delegated, as the runtime reports it." .
+
+xeo:childAgentId a owl:DatatypeProperty ;
+    rdfs:label "child agent id" ;
+    rdfs:domain xeo:Delegation ; rdfs:range xsd:string ;
+    xeo:xeoLayer "episode" ;
+    xeo:groundedIn "OpenTelemetry GenAI semantic conventions, gen_ai.agent.id (status: Development) · the runtime's own agent ids" ;
+    xeo:termStatus "draft" ;
+    dct:description "The id of the subagent that was started, as the runtime reports it." .
+
+xeo:returnsControl a owl:DatatypeProperty ;
+    rdfs:label "returns control" ;
+    rdfs:domain xeo:Delegation ; rdfs:range xsd:boolean ;
+    xeo:xeoLayer "episode" ;
+    xeo:termStatus "draft" ;
+    dct:description "Whether control comes back to the parent when the subagent finishes. False is a transfer of control from one agent to another within a run, which some frameworks call a handoff." .
+
+# --- Where a deliverable came from -------------------------------------------------
+# The handoff's §4.6. Deliverable is declared in xeo-work.ttl, because people hand
+# work back too. This is the one fact about it that only an agent's work has.
+
+xeo:producedInSession a owl:ObjectProperty ;
+    rdfs:label "produced in session" ;
+    rdfs:domain xeo:Deliverable ; rdfs:range xeo:AgentSession ;
+    xeo:xeoLayer "episode" ;
+    xeo:termStatus "draft" ;
+    dct:description "The AgentSession a Deliverable (work) came out of, where an agent produced it. A deliverable a person made has none. Optional: it works when work is loaded." .

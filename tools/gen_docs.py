@@ -19,7 +19,7 @@ NS = "https://xeoontology.org/xeo#"
 MODULES = [
     "xeo-core.ttl", "xeo-visibility.ttl", "xeo-analysis.ttl", "xeo-sales.ttl",
     "xeo-attribution.ttl", "xeo-attribution-sales.ttl",
-    "xeo-work.ttl", "xeo-decision.ttl", "xeo-align.ttl",
+    "xeo-work.ttl", "xeo-decision.ttl", "xeo-agentic.ttl", "xeo-align.ttl",
 ]
 EPI = URIRef(NS + "xeoLayer")
 GROUNDED = URIRef(NS + "groundedIn")
@@ -107,8 +107,8 @@ def render():
         if st:  rows.append(("canonical store", html.escape(st)))
         badge = (f'<span class="layer" style="--h:{LAYER_HUE[layer]}">{layer}</span>'
                  if layer in LAYER_HUE else "")
-        if val(term, TERM_STATUS) == "extension":
-            badge += ' <span class="status">extension</span>'
+        if val(term, TERM_STATUS) in ("extension", "draft"):
+            badge += f' <span class="status">{val(term, TERM_STATUS)}</span>'
         if str(g.value(term, OWL.deprecated)).lower() == "true":
             badge += ' <span class="status dep">deprecated</span>'
         dl = "".join(f'<div class="row"><dt>{k}</dt><dd>{v}</dd></div>' for k, v in rows)
@@ -154,7 +154,7 @@ def render():
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>XEO — terms</title>
-<meta name="description" content="Term reference for the XEO ontology: classes, properties, and individuals across the core, visibility, analysis, sales, attribution, work and decision modules.">
+<meta name="description" content="Term reference for the XEO ontology: classes, properties, and individuals across the core, visibility, analysis, sales, attribution, work and decision modules, and the draft agentic engineering module.">
 <link rel="alternate" type="text/turtle" href="xeo-core.ttl">
 <style>
 :root {{ color-scheme: light dark; --bg:#f7f5ef; --surface:#fffdf8; --text:#17181c;
@@ -211,20 +211,22 @@ interpretive surface:</p>
 <div class="legend">{legend}</div>
 <p class="tag">A term marked <span class="status">extension</span> is declared and usable but
 not something every implementation is expected to support. A term marked
+<span class="status">draft</span> belongs to a module still being written and may change or be removed. A term marked
 <span class="status dep">deprecated</span> is still valid; its seeAlso names what to write instead.</p>
 <div class="modnote">Modules, each needing only core: <code>xeo-core</code> (site, pages, queries, crawls, observations, metrics, website conversions) ·
 <code>xeo-visibility</code> (AI answers, prompts, mentions, citations) ·
 <code>xeo-analysis</code> (graph algorithms and what they computed) ·
 <code>xeo-sales</code> (CRM records and pipeline) ·
 <code>xeo-attribution</code> (touches, journeys, revenue, spend, attribution models; <code>xeo-attribution-sales</code> bridges it to sales) ·
-<code>xeo-work</code> (clients, contracts, projects, campaigns, objectives, targets) ·
+<code>xeo-work</code> (clients, contracts, projects, campaigns, objectives, targets; draft: specs, work items, deliverables) ·
 <code>xeo-decision</code> (gaps, diagnostics, tactics, recommendations, and the practices that govern them) ·
+<code>xeo-agentic</code> (draft: agent harnesses, runtimes, sessions, model and tool calls, enforcement) ·
 <code>xeo-align</code> (schema.org / PROV-O / SKOS bridges). Machine-readable Turtle:
 <a href="xeo-core.ttl">core</a>, <a href="xeo-visibility.ttl">visibility</a>,
 <a href="xeo-analysis.ttl">analysis</a>, <a href="xeo-sales.ttl">sales</a>,
 <a href="xeo-attribution.ttl">attribution</a>, <a href="xeo-attribution-sales.ttl">attribution-sales</a>,
 <a href="xeo-work.ttl">work</a>, <a href="xeo-decision.ttl">decision</a>,
-<a href="xeo-align.ttl">align</a>;
+<a href="xeo-agentic.ttl">agentic</a> (draft), <a href="xeo-align.ttl">align</a>;
 reference values <a href="xeo-schemes.ttl">schemes</a> (<a href="schemes.json">JSON</a>);
 vendor mappings <a href="https://github.com/inboundfound/xeo-ontology/tree/main/mappings">mappings/</a>, one file per tool, not part of the ontology;
 JSON-LD <a href="context.jsonld">context</a>; Neo4j

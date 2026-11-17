@@ -50,7 +50,7 @@
 
 xeo:work-module a owl:Ontology ;
     dct:title "XEO Work (clients, contracts, projects, campaigns, objectives)" ;
-    dct:description "The container work is delivered in: a Project (the contract — type, quota, scope), its Campaigns (a body of work against one Topic), the Objective each campaign is measured by, and the MetricTargets an Experiment is read against. Also the agency side: which Organization is whose client, and what it holds. Lifted from a production implementation. Named xeo-delivery until 0.7." ;
+    dct:description "The container work is delivered in: a Project (the contract — type, quota, scope), its Campaigns (a body of work against one Topic), the Objective each campaign is measured by, and the MetricTargets an Experiment is read against. Also the agency side: which Organization is whose client, and what it holds. Lifted from a production implementation. Named xeo-delivery until 0.7. Since 0.7.1 also, as draft terms: what is to be built (Spec), the steps (WorkItem) and what was handed back (Deliverable), whoever does the work." ;
     dct:creator "Inbound Found" ;
     owl:versionInfo "0.7.0" .
 
@@ -345,3 +345,78 @@ xeo:targetMetric a owl:ObjectProperty ;
     rdfs:domain xeo:MetricTarget ; rdfs:range xeo:Metric ;
     xeo:xeoLayer "interpretation" ;
     dct:description "The Metric a MetricTarget is set on: a link to the Metric node (xeos:metric-ctr, xeos:metric-pipeline_created, or a Metric of your own). Exactly one per MetricTarget. Its type, unit, better direction and additivity are the Metric's. Replaces the text code metric (0.7)." .
+
+# --- v0.7.1 (specs, work items, deliverables, 2026-11-17) ----------------------------
+# Appended at the foot, so no line above moves. ADDED, all draft: what is to be
+# built (Spec), the steps (WorkItem) and what was handed back (Deliverable). They
+# sit here and not in the agentic engineering module because a person writes a
+# spec, takes a work item and hands back a deliverable as often as an agent does.
+# What only an agent's work has, the session a deliverable came out of
+# (producedInSession), is in xeo-agentic.ttl and works when both are loaded.
+#
+#   Spec withinProject Project
+#   WorkItem tracesTo Spec | Recommendation
+#   Deliverable fulfils WorkItem
+#
+# NEAR THE TERMS ABOVE, AND NOT THE SAME.
+#   Objective and Spec. An Objective says what a campaign should MOVE, as metric
+#   targets. A Spec says what is to be BUILT. A campaign can have both.
+#   Recommendation and WorkItem. A Recommendation issuedFor a Campaign is the call
+#   to do something, and its status is whether that call has been carried out. A
+#   WorkItem is one step of carrying it out, so it tracesTo the Recommendation.
+#   Work that starts from a document and not from a diagnosed gap has WorkItems
+#   and no Recommendation.
+#   Outcome and Deliverable. A Deliverable is what was handed back. An Outcome
+#   (decision) is what was measured afterwards.
+#
+# From the XEO research report on agent harnesses (2026-11-10), §4.1, the Spec
+# cluster, and its handoff, §4.6; specKind is the plan of record's, in place of
+# a DesignDoc class. Requirement, AcceptanceCriterion and ReviewVerdict are not
+# declared yet.
+
+xeo:Spec a owl:Class ;
+    rdfs:label "Spec" ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "A written statement of what is to be built and why, for whoever will build it, a person or an agent: a product requirements document, a plan, a design, a list of functional requirements (specKind). artifactUri points at it where it is kept, and that place, usually a repository, is the authority for its text. Not an Objective, which says what should move and by how much." .
+
+xeo:WorkItem a owl:Class ;
+    rdfs:label "Work Item" ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "One step of implementation, small enough for one person or one agent to take: a task in a task list. It tracesTo what asked for it, a Spec or a Recommendation. artifactUri points at where it is kept. Not a Recommendation: that is the call to do something, and a WorkItem is one step of doing it." .
+
+xeo:Deliverable a owl:Class ;
+    rdfs:label "Deliverable" ;
+    xeo:xeoLayer "episode" ;
+    xeo:termStatus "draft" ;
+    dct:description "What was handed back for review, at a time, by a person or an agent: a change set, a document, a report. Carries occurredAt, the WorkItem it answers (fulfils) and artifactUri; where an agent made it, producedInSession (agentic) says in which session. Handing it back says nothing about whether it was accepted: that judgment is a review, which is not modelled yet. Not an Outcome, which is what was measured after the work shipped." .
+
+xeo:withinProject a owl:ObjectProperty ;
+    rdfs:label "within project" ;
+    rdfs:domain xeo:Spec ; rdfs:range xeo:Project ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "The Project a Spec belongs to, where the work is done under one. A spec for work outside any Project has none." .
+
+xeo:tracesTo a owl:ObjectProperty ;
+    rdfs:label "traces to" ;
+    rdfs:domain xeo:WorkItem ;
+    xeo:rangeIncludes xeo:Spec , xeo:Recommendation ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "What a WorkItem implements: the Spec it comes from, or the Recommendation (decision) it carries out. Range left open across the two terms listed. In the research a WorkItem traces to a Requirement within a Spec; until that class is declared it traces to the Spec." .
+
+xeo:fulfils a owl:ObjectProperty ;
+    rdfs:label "fulfils" ;
+    rdfs:domain xeo:Deliverable ; rdfs:range xeo:WorkItem ;
+    xeo:xeoLayer "episode" ;
+    xeo:termStatus "draft" ;
+    dct:description "The WorkItem a Deliverable was handed back for. It says which item the deliverable answers, not that it satisfies it." .
+
+xeo:specKind a owl:DatatypeProperty ;
+    rdfs:label "spec kind" ;
+    rdfs:domain xeo:Spec ; rdfs:range xsd:string ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "What kind of document a Spec is: prd, plan, design or functional_requirements (xeos:specKind). A design document is a Spec of kind design, not a class of its own." .

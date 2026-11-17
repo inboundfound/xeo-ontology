@@ -3659,3 +3659,443 @@ xeos:metric-payback_period a skos:Concept , xeo:Metric ;
     xeo:betterDirection xeos:betterDirection-down ;
     xeo:additivity xeos:additivity-non_additive ;
     skos:note "reading: a derivation that names its model, through cost_per_acquisition"@en .
+
+# --- v0.7.1 schemes, draft (2026-11-17) ---------------------------------------------
+# Appended at the foot, so no line above moves. Each fills a slot of the agentic
+# engineering module, except specKind, which fills a slot of the work module. All are
+# marked draft with the terms they fill. The codes are the research report's; where it gives a
+# code and no definition, the definition is XEO's wording and the source line says so.
+
+xeos:harnessComponentKind a skos:ConceptScheme ;
+    skos:prefLabel "Harness component kinds"@en ;
+    xeo:fillsSlot xeo:componentKind ;
+    xeo:termStatus "draft" ;
+    dct:source "XEO Harness Module research report, 2026-11-10 (§4.1, HarnessComponent: the eight components Harness² exposes and the file conventions of the four coding-agent runtimes read). The definitions are XEO's wording; the report gives the codes" ;
+    dct:description "What a HarnessComponent is. One per component." .
+
+xeos:harnessComponentKind-instruction_file a skos:Concept ;
+    skos:inScheme xeos:harnessComponentKind ;
+    skos:topConceptOf xeos:harnessComponentKind ;
+    skos:notation "instruction_file" ;
+    skos:prefLabel "Instruction file"@en ;
+    skos:definition "A file of standing instructions the runtime loads into the agent's context"@en .
+
+xeos:harnessComponentKind-tool_guidance a skos:Concept ;
+    skos:inScheme xeos:harnessComponentKind ;
+    skos:topConceptOf xeos:harnessComponentKind ;
+    skos:notation "tool_guidance" ;
+    skos:prefLabel "Tool guidance"@en ;
+    skos:definition "Text that tells the model how and when to use a tool"@en .
+
+xeos:harnessComponentKind-mcp_server a skos:Concept ;
+    skos:inScheme xeos:harnessComponentKind ;
+    skos:topConceptOf xeos:harnessComponentKind ;
+    skos:notation "mcp_server" ;
+    skos:prefLabel "MCP server"@en ;
+    skos:definition "A Model Context Protocol server the harness connects, with the tools it exposes"@en .
+
+xeos:harnessComponentKind-skill a skos:Concept ;
+    skos:inScheme xeos:harnessComponentKind ;
+    skos:topConceptOf xeos:harnessComponentKind ;
+    skos:notation "skill" ;
+    skos:prefLabel "Skill"@en ;
+    skos:definition "A packaged procedure with its own instructions, loaded when a task calls for it"@en .
+
+xeos:harnessComponentKind-subagent_definition a skos:Concept ;
+    skos:inScheme xeos:harnessComponentKind ;
+    skos:topConceptOf xeos:harnessComponentKind ;
+    skos:notation "subagent_definition" ;
+    skos:prefLabel "Subagent definition"@en ;
+    skos:definition "The definition of a subagent the main agent can start"@en .
+
+xeos:harnessComponentKind-hook a skos:Concept ;
+    skos:inScheme xeos:harnessComponentKind ;
+    skos:topConceptOf xeos:harnessComponentKind ;
+    skos:notation "hook" ;
+    skos:prefLabel "Hook"@en ;
+    skos:definition "A command the runtime runs at a lifecycle event, which may allow, deny or change what happens next"@en .
+
+xeos:harnessComponentKind-plugin a skos:Concept ;
+    skos:inScheme xeos:harnessComponentKind ;
+    skos:topConceptOf xeos:harnessComponentKind ;
+    skos:notation "plugin" ;
+    skos:prefLabel "Plugin"@en ;
+    skos:definition "A bundle that adds components to a runtime through its plugin interface"@en .
+
+xeos:harnessComponentKind-script a skos:Concept ;
+    skos:inScheme xeos:harnessComponentKind ;
+    skos:topConceptOf xeos:harnessComponentKind ;
+    skos:notation "script" ;
+    skos:prefLabel "Script"@en ;
+    skos:definition "An executable the harness ships for the agent or its hooks to run"@en .
+
+xeos:harnessComponentKind-memory a skos:Concept ;
+    skos:inScheme xeos:harnessComponentKind ;
+    skos:topConceptOf xeos:harnessComponentKind ;
+    skos:notation "memory" ;
+    skos:prefLabel "Memory"@en ;
+    skos:definition "Notes the agent reads and writes across sessions"@en .
+
+xeos:harnessComponentKind-permission_rule a skos:Concept ;
+    skos:inScheme xeos:harnessComponentKind ;
+    skos:topConceptOf xeos:harnessComponentKind ;
+    skos:notation "permission_rule" ;
+    skos:prefLabel "Permission rule"@en ;
+    skos:definition "A rule in the runtime's settings that allows, asks about or denies a class of tool calls"@en .
+
+xeos:harnessComponentKind-settings a skos:Concept ;
+    skos:inScheme xeos:harnessComponentKind ;
+    skos:topConceptOf xeos:harnessComponentKind ;
+    skos:notation "settings" ;
+    skos:prefLabel "Settings"@en ;
+    skos:definition "Runtime configuration the harness sets"@en .
+
+xeos:harnessComponentKind-middleware a skos:Concept ;
+    skos:inScheme xeos:harnessComponentKind ;
+    skos:topConceptOf xeos:harnessComponentKind ;
+    skos:notation "middleware" ;
+    skos:prefLabel "Middleware"@en ;
+    skos:definition "Code between the agent and the model or its tools that can change what passes"@en .
+
+xeos:loadMode a skos:ConceptScheme ;
+    skos:prefLabel "Load modes"@en ;
+    xeo:fillsSlot xeo:loadMode ;
+    xeo:termStatus "draft" ;
+    dct:source "XEO Harness Module research report, 2026-11-10 (§4.1, HarnessComponent)" ;
+    dct:description "When a HarnessComponent enters the agent's context." .
+
+xeos:loadMode-always_loaded a skos:Concept ;
+    skos:inScheme xeos:loadMode ;
+    skos:topConceptOf xeos:loadMode ;
+    skos:notation "always_loaded" ;
+    skos:prefLabel "Always loaded"@en ;
+    skos:definition "In context from the start of every session"@en .
+
+xeos:loadMode-on_demand a skos:Concept ;
+    skos:inScheme xeos:loadMode ;
+    skos:topConceptOf xeos:loadMode ;
+    skos:notation "on_demand" ;
+    skos:prefLabel "On demand"@en ;
+    skos:definition "Loaded when the agent or the user calls for it"@en .
+
+xeos:loadMode-event_triggered a skos:Concept ;
+    skos:inScheme xeos:loadMode ;
+    skos:topConceptOf xeos:loadMode ;
+    skos:notation "event_triggered" ;
+    skos:prefLabel "Event triggered"@en ;
+    skos:definition "Run when a lifecycle event fires"@en .
+
+xeos:startType a skos:ConceptScheme ;
+    skos:prefLabel "Session start types"@en ;
+    xeo:fillsSlot xeo:startType ;
+    xeo:termStatus "draft" ;
+    dct:source "XEO Harness Module research report, 2026-11-10 (§4.1, AgentSession). The reading of 'continue' is XEO's, from the report's rule that a resume keeps the session id and a clear or handoff starts a new session" ;
+    dct:description "How an AgentSession began." .
+
+xeos:startType-fresh a skos:Concept ;
+    skos:inScheme xeos:startType ;
+    skos:topConceptOf xeos:startType ;
+    skos:notation "fresh" ;
+    skos:prefLabel "Fresh"@en ;
+    skos:definition "A new session with no earlier history"@en .
+
+xeos:startType-resume a skos:Concept ;
+    skos:inScheme xeos:startType ;
+    skos:topConceptOf xeos:startType ;
+    skos:notation "resume" ;
+    skos:prefLabel "Resume"@en ;
+    skos:definition "An earlier session reopened under the same session id"@en .
+
+xeos:startType-continue a skos:Concept ;
+    skos:inScheme xeos:startType ;
+    skos:topConceptOf xeos:startType ;
+    skos:notation "continue" ;
+    skos:prefLabel "Continue"@en ;
+    skos:definition "A new session that carries on from an earlier one; it points at it with continuesSession"@en .
+
+xeos:toolSource a skos:ConceptScheme ;
+    skos:prefLabel "Tool sources"@en ;
+    xeo:fillsSlot xeo:toolSource ;
+    xeo:termStatus "draft" ;
+    dct:source "XEO Harness Module research report, 2026-11-10 (§4.1, ToolCall)" ;
+    dct:description "Where a called tool came from." .
+
+xeos:toolSource-builtin a skos:Concept ;
+    skos:inScheme xeos:toolSource ;
+    skos:topConceptOf xeos:toolSource ;
+    skos:notation "builtin" ;
+    skos:prefLabel "Built in"@en ;
+    skos:definition "A tool the runtime ships"@en .
+
+xeos:toolSource-mcp a skos:Concept ;
+    skos:inScheme xeos:toolSource ;
+    skos:topConceptOf xeos:toolSource ;
+    skos:notation "mcp" ;
+    skos:prefLabel "MCP"@en ;
+    skos:definition "A tool exposed by a Model Context Protocol server"@en .
+
+xeos:toolSource-plugin a skos:Concept ;
+    skos:inScheme xeos:toolSource ;
+    skos:topConceptOf xeos:toolSource ;
+    skos:notation "plugin" ;
+    skos:prefLabel "Plugin"@en ;
+    skos:definition "A tool added by a plugin"@en .
+
+xeos:hookDecision a skos:ConceptScheme ;
+    skos:prefLabel "Enforcement decisions"@en ;
+    xeo:fillsSlot xeo:enforcementDecision ;
+    xeo:termStatus "draft" ;
+    dct:source "XEO Harness Module research report, 2026-11-10 (recommendation 10 and Appendix B, where the scheme is named; §6 conflict 6 for rewrite_output against block_after; §7 for defer). Hook decisions of Claude Code, Codex CLI, Gemini CLI and OpenCode" ;
+    dct:description "What a harness rule decided when it fired. Named hookDecision in the research; a permission rule or a classifier returns the same values. Each runtime's own names are mapped in mappings/, not listed here." .
+
+xeos:hookDecision-allow a skos:Concept ;
+    skos:inScheme xeos:hookDecision ;
+    skos:topConceptOf xeos:hookDecision ;
+    skos:notation "allow" ;
+    skos:prefLabel "Allow"@en ;
+    skos:definition "The action went ahead"@en .
+
+xeos:hookDecision-deny a skos:Concept ;
+    skos:inScheme xeos:hookDecision ;
+    skos:topConceptOf xeos:hookDecision ;
+    skos:notation "deny" ;
+    skos:prefLabel "Deny"@en ;
+    skos:definition "The action was blocked before it ran"@en .
+
+xeos:hookDecision-ask a skos:Concept ;
+    skos:inScheme xeos:hookDecision ;
+    skos:topConceptOf xeos:hookDecision ;
+    skos:notation "ask" ;
+    skos:prefLabel "Ask"@en ;
+    skos:definition "The decision was passed to the user"@en .
+
+xeos:hookDecision-defer a skos:Concept ;
+    skos:inScheme xeos:hookDecision ;
+    skos:topConceptOf xeos:hookDecision ;
+    skos:notation "defer" ;
+    skos:prefLabel "Defer"@en ;
+    skos:definition "The decision was put off. Reserved: one runtime documents it"@en .
+
+xeos:hookDecision-override a skos:Concept ;
+    skos:inScheme xeos:hookDecision ;
+    skos:topConceptOf xeos:hookDecision ;
+    skos:notation "override" ;
+    skos:prefLabel "Override"@en ;
+    skos:definition "A repeat of an action that had been denied was allowed, and logged"@en .
+
+xeos:hookDecision-trim a skos:Concept ;
+    skos:inScheme xeos:hookDecision ;
+    skos:topConceptOf xeos:hookDecision ;
+    skos:notation "trim" ;
+    skos:prefLabel "Trim"@en ;
+    skos:definition "The content was cut down and the action went ahead"@en .
+
+xeos:hookDecision-rewrite_input a skos:Concept ;
+    skos:inScheme xeos:hookDecision ;
+    skos:topConceptOf xeos:hookDecision ;
+    skos:notation "rewrite_input" ;
+    skos:prefLabel "Rewrite input"@en ;
+    skos:definition "The tool's input was changed before it ran"@en .
+
+xeos:hookDecision-rewrite_output a skos:Concept ;
+    skos:inScheme xeos:hookDecision ;
+    skos:topConceptOf xeos:hookDecision ;
+    skos:notation "rewrite_output" ;
+    skos:prefLabel "Rewrite output"@en ;
+    skos:definition "The tool ran and its result was replaced"@en .
+
+xeos:hookDecision-block_after a skos:Concept ;
+    skos:inScheme xeos:hookDecision ;
+    skos:topConceptOf xeos:hookDecision ;
+    skos:notation "block_after" ;
+    skos:prefLabel "Block after"@en ;
+    skos:definition "The tool ran and a reason was added to its result, which was not replaced"@en .
+
+xeos:decisionSource a skos:ConceptScheme ;
+    skos:prefLabel "Decision sources"@en ;
+    xeo:fillsSlot xeo:decisionSource ;
+    xeo:termStatus "draft" ;
+    dct:source "XEO Harness Module research report, 2026-11-10 (§4.1, EnforcementEvent)" ;
+    dct:description "Who or what made an enforcement decision." .
+
+xeos:decisionSource-config a skos:Concept ;
+    skos:inScheme xeos:decisionSource ;
+    skos:topConceptOf xeos:decisionSource ;
+    skos:notation "config" ;
+    skos:prefLabel "Configuration"@en ;
+    skos:definition "A rule in the runtime's settings decided"@en .
+
+xeos:decisionSource-hook a skos:Concept ;
+    skos:inScheme xeos:decisionSource ;
+    skos:topConceptOf xeos:decisionSource ;
+    skos:notation "hook" ;
+    skos:prefLabel "Hook"@en ;
+    skos:definition "A hook decided"@en .
+
+xeos:decisionSource-user a skos:Concept ;
+    skos:inScheme xeos:decisionSource ;
+    skos:topConceptOf xeos:decisionSource ;
+    skos:notation "user" ;
+    skos:prefLabel "User"@en ;
+    skos:definition "The user decided when asked"@en .
+
+xeos:decisionSource-classifier a skos:Concept ;
+    skos:inScheme xeos:decisionSource ;
+    skos:topConceptOf xeos:decisionSource ;
+    skos:notation "classifier" ;
+    skos:prefLabel "Classifier"@en ;
+    skos:definition "A model or classifier decided"@en .
+
+xeos:enforcementPoint a skos:ConceptScheme ;
+    skos:prefLabel "Enforcement points"@en ;
+    xeo:fillsSlot xeo:enforcementPoint ;
+    xeo:termStatus "draft" ;
+    dct:source "XEO Harness Module research report, 2026-11-10 (recommendation 4 and Appendix A)" ;
+    dct:description "Where a Practice is enforced. A rule enforced only at prompt can be ignored by the model." .
+
+xeos:enforcementPoint-prompt a skos:Concept ;
+    skos:inScheme xeos:enforcementPoint ;
+    skos:topConceptOf xeos:enforcementPoint ;
+    skos:notation "prompt" ;
+    skos:prefLabel "Prompt"@en ;
+    skos:definition "Written into instructions the model reads; nothing stops the model ignoring it"@en .
+
+xeos:enforcementPoint-hook a skos:Concept ;
+    skos:inScheme xeos:enforcementPoint ;
+    skos:topConceptOf xeos:enforcementPoint ;
+    skos:notation "hook" ;
+    skos:prefLabel "Hook"@en ;
+    skos:definition "Checked by a hook the runtime runs"@en .
+
+xeos:enforcementPoint-proxy a skos:Concept ;
+    skos:inScheme xeos:enforcementPoint ;
+    skos:topConceptOf xeos:enforcementPoint ;
+    skos:notation "proxy" ;
+    skos:prefLabel "Proxy"@en ;
+    skos:definition "Checked by a proxy between the runtime and the model or a tool"@en .
+
+xeos:enforcementPoint-config a skos:Concept ;
+    skos:inScheme xeos:enforcementPoint ;
+    skos:topConceptOf xeos:enforcementPoint ;
+    skos:notation "config" ;
+    skos:prefLabel "Configuration"@en ;
+    skos:definition "Set by a runtime setting"@en .
+
+xeos:enforcementPoint-permission_rule a skos:Concept ;
+    skos:inScheme xeos:enforcementPoint ;
+    skos:topConceptOf xeos:enforcementPoint ;
+    skos:notation "permission_rule" ;
+    skos:prefLabel "Permission rule"@en ;
+    skos:definition "Checked by an allow, ask or deny rule in the runtime's permissions"@en .
+
+xeos:enforcementPoint-tool a skos:Concept ;
+    skos:inScheme xeos:enforcementPoint ;
+    skos:topConceptOf xeos:enforcementPoint ;
+    skos:notation "tool" ;
+    skos:prefLabel "Tool"@en ;
+    skos:definition "Checked inside a tool's own code"@en .
+
+xeos:failureMode a skos:ConceptScheme ;
+    skos:prefLabel "Failure modes"@en ;
+    xeo:fillsSlot xeo:failureMode ;
+    xeo:termStatus "draft" ;
+    dct:source "XEO Harness Module research report, 2026-11-10 (recommendation 4 and Appendix A)" ;
+    dct:description "What happens when the enforcement of a Practice itself errors." .
+
+xeos:failureMode-fail_open a skos:Concept ;
+    skos:inScheme xeos:failureMode ;
+    skos:topConceptOf xeos:failureMode ;
+    skos:notation "fail_open" ;
+    skos:prefLabel "Fail open"@en ;
+    skos:definition "The action goes ahead"@en .
+
+xeos:failureMode-fail_closed a skos:Concept ;
+    skos:inScheme xeos:failureMode ;
+    skos:topConceptOf xeos:failureMode ;
+    skos:notation "fail_closed" ;
+    skos:prefLabel "Fail closed"@en ;
+    skos:definition "The action is blocked"@en .
+
+xeos:compactionTrigger a skos:ConceptScheme ;
+    skos:prefLabel "Compaction triggers"@en ;
+    xeo:fillsSlot xeo:compactionTrigger ;
+    xeo:termStatus "draft" ;
+    dct:source "XEO Harness Module research report, 2026-11-10 (§4.1, Compaction)" ;
+    dct:description "What set a Compaction off." .
+
+xeos:compactionTrigger-auto a skos:Concept ;
+    skos:inScheme xeos:compactionTrigger ;
+    skos:topConceptOf xeos:compactionTrigger ;
+    skos:notation "auto" ;
+    skos:prefLabel "Automatic"@en ;
+    skos:definition "The runtime compacted on its own"@en .
+
+xeos:compactionTrigger-manual a skos:Concept ;
+    skos:inScheme xeos:compactionTrigger ;
+    skos:topConceptOf xeos:compactionTrigger ;
+    skos:notation "manual" ;
+    skos:prefLabel "Manual"@en ;
+    skos:definition "A person or the agent asked for it"@en .
+
+xeos:costBasis a skos:ConceptScheme ;
+    skos:prefLabel "Cost bases"@en ;
+    xeo:fillsSlot xeo:costBasis ;
+    xeo:termStatus "draft" ;
+    dct:source "XEO Harness Module research report, 2026-11-10 (§4.1, costAmount; §6 conflict 11)" ;
+    dct:description "Where a costAmount came from. Only invoice is read; the other two are computed." .
+
+xeos:costBasis-estimated_list_price a skos:Concept ;
+    skos:inScheme xeos:costBasis ;
+    skos:topConceptOf xeos:costBasis ;
+    skos:notation "estimated_list_price" ;
+    skos:prefLabel "Estimated at list price"@en ;
+    skos:definition "Usage multiplied by the provider's published prices"@en .
+
+xeos:costBasis-configured_rate a skos:Concept ;
+    skos:inScheme xeos:costBasis ;
+    skos:topConceptOf xeos:costBasis ;
+    skos:notation "configured_rate" ;
+    skos:prefLabel "Configured rate"@en ;
+    skos:definition "Usage multiplied by a rate set in configuration"@en .
+
+xeos:costBasis-invoice a skos:Concept ;
+    skos:inScheme xeos:costBasis ;
+    skos:topConceptOf xeos:costBasis ;
+    skos:notation "invoice" ;
+    skos:prefLabel "Invoice"@en ;
+    skos:definition "Read from what the provider billed"@en .
+
+xeos:specKind a skos:ConceptScheme ;
+    skos:prefLabel "Spec kinds"@en ;
+    xeo:fillsSlot xeo:specKind ;
+    xeo:termStatus "draft" ;
+    dct:source "XEO 0.7 plan of record, 2026-11-12 (Spec cluster) · XEO Harness Module research report, 2026-11-10 (§3, the spec table: GitHub Spec Kit and AWS Kiro artifacts)" ;
+    dct:description "What kind of document a Spec is." .
+
+xeos:specKind-prd a skos:Concept ;
+    skos:inScheme xeos:specKind ;
+    skos:topConceptOf xeos:specKind ;
+    skos:notation "prd" ;
+    skos:prefLabel "Product requirements document"@en ;
+    skos:definition "What is to be built and why"@en .
+
+xeos:specKind-plan a skos:Concept ;
+    skos:inScheme xeos:specKind ;
+    skos:topConceptOf xeos:specKind ;
+    skos:notation "plan" ;
+    skos:prefLabel "Plan"@en ;
+    skos:definition "How the work will be done, and in what order"@en .
+
+xeos:specKind-design a skos:Concept ;
+    skos:inScheme xeos:specKind ;
+    skos:topConceptOf xeos:specKind ;
+    skos:notation "design" ;
+    skos:prefLabel "Design"@en ;
+    skos:definition "The technical design"@en .
+
+xeos:specKind-functional_requirements a skos:Concept ;
+    skos:inScheme xeos:specKind ;
+    skos:topConceptOf xeos:specKind ;
+    skos:notation "functional_requirements" ;
+    skos:prefLabel "Functional requirements"@en ;
+    skos:definition "The behaviours the result must have"@en .

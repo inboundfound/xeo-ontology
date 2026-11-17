@@ -10,6 +10,7 @@ must conform to `shapes/xeo-shapes.ttl`.
 | `learn-graph.jsonld` | One site, end to end, written against the camelCase `context.jsonld`. Covers the whole chain the `xeo-graph-kit` courses teach. |
 | `metrics-and-pipeline.jsonld` | What 0.6.0 adds for measurement: a tenant's own `Metric`, two `MetricReading`s, an `Outcome` computed from them, and a CRM deal pointer with its stage history. |
 | `neo4j-export.jsonld` | A few of the same nodes written the way Neo4j names things (UPPER_SNAKE relationship types, concept slots stored as codes), lifted by `context.neo4j.jsonld`. Includes a `Metric`, a `MetricReading` and a `MetricTarget`. |
+| `agent-session.jsonld` | The draft terms of 0.7.1: one harness, one agent session under it, the spec it worked from, and a deliverable from the agent beside one made by hand. Loads all fourteen draft classes. |
 | `invalid/broken-rules.jsonld` | One deliberately wrong node or edge per SHACL shape, each tagged with the shape it must break. The validator fails if a shape stops firing. |
 
 ## What `learn-graph.jsonld` walks through
@@ -60,34 +61,28 @@ must conform to `shapes/xeo-shapes.ttl`.
 5. **Stage history and a rollup.** A `StageTransition` for the deal entering its closing stage,
    and a `PipelineRollup`: a reading of `revenue_won` for the window, with its currency.
 
-## Two conventions the files rely on
+## What `agent-session.jsonld` walks through
 
-**An edge that carries properties is written twice.** RDF has no edge properties. The
-plain triple is stated on the start node (`"ranksFor": "ex:term-calibration"`), and
-the properties go on an `Edge` record beside it, which the local context maps to an
-`rdf:Statement`:
+Every new term in it is draft. The runtime, provider and model are invented.
 
-```json
-{ "type": "Edge", "start": "ex:url-guide", "edge": "ranksFor", "end": "ex:term-calibration",
-  "avgPosition": "6.4", "clicks": 310 }
-```
-
-In Neo4j the same thing is one relationship with properties. The `Edge`, `start`,
-`edge` and `end` keys are defined in each example's own context (and in
-`context.neo4j.jsonld`); they are not XEO terms.
-
-**Decimals are strings.** `"avgPosition": "6.4"`, not `6.4`. JSON-LD serializes a bare
-JSON number coerced to `xsd:decimal` in double notation (`6.4E0`), which is not a valid
-decimal. Integers and booleans are written bare.
-
-## Running the checks
-
-```bash
-uv run --no-project --with rdflib --with pyshacl python tools/validate.py
-```
-
-To validate your own data against the shapes:
-
-```bash
-uv run --no-project --with pyshacl pyshacl -s shapes/xeo-shapes.ttl your-graph.ttl
-```
+1. **The harness** (`xeo-agentic.ttl`). An `AgentRuntime` at a version, and a `Harness` with
+   a name, a `harnessVersion` and a `harnessDigest`. Three `HarnessComponent`s: an instruction
+   file that is always loaded, a skill loaded on demand, and a hook. The hook
+   `expressesPractice`: the rule itself is a `Practice`, enforced at `hook`, failing open.
+2. **The work** (`xeo-work.ttl`). A `Spec` of kind `plan` within a `Project`, and two
+   `WorkItem`s that `tracesTo` it.
+3. **A session.** An `AgentSession` with the runtime's own `sessionRef`, the harness it ran
+   under and the runtime it ran on. One `AgentTurn`, and one `ModelCall` under a shared
+   `InvocationConfig` (core): `requestedModel` is an alias, and `producedByModel` names the
+   build that answered. Its four token counts do not overlap, and `reasoningTokens` is part of
+   `outputTokens`. Its cost is an estimate (`costBasis`), with the price table in `method`.
+4. **A rule firing.** Three `ToolCall`s. The first was denied: an `EnforcementEvent` with its
+   `enforcementDecision`, the reason given, the call it was about and the `Practice` that
+   fired. The second succeeded. The third failed, which is `succeeded` false with an
+   `errorClass` and a `failureSignature`.
+5. **Delegation and compaction.** A `Delegation` whose subagent ran in a `childSession`; a
+   `Compaction` with the context size before and after, pointing at the summary it wrote.
+6. **Two deliverables.** One `fulfils` the first work item and was `producedInSession`. The
+   other fulfils the second and was made by a person, so it names no session.
+7. **The next day.** A second session, `startType` `continue`, which `continuesSession` the
+   first.

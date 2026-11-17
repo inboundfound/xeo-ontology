@@ -1,0 +1,140 @@
+{
+  "@context": [
+    "../context.jsonld",
+    { "ex": "https://example.com/graph/" }
+  ],
+  "@graph": [
+    { "id": "ex:runtime", "type": "AgentRuntime", "name": "example-agent-cli", "runtimeVersion": "2.4.0" },
+
+    {
+      "id": "ex:harness", "type": "Harness", "name": "Example SEO harness", "harnessVersion": "v3",
+      "harnessDigest": "sha256:9c1e5aexample", "runsOn": "ex:runtime",
+      "hasComponent": ["ex:comp-instructions", "ex:comp-read-guard", "ex:comp-audit-skill"]
+    },
+    {
+      "id": "ex:comp-instructions", "type": "HarnessComponent", "componentKind": "instruction_file",
+      "loadMode": "always_loaded", "componentDigest": "sha256:11aaexample",
+      "artifactUri": "https://example.com/repo/blob/4f2a9c1/AGENTS.md"
+    },
+    {
+      "id": "ex:comp-read-guard", "type": "HarnessComponent", "componentKind": "hook",
+      "loadMode": "event_triggered", "componentDigest": "sha256:22bbexample",
+      "artifactUri": "https://example.com/repo/blob/4f2a9c1/hooks/read-guard.sh",
+      "expressesPractice": "ex:practice-ranged-reads"
+    },
+    {
+      "id": "ex:comp-audit-skill", "type": "HarnessComponent", "componentKind": "skill",
+      "loadMode": "on_demand", "componentDigest": "sha256:33ccexample",
+      "artifactUri": "https://example.com/repo/blob/4f2a9c1/skills/content-audit/SKILL.md"
+    },
+    {
+      "id": "ex:practice-ranged-reads", "type": "Practice",
+      "statement": "Read a large file in ranges, not whole.",
+      "practiceKind": "guardrail", "status": "active", "source": "authored",
+      "enforcementPoint": "hook", "failureMode": "fail_open"
+    },
+
+    {
+      "id": "ex:site", "type": "Website", "origin": "https://www.example.com", "websiteId": "example",
+      "hasProject": "ex:project"
+    },
+    { "id": "ex:project", "type": "Project", "engagementType": "retainer", "interventionQuota": 4, "cadence": "monthly" },
+    {
+      "id": "ex:spec", "type": "Spec", "name": "Content audit for the calibration guides", "specKind": "plan",
+      "withinProject": "ex:project",
+      "artifactUri": "https://example.com/repo/blob/4f2a9c1/specs/content-audit/plan.md"
+    },
+    {
+      "id": "ex:item", "type": "WorkItem", "name": "List the guides with no internal links",
+      "tracesTo": "ex:spec",
+      "artifactUri": "https://example.com/repo/blob/4f2a9c1/specs/content-audit/tasks.md"
+    },
+    {
+      "id": "ex:item-by-hand", "type": "WorkItem", "name": "Check the list against the navigation by hand",
+      "tracesTo": "ex:spec"
+    },
+
+    {
+      "id": "ex:config", "type": "InvocationConfig", "modelProvider": "example-provider",
+      "requestedModel": "example-lm-latest", "reasoningLevel": "high",
+      "temperature": "1.0", "maxOutputTokens": 16000, "toolSetDigest": "sha256:44ddexample"
+    },
+    { "id": "ex:model", "type": "Model", "modelFamily": "ExampleLM", "modelVersion": "2026-09-01", "modelKind": "language" },
+
+    {
+      "id": "ex:session-1", "type": "AgentSession", "sessionRef": "0b8f6a52-example", "startType": "fresh",
+      "startedAt": "2026-11-03T14:00:00Z", "endedAt": "2026-11-03T14:38:00Z",
+      "underHarness": "ex:harness", "onRuntime": "ex:runtime", "hasTurn": "ex:turn-1",
+      "costAmount": "0.42", "costBasis": "estimated_list_price", "currencyCode": "USD",
+      "method": "price-table:example-provider:2026-11-01"
+    },
+    {
+      "id": "ex:turn-1", "type": "AgentTurn", "turnRef": "prompt-0001",
+      "hasModelCall": "ex:call-1", "hasToolCall": ["ex:tool-1", "ex:tool-2", "ex:tool-3"]
+    },
+    {
+      "id": "ex:call-1", "type": "ModelCall", "modelCallRef": "resp_01example",
+      "usedConfig": "ex:config", "producedByModel": "ex:model",
+      "uncachedInputTokens": 1200, "cacheReadTokens": 18400, "cacheWriteTokens": 2100,
+      "outputTokens": 640, "reasoningTokens": 380,
+      "latencyMs": "8420", "timeToFirstTokenMs": "910", "attemptCount": 1, "stopReason": "tool_call",
+      "costAmount": "0.0312", "costBasis": "estimated_list_price", "currencyCode": "USD",
+      "method": "price-table:example-provider:2026-11-01"
+    },
+
+    {
+      "id": "ex:tool-1", "type": "ToolCall", "toolCallRef": "toolu_01example", "toolName": "Read",
+      "toolSource": "builtin"
+    },
+    {
+      "id": "ex:enforcement-1", "type": "EnforcementEvent", "occurredAt": "2026-11-03T14:02:11Z",
+      "enforcementDecision": "deny", "decisionSource": "hook",
+      "reasonText": "This file is large. Read it in ranges.",
+      "onToolCall": "ex:tool-1", "firedPractice": "ex:practice-ranged-reads",
+      "inSession": "ex:session-1"
+    },
+    {
+      "id": "ex:tool-2", "type": "ToolCall", "toolCallRef": "toolu_02example", "toolName": "Read",
+      "toolSource": "builtin", "succeeded": true
+    },
+    {
+      "id": "ex:tool-3", "type": "ToolCall", "toolCallRef": "toolu_03example", "toolName": "site_search",
+      "toolSource": "mcp", "succeeded": false, "errorClass": "timeout",
+      "failureSignature": "sha256:55eeexample", "method": "sha256 of tool name, input and first error line"
+    },
+
+    {
+      "id": "ex:delegation-1", "type": "Delegation", "occurredAt": "2026-11-03T14:10:40Z",
+      "parentAgentId": "main", "childAgentId": "agent-7c1", "returnsControl": true,
+      "inSession": "ex:session-1", "childSession": "ex:session-child"
+    },
+    {
+      "id": "ex:session-child", "type": "AgentSession", "sessionRef": "5d20c9e1-example", "startType": "fresh",
+      "startedAt": "2026-11-03T14:10:41Z", "endedAt": "2026-11-03T14:16:02Z",
+      "underHarness": "ex:harness", "onRuntime": "ex:runtime"
+    },
+    {
+      "id": "ex:compaction-1", "type": "Compaction", "occurredAt": "2026-11-03T14:25:00Z",
+      "compactionTrigger": "auto", "tokensBefore": 164000, "tokensAfter": 21000,
+      "inSession": "ex:session-1",
+      "artifactUri": "https://example.com/archive/sessions/0b8f6a52-example/compaction-1.md"
+    },
+
+    {
+      "id": "ex:deliverable-1", "type": "Deliverable", "occurredAt": "2026-11-03T14:37:30Z",
+      "fulfils": "ex:item", "producedInSession": "ex:session-1",
+      "artifactUri": "https://example.com/repo/pull/128"
+    },
+    {
+      "id": "ex:deliverable-by-hand", "type": "Deliverable", "occurredAt": "2026-11-04T16:20:00Z",
+      "fulfils": "ex:item-by-hand",
+      "artifactUri": "https://example.com/docs/navigation-check-2026-11-04"
+    },
+
+    {
+      "id": "ex:session-2", "type": "AgentSession", "sessionRef": "a41be7d0-example", "startType": "continue",
+      "startedAt": "2026-11-04T09:00:00Z",
+      "underHarness": "ex:harness", "onRuntime": "ex:runtime", "continuesSession": "ex:session-1"
+    }
+  ]
+}

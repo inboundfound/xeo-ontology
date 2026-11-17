@@ -7,6 +7,90 @@ and corrects prose; a domain or range is not narrowed.
 
 Versions before 0.6.0 are reconstructed from the git history.
 
+## Unreleased — agentic engineering module, draft
+
+A new add-on module for the agents that do the work, and the terms it shares with the rest:
+the settings a model was called with go to core, and specs, work items and deliverables go to
+the work module. Everything added is marked draft. Nothing existing is renamed, removed or
+redefined, and every module still needs only core. From the XEO research report on agent
+harnesses and AI-assisted development (10 November) and its handoff.
+
+### A third term status, `draft`
+
+`xeo:termStatus` now takes `core`, `extension` or `draft`. A draft term belongs to a module
+still being written: it is declared so it can be tried against data, and it may change or be
+removed without a deprecation step. A class stays draft until an example file loads it and its
+maintainer lifts the mark; `tools/validate.py` lists each draft class with the example that
+loads it. The profile, the term docs and `schemes.json` carry the mark. All 79 terms and 11
+schemes below are draft.
+
+### New module `xeo-agentic.ttl`
+
+Only what exists because an agent ran. 10 classes, 14 object properties, 38 datatype
+properties and one annotation property.
+
+- **The harness:** `Harness` (two identities: `name` with `harnessVersion`, and a
+  `harnessDigest` of the files actually loaded), `HarnessComponent` (`componentKind`,
+  `loadMode`, `componentDigest`), `AgentRuntime` (`runtimeVersion`); `hasComponent`, `runsOn`.
+- **What happened:** `AgentSession` (`sessionRef`, `startType`, `underHarness`, `onRuntime`,
+  `continuesSession`), `AgentTurn` (`turnRef`), `ModelCall` (`modelCallRef`), `ToolCall`
+  (`toolCallRef`, `toolName`, `toolSource`, `succeeded`, `errorClass`, `failureSignature`);
+  `hasTurn`, `hasModelCall`, `hasToolCall`, and `inSession` for a record with no turn.
+- **Usage:** `uncachedInputTokens`, `cacheReadTokens`, `cacheWriteTokens` and `outputTokens`
+  never overlap, and `reasoningTokens` is a part of output. A field named `input_tokens`
+  excludes cached tokens at one provider and includes them at another, so it is mapped by
+  vendor and that vendor's `tokenAccounting`, never by its name. Also `latencyMs`,
+  `timeToFirstTokenMs`, `attemptCount`, `stopReason`.
+- **Cost:** `costAmount` with `costBasis` and core's `currencyCode`. A derivation, unless the
+  basis is an invoice.
+- **Rules firing:** `EnforcementEvent` (`enforcementDecision`, `decisionSource`, `reasonText`,
+  `onToolCall`). A component is a file, and the rule it states is a `Practice`
+  (`expressesPractice`); the moment the rule fired is the event (`firedPractice`), an episode
+  beside `appliedPractice`, which stays a derivation. A `Practice` gains `enforcementPoint`
+  and `failureMode`.
+- **`Compaction`** (`compactionTrigger`, `tokensBefore`, `tokensAfter`) and **`Delegation`**
+  (`parentAgentId`, `childAgentId`, `returnsControl`, `childSession`).
+- `producedInSession`: the session a `Deliverable` came out of.
+
+Its links to decision (four) and to work (one) are optional and work when both are loaded.
+
+### Core
+
+- **`InvocationConfig`**, the settings a model was called with: `modelProvider`,
+  `requestedModel`, `reasoningLevel`, `temperature`, `maxOutputTokens`, `toolSetDigest`.
+  `usedConfig` links a captured `LLMResponse` or a `ModelCall` to it. It is in core because two
+  add-ons use it. The build that answered is still `producedByModel`.
+- **`artifactUri`**: where the file behind a node is kept. The sibling of `datasetUri`.
+
+### Work
+
+- **`Spec`** (`specKind`, `withinProject`), **`WorkItem`** (`tracesTo` a Spec or a
+  Recommendation) and **`Deliverable`** (`fulfils` a WorkItem). They are in work, not in the
+  agentic module, because a person writes a spec and hands back a deliverable as often as an
+  agent does.
+- How they sit beside what was there: an `Objective` says what should move and a `Spec` what
+  is to be built; a `Recommendation` is the call to do something and a `WorkItem` one step of
+  doing it; a `Deliverable` is what was handed back and an `Outcome` what was measured after.
+
+### Reference schemes
+
+Eleven, 51 concepts: `harnessComponentKind`, `loadMode`, `startType`, `toolSource`,
+`hookDecision` (fills `enforcementDecision`), `decisionSource`, `enforcementPoint`,
+`failureMode`, `compactionTrigger`, `costBasis`, `specKind`.
+
+### Example
+
+`examples/agent-session.jsonld`: one harness, one session under it, the spec it worked from,
+and one deliverable from the agent beside one made by hand. It loads all 14 new classes.
+
+### Not in this release
+
+`Requirement`, `AcceptanceCriterion` and `ReviewVerdict`; `Handoff`, `McpServer` and
+`AgentFramework`; the experiment design terms (arms, trials, benchmarks, claims), which belong
+to an experiments module; the widening of `Practice` and `constrains` to cover an agent's
+actions; cache writes split by how long the entry is kept; moving `webSearchEnabled` onto the
+configuration; any vendor mapping; SHACL shapes and Neo4j constraints for the new classes.
+
 ## 0.7.0 — modules, deletions, core and sales, attribution (2026-11-12)
 
 Every module now needs only core; deprecated terms are deleted; core gains `Model`,

@@ -22,7 +22,10 @@ projected from it disagree:
                   scope note, a dated source and a mapping confidence. The
                   mappings are not part of the ontology: no module may point
                   at a mapping concept.
-  3b. STATUS      xeo:termStatus is 'core' or 'extension'; a deprecated term
+  3b. STATUS      xeo:termStatus is 'core', 'extension' or 'draft'; a draft
+                  class is listed with the example that loads it, or as
+                  loaded by none (a note, never a failure: lifting the mark is
+                  the maintainer's call); a deprecated term
                   or concept names its replacement in rdfs:seeAlso and is
                   still declared (removal comes in a later release, never by
                   deprecation alone);
@@ -73,7 +76,7 @@ SHAPES = os.path.join("shapes", "xeo-shapes.ttl")
 MAPPINGS = "mappings"  # per-tool vendor schemes; one key in per_module holds them all
 MATCHES = (SKOS.exactMatch, SKOS.closeMatch, SKOS.narrowMatch, SKOS.broadMatch, SKOS.relatedMatch)
 CONFIDENCES = {"documented", "inferred", "verified"}
-STATUSES = {"core", "extension"}
+STATUSES = {"core", "extension", "draft"}
 TERM_KINDS = (OWL.Class, OWL.ObjectProperty, OWL.DatatypeProperty)
 POINTERS = (RDFS.domain, RDFS.range, RDFS.subClassOf, RDFS.subPropertyOf,
             XEO.domainIncludes, XEO.rangeIncludes, XEO.fillsSlot)
@@ -572,6 +575,33 @@ def check_modules(report: Report, per_module: dict[str, Graph]) -> None:
             print(f"        {line}")
 
 
+def note_drafts(g: Graph, terms: dict) -> None:
+    """List the draft terms, and for each draft class the example that loads it.
+
+    A class is marked draft until an example file loads it (0.7 plan of record).
+    This reports which do; it fails nothing, because lifting the mark is the
+    maintainer's call.
+    """
+    draft = sorted((s for s, o in g.subject_objects(XEO.termStatus)
+                    if str(o) == "draft" and s in terms), key=local)
+    if not draft:
+        return
+    classes = [s for s in draft if terms[s] == OWL.Class]
+    loaded: dict[URIRef, list[str]] = {}
+    for path in sorted(glob.glob(os.path.join(HERE, "examples", "*.jsonld"))):
+        try:
+            used = set(load_jsonld(path).objects(None, RDF.type))
+        except Exception:  # an example that does not parse is check 6's finding
+            continue
+        for c in classes:
+            if c in used:
+                loaded.setdefault(c, []).append(os.path.relpath(path, HERE))
+    print(f"note  {len(draft)} draft terms, {len(classes)} of them classes; "
+          f"{len(loaded)} of the classes are loaded by an example:")
+    for c in classes:
+        print(f"        xeo:{local(c)}: {', '.join(loaded[c]) if c in loaded else 'loaded by no example'}")
+
+
 def main() -> int:
     report = Report()
     g, per_module = parse_all(report)
@@ -582,6 +612,7 @@ def main() -> int:
     check_context(report, g, terms)
     check_generated(report)
     check_examples(report, g, per_module, terms, concepts)
+    note_drafts(g, terms)
     print()
     if report.failures:
         print(f"FAILED: {report.failures} problem(s)")

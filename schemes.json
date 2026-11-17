@@ -548,6 +548,31 @@
         }
       ]
     },
+    "compactionTrigger": {
+      "iri": "https://xeoontology.org/schemes#compactionTrigger",
+      "label": "Compaction triggers",
+      "fillsSlot": "xeo:compactionTrigger",
+      "description": "What set a Compaction off.",
+      "source": "XEO Harness Module research report, 2026-11-10 (§4.1, Compaction)",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "auto",
+          "iri": "https://xeoontology.org/schemes#compactionTrigger-auto",
+          "label": "Automatic",
+          "definition": "The runtime compacted on its own",
+          "note": null
+        },
+        {
+          "code": "manual",
+          "iri": "https://xeoontology.org/schemes#compactionTrigger-manual",
+          "label": "Manual",
+          "definition": "A person or the agent asked for it",
+          "note": null
+        }
+      ],
+      "status": "draft"
+    },
     "consentPurpose": {
       "iri": "https://xeoontology.org/schemes#consentPurpose",
       "label": "Consent purposes",
@@ -779,6 +804,38 @@
           "note": null
         }
       ]
+    },
+    "costBasis": {
+      "iri": "https://xeoontology.org/schemes#costBasis",
+      "label": "Cost bases",
+      "fillsSlot": "xeo:costBasis",
+      "description": "Where a costAmount came from. Only invoice is read; the other two are computed.",
+      "source": "XEO Harness Module research report, 2026-11-10 (§4.1, costAmount; §6 conflict 11)",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "configured_rate",
+          "iri": "https://xeoontology.org/schemes#costBasis-configured_rate",
+          "label": "Configured rate",
+          "definition": "Usage multiplied by a rate set in configuration",
+          "note": null
+        },
+        {
+          "code": "estimated_list_price",
+          "iri": "https://xeoontology.org/schemes#costBasis-estimated_list_price",
+          "label": "Estimated at list price",
+          "definition": "Usage multiplied by the provider's published prices",
+          "note": null
+        },
+        {
+          "code": "invoice",
+          "iri": "https://xeoontology.org/schemes#costBasis-invoice",
+          "label": "Invoice",
+          "definition": "Read from what the provider billed",
+          "note": null
+        }
+      ],
+      "status": "draft"
     },
     "creditRule": {
       "iri": "https://xeoontology.org/schemes#creditRule",
@@ -1078,6 +1135,45 @@
         }
       ]
     },
+    "decisionSource": {
+      "iri": "https://xeoontology.org/schemes#decisionSource",
+      "label": "Decision sources",
+      "fillsSlot": "xeo:decisionSource",
+      "description": "Who or what made an enforcement decision.",
+      "source": "XEO Harness Module research report, 2026-11-10 (§4.1, EnforcementEvent)",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "classifier",
+          "iri": "https://xeoontology.org/schemes#decisionSource-classifier",
+          "label": "Classifier",
+          "definition": "A model or classifier decided",
+          "note": null
+        },
+        {
+          "code": "config",
+          "iri": "https://xeoontology.org/schemes#decisionSource-config",
+          "label": "Configuration",
+          "definition": "A rule in the runtime's settings decided",
+          "note": null
+        },
+        {
+          "code": "hook",
+          "iri": "https://xeoontology.org/schemes#decisionSource-hook",
+          "label": "Hook",
+          "definition": "A hook decided",
+          "note": null
+        },
+        {
+          "code": "user",
+          "iri": "https://xeoontology.org/schemes#decisionSource-user",
+          "label": "User",
+          "definition": "The user decided when asked",
+          "note": null
+        }
+      ],
+      "status": "draft"
+    },
     "device": {
       "iri": "https://xeoontology.org/schemes#device",
       "label": "Devices",
@@ -1146,6 +1242,59 @@
           "note": null
         }
       ]
+    },
+    "enforcementPoint": {
+      "iri": "https://xeoontology.org/schemes#enforcementPoint",
+      "label": "Enforcement points",
+      "fillsSlot": "xeo:enforcementPoint",
+      "description": "Where a Practice is enforced. A rule enforced only at prompt can be ignored by the model.",
+      "source": "XEO Harness Module research report, 2026-11-10 (recommendation 4 and Appendix A)",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "config",
+          "iri": "https://xeoontology.org/schemes#enforcementPoint-config",
+          "label": "Configuration",
+          "definition": "Set by a runtime setting",
+          "note": null
+        },
+        {
+          "code": "hook",
+          "iri": "https://xeoontology.org/schemes#enforcementPoint-hook",
+          "label": "Hook",
+          "definition": "Checked by a hook the runtime runs",
+          "note": null
+        },
+        {
+          "code": "permission_rule",
+          "iri": "https://xeoontology.org/schemes#enforcementPoint-permission_rule",
+          "label": "Permission rule",
+          "definition": "Checked by an allow, ask or deny rule in the runtime's permissions",
+          "note": null
+        },
+        {
+          "code": "prompt",
+          "iri": "https://xeoontology.org/schemes#enforcementPoint-prompt",
+          "label": "Prompt",
+          "definition": "Written into instructions the model reads; nothing stops the model ignoring it",
+          "note": null
+        },
+        {
+          "code": "proxy",
+          "iri": "https://xeoontology.org/schemes#enforcementPoint-proxy",
+          "label": "Proxy",
+          "definition": "Checked by a proxy between the runtime and the model or a tool",
+          "note": null
+        },
+        {
+          "code": "tool",
+          "iri": "https://xeoontology.org/schemes#enforcementPoint-tool",
+          "label": "Tool",
+          "definition": "Checked inside a tool's own code",
+          "note": null
+        }
+      ],
+      "status": "draft"
     },
     "engagementType": {
       "iri": "https://xeoontology.org/schemes#engagementType",
@@ -1232,6 +1381,31 @@
           "note": null
         }
       ]
+    },
+    "failureMode": {
+      "iri": "https://xeoontology.org/schemes#failureMode",
+      "label": "Failure modes",
+      "fillsSlot": "xeo:failureMode",
+      "description": "What happens when the enforcement of a Practice itself errors.",
+      "source": "XEO Harness Module research report, 2026-11-10 (recommendation 4 and Appendix A)",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "fail_closed",
+          "iri": "https://xeoontology.org/schemes#failureMode-fail_closed",
+          "label": "Fail closed",
+          "definition": "The action is blocked",
+          "note": null
+        },
+        {
+          "code": "fail_open",
+          "iri": "https://xeoontology.org/schemes#failureMode-fail_open",
+          "label": "Fail open",
+          "definition": "The action goes ahead",
+          "note": null
+        }
+      ],
+      "status": "draft"
     },
     "feedbackVerdict": {
       "iri": "https://xeoontology.org/schemes#feedbackVerdict",
@@ -1501,6 +1675,175 @@
         }
       ]
     },
+    "harnessComponentKind": {
+      "iri": "https://xeoontology.org/schemes#harnessComponentKind",
+      "label": "Harness component kinds",
+      "fillsSlot": "xeo:componentKind",
+      "description": "What a HarnessComponent is. One per component.",
+      "source": "XEO Harness Module research report, 2026-11-10 (§4.1, HarnessComponent: the eight components Harness² exposes and the file conventions of the four coding-agent runtimes read). The definitions are XEO's wording; the report gives the codes",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "hook",
+          "iri": "https://xeoontology.org/schemes#harnessComponentKind-hook",
+          "label": "Hook",
+          "definition": "A command the runtime runs at a lifecycle event, which may allow, deny or change what happens next",
+          "note": null
+        },
+        {
+          "code": "instruction_file",
+          "iri": "https://xeoontology.org/schemes#harnessComponentKind-instruction_file",
+          "label": "Instruction file",
+          "definition": "A file of standing instructions the runtime loads into the agent's context",
+          "note": null
+        },
+        {
+          "code": "mcp_server",
+          "iri": "https://xeoontology.org/schemes#harnessComponentKind-mcp_server",
+          "label": "MCP server",
+          "definition": "A Model Context Protocol server the harness connects, with the tools it exposes",
+          "note": null
+        },
+        {
+          "code": "memory",
+          "iri": "https://xeoontology.org/schemes#harnessComponentKind-memory",
+          "label": "Memory",
+          "definition": "Notes the agent reads and writes across sessions",
+          "note": null
+        },
+        {
+          "code": "middleware",
+          "iri": "https://xeoontology.org/schemes#harnessComponentKind-middleware",
+          "label": "Middleware",
+          "definition": "Code between the agent and the model or its tools that can change what passes",
+          "note": null
+        },
+        {
+          "code": "permission_rule",
+          "iri": "https://xeoontology.org/schemes#harnessComponentKind-permission_rule",
+          "label": "Permission rule",
+          "definition": "A rule in the runtime's settings that allows, asks about or denies a class of tool calls",
+          "note": null
+        },
+        {
+          "code": "plugin",
+          "iri": "https://xeoontology.org/schemes#harnessComponentKind-plugin",
+          "label": "Plugin",
+          "definition": "A bundle that adds components to a runtime through its plugin interface",
+          "note": null
+        },
+        {
+          "code": "script",
+          "iri": "https://xeoontology.org/schemes#harnessComponentKind-script",
+          "label": "Script",
+          "definition": "An executable the harness ships for the agent or its hooks to run",
+          "note": null
+        },
+        {
+          "code": "settings",
+          "iri": "https://xeoontology.org/schemes#harnessComponentKind-settings",
+          "label": "Settings",
+          "definition": "Runtime configuration the harness sets",
+          "note": null
+        },
+        {
+          "code": "skill",
+          "iri": "https://xeoontology.org/schemes#harnessComponentKind-skill",
+          "label": "Skill",
+          "definition": "A packaged procedure with its own instructions, loaded when a task calls for it",
+          "note": null
+        },
+        {
+          "code": "subagent_definition",
+          "iri": "https://xeoontology.org/schemes#harnessComponentKind-subagent_definition",
+          "label": "Subagent definition",
+          "definition": "The definition of a subagent the main agent can start",
+          "note": null
+        },
+        {
+          "code": "tool_guidance",
+          "iri": "https://xeoontology.org/schemes#harnessComponentKind-tool_guidance",
+          "label": "Tool guidance",
+          "definition": "Text that tells the model how and when to use a tool",
+          "note": null
+        }
+      ],
+      "status": "draft"
+    },
+    "hookDecision": {
+      "iri": "https://xeoontology.org/schemes#hookDecision",
+      "label": "Enforcement decisions",
+      "fillsSlot": "xeo:enforcementDecision",
+      "description": "What a harness rule decided when it fired. Named hookDecision in the research; a permission rule or a classifier returns the same values. Each runtime's own names are mapped in mappings/, not listed here.",
+      "source": "XEO Harness Module research report, 2026-11-10 (recommendation 10 and Appendix B, where the scheme is named; §6 conflict 6 for rewrite_output against block_after; §7 for defer). Hook decisions of Claude Code, Codex CLI, Gemini CLI and OpenCode",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "allow",
+          "iri": "https://xeoontology.org/schemes#hookDecision-allow",
+          "label": "Allow",
+          "definition": "The action went ahead",
+          "note": null
+        },
+        {
+          "code": "ask",
+          "iri": "https://xeoontology.org/schemes#hookDecision-ask",
+          "label": "Ask",
+          "definition": "The decision was passed to the user",
+          "note": null
+        },
+        {
+          "code": "block_after",
+          "iri": "https://xeoontology.org/schemes#hookDecision-block_after",
+          "label": "Block after",
+          "definition": "The tool ran and a reason was added to its result, which was not replaced",
+          "note": null
+        },
+        {
+          "code": "defer",
+          "iri": "https://xeoontology.org/schemes#hookDecision-defer",
+          "label": "Defer",
+          "definition": "The decision was put off. Reserved: one runtime documents it",
+          "note": null
+        },
+        {
+          "code": "deny",
+          "iri": "https://xeoontology.org/schemes#hookDecision-deny",
+          "label": "Deny",
+          "definition": "The action was blocked before it ran",
+          "note": null
+        },
+        {
+          "code": "override",
+          "iri": "https://xeoontology.org/schemes#hookDecision-override",
+          "label": "Override",
+          "definition": "A repeat of an action that had been denied was allowed, and logged",
+          "note": null
+        },
+        {
+          "code": "rewrite_input",
+          "iri": "https://xeoontology.org/schemes#hookDecision-rewrite_input",
+          "label": "Rewrite input",
+          "definition": "The tool's input was changed before it ran",
+          "note": null
+        },
+        {
+          "code": "rewrite_output",
+          "iri": "https://xeoontology.org/schemes#hookDecision-rewrite_output",
+          "label": "Rewrite output",
+          "definition": "The tool ran and its result was replaced",
+          "note": null
+        },
+        {
+          "code": "trim",
+          "iri": "https://xeoontology.org/schemes#hookDecision-trim",
+          "label": "Trim",
+          "definition": "The content was cut down and the action went ahead",
+          "note": null
+        }
+      ],
+      "status": "draft"
+    },
     "identityMethod": {
       "iri": "https://xeoontology.org/schemes#identityMethod",
       "label": "Identity methods",
@@ -1744,6 +2087,38 @@
           "note": null
         }
       ]
+    },
+    "loadMode": {
+      "iri": "https://xeoontology.org/schemes#loadMode",
+      "label": "Load modes",
+      "fillsSlot": "xeo:loadMode",
+      "description": "When a HarnessComponent enters the agent's context.",
+      "source": "XEO Harness Module research report, 2026-11-10 (§4.1, HarnessComponent)",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "always_loaded",
+          "iri": "https://xeoontology.org/schemes#loadMode-always_loaded",
+          "label": "Always loaded",
+          "definition": "In context from the start of every session",
+          "note": null
+        },
+        {
+          "code": "event_triggered",
+          "iri": "https://xeoontology.org/schemes#loadMode-event_triggered",
+          "label": "Event triggered",
+          "definition": "Run when a lifecycle event fires",
+          "note": null
+        },
+        {
+          "code": "on_demand",
+          "iri": "https://xeoontology.org/schemes#loadMode-on_demand",
+          "label": "On demand",
+          "definition": "Loaded when the agent or the user calls for it",
+          "note": null
+        }
+      ],
+      "status": "draft"
     },
     "magnitudeUnit": {
       "iri": "https://xeoontology.org/schemes#magnitudeUnit",
@@ -3466,6 +3841,45 @@
         }
       ]
     },
+    "specKind": {
+      "iri": "https://xeoontology.org/schemes#specKind",
+      "label": "Spec kinds",
+      "fillsSlot": "xeo:specKind",
+      "description": "What kind of document a Spec is.",
+      "source": "XEO 0.7 plan of record, 2026-11-12 (Spec cluster) · XEO Harness Module research report, 2026-11-10 (§3, the spec table: GitHub Spec Kit and AWS Kiro artifacts)",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "design",
+          "iri": "https://xeoontology.org/schemes#specKind-design",
+          "label": "Design",
+          "definition": "The technical design",
+          "note": null
+        },
+        {
+          "code": "functional_requirements",
+          "iri": "https://xeoontology.org/schemes#specKind-functional_requirements",
+          "label": "Functional requirements",
+          "definition": "The behaviours the result must have",
+          "note": null
+        },
+        {
+          "code": "plan",
+          "iri": "https://xeoontology.org/schemes#specKind-plan",
+          "label": "Plan",
+          "definition": "How the work will be done, and in what order",
+          "note": null
+        },
+        {
+          "code": "prd",
+          "iri": "https://xeoontology.org/schemes#specKind-prd",
+          "label": "Product requirements document",
+          "definition": "What is to be built and why",
+          "note": null
+        }
+      ],
+      "status": "draft"
+    },
     "spendLevel": {
       "iri": "https://xeoontology.org/schemes#spendLevel",
       "label": "Spend levels",
@@ -3527,6 +3941,38 @@
           "note": null
         }
       ]
+    },
+    "startType": {
+      "iri": "https://xeoontology.org/schemes#startType",
+      "label": "Session start types",
+      "fillsSlot": "xeo:startType",
+      "description": "How an AgentSession began.",
+      "source": "XEO Harness Module research report, 2026-11-10 (§4.1, AgentSession). The reading of 'continue' is XEO's, from the report's rule that a resume keeps the session id and a clear or handoff starts a new session",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "continue",
+          "iri": "https://xeoontology.org/schemes#startType-continue",
+          "label": "Continue",
+          "definition": "A new session that carries on from an earlier one; it points at it with continuesSession",
+          "note": null
+        },
+        {
+          "code": "fresh",
+          "iri": "https://xeoontology.org/schemes#startType-fresh",
+          "label": "Fresh",
+          "definition": "A new session with no earlier history",
+          "note": null
+        },
+        {
+          "code": "resume",
+          "iri": "https://xeoontology.org/schemes#startType-resume",
+          "label": "Resume",
+          "definition": "An earlier session reopened under the same session id",
+          "note": null
+        }
+      ],
+      "status": "draft"
     },
     "targetKind": {
       "iri": "https://xeoontology.org/schemes#targetKind",
@@ -3617,6 +4063,38 @@
         }
       ],
       "status": "extension"
+    },
+    "toolSource": {
+      "iri": "https://xeoontology.org/schemes#toolSource",
+      "label": "Tool sources",
+      "fillsSlot": "xeo:toolSource",
+      "description": "Where a called tool came from.",
+      "source": "XEO Harness Module research report, 2026-11-10 (§4.1, ToolCall)",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "builtin",
+          "iri": "https://xeoontology.org/schemes#toolSource-builtin",
+          "label": "Built in",
+          "definition": "A tool the runtime ships",
+          "note": null
+        },
+        {
+          "code": "mcp",
+          "iri": "https://xeoontology.org/schemes#toolSource-mcp",
+          "label": "MCP",
+          "definition": "A tool exposed by a Model Context Protocol server",
+          "note": null
+        },
+        {
+          "code": "plugin",
+          "iri": "https://xeoontology.org/schemes#toolSource-plugin",
+          "label": "Plugin",
+          "definition": "A tool added by a plugin",
+          "note": null
+        }
+      ],
+      "status": "draft"
     },
     "touchType": {
       "iri": "https://xeoontology.org/schemes#touchType",
