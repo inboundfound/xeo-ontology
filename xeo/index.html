@@ -422,7 +422,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 <section id="Practice" class="term">
   <h3>Practice <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:Practice</code>
-  <p>A standing rule that governs how recommendations are made under stated conditions. Best-practices, SOPs, and lessons-learned are all Practices, distinguished by source, not by class. A Practice does one of three things (practiceKind): veto a candidate (guardrail), reorder it (preference), or attach a caveat (guidance). Revisable and versioned (supersedes); scoped to the concepts it appliesToConcept; audited on the recommendations it fired on (appliedPractice).</p>
+  <p>A standing rule that governs a class of choices under stated conditions. Best-practices, SOPs, and lessons-learned are all Practices, distinguished by source, not by class. Where the choice is a Recommendation, a Practice does one of three things (practiceKind): veto a candidate (guardrail), reorder it (preference), or attach a caveat (guidance); it is scoped to the concepts it appliesToConcept and audited on the recommendations it fired on (appliedPractice). Where the choice is an agent&#x27;s action, such as a tool call, the rule a harness states or enforces is a Practice too (agentic, draft): the component that carries it points here with expressesPractice, enforcementPoint and failureMode say where it is enforced and what happens when enforcement fails, and each firing is recorded as an EnforcementEvent (firedPractice). Revisable and versioned (supersedes) in both uses.</p>
   
 </section>
 <section id="Project" class="term">
