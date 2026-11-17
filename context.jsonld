@@ -484,6 +484,8 @@
     "uncachedInputTokens": { "@id": "xeo:uncachedInputTokens", "@type": "xsd:integer" },
     "cacheReadTokens": { "@id": "xeo:cacheReadTokens", "@type": "xsd:integer" },
     "cacheWriteTokens": { "@id": "xeo:cacheWriteTokens", "@type": "xsd:integer" },
+    "cacheWriteDefaultLifetimeTokens": { "@id": "xeo:cacheWriteDefaultLifetimeTokens", "@type": "xsd:integer" },
+    "cacheWriteExtendedLifetimeTokens": { "@id": "xeo:cacheWriteExtendedLifetimeTokens", "@type": "xsd:integer" },
     "outputTokens": { "@id": "xeo:outputTokens", "@type": "xsd:integer" },
     "reasoningTokens": { "@id": "xeo:reasoningTokens", "@type": "xsd:integer" },
     "attemptCount": { "@id": "xeo:attemptCount", "@type": "xsd:integer" },

@@ -82,6 +82,7 @@
       "id": "ex:call-1", "type": "ModelCall", "modelCallRef": "resp_01example",
       "usedConfig": "ex:config", "producedByModel": "ex:model",
       "uncachedInputTokens": 1200, "cacheReadTokens": 18400, "cacheWriteTokens": 2100,
+      "cacheWriteDefaultLifetimeTokens": 1500, "cacheWriteExtendedLifetimeTokens": 600,
       "outputTokens": 640, "reasoningTokens": 380,
       "latencyMs": "8420", "timeToFirstTokenMs": "910", "attemptCount": 1, "stopReason": "tool_call",
       "costAmount": "0.0312", "costBasis": "estimated_list_price", "currencyCode": "USD",

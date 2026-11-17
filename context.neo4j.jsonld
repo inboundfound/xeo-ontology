@@ -809,6 +809,14 @@
       "@id": "xeo:cacheReadTokens",
       "@type": "xsd:integer"
     },
+    "cacheWriteDefaultLifetimeTokens": {
+      "@id": "xeo:cacheWriteDefaultLifetimeTokens",
+      "@type": "xsd:integer"
+    },
+    "cacheWriteExtendedLifetimeTokens": {
+      "@id": "xeo:cacheWriteExtendedLifetimeTokens",
+      "@type": "xsd:integer"
+    },
     "cacheWriteTokens": {
       "@id": "xeo:cacheWriteTokens",
       "@type": "xsd:integer"
