@@ -24,9 +24,31 @@
     "xeo-attribution-sales.ttl",
     "xeo-work.ttl",
     "xeo-decision.ttl",
+    "xeo-agentic.ttl",
     "xeo-schemes.ttl"
   ],
   "labels": {
+    "AgentRuntime": {
+      "definition": "The product that runs the agent loop and loads a harness (Claude Code, Codex CLI, Gemini CLI, OpenCode). Identified by name with runtimeVersion: one node per version. Not a library for building agents, and not a harness: the runtime is the vendor's program, the harness is what is loaded into it.",
+      "iri": "https://xeoontology.org/xeo#AgentRuntime",
+      "layer": "entity",
+      "module": "agentic",
+      "status": "draft"
+    },
+    "AgentSession": {
+      "definition": "One continuous run of an AgentRuntime under one Harness, from its start to its end: immutable once ended. Identified by sessionRef. Carries startedAt, endedAt, startType, underHarness and onRuntime, and its turns (hasTurn). A resumed session keeps its sessionRef; a session begun after a clear or a handoff is a new one, which points at the old with continuesSession. High-volume: the column store keeps the rows of its calls, the graph keeps the session and what is traversed from it.",
+      "iri": "https://xeoontology.org/xeo#AgentSession",
+      "layer": "episode",
+      "module": "agentic",
+      "status": "draft"
+    },
+    "AgentTurn": {
+      "definition": "All the work one prompt set off within a session: the model calls (hasModelCall) and tool calls (hasToolCall) between one prompt and the next. Identified by turnRef. A turn here is one prompt's worth of work; a framework that calls each pass of the model loop a turn is describing a ModelCall.",
+      "iri": "https://xeoontology.org/xeo#AgentTurn",
+      "layer": "episode",
+      "module": "agentic",
+      "status": "draft"
+    },
     "AlgorithmRun": {
       "definition": "One execution of one algorithm over one projection of the graph at a time: immutable once finished. Carries algorithm (which method), parameters (as run), projection (what it ran on) and ranAt. The provenance record for every score and derived edge it wrote: outputs point back with computedBy, or name the run in their method. Re-running with a different projection or parameters is a new run, never an update to an old one.",
       "iri": "https://xeoontology.org/xeo#AlgorithmRun",
@@ -108,6 +130,13 @@
         "RevenueEvent"
       ]
     },
+    "Compaction": {
+      "definition": "The replacement of a session's conversation history by a summary, at a time. Carries compactionTrigger, occurredAt, inSession and, where the runtime reports them, tokensBefore and tokensAfter. Where the runtime keeps the summary it wrote, artifactUri (core) points at it: the summary is what the next turn loads.",
+      "iri": "https://xeoontology.org/xeo#Compaction",
+      "layer": "episode",
+      "module": "agentic",
+      "status": "draft"
+    },
     "Consent": {
       "definition": "One recorded consent choice, for one purpose (consentPurpose), by one subject (consentSubject), as one system captured it (consentCapturedBy), with its status and when it was recorded. A new choice is a new Consent, never an edit; the current status for a subject and purpose is the latest. Company-level choices, such as not using a company's data to train models, sit on the Organization. Validity under any law is an interpretation made elsewhere, not part of this record.",
       "iri": "https://xeoontology.org/xeo#Consent",
@@ -138,6 +167,20 @@
       "layer": "norm",
       "module": "attribution"
     },
+    "Delegation": {
+      "definition": "A parent agent starting a subagent with its own context. Carries parentAgentId and childAgentId as the runtime reports them, occurredAt, the session it happened in (inSession) and, where the subagent ran as a session of its own, childSession. Carrying work from one session to the next is not a delegation: that is continuesSession.",
+      "iri": "https://xeoontology.org/xeo#Delegation",
+      "layer": "episode",
+      "module": "agentic",
+      "status": "draft"
+    },
+    "Deliverable": {
+      "definition": "What was handed back for review, at a time, by a person or an agent: a change set, a document, a report. Carries occurredAt, the WorkItem it answers (fulfils) and artifactUri; where an agent made it, producedInSession (agentic) says in which session. Handing it back says nothing about whether it was accepted: that judgment is a review, which is not modelled yet. Not an Outcome, which is what was measured after the work shipped.",
+      "iri": "https://xeoontology.org/xeo#Deliverable",
+      "layer": "episode",
+      "module": "work",
+      "status": "draft"
+    },
     "Diagnostic": {
       "definition": "A named, reusable check or framework that reads observations and reveals gaps (e.g. a waterfall-position assessment). The framework is durable; each finding it produces is a Gap.",
       "iri": "https://xeoontology.org/xeo#Diagnostic",
@@ -155,6 +198,13 @@
       "iri": "https://xeoontology.org/xeo#Domain",
       "layer": "entity",
       "module": "core"
+    },
+    "EnforcementEvent": {
+      "definition": "The record that a harness rule was evaluated at an enforcement point and returned a decision: a hook denied a tool call, a permission rule asked the user, a guard trimmed an output. Carries enforcementDecision, decisionSource, reasonText, occurredAt, inSession, the ToolCall it was about (onToolCall) and, where the rule is modelled, the Practice that fired (firedPractice). An episode, written by the enforcement point itself at the time. A rule judged afterwards to have applied is appliedPractice (decision), a derivation.",
+      "iri": "https://xeoontology.org/xeo#EnforcementEvent",
+      "layer": "episode",
+      "module": "agentic",
+      "status": "draft"
     },
     "Engine": {
       "definition": "A system that mediates between a person's question and web content. A parent class only: every engine node is one of its subtypes, SearchEngine (here), or GenerativeOverview or AnswerEngine (visibility).",
@@ -207,6 +257,20 @@
         "Engine"
       ]
     },
+    "Harness": {
+      "definition": "Everything around a model that makes it act as an agent: instructions, tool guidance, memory, skills, subagent definitions, hooks, plugins, scripts, permission rules, settings. A named, versioned bundle of HarnessComponents (hasComponent), written for an AgentRuntime (runsOn). It has two identities: name with harnessVersion, for people, and harnessDigest, computed from the files actually loaded, so a session can show which harness it really ran under. No subtypes.",
+      "iri": "https://xeoontology.org/xeo#Harness",
+      "layer": "entity",
+      "module": "agentic",
+      "status": "draft"
+    },
+    "HarnessComponent": {
+      "definition": "One separately loadable, editable part of a Harness: an instruction file, a skill, a hook, an MCP server configuration, a subagent definition. Identified by where it is kept (artifactUri, core) with componentDigest; componentKind says what it is and loadMode when it loads. A component is a file, never a rule: the rule it states is a Practice it points at with expressesPractice.",
+      "iri": "https://xeoontology.org/xeo#HarnessComponent",
+      "layer": "entity",
+      "module": "agentic",
+      "status": "draft"
+    },
     "IdentityLink": {
       "definition": "The claim that an identifier (a cookie id, a device id, an email hash, a click id, an IP address) belongs to a Person or Organization. Carries linkedIdentifier, identityResolvesTo, identityMethod and confidence. A derivation, because two resolvers can link the same identifier differently.",
       "iri": "https://xeoontology.org/xeo#IdentityLink",
@@ -224,6 +288,13 @@
       "iri": "https://xeoontology.org/xeo#Intervention",
       "layer": "entity",
       "module": "decision"
+    },
+    "InvocationConfig": {
+      "definition": "The model-facing settings a model call or a captured AI answer ran under: modelProvider, requestedModel, reasoningLevel, temperature, maxOutputTokens and toolSetDigest, each where the source reports it. One node per distinct set of values, shared by everything that ran under it (usedConfig). requestedModel is what was asked for, which may be an alias; the build that answered is the producedByModel link to a Model.",
+      "iri": "https://xeoontology.org/xeo#InvocationConfig",
+      "layer": "entity",
+      "module": "core",
+      "status": "draft"
     },
     "Journey": {
       "definition": "The ordered Touchpoints of one Person or Organization (journeyOf) leading to their conversions. A derivation: stitching touches to one party is a resolution, so it carries method, and the IdentityLinks it used. Account-level journeys (an Organization's) and person-level ones are both journeys.",
@@ -260,6 +331,13 @@
       "iri": "https://xeoontology.org/xeo#Model",
       "layer": "entity",
       "module": "core"
+    },
+    "ModelCall": {
+      "definition": "One request to a model API and its final response, retries included. Identified by modelCallRef. Carries usedConfig (core: the settings it ran under), producedByModel (core: the Model that answered), the four disjoint token counts with reasoningTokens, latencyMs and, where it is known, costAmount with costBasis and currencyCode.",
+      "iri": "https://xeoontology.org/xeo#ModelCall",
+      "layer": "episode",
+      "module": "agentic",
+      "status": "draft"
     },
     "Objective": {
       "definition": "What a Campaign intends to move: an operator-written statement in prose (carried verbatim — the recommendation agent reads it as the goal), a resultsWindowDays every target is measured over, and one or more MetricTargets of which exactly one isPrimary. An intent set at creation. A campaign has one reporting horizon, distinct from the Project's work window: a two-month engagement can carry a six-month results window. The window starts on resultsWindowStart, and the objective-level result is one objectiveReading per target over the campaign's deduplicated scope, never a sum of Outcomes.",
@@ -391,6 +469,13 @@
       "layer": "episode",
       "module": "core"
     },
+    "Spec": {
+      "definition": "A written statement of what is to be built and why, for whoever will build it, a person or an agent: a product requirements document, a plan, a design, a list of functional requirements (specKind). artifactUri points at it where it is kept, and that place, usually a repository, is the authority for its text. Not an Objective, which says what should move and by how much.",
+      "iri": "https://xeoontology.org/xeo#Spec",
+      "layer": "entity",
+      "module": "work",
+      "status": "draft"
+    },
     "SpendRollup": {
       "definition": "What an ad platform reports for one campaign, ad set or ad (spendLevel and its pointer) over one window: spendAmount in currencyCode, impressions and clicks, with periodStart, periodEnd and source. The column store keeps the daily rows; the graph keeps windowed rollups.",
       "iri": "https://xeoontology.org/xeo#SpendRollup",
@@ -433,6 +518,13 @@
       "layer": "entity",
       "module": "core"
     },
+    "ToolCall": {
+      "definition": "One invocation of a tool by the model. Identified by toolCallRef. Carries toolName, toolSource and succeeded. A failure is a ToolCall with succeeded false and an errorClass, never a class of its own.",
+      "iri": "https://xeoontology.org/xeo#ToolCall",
+      "layer": "episode",
+      "module": "agentic",
+      "status": "draft"
+    },
     "Topic": {
       "definition": "A named grouping of Terms and/or URLs produced by a clustering or labeling process. Site-scoped. Assignments (inTopic for a Term, about for a URL or Prompt) carry method, model, and confidence.",
       "iri": "https://xeoontology.org/xeo#Topic",
@@ -456,6 +548,13 @@
       "iri": "https://xeoontology.org/xeo#Website",
       "layer": "entity",
       "module": "core"
+    },
+    "WorkItem": {
+      "definition": "One step of implementation, small enough for one person or one agent to take: a task in a task list. It tracesTo what asked for it, a Spec or a Recommendation. artifactUri points at where it is kept. Not a Recommendation: that is the call to do something, and a WorkItem is one step of doing it.",
+      "iri": "https://xeoontology.org/xeo#WorkItem",
+      "layer": "entity",
+      "module": "work",
+      "status": "draft"
     }
   },
   "namespace": "https://xeoontology.org/xeo#",
@@ -636,6 +735,20 @@
       "layer": "interpretation",
       "module": "decision"
     },
+    "artifactUri": {
+      "datatype": "xsd:string",
+      "domain": [
+        "Compaction",
+        "Deliverable",
+        "HarnessComponent",
+        "Spec",
+        "WorkItem"
+      ],
+      "iri": "https://xeoontology.org/xeo#artifactUri",
+      "layer": "entity",
+      "module": "core",
+      "status": "draft"
+    },
     "assignedAt": {
       "datatype": "xsd:dateTime",
       "iri": "https://xeoontology.org/xeo#assignedAt",
@@ -651,6 +764,16 @@
       "schemes": [
         "priority"
       ]
+    },
+    "attemptCount": {
+      "datatype": "xsd:integer",
+      "domain": [
+        "ModelCall"
+      ],
+      "iri": "https://xeoontology.org/xeo#attemptCount",
+      "layer": "observation",
+      "module": "agentic",
+      "status": "draft"
     },
     "attributedConversions": {
       "datatype": "xsd:decimal",
@@ -737,6 +860,26 @@
       "layer": "observation",
       "module": "core"
     },
+    "cacheReadTokens": {
+      "datatype": "xsd:integer",
+      "domain": [
+        "ModelCall"
+      ],
+      "iri": "https://xeoontology.org/xeo#cacheReadTokens",
+      "layer": "observation",
+      "module": "agentic",
+      "status": "draft"
+    },
+    "cacheWriteTokens": {
+      "datatype": "xsd:integer",
+      "domain": [
+        "ModelCall"
+      ],
+      "iri": "https://xeoontology.org/xeo#cacheWriteTokens",
+      "layer": "observation",
+      "module": "agentic",
+      "status": "draft"
+    },
     "cadence": {
       "datatype": "xsd:string",
       "domain": [
@@ -767,6 +910,16 @@
       "iri": "https://xeoontology.org/xeo#capturedAt",
       "layer": "episode",
       "module": "core"
+    },
+    "childAgentId": {
+      "datatype": "xsd:string",
+      "domain": [
+        "Delegation"
+      ],
+      "iri": "https://xeoontology.org/xeo#childAgentId",
+      "layer": "episode",
+      "module": "agentic",
+      "status": "draft"
     },
     "citationRank": {
       "datatype": "xsd:integer",
@@ -800,6 +953,42 @@
       "iri": "https://xeoontology.org/xeo#communityId",
       "layer": "derivation",
       "module": "analysis"
+    },
+    "compactionTrigger": {
+      "datatype": "xsd:string",
+      "domain": [
+        "Compaction"
+      ],
+      "iri": "https://xeoontology.org/xeo#compactionTrigger",
+      "layer": "episode",
+      "module": "agentic",
+      "schemes": [
+        "compactionTrigger"
+      ],
+      "status": "draft"
+    },
+    "componentDigest": {
+      "datatype": "xsd:string",
+      "domain": [
+        "HarnessComponent"
+      ],
+      "iri": "https://xeoontology.org/xeo#componentDigest",
+      "layer": "entity",
+      "module": "agentic",
+      "status": "draft"
+    },
+    "componentKind": {
+      "datatype": "xsd:string",
+      "domain": [
+        "HarnessComponent"
+      ],
+      "iri": "https://xeoontology.org/xeo#componentKind",
+      "layer": "entity",
+      "module": "agentic",
+      "schemes": [
+        "harnessComponentKind"
+      ],
+      "status": "draft"
     },
     "concludedAt": {
       "datatype": "xsd:dateTime",
@@ -930,6 +1119,31 @@
       "layer": "episode",
       "module": "sales",
       "status": "extension"
+    },
+    "costAmount": {
+      "datatype": "xsd:decimal",
+      "domain": [
+        "AgentSession",
+        "ModelCall"
+      ],
+      "iri": "https://xeoontology.org/xeo#costAmount",
+      "layer": "derivation",
+      "module": "agentic",
+      "status": "draft"
+    },
+    "costBasis": {
+      "datatype": "xsd:string",
+      "domain": [
+        "AgentSession",
+        "ModelCall"
+      ],
+      "iri": "https://xeoontology.org/xeo#costBasis",
+      "layer": "derivation",
+      "module": "agentic",
+      "schemes": [
+        "costBasis"
+      ],
+      "status": "draft"
     },
     "crawlDepth": {
       "datatype": "xsd:integer",
@@ -1089,6 +1303,19 @@
       "module": "sales",
       "status": "extension"
     },
+    "decisionSource": {
+      "datatype": "xsd:string",
+      "domain": [
+        "EnforcementEvent"
+      ],
+      "iri": "https://xeoontology.org/xeo#decisionSource",
+      "layer": "episode",
+      "module": "agentic",
+      "schemes": [
+        "decisionSource"
+      ],
+      "status": "draft"
+    },
     "deduplicationRule": {
       "datatype": "xsd:string",
       "domain": [
@@ -1195,6 +1422,32 @@
       "layer": "episode",
       "module": "core"
     },
+    "enforcementDecision": {
+      "datatype": "xsd:string",
+      "domain": [
+        "EnforcementEvent"
+      ],
+      "iri": "https://xeoontology.org/xeo#enforcementDecision",
+      "layer": "episode",
+      "module": "agentic",
+      "schemes": [
+        "hookDecision"
+      ],
+      "status": "draft"
+    },
+    "enforcementPoint": {
+      "datatype": "xsd:string",
+      "domain": [
+        "Practice"
+      ],
+      "iri": "https://xeoontology.org/xeo#enforcementPoint",
+      "layer": "norm",
+      "module": "agentic",
+      "schemes": [
+        "enforcementPoint"
+      ],
+      "status": "draft"
+    },
     "engagementType": {
       "datatype": "xsd:string",
       "domain": [
@@ -1221,6 +1474,16 @@
       "iri": "https://xeoontology.org/xeo#entityRef",
       "layer": "entity",
       "module": "core"
+    },
+    "errorClass": {
+      "datatype": "xsd:string",
+      "domain": [
+        "ToolCall"
+      ],
+      "iri": "https://xeoontology.org/xeo#errorClass",
+      "layer": "observation",
+      "module": "agentic",
+      "status": "draft"
     },
     "execution": {
       "conceptSlot": true,
@@ -1255,6 +1518,29 @@
       "iri": "https://xeoontology.org/xeo#expression",
       "layer": "norm",
       "module": "core"
+    },
+    "failureMode": {
+      "datatype": "xsd:string",
+      "domain": [
+        "Practice"
+      ],
+      "iri": "https://xeoontology.org/xeo#failureMode",
+      "layer": "norm",
+      "module": "agentic",
+      "schemes": [
+        "failureMode"
+      ],
+      "status": "draft"
+    },
+    "failureSignature": {
+      "datatype": "xsd:string",
+      "domain": [
+        "ToolCall"
+      ],
+      "iri": "https://xeoontology.org/xeo#failureSignature",
+      "layer": "derivation",
+      "module": "agentic",
+      "status": "draft"
     },
     "fetchedAt": {
       "datatype": "xsd:dateTime",
@@ -1357,6 +1643,26 @@
       "layer": "norm",
       "module": "decision"
     },
+    "harnessDigest": {
+      "datatype": "xsd:string",
+      "domain": [
+        "Harness"
+      ],
+      "iri": "https://xeoontology.org/xeo#harnessDigest",
+      "layer": "entity",
+      "module": "agentic",
+      "status": "draft"
+    },
+    "harnessVersion": {
+      "datatype": "xsd:string",
+      "domain": [
+        "Harness"
+      ],
+      "iri": "https://xeoontology.org/xeo#harnessVersion",
+      "layer": "entity",
+      "module": "agentic",
+      "status": "draft"
+    },
     "hasRole": {
       "conceptSlot": true,
       "datatype": "xsd:string",
@@ -1419,6 +1725,16 @@
       "layer": "episode",
       "module": "core"
     },
+    "latencyMs": {
+      "datatype": "xsd:decimal",
+      "domain": [
+        "ModelCall"
+      ],
+      "iri": "https://xeoontology.org/xeo#latencyMs",
+      "layer": "observation",
+      "module": "agentic",
+      "status": "draft"
+    },
     "latestTouchChannel": {
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#latestTouchChannel",
@@ -1460,6 +1776,19 @@
       "iri": "https://xeoontology.org/xeo#linkedIdentifier",
       "layer": "observation",
       "module": "attribution"
+    },
+    "loadMode": {
+      "datatype": "xsd:string",
+      "domain": [
+        "HarnessComponent"
+      ],
+      "iri": "https://xeoontology.org/xeo#loadMode",
+      "layer": "entity",
+      "module": "agentic",
+      "schemes": [
+        "loadMode"
+      ],
+      "status": "draft"
     },
     "locale": {
       "datatype": "xsd:string",
@@ -1508,6 +1837,16 @@
       "layer": "entity",
       "module": "sales",
       "status": "extension"
+    },
+    "maxOutputTokens": {
+      "datatype": "xsd:integer",
+      "domain": [
+        "InvocationConfig"
+      ],
+      "iri": "https://xeoontology.org/xeo#maxOutputTokens",
+      "layer": "entity",
+      "module": "core",
+      "status": "draft"
     },
     "mentionRank": {
       "datatype": "xsd:integer",
@@ -1567,6 +1906,16 @@
       "layer": "episode",
       "module": "core"
     },
+    "modelCallRef": {
+      "datatype": "xsd:string",
+      "domain": [
+        "ModelCall"
+      ],
+      "iri": "https://xeoontology.org/xeo#modelCallRef",
+      "layer": "episode",
+      "module": "agentic",
+      "status": "draft"
+    },
     "modelFamily": {
       "datatype": "xsd:string",
       "domain": [
@@ -1587,6 +1936,16 @@
       "schemes": [
         "modelKind"
       ]
+    },
+    "modelProvider": {
+      "datatype": "xsd:string",
+      "domain": [
+        "InvocationConfig"
+      ],
+      "iri": "https://xeoontology.org/xeo#modelProvider",
+      "layer": "entity",
+      "module": "core",
+      "status": "draft"
     },
     "modelVersion": {
       "datatype": "xsd:string",
@@ -1668,6 +2027,16 @@
         "outcomeJudgedBy"
       ]
     },
+    "outputTokens": {
+      "datatype": "xsd:integer",
+      "domain": [
+        "ModelCall"
+      ],
+      "iri": "https://xeoontology.org/xeo#outputTokens",
+      "layer": "observation",
+      "module": "agentic",
+      "status": "draft"
+    },
     "ownerRef": {
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#ownerRef",
@@ -1697,6 +2066,16 @@
       "iri": "https://xeoontology.org/xeo#parameters",
       "layer": "episode",
       "module": "analysis"
+    },
+    "parentAgentId": {
+      "datatype": "xsd:string",
+      "domain": [
+        "Delegation"
+      ],
+      "iri": "https://xeoontology.org/xeo#parentAgentId",
+      "layer": "episode",
+      "module": "agentic",
+      "status": "draft"
     },
     "percentileValue": {
       "datatype": "xsd:decimal",
@@ -1783,6 +2162,36 @@
       "layer": "norm",
       "module": "decision"
     },
+    "reasonText": {
+      "datatype": "xsd:string",
+      "domain": [
+        "EnforcementEvent"
+      ],
+      "iri": "https://xeoontology.org/xeo#reasonText",
+      "layer": "episode",
+      "module": "agentic",
+      "status": "draft"
+    },
+    "reasoningLevel": {
+      "datatype": "xsd:string",
+      "domain": [
+        "InvocationConfig"
+      ],
+      "iri": "https://xeoontology.org/xeo#reasoningLevel",
+      "layer": "entity",
+      "module": "core",
+      "status": "draft"
+    },
+    "reasoningTokens": {
+      "datatype": "xsd:integer",
+      "domain": [
+        "ModelCall"
+      ],
+      "iri": "https://xeoontology.org/xeo#reasoningTokens",
+      "layer": "observation",
+      "module": "agentic",
+      "status": "draft"
+    },
     "recordCreatedAt": {
       "datatype": "xsd:dateTime",
       "iri": "https://xeoontology.org/xeo#recordCreatedAt",
@@ -1851,6 +2260,16 @@
       "layer": "derivation",
       "module": "decision"
     },
+    "requestedModel": {
+      "datatype": "xsd:string",
+      "domain": [
+        "InvocationConfig"
+      ],
+      "iri": "https://xeoontology.org/xeo#requestedModel",
+      "layer": "entity",
+      "module": "core",
+      "status": "draft"
+    },
     "responses": {
       "datatype": "xsd:integer",
       "iri": "https://xeoontology.org/xeo#responses",
@@ -1908,6 +2327,16 @@
       "layer": "interpretation",
       "module": "work"
     },
+    "returnsControl": {
+      "datatype": "xsd:boolean",
+      "domain": [
+        "Delegation"
+      ],
+      "iri": "https://xeoontology.org/xeo#returnsControl",
+      "layer": "episode",
+      "module": "agentic",
+      "status": "draft"
+    },
     "revenueBasis": {
       "datatype": "xsd:string",
       "domain": [
@@ -1926,6 +2355,16 @@
       "layer": "observation",
       "module": "core"
     },
+    "runtimeVersion": {
+      "datatype": "xsd:string",
+      "domain": [
+        "AgentRuntime"
+      ],
+      "iri": "https://xeoontology.org/xeo#runtimeVersion",
+      "layer": "entity",
+      "module": "agentic",
+      "status": "draft"
+    },
     "score": {
       "datatype": "xsd:decimal",
       "domain": [
@@ -1943,6 +2382,16 @@
       "schemes": [
         "sentiment"
       ]
+    },
+    "sessionRef": {
+      "datatype": "xsd:string",
+      "domain": [
+        "AgentSession"
+      ],
+      "iri": "https://xeoontology.org/xeo#sessionRef",
+      "layer": "episode",
+      "module": "agentic",
+      "status": "draft"
     },
     "shippingAmount": {
       "datatype": "xsd:decimal",
@@ -1967,6 +2416,19 @@
       "schemes": [
         "practiceSource"
       ]
+    },
+    "specKind": {
+      "datatype": "xsd:string",
+      "domain": [
+        "Spec"
+      ],
+      "iri": "https://xeoontology.org/xeo#specKind",
+      "layer": "entity",
+      "module": "work",
+      "schemes": [
+        "specKind"
+      ],
+      "status": "draft"
     },
     "spendAmount": {
       "datatype": "xsd:decimal",
@@ -2032,6 +2494,19 @@
         "stageSlot"
       ]
     },
+    "startType": {
+      "datatype": "xsd:string",
+      "domain": [
+        "AgentSession"
+      ],
+      "iri": "https://xeoontology.org/xeo#startType",
+      "layer": "episode",
+      "module": "agentic",
+      "schemes": [
+        "startType"
+      ],
+      "status": "draft"
+    },
     "startedAt": {
       "datatype": "xsd:dateTime",
       "iri": "https://xeoontology.org/xeo#startedAt",
@@ -2067,6 +2542,26 @@
       "iri": "https://xeoontology.org/xeo#statusCode",
       "layer": "observation",
       "module": "core"
+    },
+    "stopReason": {
+      "datatype": "xsd:string",
+      "domain": [
+        "ModelCall"
+      ],
+      "iri": "https://xeoontology.org/xeo#stopReason",
+      "layer": "observation",
+      "module": "agentic",
+      "status": "draft"
+    },
+    "succeeded": {
+      "datatype": "xsd:boolean",
+      "domain": [
+        "ToolCall"
+      ],
+      "iri": "https://xeoontology.org/xeo#succeeded",
+      "layer": "observation",
+      "module": "agentic",
+      "status": "draft"
     },
     "syncedAt": {
       "datatype": "xsd:dateTime",
@@ -2113,6 +2608,16 @@
       "layer": "observation",
       "module": "attribution"
     },
+    "temperature": {
+      "datatype": "xsd:decimal",
+      "domain": [
+        "InvocationConfig"
+      ],
+      "iri": "https://xeoontology.org/xeo#temperature",
+      "layer": "entity",
+      "module": "core",
+      "status": "draft"
+    },
     "test": {
       "datatype": "xsd:string",
       "domain": [
@@ -2128,6 +2633,16 @@
       "layer": "entity",
       "module": "visibility"
     },
+    "timeToFirstTokenMs": {
+      "datatype": "xsd:decimal",
+      "domain": [
+        "ModelCall"
+      ],
+      "iri": "https://xeoontology.org/xeo#timeToFirstTokenMs",
+      "layer": "observation",
+      "module": "agentic",
+      "status": "draft"
+    },
     "title": {
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#title",
@@ -2142,6 +2657,69 @@
       "iri": "https://xeoontology.org/xeo#toStageRef",
       "layer": "episode",
       "module": "sales"
+    },
+    "tokensAfter": {
+      "datatype": "xsd:integer",
+      "domain": [
+        "Compaction"
+      ],
+      "iri": "https://xeoontology.org/xeo#tokensAfter",
+      "layer": "observation",
+      "module": "agentic",
+      "status": "draft"
+    },
+    "tokensBefore": {
+      "datatype": "xsd:integer",
+      "domain": [
+        "Compaction"
+      ],
+      "iri": "https://xeoontology.org/xeo#tokensBefore",
+      "layer": "observation",
+      "module": "agentic",
+      "status": "draft"
+    },
+    "toolCallRef": {
+      "datatype": "xsd:string",
+      "domain": [
+        "ToolCall"
+      ],
+      "iri": "https://xeoontology.org/xeo#toolCallRef",
+      "layer": "episode",
+      "module": "agentic",
+      "status": "draft"
+    },
+    "toolName": {
+      "datatype": "xsd:string",
+      "domain": [
+        "ToolCall"
+      ],
+      "iri": "https://xeoontology.org/xeo#toolName",
+      "layer": "episode",
+      "module": "agentic",
+      "status": "draft"
+    },
+    "toolSetDigest": {
+      "datatype": "xsd:string",
+      "domain": [
+        "InvocationConfig"
+      ],
+      "iri": "https://xeoontology.org/xeo#toolSetDigest",
+      "layer": "entity",
+      "module": "core",
+      "status": "draft"
+    },
+    "toolSource": {
+      "datatype": "xsd:string",
+      "domain": [
+        "ToolCall"
+      ],
+      "iri": "https://xeoontology.org/xeo#toolSource",
+      "layer": "episode",
+      "module": "agentic",
+      "schemes": [
+        "toolSource"
+      ],
+      "status": "draft"
     },
     "touchChannel": {
       "datatype": "xsd:string",
@@ -2163,6 +2741,26 @@
       "schemes": [
         "touchType"
       ]
+    },
+    "turnRef": {
+      "datatype": "xsd:string",
+      "domain": [
+        "AgentTurn"
+      ],
+      "iri": "https://xeoontology.org/xeo#turnRef",
+      "layer": "episode",
+      "module": "agentic",
+      "status": "draft"
+    },
+    "uncachedInputTokens": {
+      "datatype": "xsd:integer",
+      "domain": [
+        "ModelCall"
+      ],
+      "iri": "https://xeoontology.org/xeo#uncachedInputTokens",
+      "layer": "observation",
+      "module": "agentic",
+      "status": "draft"
     },
     "unit": {
       "conceptSlot": true,
@@ -2604,6 +3202,19 @@
       ],
       "term": "childOf"
     },
+    "CHILD_SESSION": {
+      "domain": [
+        "Delegation"
+      ],
+      "iri": "https://xeoontology.org/xeo#childSession",
+      "layer": "episode",
+      "module": "agentic",
+      "range": [
+        "AgentSession"
+      ],
+      "status": "draft",
+      "term": "childSession"
+    },
     "CITES": {
       "domain": [
         "LLMResponse"
@@ -2709,6 +3320,19 @@
         "Recommendation"
       ],
       "term": "constrains"
+    },
+    "CONTINUES_SESSION": {
+      "domain": [
+        "AgentSession"
+      ],
+      "iri": "https://xeoontology.org/xeo#continuesSession",
+      "layer": "episode",
+      "module": "agentic",
+      "range": [
+        "AgentSession"
+      ],
+      "status": "draft",
+      "term": "continuesSession"
     },
     "CONVERSION_ENTITY": {
       "domain": [
@@ -2874,6 +3498,19 @@
       ],
       "term": "execution"
     },
+    "EXPRESSES_PRACTICE": {
+      "domain": [
+        "HarnessComponent"
+      ],
+      "iri": "https://xeoontology.org/xeo#expressesPractice",
+      "layer": "norm",
+      "module": "agentic",
+      "range": [
+        "Practice"
+      ],
+      "status": "draft",
+      "term": "expressesPractice"
+    },
     "FANS_OUT_TO": {
       "domain": [
         "Prompt"
@@ -2911,6 +3548,19 @@
       ],
       "term": "fetched"
     },
+    "FIRED_PRACTICE": {
+      "domain": [
+        "EnforcementEvent"
+      ],
+      "iri": "https://xeoontology.org/xeo#firedPractice",
+      "layer": "episode",
+      "module": "agentic",
+      "range": [
+        "Practice"
+      ],
+      "status": "draft",
+      "term": "firedPractice"
+    },
     "FRAMEWORK_KIND": {
       "conceptSlot": true,
       "domain": [
@@ -2926,6 +3576,19 @@
         "frameworkKind"
       ],
       "term": "frameworkKind"
+    },
+    "FULFILS": {
+      "domain": [
+        "Deliverable"
+      ],
+      "iri": "https://xeoontology.org/xeo#fulfils",
+      "layer": "episode",
+      "module": "work",
+      "range": [
+        "WorkItem"
+      ],
+      "status": "draft",
+      "term": "fulfils"
     },
     "GAP_TYPE": {
       "conceptSlot": true,
@@ -2984,6 +3647,19 @@
       ],
       "term": "hasCanonical"
     },
+    "HAS_COMPONENT": {
+      "domain": [
+        "Harness"
+      ],
+      "iri": "https://xeoontology.org/xeo#hasComponent",
+      "layer": "entity",
+      "module": "agentic",
+      "range": [
+        "HarnessComponent"
+      ],
+      "status": "draft",
+      "term": "hasComponent"
+    },
     "HAS_CONTROL": {
       "domain": [
         "Experiment"
@@ -3032,6 +3708,19 @@
         "CreditAnchor"
       ],
       "term": "hasCreditAnchor"
+    },
+    "HAS_MODEL_CALL": {
+      "domain": [
+        "AgentTurn"
+      ],
+      "iri": "https://xeoontology.org/xeo#hasModelCall",
+      "layer": "episode",
+      "module": "agentic",
+      "range": [
+        "ModelCall"
+      ],
+      "status": "draft",
+      "term": "hasModelCall"
     },
     "HAS_OBJECTIVE": {
       "domain": [
@@ -3131,6 +3820,19 @@
       ],
       "term": "hasTarget"
     },
+    "HAS_TOOL_CALL": {
+      "domain": [
+        "AgentTurn"
+      ],
+      "iri": "https://xeoontology.org/xeo#hasToolCall",
+      "layer": "episode",
+      "module": "agentic",
+      "range": [
+        "ToolCall"
+      ],
+      "status": "draft",
+      "term": "hasToolCall"
+    },
     "HAS_TOUCHPOINT": {
       "domain": [
         "Journey"
@@ -3142,6 +3844,19 @@
         "Touchpoint"
       ],
       "term": "hasTouchpoint"
+    },
+    "HAS_TURN": {
+      "domain": [
+        "AgentSession"
+      ],
+      "iri": "https://xeoontology.org/xeo#hasTurn",
+      "layer": "episode",
+      "module": "agentic",
+      "range": [
+        "AgentTurn"
+      ],
+      "status": "draft",
+      "term": "hasTurn"
     },
     "HAS_WEBSITE": {
       "domain": [
@@ -3258,6 +3973,23 @@
         "Tactic"
       ],
       "term": "inScope"
+    },
+    "IN_SESSION": {
+      "domain": [
+        "Compaction",
+        "Delegation",
+        "EnforcementEvent",
+        "ModelCall",
+        "ToolCall"
+      ],
+      "iri": "https://xeoontology.org/xeo#inSession",
+      "layer": "episode",
+      "module": "agentic",
+      "range": [
+        "AgentSession"
+      ],
+      "status": "draft",
+      "term": "inSession"
     },
     "IN_TOPIC": {
       "domain": [
@@ -3462,6 +4194,32 @@
       ],
       "term": "onEngine"
     },
+    "ON_RUNTIME": {
+      "domain": [
+        "AgentSession"
+      ],
+      "iri": "https://xeoontology.org/xeo#onRuntime",
+      "layer": "episode",
+      "module": "agentic",
+      "range": [
+        "AgentRuntime"
+      ],
+      "status": "draft",
+      "term": "onRuntime"
+    },
+    "ON_TOOL_CALL": {
+      "domain": [
+        "EnforcementEvent"
+      ],
+      "iri": "https://xeoontology.org/xeo#onToolCall",
+      "layer": "episode",
+      "module": "agentic",
+      "range": [
+        "ToolCall"
+      ],
+      "status": "draft",
+      "term": "onToolCall"
+    },
     "ORGANIZATION_KIND": {
       "conceptSlot": true,
       "domain": [
@@ -3527,6 +4285,19 @@
         "Model"
       ],
       "term": "producedByModel"
+    },
+    "PRODUCED_IN_SESSION": {
+      "domain": [
+        "Deliverable"
+      ],
+      "iri": "https://xeoontology.org/xeo#producedInSession",
+      "layer": "episode",
+      "module": "agentic",
+      "range": [
+        "AgentSession"
+      ],
+      "status": "draft",
+      "term": "producedInSession"
     },
     "PRODUCED_OUTCOME": {
       "domain": [
@@ -3739,6 +4510,19 @@
       ],
       "term": "revenueSubject"
     },
+    "RUNS_ON": {
+      "domain": [
+        "Harness"
+      ],
+      "iri": "https://xeoontology.org/xeo#runsOn",
+      "layer": "entity",
+      "module": "agentic",
+      "range": [
+        "AgentRuntime"
+      ],
+      "status": "draft",
+      "term": "runsOn"
+    },
     "RUN_OF": {
       "domain": [
         "DiagnosticRun"
@@ -3915,6 +4699,20 @@
       ],
       "term": "touchLandingUrl"
     },
+    "TRACES_TO": {
+      "domain": [
+        "WorkItem"
+      ],
+      "iri": "https://xeoontology.org/xeo#tracesTo",
+      "layer": "entity",
+      "module": "work",
+      "range": [
+        "Recommendation",
+        "Spec"
+      ],
+      "status": "draft",
+      "term": "tracesTo"
+    },
     "TRACKS_PROMPT": {
       "domain": [
         "Website"
@@ -3940,6 +4738,19 @@
       ],
       "term": "treats"
     },
+    "UNDER_HARNESS": {
+      "domain": [
+        "AgentSession"
+      ],
+      "iri": "https://xeoontology.org/xeo#underHarness",
+      "layer": "episode",
+      "module": "agentic",
+      "range": [
+        "Harness"
+      ],
+      "status": "draft",
+      "term": "underHarness"
+    },
     "UNIT": {
       "conceptSlot": true,
       "domain": [
@@ -3955,6 +4766,20 @@
         "metricUnit"
       ],
       "term": "unit"
+    },
+    "USED_CONFIG": {
+      "domain": [
+        "LLMResponse",
+        "ModelCall"
+      ],
+      "iri": "https://xeoontology.org/xeo#usedConfig",
+      "layer": "episode",
+      "module": "core",
+      "range": [
+        "InvocationConfig"
+      ],
+      "status": "draft",
+      "term": "usedConfig"
     },
     "USES_ATTRIBUTION_MODEL": {
       "domain": [
@@ -4010,6 +4835,19 @@
         "Brand"
       ],
       "term": "visibilityFor"
+    },
+    "WITHIN_PROJECT": {
+      "domain": [
+        "Spec"
+      ],
+      "iri": "https://xeoontology.org/xeo#withinProject",
+      "layer": "entity",
+      "module": "work",
+      "range": [
+        "Project"
+      ],
+      "status": "draft",
+      "term": "withinProject"
     }
   },
   "schemes": {
@@ -4096,6 +4934,10 @@
       "qualified",
       "unqualified"
     ],
+    "compactionTrigger": [
+      "auto",
+      "manual"
+    ],
     "consentPurpose": [
       "ad_personalization",
       "ad_storage",
@@ -4131,6 +4973,11 @@
       "other",
       "qualified_lead",
       "sale"
+    ],
+    "costBasis": [
+      "configured_rate",
+      "estimated_list_price",
+      "invoice"
     ],
     "creditRule": [
       "algorithmic",
@@ -4179,6 +5026,12 @@
       "open",
       "won"
     ],
+    "decisionSource": [
+      "classifier",
+      "config",
+      "hook",
+      "user"
+    ],
     "device": [
       "desktop",
       "mobile",
@@ -4189,6 +5042,14 @@
       "days",
       "weeks",
       "quarter"
+    ],
+    "enforcementPoint": [
+      "config",
+      "hook",
+      "permission_rule",
+      "prompt",
+      "proxy",
+      "tool"
     ],
     "engagementType": [
       "oneoff",
@@ -4203,6 +5064,10 @@
       "concluded",
       "cancelled",
       "unmeasurable"
+    ],
+    "failureMode": [
+      "fail_closed",
+      "fail_open"
     ],
     "feedbackVerdict": [
       "accepted",
@@ -4245,6 +5110,31 @@
       "hold",
       "ignore"
     ],
+    "harnessComponentKind": [
+      "hook",
+      "instruction_file",
+      "mcp_server",
+      "memory",
+      "middleware",
+      "permission_rule",
+      "plugin",
+      "script",
+      "settings",
+      "skill",
+      "subagent_definition",
+      "tool_guidance"
+    ],
+    "hookDecision": [
+      "allow",
+      "ask",
+      "block_after",
+      "defer",
+      "deny",
+      "override",
+      "rewrite_input",
+      "rewrite_output",
+      "trim"
+    ],
     "identityMethod": [
       "click_id",
       "email_match",
@@ -4281,6 +5171,11 @@
       "navigation",
       "other",
       "sidebar"
+    ],
+    "loadMode": [
+      "always_loaded",
+      "event_triggered",
+      "on_demand"
     ],
     "magnitudeUnit": [
       "clicks",
@@ -4476,6 +5371,12 @@
       "structural_embedding",
       "text_embedding"
     ],
+    "specKind": [
+      "design",
+      "functional_requirements",
+      "plan",
+      "prd"
+    ],
     "spendLevel": [
       "ad",
       "ad_set",
@@ -4485,6 +5386,11 @@
       "deal_stage",
       "lead_status",
       "lifecycle"
+    ],
+    "startType": [
+      "continue",
+      "fresh",
+      "resume"
     ],
     "targetKind": [
       "absolute",
@@ -4498,6 +5404,11 @@
       "quarter",
       "week",
       "year"
+    ],
+    "toolSource": [
+      "builtin",
+      "mcp",
+      "plugin"
     ],
     "touchType": [
       "ad_click",

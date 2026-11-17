@@ -73,6 +73,9 @@
       "@id": "xeo:authoredBy",
       "@type": "@id"
     },
+    "AgentRuntime": "xeo:AgentRuntime",
+    "AgentSession": "xeo:AgentSession",
+    "AgentTurn": "xeo:AgentTurn",
     "AlgorithmRun": "xeo:AlgorithmRun",
     "AnswerEngine": "xeo:AnswerEngine",
     "AttributedCredit": "xeo:AttributedCredit",
@@ -102,6 +105,10 @@
     },
     "CHILD_OF": {
       "@id": "xeo:childOf",
+      "@type": "@id"
+    },
+    "CHILD_SESSION": {
+      "@id": "xeo:childSession",
       "@type": "@id"
     },
     "CITES": {
@@ -136,6 +143,10 @@
       "@id": "xeo:constrains",
       "@type": "@id"
     },
+    "CONTINUES_SESSION": {
+      "@id": "xeo:continuesSession",
+      "@type": "@id"
+    },
     "CONVERSION_ENTITY": {
       "@id": "xeo:conversionEntity",
       "@type": "@id"
@@ -164,6 +175,7 @@
     "Campaign": "xeo:Campaign",
     "Capability": "xeo:Capability",
     "Chargeback": "xeo:Chargeback",
+    "Compaction": "xeo:Compaction",
     "Consent": "xeo:Consent",
     "ConversionEvent": "xeo:ConversionEvent",
     "ConversionPoint": "xeo:ConversionPoint",
@@ -177,6 +189,8 @@
       "@id": "xeo:denominator",
       "@type": "@id"
     },
+    "Delegation": "xeo:Delegation",
+    "Deliverable": "xeo:Deliverable",
     "Diagnostic": "xeo:Diagnostic",
     "DiagnosticRun": "xeo:DiagnosticRun",
     "Domain": "xeo:Domain",
@@ -196,7 +210,12 @@
       "@id": "xeo:execution",
       "@type": "@id"
     },
+    "EXPRESSES_PRACTICE": {
+      "@id": "xeo:expressesPractice",
+      "@type": "@id"
+    },
     "Edge": "rdf:Statement",
+    "EnforcementEvent": "xeo:EnforcementEvent",
     "Engine": "xeo:Engine",
     "Entity": "xeo:Entity",
     "Experiment": "xeo:Experiment",
@@ -213,8 +232,16 @@
       "@id": "xeo:fetched",
       "@type": "@id"
     },
+    "FIRED_PRACTICE": {
+      "@id": "xeo:firedPractice",
+      "@type": "@id"
+    },
     "FRAMEWORK_KIND": {
       "@id": "xeo:frameworkKind",
+      "@type": "@id"
+    },
+    "FULFILS": {
+      "@id": "xeo:fulfils",
       "@type": "@id"
     },
     "Feedback": "xeo:Feedback",
@@ -237,6 +264,10 @@
       "@id": "xeo:hasCanonical",
       "@type": "@id"
     },
+    "HAS_COMPONENT": {
+      "@id": "xeo:hasComponent",
+      "@type": "@id"
+    },
     "HAS_CONTROL": {
       "@id": "xeo:hasControl",
       "@type": "@id"
@@ -251,6 +282,10 @@
     },
     "HAS_CREDIT_ANCHOR": {
       "@id": "xeo:hasCreditAnchor",
+      "@type": "@id"
+    },
+    "HAS_MODEL_CALL": {
+      "@id": "xeo:hasModelCall",
       "@type": "@id"
     },
     "HAS_OBJECTIVE": {
@@ -285,8 +320,16 @@
       "@id": "xeo:hasTarget",
       "@type": "@id"
     },
+    "HAS_TOOL_CALL": {
+      "@id": "xeo:hasToolCall",
+      "@type": "@id"
+    },
     "HAS_TOUCHPOINT": {
       "@id": "xeo:hasTouchpoint",
+      "@type": "@id"
+    },
+    "HAS_TURN": {
+      "@id": "xeo:hasTurn",
       "@type": "@id"
     },
     "HAS_WEBSITE": {
@@ -297,6 +340,8 @@
       "@id": "xeo:holdsCapability",
       "@type": "@id"
     },
+    "Harness": "xeo:Harness",
+    "HarnessComponent": "xeo:HarnessComponent",
     "IDENTITY_RESOLVES_TO": {
       "@id": "xeo:identityResolvesTo",
       "@type": "@id"
@@ -325,6 +370,10 @@
       "@id": "xeo:inScope",
       "@type": "@id"
     },
+    "IN_SESSION": {
+      "@id": "xeo:inSession",
+      "@type": "@id"
+    },
     "IN_TOPIC": {
       "@id": "xeo:inTopic",
       "@type": "@id"
@@ -336,6 +385,7 @@
     "IdentityLink": "xeo:IdentityLink",
     "InboundReference": "xeo:InboundReference",
     "Intervention": "xeo:Intervention",
+    "InvocationConfig": "xeo:InvocationConfig",
     "JOURNEY_OF": {
       "@id": "xeo:journeyOf",
       "@type": "@id"
@@ -374,6 +424,7 @@
     "MetricReading": "xeo:MetricReading",
     "MetricTarget": "xeo:MetricTarget",
     "Model": "xeo:Model",
+    "ModelCall": "xeo:ModelCall",
     "NEXT_STAGE": {
       "@id": "xeo:nextStage",
       "@type": "@id"
@@ -396,6 +447,14 @@
     },
     "ON_ENGINE": {
       "@id": "xeo:onEngine",
+      "@type": "@id"
+    },
+    "ON_RUNTIME": {
+      "@id": "xeo:onRuntime",
+      "@type": "@id"
+    },
+    "ON_TOOL_CALL": {
+      "@id": "xeo:onToolCall",
       "@type": "@id"
     },
     "ORGANIZATION_KIND": {
@@ -421,6 +480,10 @@
     },
     "PRODUCED_BY_MODEL": {
       "@id": "xeo:producedByModel",
+      "@type": "@id"
+    },
+    "PRODUCED_IN_SESSION": {
+      "@id": "xeo:producedInSession",
       "@type": "@id"
     },
     "PRODUCED_OUTCOME": {
@@ -498,6 +561,10 @@
       "@id": "xeo:revenueSubject",
       "@type": "@id"
     },
+    "RUNS_ON": {
+      "@id": "xeo:runsOn",
+      "@type": "@id"
+    },
     "RUN_OF": {
       "@id": "xeo:runOf",
       "@type": "@id"
@@ -537,6 +604,7 @@
     "SearchIntent": "xeo:SearchIntent",
     "SearchPerformanceFact": "xeo:SearchPerformanceFact",
     "SerpSnapshot": "xeo:SerpSnapshot",
+    "Spec": "xeo:Spec",
     "SpendRollup": "xeo:SpendRollup",
     "Stage": "xeo:Stage",
     "StageTransition": "xeo:StageTransition",
@@ -561,6 +629,10 @@
       "@id": "xeo:touchLandingUrl",
       "@type": "@id"
     },
+    "TRACES_TO": {
+      "@id": "xeo:tracesTo",
+      "@type": "@id"
+    },
     "TRACKS_PROMPT": {
       "@id": "xeo:tracksPrompt",
       "@type": "@id"
@@ -572,13 +644,22 @@
     "Tactic": "xeo:Tactic",
     "TacticAssessment": "xeo:TacticAssessment",
     "Term": "xeo:Term",
+    "ToolCall": "xeo:ToolCall",
     "Topic": "xeo:Topic",
     "Touchpoint": "xeo:Touchpoint",
+    "UNDER_HARNESS": {
+      "@id": "xeo:underHarness",
+      "@type": "@id"
+    },
     "UNIT": {
       "@id": "xeo:unit",
       "@type": "@id"
     },
     "URL": "xeo:URL",
+    "USED_CONFIG": {
+      "@id": "xeo:usedConfig",
+      "@type": "@id"
+    },
     "USES_ATTRIBUTION_MODEL": {
       "@id": "xeo:usesAttributionModel",
       "@type": "@id"
@@ -595,7 +676,12 @@
       "@id": "xeo:visibilityFor",
       "@type": "@id"
     },
+    "WITHIN_PROJECT": {
+      "@id": "xeo:withinProject",
+      "@type": "@id"
+    },
     "Website": "xeo:Website",
+    "WorkItem": "xeo:WorkItem",
     "absoluteChange": {
       "@id": "xeo:absoluteChange",
       "@type": "xsd:decimal"
@@ -660,6 +746,7 @@
       "@id": "xeo:approved",
       "@type": "xsd:boolean"
     },
+    "artifactUri": "xeo:artifactUri",
     "assignedAt": {
       "@id": "xeo:assignedAt",
       "@type": "xsd:dateTime"
@@ -670,6 +757,10 @@
       },
       "@id": "xeo:atPriority",
       "@type": "@vocab"
+    },
+    "attemptCount": {
+      "@id": "xeo:attemptCount",
+      "@type": "xsd:integer"
     },
     "attributedConversions": {
       "@id": "xeo:attributedConversions",
@@ -714,12 +805,21 @@
       "@id": "xeo:billingIntervalCount",
       "@type": "xsd:positiveInteger"
     },
+    "cacheReadTokens": {
+      "@id": "xeo:cacheReadTokens",
+      "@type": "xsd:integer"
+    },
+    "cacheWriteTokens": {
+      "@id": "xeo:cacheWriteTokens",
+      "@type": "xsd:integer"
+    },
     "cadence": "xeo:cadence",
     "callOutcome": "xeo:callOutcome",
     "capturedAt": {
       "@id": "xeo:capturedAt",
       "@type": "xsd:dateTime"
     },
+    "childAgentId": "xeo:childAgentId",
     "citationRank": {
       "@id": "xeo:citationRank",
       "@type": "xsd:integer"
@@ -737,6 +837,9 @@
       "@id": "xeo:communityId",
       "@type": "xsd:integer"
     },
+    "compactionTrigger": "xeo:compactionTrigger",
+    "componentDigest": "xeo:componentDigest",
+    "componentKind": "xeo:componentKind",
     "concludedAt": {
       "@id": "xeo:concludedAt",
       "@type": "xsd:dateTime"
@@ -766,6 +869,11 @@
       "@type": "xsd:dateTime"
     },
     "convertedTo": "xeo:convertedTo",
+    "costAmount": {
+      "@id": "xeo:costAmount",
+      "@type": "xsd:decimal"
+    },
+    "costBasis": "xeo:costBasis",
     "crawlDepth": {
       "@id": "xeo:crawlDepth",
       "@type": "xsd:integer"
@@ -812,6 +920,7 @@
       "@id": "xeo:dealProbability",
       "@type": "xsd:decimal"
     },
+    "decisionSource": "xeo:decisionSource",
     "deduplicationRule": "xeo:deduplicationRule",
     "degree": {
       "@id": "xeo:degree",
@@ -864,12 +973,15 @@
       "@id": "xeo:endedAt",
       "@type": "xsd:dateTime"
     },
+    "enforcementDecision": "xeo:enforcementDecision",
+    "enforcementPoint": "xeo:enforcementPoint",
     "engagementType": "xeo:engagementType",
     "enteredAt": {
       "@id": "xeo:enteredAt",
       "@type": "xsd:dateTime"
     },
     "entityRef": "xeo:entityRef",
+    "errorClass": "xeo:errorClass",
     "execution": {
       "@context": {
         "@vocab": "https://xeoontology.org/schemes#execution-"
@@ -886,6 +998,8 @@
       "@type": "xsd:date"
     },
     "expression": "xeo:expression",
+    "failureMode": "xeo:failureMode",
+    "failureSignature": "xeo:failureSignature",
     "fetchedAt": {
       "@id": "xeo:fetchedAt",
       "@type": "xsd:dateTime"
@@ -931,6 +1045,8 @@
       "@id": "xeo:halfLife",
       "@type": "xsd:duration"
     },
+    "harnessDigest": "xeo:harnessDigest",
+    "harnessVersion": "xeo:harnessVersion",
     "hasRole": {
       "@id": "xeo:hasRole",
       "@type": "@id"
@@ -958,11 +1074,16 @@
       "@type": "xsd:dateTime"
     },
     "lastSeenCrawlId": "xeo:lastSeenCrawlId",
+    "latencyMs": {
+      "@id": "xeo:latencyMs",
+      "@type": "xsd:decimal"
+    },
     "latestTouchChannel": "xeo:latestTouchChannel",
     "leadStatus": "xeo:leadStatus",
     "lifecycleStage": "xeo:lifecycleStage",
     "linkPosition": "xeo:linkPosition",
     "linkedIdentifier": "xeo:linkedIdentifier",
+    "loadMode": "xeo:loadMode",
     "locale": "xeo:locale",
     "lookbackWindow": {
       "@id": "xeo:lookbackWindow",
@@ -981,6 +1102,10 @@
       "@type": "@vocab"
     },
     "marketingCampaignRef": "xeo:marketingCampaignRef",
+    "maxOutputTokens": {
+      "@id": "xeo:maxOutputTokens",
+      "@type": "xsd:integer"
+    },
     "mentionRank": {
       "@id": "xeo:mentionRank",
       "@type": "xsd:integer"
@@ -1004,8 +1129,10 @@
       "@type": "xsd:integer"
     },
     "model": "xeo:model",
+    "modelCallRef": "xeo:modelCallRef",
     "modelFamily": "xeo:modelFamily",
     "modelKind": "xeo:modelKind",
+    "modelProvider": "xeo:modelProvider",
     "modelVersion": "xeo:modelVersion",
     "name": "xeo:name",
     "numeratorValue": {
@@ -1033,6 +1160,10 @@
     },
     "origin": "xeo:origin",
     "outcomeJudgedBy": "xeo:outcomeJudgedBy",
+    "outputTokens": {
+      "@id": "xeo:outputTokens",
+      "@type": "xsd:integer"
+    },
     "ownerRef": "xeo:ownerRef",
     "pageRank": {
       "@id": "xeo:pageRank",
@@ -1043,6 +1174,7 @@
       "@type": "xsd:decimal"
     },
     "parameters": "xeo:parameters",
+    "parentAgentId": "xeo:parentAgentId",
     "percentileValue": {
       "@id": "xeo:percentileValue",
       "@type": "xsd:decimal"
@@ -1073,6 +1205,12 @@
     },
     "rationale": "xeo:rationale",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "reasonText": "xeo:reasonText",
+    "reasoningLevel": "xeo:reasoningLevel",
+    "reasoningTokens": {
+      "@id": "xeo:reasoningTokens",
+      "@type": "xsd:integer"
+    },
     "recordCreatedAt": {
       "@id": "xeo:recordCreatedAt",
       "@type": "xsd:dateTime"
@@ -1093,6 +1231,7 @@
       "@id": "xeo:relativeChange",
       "@type": "xsd:decimal"
     },
+    "requestedModel": "xeo:requestedModel",
     "responses": {
       "@id": "xeo:responses",
       "@type": "xsd:integer"
@@ -1108,13 +1247,19 @@
       "@id": "xeo:resultsWindowStart",
       "@type": "xsd:date"
     },
+    "returnsControl": {
+      "@id": "xeo:returnsControl",
+      "@type": "xsd:boolean"
+    },
     "revenueBasis": "xeo:revenueBasis",
     "robotsMeta": "xeo:robotsMeta",
+    "runtimeVersion": "xeo:runtimeVersion",
     "score": {
       "@id": "xeo:score",
       "@type": "xsd:decimal"
     },
     "sentiment": "xeo:sentiment",
+    "sessionRef": "xeo:sessionRef",
     "shippingAmount": {
       "@id": "xeo:shippingAmount",
       "@type": "xsd:decimal"
@@ -1124,6 +1269,7 @@
       "@type": "xsd:decimal"
     },
     "source": "xeo:source",
+    "specKind": "xeo:specKind",
     "spendAmount": {
       "@id": "xeo:spendAmount",
       "@type": "xsd:decimal"
@@ -1144,6 +1290,7 @@
       "@id": "rdf:subject",
       "@type": "@id"
     },
+    "startType": "xeo:startType",
     "startedAt": {
       "@id": "xeo:startedAt",
       "@type": "xsd:dateTime"
@@ -1153,6 +1300,11 @@
     "statusCode": {
       "@id": "xeo:statusCode",
       "@type": "xsd:integer"
+    },
+    "stopReason": "xeo:stopReason",
+    "succeeded": {
+      "@id": "xeo:succeeded",
+      "@type": "xsd:boolean"
     },
     "syncedAt": {
       "@id": "xeo:syncedAt",
@@ -1168,13 +1320,38 @@
       "@id": "xeo:taxAmount",
       "@type": "xsd:decimal"
     },
+    "temperature": {
+      "@id": "xeo:temperature",
+      "@type": "xsd:decimal"
+    },
     "test": "xeo:test",
     "text": "xeo:text",
+    "timeToFirstTokenMs": {
+      "@id": "xeo:timeToFirstTokenMs",
+      "@type": "xsd:decimal"
+    },
     "title": "xeo:title",
     "toStageRef": "xeo:toStageRef",
+    "tokensAfter": {
+      "@id": "xeo:tokensAfter",
+      "@type": "xsd:integer"
+    },
+    "tokensBefore": {
+      "@id": "xeo:tokensBefore",
+      "@type": "xsd:integer"
+    },
+    "toolCallRef": "xeo:toolCallRef",
+    "toolName": "xeo:toolName",
+    "toolSetDigest": "xeo:toolSetDigest",
+    "toolSource": "xeo:toolSource",
     "touchChannel": "xeo:touchChannel",
     "touchType": "xeo:touchType",
+    "turnRef": "xeo:turnRef",
     "type": "@type",
+    "uncachedInputTokens": {
+      "@id": "xeo:uncachedInputTokens",
+      "@type": "xsd:integer"
+    },
     "unit": {
       "@context": {
         "@vocab": "https://xeoontology.org/schemes#metricUnit-"
