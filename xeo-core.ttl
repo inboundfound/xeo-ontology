@@ -1056,7 +1056,7 @@ xeo:resultType xeo:groundedIn "The engine's results page as one SerpSnapshot cap
 
 # --- v0.7.0 (core additions, 2026-11-12) ---------------------------------------------
 # Appended at the foot, so no line above moves. From the 0.7 plan of record and
-# Jim's answers of 12 November.
+# the decisions taken on it on 12 November.
 #
 # ENGINES (C3). Engine stays, as the parent class only: every engine node is one
 # of its subtypes. SearchEngine is here; GenerativeOverview (was GenerativeEngine)
