@@ -293,7 +293,7 @@
       "definition": "The model-facing settings a model call or a captured AI answer ran under: modelProvider, requestedModel, reasoningLevel, temperature, maxOutputTokens and toolSetDigest, each where the source reports it. One node per distinct set of values, shared by everything that ran under it (usedConfig). requestedModel is what was asked for, which may be an alias; the build that answered is the producedByModel link to a Model.",
       "iri": "https://xeoontology.org/xeo#InvocationConfig",
       "layer": "entity",
-      "module": "core",
+      "module": "agentic",
       "status": "draft"
     },
     "Journey": {
@@ -333,7 +333,7 @@
       "module": "core"
     },
     "ModelCall": {
-      "definition": "One request to a model API and its final response, retries included. Identified by modelCallRef. Carries usedConfig (core: the settings it ran under), producedByModel (core: the Model that answered), the four disjoint token counts with reasoningTokens, latencyMs and, where it is known, costAmount with costBasis and currencyCode.",
+      "definition": "One request to a model API and its final response, retries included. Identified by modelCallRef. Carries usedConfig (the settings it ran under), producedByModel (core: the Model that answered), the four disjoint token counts with reasoningTokens, latencyMs and, where it is known, costAmount with costBasis and currencyCode.",
       "iri": "https://xeoontology.org/xeo#ModelCall",
       "layer": "episode",
       "module": "agentic",
@@ -1845,7 +1845,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#maxOutputTokens",
       "layer": "entity",
-      "module": "core",
+      "module": "agentic",
       "status": "draft"
     },
     "mentionRank": {
@@ -1944,7 +1944,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#modelProvider",
       "layer": "entity",
-      "module": "core",
+      "module": "agentic",
       "status": "draft"
     },
     "modelVersion": {
@@ -2179,7 +2179,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#reasoningLevel",
       "layer": "entity",
-      "module": "core",
+      "module": "agentic",
       "status": "draft"
     },
     "reasoningTokens": {
@@ -2267,7 +2267,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#requestedModel",
       "layer": "entity",
-      "module": "core",
+      "module": "agentic",
       "status": "draft"
     },
     "responses": {
@@ -2615,7 +2615,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#temperature",
       "layer": "entity",
-      "module": "core",
+      "module": "agentic",
       "status": "draft"
     },
     "test": {
@@ -2705,7 +2705,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#toolSetDigest",
       "layer": "entity",
-      "module": "core",
+      "module": "agentic",
       "status": "draft"
     },
     "toolSource": {
@@ -4774,7 +4774,7 @@
       ],
       "iri": "https://xeoontology.org/xeo#usedConfig",
       "layer": "episode",
-      "module": "core",
+      "module": "agentic",
       "range": [
         "InvocationConfig"
       ],

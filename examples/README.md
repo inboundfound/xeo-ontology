@@ -73,7 +73,7 @@ Every new term in it is draft. The runtime, provider and model are invented.
    `WorkItem`s that `tracesTo` it.
 3. **A session.** An `AgentSession` with the runtime's own `sessionRef`, the harness it ran
    under and the runtime it ran on. One `AgentTurn`, and one `ModelCall` under a shared
-   `InvocationConfig` (core): `requestedModel` is an alias, and `producedByModel` names the
+   `InvocationConfig`: `requestedModel` is an alias, and `producedByModel` names the
    build that answered. Its four token counts do not overlap, and `reasoningTokens` is part of
    `outputTokens`. Its cost is an estimate (`costBasis`), with the price table in `method`.
 4. **A rule firing.** Three `ToolCall`s. The first was denied: an `EnforcementEvent` with its

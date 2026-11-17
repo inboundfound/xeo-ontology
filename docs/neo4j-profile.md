@@ -160,7 +160,7 @@ Generated from XEO 0.7.1. Do not edit between the markers; run `tools/gen_profil
 | `IdentityLink` | `xeo:IdentityLink` | derivation | attribution |
 | `InboundReference` | `xeo:InboundReference` | observation | core |
 | `Intervention` | `xeo:Intervention` | entity | decision |
-| `InvocationConfig` (draft) | `xeo:InvocationConfig` | entity | core |
+| `InvocationConfig` (draft) | `xeo:InvocationConfig` | entity | agentic |
 | `Journey` | `xeo:Journey` | derivation | attribution |
 | `LLMResponse` | `xeo:LLMResponse` | episode | visibility |
 | `Metric` | `xeo:Metric` | norm | core |
@@ -352,7 +352,7 @@ Generated from XEO 0.7.1. Do not edit between the markers; run `tools/gen_profil
 | `TREATS` | `xeo:treats` | `Experiment` | `Term` · `URL` | episode | decision |
 | `UNDER_HARNESS` (draft) | `xeo:underHarness` | `AgentSession` | `Harness` | episode | agentic |
 | `UNIT` | `xeo:unit` | `Metric` | `skos:Concept` (concept slot) | norm | core |
-| `USED_CONFIG` (draft) | `xeo:usedConfig` | `LLMResponse` · `ModelCall` | `InvocationConfig` | episode | core |
+| `USED_CONFIG` (draft) | `xeo:usedConfig` | `LLMResponse` · `ModelCall` | `InvocationConfig` | episode | agentic |
 | `USES_ATTRIBUTION_MODEL` | `xeo:usesAttributionModel` | `AttributedCredit` · `AttributionRollup` | `AttributionModel` | derivation | attribution |
 | `VERDICT` | `xeo:verdict` | `Feedback` · `Gap` | `skos:Concept` (concept slot) | interpretation | decision |
 | `VIA_TOUCHPOINT` | `xeo:viaTouchpoint` | `ConversionEvent` | `Touchpoint` | derivation | attribution |
@@ -512,7 +512,7 @@ Generated from XEO 0.7.1. Do not edit between the markers; run `tools/gen_profil
 | `lostReason` (extension) | `xsd:string` |  | interpretation | sales |
 | `magnitude` | `xsd:decimal` |  | derivation | decision |
 | `marketingCampaignRef` (extension) | `xsd:string` |  | entity | sales |
-| `maxOutputTokens` (draft) | `xsd:integer` |  | entity | core |
+| `maxOutputTokens` (draft) | `xsd:integer` |  | entity | agentic |
 | `mentionRank` | `xsd:integer` |  | observation | visibility |
 | `mentionRate` | `xsd:decimal` |  | derivation | visibility |
 | `metaDescription` | `xsd:string` |  | observation | core |
@@ -523,7 +523,7 @@ Generated from XEO 0.7.1. Do not edit between the markers; run `tools/gen_profil
 | `modelCallRef` (draft) | `xsd:string` |  | episode | agentic |
 | `modelFamily` | `xsd:string` |  | entity | core |
 | `modelKind` | `xsd:string` | `modelKind` | entity | core |
-| `modelProvider` (draft) | `xsd:string` |  | entity | core |
+| `modelProvider` (draft) | `xsd:string` |  | entity | agentic |
 | `modelVersion` | `xsd:string` |  | entity | core |
 | `name` | `xsd:string` |  | entity | core |
 | `numeratorValue` | `xsd:decimal` |  | observation | core |
@@ -549,7 +549,7 @@ Generated from XEO 0.7.1. Do not edit between the markers; run `tools/gen_profil
 | `ranAt` | `xsd:dateTime` |  | episode | analysis |
 | `rationale` | `xsd:string` |  | norm | decision |
 | `reasonText` (draft) | `xsd:string` |  | episode | agentic |
-| `reasoningLevel` (draft) | `xsd:string` |  | entity | core |
+| `reasoningLevel` (draft) | `xsd:string` |  | entity | agentic |
 | `reasoningTokens` (draft) | `xsd:integer` |  | observation | agentic |
 | `recordCreatedAt` | `xsd:dateTime` |  | observation | sales |
 | `recordOrigin` (extension) | `xsd:string` | `recordOrigin` | observation | sales |
@@ -559,7 +559,7 @@ Generated from XEO 0.7.1. Do not edit between the markers; run `tools/gen_profil
 | `refundedAmount` | `xsd:decimal` |  | observation | attribution |
 | `rel` | `xsd:string` |  | observation | core |
 | `relativeChange` | `xsd:decimal` |  | derivation | decision |
-| `requestedModel` (draft) | `xsd:string` |  | entity | core |
+| `requestedModel` (draft) | `xsd:string` |  | entity | agentic |
 | `responses` | `xsd:integer` |  | observation | visibility |
 | `result` | `xsd:string` | `outcomeResult` | observation | decision |
 | `resultReason` | `xsd:string` | `outcomeResultReason` | observation | decision |
@@ -596,7 +596,7 @@ Generated from XEO 0.7.1. Do not edit between the markers; run `tools/gen_profil
 | `targetKind` | `xsd:string` | `targetKind` | interpretation | work |
 | `targetValue` | `xsd:decimal` |  | interpretation | work |
 | `taxAmount` | `xsd:decimal` |  | observation | attribution |
-| `temperature` (draft) | `xsd:decimal` |  | entity | core |
+| `temperature` (draft) | `xsd:decimal` |  | entity | agentic |
 | `test` | `xsd:string` |  | norm | decision |
 | `text` | `xsd:string` |  | entity | visibility |
 | `timeToFirstTokenMs` (draft) | `xsd:decimal` |  | observation | agentic |
@@ -606,7 +606,7 @@ Generated from XEO 0.7.1. Do not edit between the markers; run `tools/gen_profil
 | `tokensBefore` (draft) | `xsd:integer` |  | observation | agentic |
 | `toolCallRef` (draft) | `xsd:string` |  | episode | agentic |
 | `toolName` (draft) | `xsd:string` |  | episode | agentic |
-| `toolSetDigest` (draft) | `xsd:string` |  | entity | core |
+| `toolSetDigest` (draft) | `xsd:string` |  | entity | agentic |
 | `toolSource` (draft) | `xsd:string` | `toolSource` | episode | agentic |
 | `touchChannel` | `xsd:string` |  | derivation | attribution |
 | `touchType` | `xsd:string` | `touchType` | observation | attribution |
