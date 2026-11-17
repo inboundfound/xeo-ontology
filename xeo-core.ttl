@@ -1202,76 +1202,17 @@ xeo:referenceKind a owl:DatatypeProperty ;
     dct:description "Whether the reference is a link or a mention without a link, as a code (xeos:referenceKind). Exactly one per InboundReference." .
 
 # --- v0.7.1 (shared by add-ons, 2026-11-17) ---------------------------------------
-# Appended at the foot, so no line above moves. Two things more than one add-on
-# uses, which is the rule for putting a term in core: the settings a model was
-# called with (a captured AI answer in visibility and a model call in agentic
-# both ran under one), and a pointer to the file behind a node (a spec in work,
-# a harness component in agentic). All are draft, with the agentic engineering
-# module they arrived with.
+# Appended at the foot, so no line above moves. One thing more than one add-on
+# uses, which is the rule for putting a term in core: a pointer to the file
+# behind a node (a spec in work, a harness component in agentic). Draft, with
+# the agentic engineering module it arrived with.
 #
-# From the XEO research report on agent harnesses (2026-11-10), §4.1,
-# InvocationConfig, and recommendation 1. The plan of record renames provider to
-# modelProvider and keeps no responseModel: the build that answered is
-# producedByModel, above.
-#
-# NOT MOVED. webSearchEnabled stays on an LLMResponse (visibility), where it has
-# been since 0.5. The research would move it onto the configuration.
-
-xeo:InvocationConfig a owl:Class ;
-    rdfs:label "Invocation Configuration" ;
-    xeo:xeoLayer "entity" ;
-    xeo:termStatus "draft" ;
-    dct:description "The model-facing settings a model call or a captured AI answer ran under: modelProvider, requestedModel, reasoningLevel, temperature, maxOutputTokens and toolSetDigest, each where the source reports it. One node per distinct set of values, shared by everything that ran under it (usedConfig). requestedModel is what was asked for, which may be an alias; the build that answered is the producedByModel link to a Model." .
-
-xeo:usedConfig a owl:ObjectProperty ;
-    rdfs:label "used configuration" ;
-    rdfs:range xeo:InvocationConfig ;
-    xeo:domainIncludes xeo:LLMResponse , xeo:ModelCall ;
-    xeo:xeoLayer "episode" ;
-    xeo:termStatus "draft" ;
-    dct:description "The InvocationConfig something ran under: a captured LLMResponse (visibility), a ModelCall (agentic). One per response or call. Domain left open across the two terms listed, each of which exists when its module is loaded." .
-
-xeo:modelProvider a owl:DatatypeProperty ;
-    rdfs:label "model provider" ;
-    rdfs:domain xeo:InvocationConfig ; rdfs:range xsd:string ;
-    xeo:xeoLayer "entity" ;
-    xeo:termStatus "draft" ;
-    dct:description "Who served the model, as the source reports it (the value OpenTelemetry carries in gen_ai.provider.name). The research names it provider." .
-
-xeo:requestedModel a owl:DatatypeProperty ;
-    rdfs:label "requested model" ;
-    rdfs:domain xeo:InvocationConfig ; rdfs:range xsd:string ;
-    xeo:xeoLayer "entity" ;
-    xeo:termStatus "draft" ;
-    dct:description "The model identifier sent in the request, as written. It may be an alias (latest), which the provider resolves: the build that answered is producedByModel." .
-
-xeo:reasoningLevel a owl:DatatypeProperty ;
-    rdfs:label "reasoning level" ;
-    rdfs:domain xeo:InvocationConfig ; rdfs:range xsd:string ;
-    xeo:xeoLayer "entity" ;
-    xeo:termStatus "draft" ;
-    dct:description "The reasoning or effort level requested, as the source names it (low, high, max). Scales differ between runtimes and providers and no common list exists, so no reference scheme is published: two sources' levels are compared through mappings/, as close matches, never as equals." .
-
-xeo:temperature a owl:DatatypeProperty ;
-    rdfs:label "temperature" ;
-    rdfs:domain xeo:InvocationConfig ; rdfs:range xsd:decimal ;
-    xeo:xeoLayer "entity" ;
-    xeo:termStatus "draft" ;
-    dct:description "The sampling temperature requested, where the source reports one (the value OpenTelemetry carries in gen_ai.request.temperature)." .
-
-xeo:maxOutputTokens a owl:DatatypeProperty ;
-    rdfs:label "maximum output tokens" ;
-    rdfs:domain xeo:InvocationConfig ; rdfs:range xsd:integer ;
-    xeo:xeoLayer "entity" ;
-    xeo:termStatus "draft" ;
-    dct:description "The ceiling on generated tokens requested, where the source reports one. Never negative." .
-
-xeo:toolSetDigest a owl:DatatypeProperty ;
-    rdfs:label "tool set digest" ;
-    rdfs:domain xeo:InvocationConfig ; rdfs:range xsd:string ;
-    xeo:xeoLayer "entity" ;
-    xeo:termStatus "draft" ;
-    dct:description "A fingerprint of the tool definitions offered to the model, naming its algorithm (sha256:...). Two calls offered different tools did not run under the same configuration." .
+# NOT HERE. The settings a model was called with (InvocationConfig, usedConfig
+# and its six settings) are in xeo-agentic.ttl. They are detail about one model
+# call, which a graph of sites, pages, queries and answers does not need. A
+# captured AI answer (visibility) reaches them through usedConfig when agentic
+# is loaded too. Model and producedByModel, which say which build answered,
+# stay above.
 
 xeo:artifactUri a owl:DatatypeProperty ;
     rdfs:label "artifact URI" ;
