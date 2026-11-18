@@ -166,7 +166,7 @@ cache-write parts sum to the total.
 Every module now needs only core; deprecated terms are deleted; core gains `Model`,
 `Consent` and inbound references; a target links to its Metric; and a new attribution
 module covers touches, journeys, revenue, spend and attribution models. Decided in the 0.7
-plan of record (11 November) and Jim's answers of 12 November.
+plan of record (11 November) and the decisions taken on it on 12 November.
 
 **Breaking, on purpose.** Until 1.0, deprecated terms may be removed in the next release.
 Every removal below was deprecated in 0.6 with its replacement named, or is replaced in this
@@ -199,7 +199,7 @@ into core were appended at its foot, so line citations into core still resolve.
 every node. The scheme of its six values is `xeos:xeoLayer`, its concepts
 `xeos:xeoLayer-entity` and so on. A consumer that reads the old name reads nothing: rename it.
 
-**Strategy merges into decision** (Jim, 12 Nov). Practices govern Recommendations, and on
+**Strategy merges into decision** (decided 12 November). Practices govern Recommendations, and on
 its own the module had little to say. `xeo-strategy.ttl` is appended at the foot of
 `xeo-decision.ttl`, unchanged. Line citations into `xeo-strategy.ttl` must name terms instead.
 
