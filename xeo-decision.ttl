@@ -102,9 +102,9 @@ xeo:gapType a owl:ObjectProperty ;
     dct:description "The kind of gap, as a slotted-in concept (e.g. a Citation-Waterfall stage). Bring your own scheme." .
 
 xeo:addressableBy a owl:ObjectProperty ;
-    rdfs:domain xeo:Gap ; rdfs:range xeo:Tactic ;
+    rdfs:domain xeo:Gap ; xeo:rangeIncludes xeo:Tactic , xeo:Intervention ;  # range open since v0.7.2 (was xeo:Tactic): a category stands where no tactic under it is named.
     xeo:xeoLayer "interpretation" ;
-    dct:description "A candidate tactic for closing this gap — a claim, made before the scope gate is applied." .
+    dct:description "A candidate for closing this gap: a Tactic, or a category of work (an Intervention) where no tactic under it is named. A claim, made before the scope gate is applied. Range left open across Tactic and Intervention." .
 
 xeo:inIntervention a owl:ObjectProperty ;
     rdfs:domain xeo:Tactic ; rdfs:range xeo:Intervention ;
@@ -127,9 +127,9 @@ xeo:onDimension a owl:ObjectProperty ;
     dct:description "The dimension being scored, as a slotted-in concept (impact, risk, time-to-value, ICE, RICE, ...). Bring your own dimension scheme." .
 
 xeo:tests a owl:ObjectProperty ;
-    rdfs:domain xeo:Experiment ; rdfs:range xeo:Tactic ;
+    rdfs:domain xeo:Experiment ; xeo:rangeIncludes xeo:Tactic , xeo:Intervention ;  # range open since v0.7.2 (was xeo:Tactic): same widening as recommends.
     xeo:xeoLayer "episode" ;
-    dct:description "The tactic this experiment put to the test." .
+    dct:description "What this experiment put to the test: a Tactic, or a category of work (an Intervention) where the Recommendation it carried out named a category and no tactic. Range left open across Tactic and Intervention." .
 
 xeo:inContext a owl:ObjectProperty ;
     rdfs:domain xeo:Experiment ; rdfs:range xeo:Gap ;
@@ -142,9 +142,9 @@ xeo:producedOutcome a owl:ObjectProperty ;
     dct:description "The measured result this experiment generated." .
 
 xeo:recommends a owl:ObjectProperty ;
-    rdfs:domain xeo:Recommendation ; rdfs:range xeo:Tactic ;
+    rdfs:domain xeo:Recommendation ; xeo:rangeIncludes xeo:Tactic , xeo:Intervention ;  # range open since v0.7.2 (was xeo:Tactic): same widening as addressableBy.
     xeo:xeoLayer "interpretation" ;
-    dct:description "The tactic this recommendation puts forward." .
+    dct:description "What this recommendation puts forward: a Tactic, or a category of work (an Intervention) where no tactic under it is named. Range left open across Tactic and Intervention." .
 
 xeo:closesGap a owl:ObjectProperty ;
     rdfs:domain xeo:Recommendation ; rdfs:range xeo:Gap ;
@@ -511,9 +511,9 @@ xeo:appliedPractice a owl:ObjectProperty ;
     dct:description "Audit edge: this Practice was evaluated against this recommendation and fired. Carries method and confidence — the application is a computed derivation, not itself a norm. The transparent record of why a candidate was blocked, demoted, or flagged." .
 
 xeo:supersedes a owl:ObjectProperty ;
-    rdfs:domain xeo:Practice ; rdfs:range xeo:Practice ;
+    xeo:domainIncludes xeo:Practice , xeo:Recommendation , xeo:Spec , xeo:DiagnosticRun ; xeo:rangeIncludes xeo:Practice , xeo:Recommendation , xeo:Spec , xeo:DiagnosticRun ;  # domain and range open since v0.7.2 (both were xeo:Practice).
     xeo:xeoLayer "norm" ;
-    dct:description "This Practice replaces an earlier version. Editing a rule mints a new Practice that supersedes the old (retired to status 'deprecated', never deleted) — the version chain that makes the norms layer revisable and auditable." .
+    dct:description "This one replaces an earlier one of the same kind, and the earlier one is kept, never deleted. Both ends are the same class: a Practice replaces an earlier version of the rule, a Recommendation an earlier call, a plan (a Spec) an earlier plan, a DiagnosticRun an earlier run. On a Practice: editing a rule mints a new Practice that supersedes the old (retired to status 'deprecated', never deleted) — the version chain that makes the norms layer revisable and auditable. Domain and range left open across the four terms listed." .
 
 xeo:includes a owl:ObjectProperty ;
     # rdfs:domain xeo:Playbook removed in v0.6.0: a Framework includes the same three kinds. Domain left open.
@@ -654,10 +654,10 @@ xeo:learnedFrom a owl:ObjectProperty ;
 
 xeo:appliesTo a owl:ObjectProperty ;
     rdfs:label "applies to" ;
-    rdfs:domain xeo:Practice ;
+    xeo:domainIncludes xeo:Practice , xeo:Gap , xeo:Recommendation ;  # domain open since v0.7.2 (was xeo:Practice): a Gap and a Recommendation name their pages with it.
     xeo:xeoLayer "norm" ;
     xeo:rangeIncludes xeo:Tactic , xeo:Intervention , xeo:URL , skos:Concept ;
-    dct:description "What a Practice is scoped to: a Tactic, an Intervention, a single URL, or any slotted-in concept. The Practice fires only where a candidate matches. appliesToConcept is its narrower form, for the case where the target is a concept; this is the general edge, for a rule about one tactic or one page. Range left open across the terms listed." .
+    dct:description "What a Practice is scoped to: a Tactic, an Intervention, a single URL, or any slotted-in concept. The Practice fires only where a candidate matches. appliesToConcept is its narrower form, for the case where the target is a concept; this is the general edge, for a rule about one tactic or one page. Also the pages a Gap or a Recommendation is about: the URLs the finding was made on, or the call is to be carried out on. Domain left open across Practice, Gap and Recommendation, and range across the terms listed." .
 
 xeo:evaluatedPractice a owl:ObjectProperty ;
     rdfs:label "evaluated practice" ;
@@ -737,3 +737,18 @@ xeo:acquiredByTactic a owl:ObjectProperty ;
 # the basis that say how a page came to be measured, which the description of
 # measures had carried by mistake. measures is the target the result is read
 # against and nothing else.
+#
+# WIDENED (in place, above). Five edges were narrower than the production code
+# they were lifted from, and now cover how that code uses them.
+#   addressableBy, recommends, tests   rdfs:range xeo:Tactic became
+#       xeo:rangeIncludes xeo:Tactic , xeo:Intervention. A catalogue can hold a
+#       category with no tactic under it, and the category then stands in.
+#       suggests and appliesTo already accepted a category.
+#   supersedes   rdfs:domain and rdfs:range xeo:Practice became open lists of
+#       Practice, Recommendation, Spec (work, draft) and DiagnosticRun. The
+#       description of DiagnosticRun already said a later run supersedes an
+#       earlier one, with no property that allowed it.
+#   appliesTo   rdfs:domain xeo:Practice became an open list of Practice, Gap
+#       and Recommendation: the pages a finding or a call is about. The hard
+#       domain typed every Gap and Recommendation carrying the edge a Practice.
+# A domain or range is widened, never narrowed: data valid in 0.7.1 is valid now.

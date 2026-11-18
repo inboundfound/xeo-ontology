@@ -597,8 +597,8 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 <section id="addressableBy" class="term">
   <h3>addressable by <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:addressableBy</code>
-  <p>A candidate tactic for closing this gap — a claim, made before the scope gate is applied.</p>
-  <dl><div class="row"><dt>domain</dt><dd><a href="#Gap">xeo:Gap</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Tactic">xeo:Tactic</a></dd></div></dl>
+  <p>A candidate for closing this gap: a Tactic, or a category of work (an Intervention) where no tactic under it is named. A claim, made before the scope gate is applied. Range left open across Tactic and Intervention.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Gap">xeo:Gap</a></dd></div><div class="row"><dt>expected to point at</dt><dd><a href="#Intervention">xeo:Intervention</a> · <a href="#Tactic">xeo:Tactic</a></dd></div></dl>
 </section>
 <section id="aggregation" class="term">
   <h3>aggregation <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-core</span></h3>
@@ -633,8 +633,8 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 <section id="appliesTo" class="term">
   <h3>applies to <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:appliesTo</code>
-  <p>What a Practice is scoped to: a Tactic, an Intervention, a single URL, or any slotted-in concept. The Practice fires only where a candidate matches. appliesToConcept is its narrower form, for the case where the target is a concept; this is the general edge, for a rule about one tactic or one page. Range left open across the terms listed.</p>
-  <dl><div class="row"><dt>domain</dt><dd><a href="#Practice">xeo:Practice</a></dd></div><div class="row"><dt>expected to point at</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a> · <a href="#Intervention">xeo:Intervention</a> · <a href="#Tactic">xeo:Tactic</a> · <a href="#URL">xeo:URL</a></dd></div></dl>
+  <p>What a Practice is scoped to: a Tactic, an Intervention, a single URL, or any slotted-in concept. The Practice fires only where a candidate matches. appliesToConcept is its narrower form, for the case where the target is a concept; this is the general edge, for a rule about one tactic or one page. Also the pages a Gap or a Recommendation is about: the URLs the finding was made on, or the call is to be carried out on. Domain left open across Practice, Gap and Recommendation, and range across the terms listed.</p>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#Gap">xeo:Gap</a> · <a href="#Practice">xeo:Practice</a> · <a href="#Recommendation">xeo:Recommendation</a></dd></div><div class="row"><dt>expected to point at</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a> · <a href="#Intervention">xeo:Intervention</a> · <a href="#Tactic">xeo:Tactic</a> · <a href="#URL">xeo:URL</a></dd></div></dl>
 </section>
 <section id="appliesToConcept" class="term">
   <h3>applies to concept <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-decision</span></h3>
@@ -1239,8 +1239,8 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 <section id="recommends" class="term">
   <h3>recommends <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:recommends</code>
-  <p>The tactic this recommendation puts forward.</p>
-  <dl><div class="row"><dt>domain</dt><dd><a href="#Recommendation">xeo:Recommendation</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Tactic">xeo:Tactic</a></dd></div></dl>
+  <p>What this recommendation puts forward: a Tactic, or a category of work (an Intervention) where no tactic under it is named. Range left open across Tactic and Intervention.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Recommendation">xeo:Recommendation</a></dd></div><div class="row"><dt>expected to point at</dt><dd><a href="#Intervention">xeo:Intervention</a> · <a href="#Tactic">xeo:Tactic</a></dd></div></dl>
 </section>
 <section id="redirectsTo" class="term">
   <h3>redirects to <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
@@ -1359,8 +1359,8 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 <section id="supersedes" class="term">
   <h3>supersedes <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:supersedes</code>
-  <p>This Practice replaces an earlier version. Editing a rule mints a new Practice that supersedes the old (retired to status &#x27;deprecated&#x27;, never deleted) — the version chain that makes the norms layer revisable and auditable.</p>
-  <dl><div class="row"><dt>domain</dt><dd><a href="#Practice">xeo:Practice</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Practice">xeo:Practice</a></dd></div></dl>
+  <p>This one replaces an earlier one of the same kind, and the earlier one is kept, never deleted. Both ends are the same class: a Practice replaces an earlier version of the rule, a Recommendation an earlier call, a plan (a Spec) an earlier plan, a DiagnosticRun an earlier run. On a Practice: editing a rule mints a new Practice that supersedes the old (retired to status &#x27;deprecated&#x27;, never deleted) — the version chain that makes the norms layer revisable and auditable. Domain and range left open across the four terms listed.</p>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#DiagnosticRun">xeo:DiagnosticRun</a> · <a href="#Practice">xeo:Practice</a> · <a href="#Recommendation">xeo:Recommendation</a> · <a href="#Spec">xeo:Spec</a></dd></div><div class="row"><dt>expected to point at</dt><dd><a href="#DiagnosticRun">xeo:DiagnosticRun</a> · <a href="#Practice">xeo:Practice</a> · <a href="#Recommendation">xeo:Recommendation</a> · <a href="#Spec">xeo:Spec</a></dd></div></dl>
 </section>
 <section id="supportedBy" class="term">
   <h3>supported by <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-decision</span></h3>
@@ -1383,8 +1383,8 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 <section id="tests" class="term">
   <h3>tests <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:tests</code>
-  <p>The tactic this experiment put to the test.</p>
-  <dl><div class="row"><dt>domain</dt><dd><a href="#Experiment">xeo:Experiment</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Tactic">xeo:Tactic</a></dd></div></dl>
+  <p>What this experiment put to the test: a Tactic, or a category of work (an Intervention) where the Recommendation it carried out named a category and no tactic. Range left open across Tactic and Intervention.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Experiment">xeo:Experiment</a></dd></div><div class="row"><dt>expected to point at</dt><dd><a href="#Intervention">xeo:Intervention</a> · <a href="#Tactic">xeo:Tactic</a></dd></div></dl>
 </section>
 <section id="timeAnchor" class="term">
   <h3>time anchor <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-core</span></h3>
