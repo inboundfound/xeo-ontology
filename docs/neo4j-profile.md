@@ -213,13 +213,13 @@ Generated from XEO 0.7.1. Do not edit between the markers; run `tools/gen_profil
 | `ACQUIRED_BY_TACTIC` | `xeo:acquiredByTactic` | `InboundReference` | `Tactic` | interpretation | decision |
 | `ACTIVATES` | `xeo:activates` | `Campaign` · `Organization` · `Project` | `Framework` · `Playbook` | norm | decision |
 | `ADDITIVITY` | `xeo:additivity` | `Metric` | `skos:Concept` (concept slot) | norm | core |
-| `ADDRESSABLE_BY` | `xeo:addressableBy` | `Gap` | `Tactic` | interpretation | decision |
+| `ADDRESSABLE_BY` | `xeo:addressableBy` | `Gap` | `Intervention` · `Tactic` | interpretation | decision |
 | `AGGREGATION` | `xeo:aggregation` | `Metric` | `skos:Concept` (concept slot) | norm | core |
 | `AGGREGATION_BASIS` (extension) | `xeo:aggregationBasis` | `MetricReading` | `skos:Concept` (concept slot) | observation | core |
 | `ALGORITHM` | `xeo:algorithm` | `AlgorithmRun` | `skos:Concept` (concept slot) | episode | analysis |
 | `APPLIED_PRACTICE` | `xeo:appliedPractice` | `Recommendation` | `Practice` | derivation | decision |
 | `APPLIES_AT_SCOPE` | `xeo:appliesAtScope` | open | `skos:Concept` (concept slot) | norm | decision |
-| `APPLIES_TO` | `xeo:appliesTo` | `Practice` | `Intervention` · `Tactic` · `URL` · `skos:Concept` | norm | decision |
+| `APPLIES_TO` | `xeo:appliesTo` | `Gap` · `Practice` · `Recommendation` | `Intervention` · `Tactic` · `URL` · `skos:Concept` | norm | decision |
 | `APPLIES_TO_CONCEPT` | `xeo:appliesToConcept` | `Practice` | `skos:Concept` (concept slot) | norm | decision |
 | `ASSESSED_AS` | `xeo:assessedAs` | `Recommendation` · `Tactic` | `TacticAssessment` | interpretation | decision |
 | `AT_PRIORITY` | `xeo:atPriority` | `Recommendation` | `skos:Concept` (concept slot) | interpretation | decision |
@@ -320,7 +320,7 @@ Generated from XEO 0.7.1. Do not edit between the markers; run `tools/gen_profil
 | `RANKS_FOR` | `xeo:ranksFor` | `URL` | `Term` | observation | core |
 | `READING_OF` | `xeo:readingOf` | `MetricReading` | `Metric` | observation | core |
 | `READS_SLOT` | `xeo:readsSlot` | `Metric` | `http://www.w3.org/1999/02/22-rdf-syntax-ns#Property` | norm | core |
-| `RECOMMENDS` | `xeo:recommends` | `Recommendation` | `Tactic` | interpretation | decision |
+| `RECOMMENDS` | `xeo:recommends` | `Recommendation` | `Intervention` · `Tactic` | interpretation | decision |
 | `REDIRECTS_TO` | `xeo:redirectsTo` | `URL` | `URL` | observation | core |
 | `REFERENCE_TARGET` | `xeo:referenceTarget` | `InboundReference` | `Brand` · `Organization` · `URL` · `Website` | observation | core |
 | `REFERENCING_URL` | `xeo:referencingUrl` | `InboundReference` | `URL` | observation | core |
@@ -340,11 +340,11 @@ Generated from XEO 0.7.1. Do not edit between the markers; run `tools/gen_profil
 | `SHOWN_ON_SEARCH_ENGINE` | `xeo:shownOnSearchEngine` | `GenerativeOverview` | `SearchEngine` | entity | visibility |
 | `SIMILAR_TO` | `xeo:similarTo` | `Experiment` · `Prompt` · `Term` · `Topic` · `URL` | `Experiment` · `Prompt` · `Term` · `Topic` · `URL` | derivation | analysis |
 | `SUGGESTS` | `xeo:suggests` | `Diagnostic` | `Intervention` · `Tactic` | norm | decision |
-| `SUPERSEDES` | `xeo:supersedes` | `Practice` | `Practice` | norm | decision |
+| `SUPERSEDES` | `xeo:supersedes` | `DiagnosticRun` · `Practice` · `Recommendation` · `Spec` | `DiagnosticRun` · `Practice` · `Recommendation` · `Spec` | norm | decision |
 | `SUPPORTED_BY` | `xeo:supportedBy` | `Recommendation` | `Experiment` | interpretation | decision |
 | `TARGET_METRIC` | `xeo:targetMetric` | `MetricTarget` | `Metric` | interpretation | work |
 | `TARGETS_INTENT` | `xeo:targetsIntent` | open | `SearchIntent` | interpretation | core |
-| `TESTS` | `xeo:tests` | `Experiment` | `Tactic` | episode | decision |
+| `TESTS` | `xeo:tests` | `Experiment` | `Intervention` · `Tactic` | episode | decision |
 | `TIME_ANCHOR` | `xeo:timeAnchor` | `Metric` | `http://www.w3.org/1999/02/22-rdf-syntax-ns#Property` | norm | core |
 | `TOUCH_LANDING_URL` | `xeo:touchLandingUrl` | `Touchpoint` | `URL` | observation | attribution |
 | `TRACES_TO` (draft) | `xeo:tracesTo` | `WorkItem` | `Recommendation` · `Spec` | entity | work |

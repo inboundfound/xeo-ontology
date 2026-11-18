@@ -2965,6 +2965,7 @@
       "layer": "interpretation",
       "module": "decision",
       "range": [
+        "Intervention",
         "Tactic"
       ],
       "term": "addressableBy"
@@ -3047,7 +3048,9 @@
     },
     "APPLIES_TO": {
       "domain": [
-        "Practice"
+        "Gap",
+        "Practice",
+        "Recommendation"
       ],
       "iri": "https://xeoontology.org/xeo#appliesTo",
       "layer": "norm",
@@ -4375,6 +4378,7 @@
       "layer": "interpretation",
       "module": "decision",
       "range": [
+        "Intervention",
         "Tactic"
       ],
       "term": "recommends"
@@ -4632,13 +4636,19 @@
     },
     "SUPERSEDES": {
       "domain": [
-        "Practice"
+        "DiagnosticRun",
+        "Practice",
+        "Recommendation",
+        "Spec"
       ],
       "iri": "https://xeoontology.org/xeo#supersedes",
       "layer": "norm",
       "module": "decision",
       "range": [
-        "Practice"
+        "DiagnosticRun",
+        "Practice",
+        "Recommendation",
+        "Spec"
       ],
       "term": "supersedes"
     },
@@ -4691,6 +4701,7 @@
       "layer": "episode",
       "module": "decision",
       "range": [
+        "Intervention",
         "Tactic"
       ],
       "term": "tests"
