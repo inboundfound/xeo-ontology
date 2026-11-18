@@ -7,6 +7,67 @@ and corrects prose; a domain or range is not narrowed.
 
 Versions before 0.6.0 are reconstructed from the git history.
 
+## 0.7.2 — five wider edges, and three descriptions that now say one thing (2026-11-17)
+
+A patch from mapping XEO against the production code its decision and work modules were lifted
+from. Where the two disagreed and the ontology was the one out of step, the ontology changed.
+No term is added, renamed, removed or retyped. Nothing is narrowed, so data that was valid in
+0.7.1 is valid in 0.7.2. No tombstone is added. Every module file carries 0.7.2.
+
+**Nobody outside uses XEO before 1.0, and released terms may still change.** This release
+changes the stated domain or range of five released properties and the descriptions of three
+more.
+
+### Five edges, widened
+
+Each hard `rdfs:domain` or `rdfs:range` became an open list (`xeo:domainIncludes`,
+`xeo:rangeIncludes`), which is a hint and never an inference rule. The edit is in place, so no
+line in `xeo-decision.ttl` moved.
+
+| Property | 0.7.1 | 0.7.2 | Why |
+|---|---|---|---|
+| `addressableBy` | range `Tactic` | may point at a `Tactic` or an `Intervention` | A catalogue can hold a category of work with no tactic under it. The category then stands in. |
+| `recommends` | range `Tactic` | `Tactic` or `Intervention` | The same. |
+| `tests` | range `Tactic` | `Tactic` or `Intervention` | An experiment tests what its recommendation put forward. |
+| `supersedes` | domain and range `Practice` | `Practice`, `Recommendation`, `Spec` or `DiagnosticRun`, the same class at both ends | The description of `DiagnosticRun` already said a later run supersedes an earlier one. A recommendation and a plan are replaced the same way. |
+| `appliesTo` | domain `Practice` | `Practice`, `Gap` or `Recommendation` | A gap and a recommendation name the pages they are about. With a hard domain, every one that did was inferred to be a Practice. |
+
+`suggests` and `appliesTo` already accepted an `Intervention`. `Spec` is a draft term in the
+work module; the link from `supersedes` is an open list, so decision still needs only core.
+
+What did not change: on a `Practice`, an edit still mints a new Practice that `supersedes` the
+old one. The layer of each property is as it was.
+
+### Three descriptions, each now saying one thing
+
+- **`measures` and `treats`.** The description of `measures` covered two edges: the target an
+  experiment is read against, and a basis saying which pages were measured. It is the first
+  only. `treats` is the pages or terms an experiment was run on, and its description now
+  carries the role (primary or secondary) and the basis (how a page came to be in the measured
+  set). Domain, range and layer of both are unchanged.
+- **`Feedback`, `source` and `xeos:practiceSource`.** `source` said a learned Practice is
+  earned from the experiment ledger. `Feedback` said learned rules are drawn from feedback.
+  The first stands: a Practice an operator promotes from a Feedback is `authored`, because it
+  rests on that person's authority and no experiment earned it. The definitions of the
+  `authored` and `learned` concepts say so too. The three codes are unchanged.
+
+### Docs
+
+The 0.7.0 entry below, `docs/site-handoff-0.7.md` and `docs/v0.6-kit-sync.md` named an
+individual. They now name the role or give the date.
+
+### For a consumer
+
+- A graph that checks relationship endpoints against `neo4j-profile.json` will see more
+  allowed endpoints on `ADDRESSABLE_BY`, `RECOMMENDS`, `TESTS`, `SUPERSEDES` and `APPLIES_TO`.
+  Nothing that passed before fails now.
+- Do not read `rdfs:domain` or `rdfs:range` off those five properties any more: read the open
+  lists.
+- A consumer that shows the `learned` hint for a rule promoted from feedback should show
+  `authored`.
+
+Site: `docs/site-handoff-0.7.2.md`.
+
 ## 0.7.1 — agentic engineering module (draft), a looser Project, the name (2026-11-17)
 
 A new add-on module for the agents that do the work; specs, work items and deliverables in
