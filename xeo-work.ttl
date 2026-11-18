@@ -125,7 +125,7 @@ xeo:issuedFor a owl:ObjectProperty ;
 xeo:measures a owl:ObjectProperty ;
     rdfs:domain xeo:Experiment ; rdfs:range xeo:MetricTarget ;
     xeo:xeoLayer "episode" ;
-    dct:description "The target an experiment's Outcome is read against. Carries a role — primary or secondary — matching the target's standing in its objective, and a basis saying which pages were measured (the ones the recommendation applied to, the gap's evidence, or the pages actually changed)." .
+    dct:description "The target an experiment's Outcome is read against. Carries a role, primary or secondary, matching the target's standing in its objective. Fixed when the experiment starts, so a later edit to the objective does not change what a running experiment is judged against. This edge says which target and nothing about pages: the pages and terms an experiment was run on are on treats." .
 
 xeo:effortEstimate a owl:ObjectProperty ;
     rdfs:domain xeo:Recommendation ; rdfs:range skos:Concept ;
@@ -448,3 +448,13 @@ xeo:specKind a owl:DatatypeProperty ;
 # WHERE THE OLD RULES WENT. shapes/profiles/agency-delivery.ttl, an optional
 # SHACL profile: load it beside shapes/xeo-shapes.ttl to hold a graph to them.
 # No term, scheme or code was removed.
+
+# --- v0.7.2 (measures says one thing, 2026-11-17) ---------------------------------------
+# Appended at the foot; the edit it describes is in place above, one line for
+# one line, so no line moved.
+#
+# FIXED (wording). The description of measures covered two edges at once: the
+# target an experiment is read against, and a basis saying which pages were
+# measured. It is the first only. The pages, and the basis that says how each
+# came to be measured, are on treats (xeo-decision.ttl). Domain, range and layer
+# are unchanged, and no term was renamed.
