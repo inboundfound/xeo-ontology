@@ -133,7 +133,7 @@ Hand-keep nothing about terms. The site already gets these from `tools/gen_site.
 
 One file is the site's own, because it's a product choice and not part of the ontology:
 
-**`src/lib/personas.json`** (proposed: Jim to confirm the module lists). This is the T1 decision's six personas, each mapped to the modules it loads:
+**`src/lib/personas.json`** (proposed: the maintainer to confirm the module lists). This is the T1 decision's six personas, each mapped to the modules it loads:
 
 ```json
 [
