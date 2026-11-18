@@ -547,14 +547,14 @@ xeos:practiceSource-authored a skos:Concept ;
     skos:topConceptOf xeos:practiceSource ;
     skos:notation "authored" ;
     skos:prefLabel "Authored"@en ;
-    skos:definition "A human SOP or best-practice — high standing, durable"@en .
+    skos:definition "A human SOP or best-practice, or a rule an operator promoted from feedback — high standing, durable"@en .
 
 xeos:practiceSource-learned a skos:Concept ;
     skos:inScheme xeos:practiceSource ;
     skos:topConceptOf xeos:practiceSource ;
     skos:notation "learned" ;
     skos:prefLabel "Learned"@en ;
-    skos:definition "Earned from the experiment ledger; confidence ratchets with Outcomes"@en .
+    skos:definition "Earned from the experiment ledger, never from feedback alone; confidence ratchets with Outcomes"@en .
 
 xeos:practiceSource-claimed a skos:Concept ;
     skos:inScheme xeos:practiceSource ;

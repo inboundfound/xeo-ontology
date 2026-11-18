@@ -3399,7 +3399,7 @@
           "code": "authored",
           "iri": "https://xeoontology.org/schemes#practiceSource-authored",
           "label": "Authored",
-          "definition": "A human SOP or best-practice — high standing, durable",
+          "definition": "A human SOP or best-practice, or a rule an operator promoted from feedback — high standing, durable",
           "note": null
         },
         {
@@ -3413,7 +3413,7 @@
           "code": "learned",
           "iri": "https://xeoontology.org/schemes#practiceSource-learned",
           "label": "Learned",
-          "definition": "Earned from the experiment ledger; confidence ratchets with Outcomes",
+          "definition": "Earned from the experiment ledger, never from feedback alone; confidence ratchets with Outcomes",
           "note": null
         }
       ]

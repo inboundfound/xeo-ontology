@@ -231,7 +231,7 @@
       "module": "decision"
     },
     "Feedback": {
-      "definition": "An operator's judgment of a machine's claim, hung off whatever it judges (feedbackOn): a diagnosed Gap, or the Recommendation issued to close one. Carries a verdict (a slotted-in concept), a statement in the operator's words, and who gave it and when. Not a TacticAssessment, which is a scored estimate of an approach on one dimension: Feedback is a person agreeing or disagreeing with a claim about one case. Never deleted: a rejected finding and the reason it was rejected are what a learned Practice is later drawn from.",
+      "definition": "An operator's judgment of a machine's claim, hung off whatever it judges (feedbackOn): a diagnosed Gap, or the Recommendation issued to close one. Carries a verdict (a slotted-in concept), a statement in the operator's words, and who gave it and when. Not a TacticAssessment, which is a scored estimate of an approach on one dimension: Feedback is a person agreeing or disagreeing with a claim about one case. Never deleted: a rejected finding and the reason it was rejected are what a Practice is later written from. A Practice promoted from a Feedback is authored (source): it stands on the operator's authority, and no experiment earned it. learned is kept for a rule earned from Experiments.",
       "iri": "https://xeoontology.org/xeo#Feedback",
       "layer": "interpretation",
       "module": "decision"
