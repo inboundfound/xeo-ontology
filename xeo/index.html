@@ -1113,7 +1113,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 <section id="measures" class="term">
   <h3>measures <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:measures</code>
-  <p>The target an experiment&#x27;s Outcome is read against. Carries a role — primary or secondary — matching the target&#x27;s standing in its objective, and a basis saying which pages were measured (the ones the recommendation applied to, the gap&#x27;s evidence, or the pages actually changed).</p>
+  <p>The target an experiment&#x27;s Outcome is read against. Carries a role, primary or secondary, matching the target&#x27;s standing in its objective. Fixed when the experiment starts, so a later edit to the objective does not change what a running experiment is judged against. This edge says which target and nothing about pages: the pages and terms an experiment was run on are on treats.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Experiment">xeo:Experiment</a></dd></div><div class="row"><dt>range</dt><dd><a href="#MetricTarget">xeo:MetricTarget</a></dd></div></dl>
 </section>
 <section id="mentions" class="term">
@@ -1413,7 +1413,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 <section id="treats" class="term">
   <h3>treats <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:treats</code>
-  <p>A unit the experiment changed, or measured the change on: the pages the tactic was applied to, or the terms it was aimed at. With hasControl it is the experiment&#x27;s design, fixed when the experiment starts. Range left open across URL and Term.</p>
+  <p>A unit the experiment was run on, where its change is measured: a page the tactic was applied to, or a term it was aimed at. May carry a role, primary or secondary (only a primary unit counts toward the measured change), and a basis saying how the unit came to be in the measured set: the recommendation applied to it, it was the gap&#x27;s evidence, or it is the page that was actually changed. With hasControl it is the experiment&#x27;s design, fixed when the experiment starts. This edge says which pages or terms and nothing about targets: the target the result is read against is on measures. Range left open across URL and Term.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Experiment">xeo:Experiment</a></dd></div><div class="row"><dt>expected to point at</dt><dd><a href="#Term">xeo:Term</a> · <a href="#URL">xeo:URL</a></dd></div></dl>
 </section>
 <section id="underHarness" class="term">

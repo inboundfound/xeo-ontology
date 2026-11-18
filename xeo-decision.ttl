@@ -313,7 +313,7 @@ xeo:treats a owl:ObjectProperty ;
     rdfs:domain xeo:Experiment ;
     xeo:xeoLayer "episode" ;
     xeo:rangeIncludes xeo:URL , xeo:Term ;
-    dct:description "A unit the experiment changed, or measured the change on: the pages the tactic was applied to, or the terms it was aimed at. With hasControl it is the experiment's design, fixed when the experiment starts. Range left open across URL and Term." .
+    dct:description "A unit the experiment was run on, where its change is measured: a page the tactic was applied to, or a term it was aimed at. May carry a role, primary or secondary (only a primary unit counts toward the measured change), and a basis saying how the unit came to be in the measured set: the recommendation applied to it, it was the gap's evidence, or it is the page that was actually changed. With hasControl it is the experiment's design, fixed when the experiment starts. This edge says which pages or terms and nothing about targets: the target the result is read against is on measures. Range left open across URL and Term." .
 
 xeo:hasControl a owl:ObjectProperty ;
     rdfs:label "has control" ;
@@ -727,3 +727,13 @@ xeo:acquiredByTactic a owl:ObjectProperty ;
     rdfs:domain xeo:InboundReference ; rdfs:range xeo:Tactic ;
     xeo:xeoLayer "interpretation" ;
     dct:description "The Tactic that produced an InboundReference: a placement, a pitch, a link magnet. A claim about how it came about, so an interpretation, and absent for an organic reference. Where an Experiment paid for it, the Experiment tests that Tactic." .
+
+# --- v0.7.2 (wording and wider edges, 2026-11-17) ----------------------------------------
+# Appended at the foot; the edits it describes are in place above, one line for
+# one line, so no line moved.
+#
+# FIXED (wording). treats and measures (xeo-work.ttl) each say one thing. treats
+# is the pages or terms an experiment was run on, and now carries the role and
+# the basis that say how a page came to be measured, which the description of
+# measures had carried by mistake. measures is the target the result is read
+# against and nothing else.
