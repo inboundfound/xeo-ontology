@@ -243,3 +243,60 @@ xeo:consentStatus skos:closeMatch dpv:hasConsentStatus .
 
 # Model (core, 0.7) — schema.org has no model class; ML-Schema is aligned with the
 # agentic engineering module after 0.7.
+
+# ===========================================================================
+# Draft: the experiments and company knowledge modules (after 0.7.2), appended
+# at the foot. Their terms are draft, and so are these bridges. Same two stances
+# as above. ML-Schema is the W3C community group's vocabulary for machine-learning
+# experiments; the W3C Organization Ontology (2014) is where memberOf and unitOf
+# come from. Message, Conversation and DigitalDocument need no bridge: XEO mints
+# no class for them and a graph uses schema.org's own.
+# ===========================================================================
+
+@prefix mls: <http://www.w3.org/ns/mls#> .
+@prefix org: <http://www.w3.org/ns/org#> .
+
+xeo:Experiment skos:closeMatch mls:Experiment ;
+    rdfs:comment "Both are a test made of runs. closeMatch: an ML-Schema experiment is a collection of runs of machine-learning implementations; an XEO Experiment tests a tactic, on pages, terms or benchmark tasks." .
+
+xeo:Trial skos:closeMatch mls:Run ;
+    rdfs:comment "One execution of one condition. closeMatch: an ML-Schema run executes an implementation on data; an XEO Trial runs one arm on one task." .
+
+xeo:Trial rdfs:subClassOf prov:Activity ;
+    rdfs:comment "A trial ran over a period and generated the score attributed to it." .
+
+xeo:Claim skos:closeMatch schema:Claim ;
+    rdfs:comment "An assertion someone made. closeMatch: schema:Claim is a factual claim as fact-checkers record it; an XEO Claim is about an effect and states the number, metric and baseline it implies." .
+
+xeo:ClaimCheck skos:closeMatch schema:ClaimReview ;
+    rdfs:comment "A review of a claim with a verdict. closeMatch: a schema:ClaimReview rates a claim; an XEO ClaimCheck must rest on an Experiment." .
+
+xeo:drawnFrom rdfs:subPropertyOf prov:wasDerivedFrom ;
+    rdfs:comment "A lesson is derived from the experiments, outcomes and checks it was drawn from." .
+
+xeo:Meeting skos:closeMatch schema:Event ;
+    rdfs:comment "Something that happened at a time with people at it. closeMatch: schema.org has no meeting class, and schema:Event is modelled for attended events (a venue, a performer)." .
+
+xeo:Recording skos:closeMatch schema:MediaObject ;
+    rdfs:comment "An audio or video file. schema:AudioObject and schema:VideoObject are its two kinds; XEO keeps one class and the file's address." .
+
+xeo:Transcript skos:closeMatch schema:TextDigitalDocument ;
+    rdfs:comment "Text kept as a file of its own. schema.org has no transcript class: its transcript is a text property on an AudioObject or VideoObject, which XEO keeps out of the graph." .
+
+xeo:attendee skos:closeMatch schema:attendee ;
+    rdfs:comment "A person at an event. closeMatch: schema:attendee also allows an Organization." .
+
+xeo:recordingOf skos:closeMatch schema:recordedAt ;
+    rdfs:comment "The event a recording was made at." .
+
+xeo:transcriptOf rdfs:subPropertyOf prov:wasDerivedFrom ;
+    rdfs:comment "A transcript is derived from the recording it was made from." .
+
+xeo:summarizes rdfs:subPropertyOf prov:wasDerivedFrom ;
+    rdfs:comment "A summary is derived from the record it summarizes." .
+
+xeo:memberOf skos:closeMatch org:memberOf ;
+    rdfs:comment "A person belongs to an organization; schema:memberOf says the same. closeMatch: W3C ORG reifies the membership as org:Membership when it needs dates and a role; XEO carries the dates on the edge." .
+
+xeo:unitOf skos:closeMatch org:unitOf ;
+    rdfs:comment "A unit and the organization it is part of; schema:parentOrganization says the same. closeMatch: org:unitOf points from an OrganizationalUnit to a FormalOrganization; an XEO unit is an Organization of its own." .

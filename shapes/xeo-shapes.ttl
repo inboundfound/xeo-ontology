@@ -426,3 +426,65 @@ xeosh:CreditShareIsAShare a sh:NodeShape ;
         sh:minInclusive 0 ; sh:maxInclusive 1 ;
         sh:message "xeo:creditShare is one number from 0 to 1."
     ] .
+
+# --- Draft: experiments and company knowledge (after 0.7.2) ------------------------
+# The rules the two draft modules state as required. Their terms are draft, and
+# so are these shapes: they change or go with the terms.
+
+xeosh:TrialShape a sh:NodeShape ;
+    rdfs:label "a trial belongs to one arm and has at most one score" ;
+    rdfs:seeAlso xeo:hasTrial ;
+    sh:targetClass xeo:Trial ;
+    sh:property [
+        sh:path [ sh:inversePath xeo:hasTrial ] ; sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "A xeo:Trial belongs to exactly one xeo:Arm, through xeo:hasTrial."
+    ] ;
+    sh:property [
+        sh:path xeo:trialScore ; sh:maxCount 1 ;
+        sh:message "A xeo:Trial has at most one xeo:trialScore."
+    ] .
+
+xeosh:ClaimCheckShape a sh:NodeShape ;
+    rdfs:label "a claim check names one claim and one verdict" ;
+    sh:targetClass xeo:ClaimCheck ;
+    sh:property [
+        sh:path xeo:checksClaim ; sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "A xeo:ClaimCheck requires exactly one xeo:checksClaim."
+    ] ;
+    sh:property [
+        sh:path xeo:claimVerdict ; sh:minCount 1 ; sh:maxCount 1 ;
+        sh:in ( "confirmed" "real_but_small" "real_with_conditions" "debunked" "unverified" "unsubstantiated" ) ;
+        sh:message "A xeo:ClaimCheck requires one xeo:claimVerdict from xeos:claimVerdict."
+    ] .
+
+xeosh:RecordingShape a sh:NodeShape ;
+    rdfs:label "a recording names the meeting it captured" ;
+    sh:targetClass xeo:Recording ;
+    sh:property [
+        sh:path xeo:recordingOf ; sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "A xeo:Recording requires exactly one xeo:recordingOf."
+    ] .
+
+xeosh:TranscriptShape a sh:NodeShape ;
+    rdfs:label "a transcript names the recording it was made from" ;
+    sh:targetClass xeo:Transcript ;
+    sh:property [
+        sh:path xeo:transcriptOf ; sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "A xeo:Transcript requires exactly one xeo:transcriptOf."
+    ] .
+
+xeosh:SummaryNamesItsSource a sh:NodeShape ;
+    rdfs:label "a summary names what it summarizes" ;
+    sh:targetClass xeo:Summary ;
+    sh:property [
+        sh:path xeo:summarizes ; sh:minCount 1 ;
+        sh:message "A xeo:Summary requires at least one xeo:summarizes: a summary with no source cannot be checked."
+    ] .
+
+xeosh:ActionItemNamesWhereRaised a sh:NodeShape ;
+    rdfs:label "an action item names where it was raised" ;
+    sh:targetClass xeo:ActionItem ;
+    sh:property [
+        sh:path xeo:raisedIn ; sh:minCount 1 ;
+        sh:message "A xeo:ActionItem requires at least one xeo:raisedIn."
+    ] .

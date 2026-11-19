@@ -1,0 +1,123 @@
+{
+  "@context": [
+    "../context.jsonld",
+    {
+      "ex": "https://example.com/graph/",
+      "notation": "skos:notation",
+      "prefLabel": "skos:prefLabel",
+      "definition": "skos:definition"
+    }
+  ],
+  "@graph": [
+    {
+      "id": "ex:metric-task-pass-rate", "type": "Metric",
+      "notation": "task_pass_rate",
+      "prefLabel": "Task pass rate",
+      "definition": "The share of an arm's trials whose grader passed the task. A team's own Metric, defined beside the published ones.",
+      "metricType": "xeos:metricType-simple",
+      "aggregation": "xeos:aggregation-mean",
+      "readsSlot": "xeo:trialScore",
+      "unit": "xeos:metricUnit-ratio",
+      "betterDirection": "xeos:betterDirection-up",
+      "additivity": "xeos:additivity-non_additive"
+    },
+    {
+      "id": "ex:metric-cost-per-task", "type": "Metric",
+      "notation": "cost_per_task",
+      "prefLabel": "Cost per task",
+      "definition": "The mean cost of one trial, from the cost of the session it ran in.",
+      "metricType": "xeos:metricType-simple",
+      "aggregation": "xeos:aggregation-mean",
+      "readsSlot": "xeo:costAmount",
+      "unit": "xeos:metricUnit-currency",
+      "betterDirection": "xeos:betterDirection-down",
+      "additivity": "xeos:additivity-non_additive"
+    },
+
+    {
+      "id": "ex:benchmark", "type": "Benchmark", "name": "Example SEO audit tasks",
+      "benchmarkVersion": "1.0", "graderKind": "verifier"
+    },
+    { "id": "ex:task-1", "type": "BenchmarkTask", "taskRef": "audit-001", "inBenchmark": "ex:benchmark" },
+    { "id": "ex:task-2", "type": "BenchmarkTask", "taskRef": "audit-002", "inBenchmark": "ex:benchmark" },
+
+    { "id": "ex:tactic-audit-skill", "type": "Tactic", "name": "Give the agent a content-audit skill" },
+    {
+      "id": "ex:experiment", "type": "Experiment",
+      "tests": "ex:tactic-audit-skill",
+      "status": "concluded",
+      "startedAt": "2026-11-02T09:00:00Z", "concludedAt": "2026-11-04T17:00:00Z",
+      "preRegistrationRef": "https://example.com/repo/releases/tag/experiment-0007-plan",
+      "primaryMetric": "ex:metric-task-pass-rate",
+      "guardrailMetric": "ex:metric-cost-per-task",
+      "hasArm": ["ex:arm-baseline", "ex:arm-skill"]
+    },
+    {
+      "id": "ex:arm-baseline", "type": "Arm", "name": "Without the skill", "isBaseline": true,
+      "armMean": "0.60", "armStandardDeviation": "0.49", "armSampleSize": 40,
+      "hasTrial": ["ex:trial-b1", "ex:trial-b2"]
+    },
+    {
+      "id": "ex:arm-skill", "type": "Arm", "name": "With the skill", "isBaseline": false,
+      "testsTactic": "ex:tactic-audit-skill",
+      "armMean": "0.75", "armStandardDeviation": "0.43", "armSampleSize": 39,
+      "hasTrial": ["ex:trial-s1", "ex:trial-s2", "ex:trial-s3"]
+    },
+    {
+      "id": "ex:trial-b1", "type": "Trial", "onTask": "ex:task-1", "trialReplicate": 1,
+      "startedAt": "2026-11-02T09:00:00Z", "endedAt": "2026-11-02T09:06:00Z", "trialScore": "1"
+    },
+    {
+      "id": "ex:trial-b2", "type": "Trial", "onTask": "ex:task-2", "trialReplicate": 1,
+      "startedAt": "2026-11-02T09:10:00Z", "endedAt": "2026-11-02T09:19:00Z", "trialScore": "0"
+    },
+    {
+      "id": "ex:trial-s1", "type": "Trial", "onTask": "ex:task-1", "trialReplicate": 1,
+      "startedAt": "2026-11-02T10:00:00Z", "endedAt": "2026-11-02T10:05:00Z", "trialScore": "1"
+    },
+    {
+      "id": "ex:trial-s2", "type": "Trial", "onTask": "ex:task-2", "trialReplicate": 1,
+      "startedAt": "2026-11-02T10:10:00Z", "endedAt": "2026-11-02T10:17:00Z", "trialScore": "1"
+    },
+    {
+      "id": "ex:trial-s3", "type": "Trial", "onTask": "ex:task-2", "trialReplicate": 2,
+      "trialBlock": "day-1",
+      "startedAt": "2026-11-02T10:20:00Z", "endedAt": "2026-11-02T10:21:00Z",
+      "failureClass": "infrastructure"
+    },
+    {
+      "id": "ex:outcome-skill", "type": "Outcome", "forArm": "ex:arm-skill",
+      "absoluteChange": "0.15", "relativeChange": "0.25", "result": "significant",
+      "ciLower": "0.04", "ciUpper": "0.26", "ciMethod": "task-clustered bootstrap, 95%",
+      "effectiveN": "18.5"
+    },
+
+    { "id": "ex:vendor", "type": "Organization", "name": "Example Tools" },
+    {
+      "id": "ex:claim", "type": "Claim", "claimedBy": "ex:vendor",
+      "statement": "Our content-audit skill lifts an agent's pass rate on audit tasks by 40 points.",
+      "claimMetric": "ex:metric-task-pass-rate", "claimedValue": "0.40",
+      "counterfactual": "The same agent and harness without the skill",
+      "claimSourceUri": "https://example.org/blog/audit-skill-launch", "claimedAt": "2026-10-20"
+    },
+    {
+      "id": "ex:claim-check", "type": "ClaimCheck", "checksClaim": "ex:claim",
+      "checkedBy": "ex:experiment", "claimVerdict": "real_but_small",
+      "method": "Read the claimed 0.40 against the outcome's interval, 0.04 to 0.26"
+    },
+
+    {
+      "id": "ex:lesson", "type": "Lesson",
+      "statement": "On audit tasks, the content-audit skill raises the pass rate by about 15 points, well short of the 40 its maker claims.",
+      "drawnFrom": ["ex:outcome-skill", "ex:claim-check"],
+      "method": "Reviewed by the team after the experiment concluded", "confidence": "0.7",
+      "adoptedAs": "ex:practice-use-skill"
+    },
+    {
+      "id": "ex:practice-use-skill", "type": "Practice",
+      "statement": "Load the content-audit skill for audit tasks.",
+      "practiceKind": "preference", "status": "active", "source": "learned",
+      "learnedFrom": "ex:outcome-skill"
+    }
+  ]
+}

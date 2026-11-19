@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>XEO — terms</title>
-<meta name="description" content="Term reference for the XEO ontology: classes, properties, and individuals across the core, visibility, analysis, sales, attribution, work and decision modules, and the draft agentic engineering module.">
+<meta name="description" content="Term reference for the XEO ontology: classes, properties, and individuals across the core, visibility, analysis, sales, attribution, work and decision modules, and the draft agentic engineering, experiments and company knowledge modules.">
 <link rel="alternate" type="text/turtle" href="xeo-core.ttl">
 <style>
 :root { color-scheme: light dark; --bg:#f7f5ef; --surface:#fffdf8; --text:#17181c;
@@ -71,18 +71,27 @@ not something every implementation is expected to support. A term marked
 <code>xeo-work</code> (clients, contracts, projects, campaigns, objectives, targets; draft: specs, work items, deliverables) ·
 <code>xeo-decision</code> (gaps, diagnostics, tactics, recommendations, and the practices that govern them) ·
 <code>xeo-agentic</code> (draft: agent harnesses, runtimes, sessions, model and tool calls, enforcement) ·
+<code>xeo-experiments</code> (draft: arms, trials, benchmarks, claims and their checks, lessons) ·
+<code>xeo-knowledge</code> (draft: company knowledge: meetings, recordings, transcripts, summaries, action items, membership) ·
 <code>xeo-align</code> (schema.org / PROV-O / SKOS bridges). Machine-readable Turtle:
 <a href="xeo-core.ttl">core</a>, <a href="xeo-visibility.ttl">visibility</a>,
 <a href="xeo-analysis.ttl">analysis</a>, <a href="xeo-sales.ttl">sales</a>,
 <a href="xeo-attribution.ttl">attribution</a>, <a href="xeo-attribution-sales.ttl">attribution-sales</a>,
 <a href="xeo-work.ttl">work</a>, <a href="xeo-decision.ttl">decision</a>,
-<a href="xeo-agentic.ttl">agentic</a> (draft), <a href="xeo-align.ttl">align</a>;
+<a href="xeo-agentic.ttl">agentic</a> (draft), <a href="xeo-experiments.ttl">experiments</a> (draft),
+<a href="xeo-knowledge.ttl">knowledge</a> (draft), <a href="xeo-align.ttl">align</a>;
 reference values <a href="xeo-schemes.ttl">schemes</a> (<a href="schemes.json">JSON</a>);
 vendor mappings <a href="https://github.com/inboundfound/xeo-ontology/tree/main/mappings">mappings/</a>, one file per tool, not part of the ontology;
 JSON-LD <a href="context.jsonld">context</a>; Neo4j
 <a href="neo4j-profile.json">profile</a> and <a href="context.neo4j.jsonld">context</a>;
 SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
-<h2 id="classes">Classes <span class="n">80</span></h2>
+<h2 id="classes">Classes <span class="n">92</span></h2>
+<section id="ActionItem" class="term">
+  <h3>Action Item <span class="layer" style="--h:#DD6B20">interpretation</span> <span class="status">draft</span><span class="mod">xeo-knowledge</span></h3>
+  <code class="iri">xeo:ActionItem</code>
+  <p>Something a person or a team was understood to have agreed to do, read from a meeting or a message: where it was raised (raisedIn), who is to do it (assignedTo), and what, in plain language (name). An interpretation, because it is a reading of what was agreed; one a model extracted carries method and producedByModel (core). Not a WorkItem (work): an action item is what was agreed, a work item is a step someone has taken on.</p>
+  
+</section>
 <section id="AgentRuntime" class="term">
   <h3>Agent Runtime <span class="layer" style="--h:#718096">entity</span> <span class="status">draft</span><span class="mod">xeo-agentic</span></h3>
   <code class="iri">xeo:AgentRuntime</code>
@@ -113,6 +122,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>An assistant that answers a person in its own interface, with or without web search and citations: ChatGPT, Perplexity, Claude, and multi-turn agents and voice surfaces acting for a user (ConversationalAgent until 0.7). The AEO surface.</p>
   <dl><div class="row"><dt>subclass of</dt><dd><a href="#Engine">xeo:Engine</a></dd></div></dl>
 </section>
+<section id="Arm" class="term">
+  <h3>Arm <span class="layer" style="--h:#718096">entity</span> <span class="status">draft</span><span class="mod">xeo-experiments</span></h3>
+  <code class="iri">xeo:Arm</code>
+  <p>One version in an Experiment: the A or the B. A named condition that differs from the baseline in what it changes (testsTactic), or is the baseline itself (isBaseline). Identified by its Experiment (hasArm) and its name. Its trials are hasTrial. Its own figures on the experiment&#x27;s primaryMetric, computed over those trials, are armMean, armStandardDeviation and armSampleSize.</p>
+  
+</section>
 <section id="AttributedCredit" class="term">
   <h3>Attributed Credit <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-attribution</span></h3>
   <code class="iri">xeo:AttributedCredit</code>
@@ -130,6 +145,18 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <code class="iri">xeo:AttributionRollup</code>
   <p>Credited totals for one channel, campaign, ad set or ad over one window under one model: attributedRevenue and attributedConversions, with periodStart, periodEnd, usesAttributionModel and method. A MetricReading of an attribution Metric. The graph keeps rollups; the per-touch credits may live in the column store.</p>
   <dl><div class="row"><dt>subclass of</dt><dd><a href="#MetricReading">xeo:MetricReading</a></dd></div></dl>
+</section>
+<section id="Benchmark" class="term">
+  <h3>Benchmark <span class="layer" style="--h:#718096">entity</span> <span class="status">draft</span><span class="mod">xeo-experiments</span></h3>
+  <code class="iri">xeo:Benchmark</code>
+  <p>A fixed set of test tasks plus a way to grade them. A public model benchmark counts, and so does a team&#x27;s own set of twenty SEO audit tasks. Identified by name with benchmarkVersion: changing a task or the grading makes a new version. graderKind says how its tasks are scored.</p>
+  
+</section>
+<section id="BenchmarkTask" class="term">
+  <h3>Benchmark Task <span class="layer" style="--h:#718096">entity</span> <span class="status">draft</span><span class="mod">xeo-experiments</span></h3>
+  <code class="iri">xeo:BenchmarkTask</code>
+  <p>One task inside one version of a Benchmark (inBenchmark), identified there by its taskRef. A Trial runs an arm on one task (onTask).</p>
+  
 </section>
 <section id="BookedMeeting" class="term">
   <h3>Booked Meeting <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-attribution</span></h3>
@@ -166,6 +193,18 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <code class="iri">xeo:Chargeback</code>
   <p>A payment reversed by the buyer&#x27;s bank against an Order (refundsOrder). Carries refundedAmount. Its grounding is provisional: chargeback records differ most between processors.</p>
   <dl><div class="row"><dt>subclass of</dt><dd><a href="#RevenueEvent">xeo:RevenueEvent</a></dd></div></dl>
+</section>
+<section id="Claim" class="term">
+  <h3>Claim <span class="layer" style="--h:#DD6B20">interpretation</span> <span class="status">draft</span><span class="mod">xeo-experiments</span></h3>
+  <code class="iri">xeo:Claim</code>
+  <p>A party&#x27;s assertion about an effect: &#x27;this tool saves 40% of tokens&#x27;, &#x27;FAQ markup doubles AI citations&#x27;. Never an observation, whoever makes it. Carries its words (statement), who made it (claimedBy), when (claimedAt) and where (claimSourceUri), and where it states a number, the claimedValue, the Metric it is a value of (claimMetric) and what it is compared against (counterfactual). Identified by claimant, statement and date. Whether it holds is a ClaimCheck.</p>
+  <dl><div class="row"><dt>closeMatch</dt><dd><a href="https://schema.org/Claim" class="ext">schema:Claim</a></dd></div></dl>
+</section>
+<section id="ClaimCheck" class="term">
+  <h3>Claim Check <span class="layer" style="--h:#DD6B20">interpretation</span> <span class="status">draft</span><span class="mod">xeo-experiments</span></h3>
+  <code class="iri">xeo:ClaimCheck</code>
+  <p>Our test of a Claim: the Claim it checks (checksClaim), the Experiment that ran (checkedBy) and the verdict (claimVerdict). An interpretation, because a verdict is a reading of an experiment against what was claimed. A claim may be checked more than once; each check is its own node.</p>
+  <dl><div class="row"><dt>closeMatch</dt><dd><a href="https://schema.org/ClaimReview" class="ext">schema:ClaimReview</a></dd></div></dl>
 </section>
 <section id="Compaction" class="term">
   <h3>Compaction <span class="layer" style="--h:#319795">episode</span> <span class="status">draft</span><span class="mod">xeo-agentic</span></h3>
@@ -255,7 +294,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <h3>Experiment <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:Experiment</code>
   <p>A test of a tactic that ran over a time window: immutable once concluded, method-attributed. The precedent record the decision layer learns from.</p>
-  <dl><div class="row"><dt>subclass of</dt><dd><a href="http://www.w3.org/ns/prov#Activity" class="ext">prov:Activity</a></dd></div></dl>
+  <dl><div class="row"><dt>subclass of</dt><dd><a href="http://www.w3.org/ns/prov#Activity" class="ext">prov:Activity</a></dd></div><div class="row"><dt>closeMatch</dt><dd><a href="http://www.w3.org/ns/mls#Experiment" class="ext">http://www.w3.org/ns/mls#Experiment</a></dd></div></dl>
 </section>
 <section id="ExternalEvent" class="term">
   <h3>External Event <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-decision</span></h3>
@@ -334,6 +373,18 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <code class="iri">xeo:LLMResponse</code>
   <p>One captured response from one engine/model for one Prompt at a moment: time-bounded, source-attributed, immutable once captured. The visibility sibling of SerpSnapshot.</p>
   <dl><div class="row"><dt>subclass of</dt><dd><a href="http://www.w3.org/ns/prov#Entity" class="ext">prov:Entity</a></dd></div></dl>
+</section>
+<section id="Lesson" class="term">
+  <h3>Lesson <span class="layer" style="--h:#DD6B20">interpretation</span> <span class="status">draft</span><span class="mod">xeo-experiments</span></h3>
+  <code class="iri">xeo:Lesson</code>
+  <p>What was learned, in plain language (statement), with the evidence it was drawn from (drawnFrom): &#x27;a skill loaded on demand saves more than one always loaded, on tasks that rarely use it&#x27;. A finding, not yet a rule: when it is adopted as a standing rule, the rule is a Practice (decision) whose source is &#x27;learned&#x27;, and the Lesson points at it (adoptedAs). The cue a harness reads it on is that Practice&#x27;s appliesToConcept. Not a subclass of Practice, because XEO tells lessons, SOPs and best practices apart by source and not by class. Carries method (who or what drew it) and confidence.</p>
+  
+</section>
+<section id="Meeting" class="term">
+  <h3>Meeting <span class="layer" style="--h:#319795">episode</span> <span class="status">draft</span><span class="mod">xeo-knowledge</span></h3>
+  <code class="iri">xeo:Meeting</code>
+  <p>People meeting at a time, in a room or on a call, whether or not it was recorded. Immutable once it has ended. Carries startedAt and endedAt (core), a name where it has one, and who was there (attendee). Not a BookedMeeting (attribution), which is the conversion of a meeting being booked; a meeting that was booked and then held can be both.</p>
+  <dl><div class="row"><dt>closeMatch</dt><dd><a href="https://schema.org/Event" class="ext">schema:Event</a></dd></div></dl>
 </section>
 <section id="Metric" class="term">
   <h3>Metric <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-core</span></h3>
@@ -443,6 +494,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>The labeled claim the whole chain exists to produce: deploy this Tactic to close this Gap, supported by these Experiments, at a given priority. An interpretation — carries method, confidence, and who/what issued it. The chain is where a recommendation usually comes from, not a condition of being one: closesGap and supportedBy are optional, and a call a person or an agent makes from tacit or general knowledge, with no diagnosed Gap and no Experiment behind it, is still a Recommendation, whose method says so.</p>
   
 </section>
+<section id="Recording" class="term">
+  <h3>Recording <span class="layer" style="--h:#38A169">observation</span> <span class="status">draft</span><span class="mod">xeo-knowledge</span></h3>
+  <code class="iri">xeo:Recording</code>
+  <p>An audio or video capture of a Meeting (recordingOf), identified by where the file is kept (artifactUri, core). The graph holds that pointer and never the media. Carries startedAt and endedAt for the stretch it covers. A meeting recorded twice has two.</p>
+  <dl><div class="row"><dt>closeMatch</dt><dd><a href="https://schema.org/MediaObject" class="ext">schema:MediaObject</a></dd></div><div class="row"><dt>grounded in</dt><dd>The recording system&#x27;s file, as it captured the meeting</dd></div></dl>
+</section>
 <section id="Refund" class="term">
   <h3>Refund <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-attribution</span></h3>
   <code class="iri">xeo:Refund</code>
@@ -509,6 +566,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>An agreement to pay a recurringValue every billing period (billingInterval and billingIntervalCount), from a start date until cancelled. Its Payments are RevenueEvents.</p>
   
 </section>
+<section id="Summary" class="term">
+  <h3>Summary <span class="layer" style="--h:#805AD5">derivation</span> <span class="status">draft</span><span class="mod">xeo-knowledge</span></h3>
+  <code class="iri">xeo:Summary</code>
+  <p>A shorter account of a record, written by a person or a model: a meeting&#x27;s notes, a thread&#x27;s digest, a document&#x27;s abstract. Names what it summarizes. A derivation: carries method and, where a model wrote it, producedByModel (core). Kept where it was written (artifactUri, core), like the record it summarizes.</p>
+  
+</section>
 <section id="Tactic" class="term">
   <h3>Tactic <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:Tactic</code>
@@ -545,6 +608,18 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>One interaction a person or organization had with your marketing at a time: an ad click or view, a visit, an email or an email open, a text message, a call, a form, a meeting. Immutable once recorded. Carries touchType, occurredAt, touchChannel, and what the source gives: the UTM fields, clickIdentifier, adCampaignRef, adSetRef, adRef, referringPlatform, touchLandingUrl. Belongs to a Journey.</p>
   
 </section>
+<section id="Transcript" class="term">
+  <h3>Transcript <span class="layer" style="--h:#38A169">observation</span> <span class="status">draft</span><span class="mod">xeo-knowledge</span></h3>
+  <code class="iri">xeo:Transcript</code>
+  <p>The words spoken in a Recording (transcriptOf), as text with who said them, identified by where it is kept (artifactUri, core). The graph holds the pointer and never the words. Taken as the transcription system returned it. A transcript corrected by hand, or produced again by another system, is a new Transcript of the same recording, and method says how it was made.</p>
+  <dl><div class="row"><dt>closeMatch</dt><dd><a href="https://schema.org/TextDigitalDocument" class="ext">schema:TextDigitalDocument</a></dd></div><div class="row"><dt>grounded in</dt><dd>The recording it was transcribed from, as the transcription system returned it</dd></div></dl>
+</section>
+<section id="Trial" class="term">
+  <h3>Trial <span class="layer" style="--h:#319795">episode</span> <span class="status">draft</span><span class="mod">xeo-experiments</span></h3>
+  <code class="iri">xeo:Trial</code>
+  <p>One run of one Arm on one task: five runs make five trials. Immutable once finished. Belongs to exactly one Arm (hasTrial). Identified by its arm, its task (onTask, where it ran on a BenchmarkTask), its trialReplicate and, where the design blocks, its trialBlock. Carries startedAt and endedAt (core), its trialScore, and failureClass when it did not finish. High-volume: the column store keeps the rows, the graph keeps the arms they roll up to.</p>
+  <dl><div class="row"><dt>subclass of</dt><dd><a href="http://www.w3.org/ns/prov#Activity" class="ext">prov:Activity</a></dd></div><div class="row"><dt>closeMatch</dt><dd><a href="http://www.w3.org/ns/mls#Run" class="ext">http://www.w3.org/ns/mls#Run</a></dd></div></dl>
+</section>
 <section id="URL" class="term">
   <h3>URL <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:URL</code>
@@ -563,7 +638,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>One step of implementation, small enough for one person or one agent to take: a task in a task list. It tracesTo what asked for it, a Spec or a Recommendation. artifactUri points at where it is kept. Not a Recommendation: that is the call to do something, and a WorkItem is one step of doing it.</p>
   
 </section>
-<h2 id="object-properties">Object properties <span class="n">150</span></h2>
+<h2 id="object-properties">Object properties <span class="n">172</span></h2>
 <section id="about" class="term">
   <h3>about <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:about</code>
@@ -599,6 +674,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <code class="iri">xeo:addressableBy</code>
   <p>A candidate for closing this gap: a Tactic, or a category of work (an Intervention) where no tactic under it is named. A claim, made before the scope gate is applied. Range left open across Tactic and Intervention.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Gap">xeo:Gap</a></dd></div><div class="row"><dt>expected to point at</dt><dd><a href="#Intervention">xeo:Intervention</a> · <a href="#Tactic">xeo:Tactic</a></dd></div></dl>
+</section>
+<section id="adoptedAs" class="term">
+  <h3>adopted as <span class="layer" style="--h:#D69E2E">norm</span> <span class="status">draft</span><span class="mod">xeo-experiments</span></h3>
+  <code class="iri">xeo:adoptedAs</code>
+  <p>The Practice (decision) a Lesson became when it was adopted as a standing rule. That Practice&#x27;s source is &#x27;learned&#x27; and it is learnedFrom the evidence the Lesson was drawnFrom. A lesson not adopted has none. Optional: it works when decision is loaded. Name ours.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Lesson">xeo:Lesson</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Practice">xeo:Practice</a></dd></div></dl>
 </section>
 <section id="aggregation" class="term">
   <h3>aggregation <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-core</span></h3>
@@ -648,6 +729,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>Links a tactic to a per-dimension scored estimate. Domain left open since v0.6.0: a Recommendation may be assessed the same way, where what is scored is the call rather than the approach.</p>
   <dl><div class="row"><dt>expected on</dt><dd><a href="#Recommendation">xeo:Recommendation</a> · <a href="#Tactic">xeo:Tactic</a></dd></div><div class="row"><dt>range</dt><dd><a href="#TacticAssessment">xeo:TacticAssessment</a></dd></div></dl>
 </section>
+<section id="assignedTo" class="term">
+  <h3>assigned to <span class="layer" style="--h:#DD6B20">interpretation</span> <span class="status">draft</span><span class="mod">xeo-knowledge</span></h3>
+  <code class="iri">xeo:assignedTo</code>
+  <p>Who is to carry out an ActionItem: a Person, or an Organization such as a team. Part of the reading of what was agreed, so an interpretation. Absent where nobody was named. Range left open across the two terms listed.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#ActionItem">xeo:ActionItem</a></dd></div><div class="row"><dt>expected to point at</dt><dd><a href="#Organization">xeo:Organization</a> · <a href="#Person">xeo:Person</a></dd></div></dl>
+</section>
 <section id="atPriority" class="term">
   <h3>at priority <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:atPriority</code>
@@ -659,6 +746,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <code class="iri">xeo:atStage</code>
   <p>Places a Diagnostic, a Tactic or a Gap at a Stage of a Framework. For a Diagnostic or a Tactic the placement is the method author&#x27;s standing claim about where it belongs. For a Gap it is inherited from the Diagnostic that revealed it and carries method. Domain left open across the three terms listed.</p>
   <dl><div class="row"><dt>expected on</dt><dd><a href="#Diagnostic">xeo:Diagnostic</a> · <a href="#Gap">xeo:Gap</a> · <a href="#Tactic">xeo:Tactic</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Stage">xeo:Stage</a></dd></div></dl>
+</section>
+<section id="attendee" class="term">
+  <h3>attendee <span class="layer" style="--h:#319795">episode</span> <span class="status">draft</span><span class="mod">xeo-knowledge</span></h3>
+  <code class="iri">xeo:attendee</code>
+  <p>A Person (core) who was at a Meeting. Invited and absent is not attending. schema.org&#x27;s attendee says the same of an Event.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Meeting">xeo:Meeting</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Person">xeo:Person</a></dd></div><div class="row"><dt>closeMatch</dt><dd><a href="https://schema.org/attendee" class="ext">schema:attendee</a></dd></div></dl>
 </section>
 <section id="attributedResponse" class="term">
   <h3>attributed response <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-visibility</span></h3>
@@ -702,6 +795,18 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>The conversion point this event happened at.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#ConversionEvent">xeo:ConversionEvent</a></dd></div><div class="row"><dt>range</dt><dd><a href="#ConversionPoint">xeo:ConversionPoint</a></dd></div><div class="row"><dt>grounded in</dt><dd>The capturing system&#x27;s submission payload (per-vendor form or event API contract)</dd></div></dl>
 </section>
+<section id="checkedBy" class="term">
+  <h3>checked by <span class="layer" style="--h:#DD6B20">interpretation</span> <span class="status">draft</span><span class="mod">xeo-experiments</span></h3>
+  <code class="iri">xeo:checkedBy</code>
+  <p>The Experiment (decision) a ClaimCheck rests on. A verdict with no experiment behind it is an opinion and is not a ClaimCheck. Optional: it works when decision is loaded. Research §4.5.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#ClaimCheck">xeo:ClaimCheck</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Experiment">xeo:Experiment</a></dd></div></dl>
+</section>
+<section id="checksClaim" class="term">
+  <h3>checks claim <span class="layer" style="--h:#DD6B20">interpretation</span> <span class="status">draft</span><span class="mod">xeo-experiments</span></h3>
+  <code class="iri">xeo:checksClaim</code>
+  <p>The Claim a ClaimCheck tests. Exactly one per check. Research §4.5.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#ClaimCheck">xeo:ClaimCheck</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Claim">xeo:Claim</a></dd></div></dl>
+</section>
 <section id="childOf" class="term">
   <h3>child of <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:childOf</code>
@@ -719,6 +824,18 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <code class="iri">xeo:cites</code>
   <p>The response grounded on this URL, per the engine&#x27;s own citation annotations. Carries citationRank where the engine orders its sources. The visibility sibling of hasResult.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#LLMResponse">xeo:LLMResponse</a></dd></div><div class="row"><dt>range</dt><dd><a href="#URL">xeo:URL</a></dd></div><div class="row"><dt>grounded in</dt><dd>Engine response citation annotations (per-provider API contract)</dd></div></dl>
+</section>
+<section id="claimMetric" class="term">
+  <h3>claim metric <span class="layer" style="--h:#DD6B20">interpretation</span> <span class="status">draft</span><span class="mod">xeo-experiments</span></h3>
+  <code class="iri">xeo:claimMetric</code>
+  <p>The Metric (core) a Claim&#x27;s claimedValue is a value of, where the claim states a number: the unit and the better direction are then the Metric&#x27;s. A number with no metric cannot be checked. Name ours.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Claim">xeo:Claim</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Metric">xeo:Metric</a></dd></div></dl>
+</section>
+<section id="claimedBy" class="term">
+  <h3>claimed by <span class="layer" style="--h:#DD6B20">interpretation</span> <span class="status">draft</span><span class="mod">xeo-experiments</span></h3>
+  <code class="iri">xeo:claimedBy</code>
+  <p>The Person or Organization (core) that made a Claim: a vendor, an author, a team member. Range left open across the two terms listed. Research §4.5.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Claim">xeo:Claim</a></dd></div><div class="row"><dt>expected to point at</dt><dd><a href="#Organization">xeo:Organization</a> · <a href="#Person">xeo:Person</a></dd></div></dl>
 </section>
 <section id="clientOf" class="term">
   <h3>client of <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-work</span></h3>
@@ -816,6 +933,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>The Metric a ratio divides by. Required on a ratio, with numerator. Two tools that share a metric&#x27;s name and differ in its denominator are reporting two different metrics.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Metric">xeo:Metric</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Metric">xeo:Metric</a></dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
 </section>
+<section id="drawnFrom" class="term">
+  <h3>drawn from <span class="layer" style="--h:#805AD5">derivation</span> <span class="status">draft</span><span class="mod">xeo-experiments</span></h3>
+  <code class="iri">xeo:drawnFrom</code>
+  <p>The evidence a Lesson was drawn from: Experiments, their Outcomes, or ClaimChecks. A lesson with none is an opinion. Carries method and confidence. Range left open across the three terms listed. The Lesson&#x27;s counterpart of learnedFrom (decision), which says the same of a Practice. Research §4.5 (evidencedByExperiment).</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Lesson">xeo:Lesson</a></dd></div><div class="row"><dt>expected to point at</dt><dd><a href="#ClaimCheck">xeo:ClaimCheck</a> · <a href="#Experiment">xeo:Experiment</a> · <a href="#Outcome">xeo:Outcome</a></dd></div><div class="row"><dt>subproperty of</dt><dd><a href="http://www.w3.org/ns/prov#wasDerivedFrom" class="ext">prov:wasDerivedFrom</a></dd></div></dl>
+</section>
 <section id="effortEstimate" class="term">
   <h3>effort estimate <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:effortEstimate</code>
@@ -870,6 +993,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>The Practice (decision) whose enforcement produced this event. An episode, recorded when the rule fired, beside appliedPractice, which stays a derivation for evaluation after the fact. Optional: it works when decision is loaded.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#EnforcementEvent">xeo:EnforcementEvent</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Practice">xeo:Practice</a></dd></div></dl>
 </section>
+<section id="forArm" class="term">
+  <h3>for arm <span class="layer" style="--h:#319795">episode</span> <span class="status">draft</span><span class="mod">xeo-experiments</span></h3>
+  <code class="iri">xeo:forArm</code>
+  <p>The treated Arm an Outcome (decision) reads against the experiment&#x27;s baseline arm, on its primaryMetric. absoluteChange is that arm&#x27;s armMean less the baseline&#x27;s; relativeChange and result keep their meaning. An experiment with three arms has two such Outcomes. An Outcome of an experiment with no arms has none. Optional: it works when decision is loaded. Name ours.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Outcome">xeo:Outcome</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Arm">xeo:Arm</a></dd></div></dl>
+</section>
 <section id="frameworkKind" class="term">
   <h3>framework kind <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:frameworkKind</code>
@@ -893,6 +1022,18 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <code class="iri">xeo:grainToDate</code>
   <p>The grain at whose start a cumulative Metric resets, as a slotted-in concept (day, week, month, quarter, year — xeos:timeGrain is a published reference filling): month for a month-to-date total. Used instead of cumulativeWindow, never with it.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Metric">xeo:Metric</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
+</section>
+<section id="guardrailMetric" class="term">
+  <h3>guardrail metric <span class="layer" style="--h:#319795">episode</span> <span class="status">draft</span><span class="mod">xeo-experiments</span></h3>
+  <code class="iri">xeo:guardrailMetric</code>
+  <p>A Metric that must not get worse while the primary one is moved: raise clickthrough rate without raising bounce rate, cut tokens without cutting the pass rate. Fixed before the experiment starts. An experiment may have several. How far it may fall before the arm fails is not a term yet. Optional: it works when decision is loaded.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Experiment">xeo:Experiment</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Metric">xeo:Metric</a></dd></div></dl>
+</section>
+<section id="hasArm" class="term">
+  <h3>has arm <span class="layer" style="--h:#319795">episode</span> <span class="status">draft</span><span class="mod">xeo-experiments</span></h3>
+  <code class="iri">xeo:hasArm</code>
+  <p>An Arm of this Experiment. Fixed when the experiment starts: adding an arm later makes a different experiment. An experiment run before and after on the same pages, with no arms, has none; its control is on hasControl (decision). Optional: it works when decision is loaded.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Experiment">xeo:Experiment</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Arm">xeo:Arm</a></dd></div></dl>
 </section>
 <section id="hasCampaign" class="term">
   <h3>has campaign <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-work</span></h3>
@@ -1002,6 +1143,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>A Touchpoint stitched into this Journey.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Journey">xeo:Journey</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Touchpoint">xeo:Touchpoint</a></dd></div></dl>
 </section>
+<section id="hasTrial" class="term">
+  <h3>has trial <span class="layer" style="--h:#319795">episode</span> <span class="status">draft</span><span class="mod">xeo-experiments</span></h3>
+  <code class="iri">xeo:hasTrial</code>
+  <p>A Trial run under this Arm. Every Trial belongs to exactly one Arm.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Arm">xeo:Arm</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Trial">xeo:Trial</a></dd></div></dl>
+</section>
 <section id="hasTurn" class="term">
   <h3>has turn <span class="layer" style="--h:#319795">episode</span> <span class="status">draft</span><span class="mod">xeo-agentic</span></h3>
   <code class="iri">xeo:hasTurn</code>
@@ -1031,6 +1178,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <code class="iri">xeo:implementedAs</code>
   <p>The Experiment in which this Recommendation was carried out and measured. The forward edge of the loop: supportedBy points back at the precedents that earned the call, implementedAs points at the test the call became. A Recommendation that was approved and never run has none.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Recommendation">xeo:Recommendation</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Experiment">xeo:Experiment</a></dd></div><div class="row"><dt>seeAlso</dt><dd><a href="http://www.w3.org/ns/prov#wasInformedBy" class="ext">prov:wasInformedBy</a></dd></div></dl>
+</section>
+<section id="inBenchmark" class="term">
+  <h3>in benchmark <span class="layer" style="--h:#718096">entity</span> <span class="status">draft</span><span class="mod">xeo-experiments</span></h3>
+  <code class="iri">xeo:inBenchmark</code>
+  <p>The Benchmark version a task belongs to. Exactly one per task: the same task in a new version is a new BenchmarkTask.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#BenchmarkTask">xeo:BenchmarkTask</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Benchmark">xeo:Benchmark</a></dd></div></dl>
 </section>
 <section id="inContext" class="term">
   <h3>in context <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-decision</span></h3>
@@ -1116,6 +1269,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>The target an experiment&#x27;s Outcome is read against. Carries a role, primary or secondary, matching the target&#x27;s standing in its objective. Fixed when the experiment starts, so a later edit to the objective does not change what a running experiment is judged against. This edge says which target and nothing about pages: the pages and terms an experiment was run on are on treats.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Experiment">xeo:Experiment</a></dd></div><div class="row"><dt>range</dt><dd><a href="#MetricTarget">xeo:MetricTarget</a></dd></div></dl>
 </section>
+<section id="memberOf" class="term">
+  <h3>member of <span class="layer" style="--h:#718096">entity</span> <span class="status">draft</span><span class="mod">xeo-knowledge</span></h3>
+  <code class="iri">xeo:memberOf</code>
+  <p>A Person belongs to this Organization (core): works there, or sits in that team. Membership in the working sense, not a contract. Carries startedAt and endedAt where the dates are known; a past membership is kept with its end, not deleted. What the person does there is not a term yet. W3C ORG&#x27;s memberOf.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Person">xeo:Person</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Organization">xeo:Organization</a></dd></div><div class="row"><dt>closeMatch</dt><dd><a href="http://www.w3.org/ns/org#memberOf" class="ext">http://www.w3.org/ns/org#memberOf</a></dd></div></dl>
+</section>
 <section id="mentions" class="term">
   <h3>mentions <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-visibility</span></h3>
   <code class="iri">xeo:mentions</code>
@@ -1170,6 +1329,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>The AgentRuntime, at its version, a session ran on. One per session. Without it two sessions are not comparable: the loop, the built-in tools and the defaults differ by runtime and by version.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#AgentSession">xeo:AgentSession</a></dd></div><div class="row"><dt>range</dt><dd><a href="#AgentRuntime">xeo:AgentRuntime</a></dd></div></dl>
 </section>
+<section id="onTask" class="term">
+  <h3>on task <span class="layer" style="--h:#319795">episode</span> <span class="status">draft</span><span class="mod">xeo-experiments</span></h3>
+  <code class="iri">xeo:onTask</code>
+  <p>The BenchmarkTask a Trial was run on. A trial in an experiment that runs on live pages, not on a benchmark, has none.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Trial">xeo:Trial</a></dd></div><div class="row"><dt>range</dt><dd><a href="#BenchmarkTask">xeo:BenchmarkTask</a></dd></div></dl>
+</section>
 <section id="onToolCall" class="term">
   <h3>on tool call <span class="layer" style="--h:#319795">episode</span> <span class="status">draft</span><span class="mod">xeo-agentic</span></h3>
   <code class="iri">xeo:onToolCall</code>
@@ -1200,6 +1365,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>An earlier Experiment judged close enough to a later one to be read as its precedent: the same tactic against a gap of the same kind, on a comparable page. Points from the earlier experiment to the later. Carries similarity and method like any similarTo edge. A candidate for supportedBy, not a substitute for it: a Recommendation that leans on a precedent says so itself, and answers for it.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Experiment">xeo:Experiment</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Experiment">xeo:Experiment</a></dd></div><div class="row"><dt>subproperty of</dt><dd><a href="#similarTo">xeo:similarTo</a></dd></div></dl>
 </section>
+<section id="primaryMetric" class="term">
+  <h3>primary metric <span class="layer" style="--h:#319795">episode</span> <span class="status">draft</span><span class="mod">xeo-experiments</span></h3>
+  <code class="iri">xeo:primaryMetric</code>
+  <p>The one Metric (core) the Experiment is judged on, fixed before it starts. Where the experiment measures a campaign&#x27;s primary MetricTarget (work), it is that target&#x27;s Metric; this edge is for an experiment that has no target to read against, such as a benchmark run. Trial scores and arm figures are on this metric. At most one per experiment. Optional: it works when decision is loaded.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Experiment">xeo:Experiment</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Metric">xeo:Metric</a></dd></div></dl>
+</section>
 <section id="producedByModel" class="term">
   <h3>produced by model <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:producedByModel</code>
@@ -1217,6 +1388,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <code class="iri">xeo:producedOutcome</code>
   <p>The measured result this experiment generated.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Experiment">xeo:Experiment</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Outcome">xeo:Outcome</a></dd></div><div class="row"><dt>subproperty of</dt><dd><a href="http://www.w3.org/ns/prov#generated" class="ext">prov:generated</a></dd></div><div class="row"><dt>grounded in</dt><dd>The experiment&#x27;s run record</dd></div></dl>
+</section>
+<section id="raisedIn" class="term">
+  <h3>raised in <span class="layer" style="--h:#DD6B20">interpretation</span> <span class="status">draft</span><span class="mod">xeo-knowledge</span></h3>
+  <code class="iri">xeo:raisedIn</code>
+  <p>Where an ActionItem was raised: the Meeting, the Transcript or Summary it was read from, or a message kept with its schema.org type. At least one per action item. Range left open across the terms listed and that type.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#ActionItem">xeo:ActionItem</a></dd></div><div class="row"><dt>expected to point at</dt><dd><a href="#Meeting">xeo:Meeting</a> · <a href="#Summary">xeo:Summary</a> · <a href="#Transcript">xeo:Transcript</a></dd></div></dl>
 </section>
 <section id="ranksFor" class="term">
   <h3>ranks for <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
@@ -1241,6 +1418,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <code class="iri">xeo:recommends</code>
   <p>What this recommendation puts forward: a Tactic, or a category of work (an Intervention) where no tactic under it is named. Range left open across Tactic and Intervention.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Recommendation">xeo:Recommendation</a></dd></div><div class="row"><dt>expected to point at</dt><dd><a href="#Intervention">xeo:Intervention</a> · <a href="#Tactic">xeo:Tactic</a></dd></div></dl>
+</section>
+<section id="recordingOf" class="term">
+  <h3>recording of <span class="layer" style="--h:#319795">episode</span> <span class="status">draft</span><span class="mod">xeo-knowledge</span></h3>
+  <code class="iri">xeo:recordingOf</code>
+  <p>The Meeting a Recording captured. Exactly one per recording.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Recording">xeo:Recording</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Meeting">xeo:Meeting</a></dd></div><div class="row"><dt>closeMatch</dt><dd><a href="https://schema.org/recordedAt" class="ext">schema:recordedAt</a></dd></div></dl>
 </section>
 <section id="redirectsTo" class="term">
   <h3>redirects to <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-core</span></h3>
@@ -1356,6 +1539,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>The usual response when this check fails: a category of work (an Intervention) or a specific Tactic. A standing association authored with the Diagnostic, about a class of cases, and marked norm for that reason. Distinct from recommends, which is one Recommendation&#x27;s call about one case after the scope gate, precedent and Practices have been applied; and from addressableBy, which is a candidate for one diagnosed Gap. Range left open across the two terms listed.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Diagnostic">xeo:Diagnostic</a></dd></div><div class="row"><dt>expected to point at</dt><dd><a href="#Intervention">xeo:Intervention</a> · <a href="#Tactic">xeo:Tactic</a></dd></div></dl>
 </section>
+<section id="summarizes" class="term">
+  <h3>summarizes <span class="layer" style="--h:#805AD5">derivation</span> <span class="status">draft</span><span class="mod">xeo-knowledge</span></h3>
+  <code class="iri">xeo:summarizes</code>
+  <p>The record a Summary was drawn from: a Transcript, a Meeting, or a message, thread or document kept with its schema.org type. At least one per summary: a summary with no source cannot be checked. Range left open across the terms listed and those schema.org types.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Summary">xeo:Summary</a></dd></div><div class="row"><dt>expected to point at</dt><dd><a href="#Meeting">xeo:Meeting</a> · <a href="#Transcript">xeo:Transcript</a></dd></div><div class="row"><dt>subproperty of</dt><dd><a href="http://www.w3.org/ns/prov#wasDerivedFrom" class="ext">prov:wasDerivedFrom</a></dd></div></dl>
+</section>
 <section id="supersedes" class="term">
   <h3>supersedes <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:supersedes</code>
@@ -1386,6 +1575,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>What this experiment put to the test: a Tactic, or a category of work (an Intervention) where the Recommendation it carried out named a category and no tactic. Range left open across Tactic and Intervention.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Experiment">xeo:Experiment</a></dd></div><div class="row"><dt>expected to point at</dt><dd><a href="#Intervention">xeo:Intervention</a> · <a href="#Tactic">xeo:Tactic</a></dd></div></dl>
 </section>
+<section id="testsTactic" class="term">
+  <h3>tests tactic <span class="layer" style="--h:#319795">episode</span> <span class="status">draft</span><span class="mod">xeo-experiments</span></h3>
+  <code class="iri">xeo:testsTactic</code>
+  <p>The Tactic (decision) this Arm applies, where it applies one: a title rewrite, a harness edit, a prompt change. An arm that combines several names each. The baseline arm has none. The experiment as a whole tests what its tests edge names; this says which arm carries which change. Optional: it works when decision is loaded. Research §4.4.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Arm">xeo:Arm</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Tactic">xeo:Tactic</a></dd></div></dl>
+</section>
 <section id="timeAnchor" class="term">
   <h3>time anchor <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:timeAnchor</code>
@@ -1410,6 +1605,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>This tenant tracks this prompt. Tenancy is data, not schema.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Website">xeo:Website</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Prompt">xeo:Prompt</a></dd></div></dl>
 </section>
+<section id="transcriptOf" class="term">
+  <h3>transcript of <span class="layer" style="--h:#319795">episode</span> <span class="status">draft</span><span class="mod">xeo-knowledge</span></h3>
+  <code class="iri">xeo:transcriptOf</code>
+  <p>The Recording a Transcript was made from. Exactly one per transcript. A transcript typed up from notes, with no recording behind it, is not a Transcript; it is a document.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Transcript">xeo:Transcript</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Recording">xeo:Recording</a></dd></div><div class="row"><dt>subproperty of</dt><dd><a href="http://www.w3.org/ns/prov#wasDerivedFrom" class="ext">prov:wasDerivedFrom</a></dd></div></dl>
+</section>
 <section id="treats" class="term">
   <h3>treats <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:treats</code>
@@ -1427,6 +1628,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <code class="iri">xeo:unit</code>
   <p>What a reading of this Metric is a number of, as a slotted-in concept (count, ratio, rank, currency, seconds, days, score_0_100 — xeos:metricUnit is a published reference filling). Exactly one per Metric. A ratio is a 0 to 1 quotient, never a percentage. A rank is 1-based with 1 best. A currency reading carries currencyCode. Distinct from magnitudeUnit, which names the unit of a Gap&#x27;s size.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Metric">xeo:Metric</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
+</section>
+<section id="unitOf" class="term">
+  <h3>unit of <span class="layer" style="--h:#718096">entity</span> <span class="status">draft</span><span class="mod">xeo-knowledge</span></h3>
+  <code class="iri">xeo:unitOf</code>
+  <p>This Organization is a department, team or other unit of that one. A unit is an Organization in its own right, so it can own a Website, hold a Capability and have members. Not clientOf (work), which joins two separate parties. W3C ORG&#x27;s unitOf.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Organization">xeo:Organization</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Organization">xeo:Organization</a></dd></div><div class="row"><dt>closeMatch</dt><dd><a href="http://www.w3.org/ns/org#unitOf" class="ext">http://www.w3.org/ns/org#unitOf</a></dd></div></dl>
 </section>
 <section id="usedConfig" class="term">
   <h3>used configuration <span class="layer" style="--h:#319795">episode</span> <span class="status">draft</span><span class="mod">xeo-agentic</span></h3>
@@ -1464,7 +1671,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>The Project a Spec belongs to, where the work is done under one: client work or internal work alike. A spec for work outside any Project has none.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Spec">xeo:Spec</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Project">xeo:Project</a></dd></div></dl>
 </section>
-<h2 id="datatype-properties">Datatype properties <span class="n">239</span></h2>
+<h2 id="datatype-properties">Datatype properties <span class="n">260</span></h2>
 <section id="absoluteChange" class="term">
   <h3>absolute change <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:absoluteChange</code>
@@ -1543,11 +1750,29 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>Whether this capability is approved for the engagement — the live state of the scope gate. Tenancy-scoped like everything else.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Capability">xeo:Capability</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#boolean" class="ext">xsd:boolean</a></dd></div></dl>
 </section>
+<section id="armMean" class="term">
+  <h3>arm mean <span class="layer" style="--h:#805AD5">derivation</span> <span class="status">draft</span><span class="mod">xeo-experiments</span></h3>
+  <code class="iri">xeo:armMean</code>
+  <p>The mean trialScore of an Arm&#x27;s trials on the experiment&#x27;s primaryMetric, in that metric&#x27;s unit. Trials with a failureClass of infrastructure or excluded are left out; agent failures count. Carries method where anything else was left out. The plan of record puts the mean on the Outcome; it is here because an Outcome is a comparison and the baseline arm has none. Name ours.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Arm">xeo:Arm</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div></dl>
+</section>
+<section id="armSampleSize" class="term">
+  <h3>arm sample size <span class="layer" style="--h:#805AD5">derivation</span> <span class="status">draft</span><span class="mod">xeo-experiments</span></h3>
+  <code class="iri">xeo:armSampleSize</code>
+  <p>How many trials armMean and armStandardDeviation were computed over: the arm&#x27;s trials, less those left out. Never negative. Name ours.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Arm">xeo:Arm</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div></dl>
+</section>
+<section id="armStandardDeviation" class="term">
+  <h3>arm standard deviation <span class="layer" style="--h:#805AD5">derivation</span> <span class="status">draft</span><span class="mod">xeo-experiments</span></h3>
+  <code class="iri">xeo:armStandardDeviation</code>
+  <p>The standard deviation of the trial scores behind armMean, over the same trials. Name ours.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Arm">xeo:Arm</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div></dl>
+</section>
 <section id="artifactUri" class="term">
   <h3>artifact URI <span class="layer" style="--h:#718096">entity</span> <span class="status">draft</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:artifactUri</code>
   <p>Where the file behind a node is kept: a repository address with its path and revision, or another durable address. The place it names is the authority for the text; the graph holds the pointer. Expected on a Spec, a WorkItem and a Deliverable (work), on a HarnessComponent (agentic), and on a Compaction (agentic), where it points at the summary the compaction wrote. Domain left open across the terms listed. The sibling of datasetUri, which points at a table.</p>
-  <dl><div class="row"><dt>expected on</dt><dd><a href="#Compaction">xeo:Compaction</a> · <a href="#Deliverable">xeo:Deliverable</a> · <a href="#HarnessComponent">xeo:HarnessComponent</a> · <a href="#Spec">xeo:Spec</a> · <a href="#WorkItem">xeo:WorkItem</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#Compaction">xeo:Compaction</a> · <a href="#Deliverable">xeo:Deliverable</a> · <a href="#HarnessComponent">xeo:HarnessComponent</a> · <a href="#Recording">xeo:Recording</a> · <a href="#Spec">xeo:Spec</a> · <a href="#Summary">xeo:Summary</a> · <a href="#Transcript">xeo:Transcript</a> · <a href="#WorkItem">xeo:WorkItem</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
 <section id="assignedAt" class="term">
   <h3>assigned at <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-core</span></h3>
@@ -1590,6 +1815,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <code class="iri">xeo:baselineCapturedAt</code>
   <p>When baseline was read. Not the same instant as the target&#x27;s creation.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#MetricTarget">xeo:MetricTarget</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div><div class="row"><dt>grounded in</dt><dd>The API contract of the system named in the source of the target&#x27;s baselineReading</dd></div></dl>
+</section>
+<section id="benchmarkVersion" class="term">
+  <h3>benchmark version <span class="layer" style="--h:#718096">entity</span> <span class="status">draft</span><span class="mod">xeo-experiments</span></h3>
+  <code class="iri">xeo:benchmarkVersion</code>
+  <p>The version of a Benchmark, as its maintainer names it. With name, its identity. Scores from two versions are not compared.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Benchmark">xeo:Benchmark</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
 <section id="betweenness" class="term">
   <h3>betweenness <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-analysis</span></h3>
@@ -1657,6 +1888,24 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>The id of the subagent that was started, as the runtime reports it.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Delegation">xeo:Delegation</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>OpenTelemetry GenAI semantic conventions, gen_ai.agent.id (status: Development) · the runtime&#x27;s own agent ids</dd></div></dl>
 </section>
+<section id="ciLower" class="term">
+  <h3>confidence interval, lower <span class="layer" style="--h:#805AD5">derivation</span> <span class="status">draft</span><span class="mod">xeo-experiments</span></h3>
+  <code class="iri">xeo:ciLower</code>
+  <p>The lower end of the confidence interval around an Outcome&#x27;s absoluteChange: the range the true change probably falls in (&#x27;clicks rose 12%, likely between 4% and 20%&#x27;). In the same unit as absoluteChange. Stated with ciUpper and ciMethod. Optional: it works when decision is loaded.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Outcome">xeo:Outcome</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div></dl>
+</section>
+<section id="ciMethod" class="term">
+  <h3>confidence interval method <span class="layer" style="--h:#805AD5">derivation</span> <span class="status">draft</span><span class="mod">xeo-experiments</span></h3>
+  <code class="iri">xeo:ciMethod</code>
+  <p>How the confidence interval was calculated, and at what level: &#x27;task-clustered bootstrap, 95%&#x27;, &#x27;Welch t, 90%&#x27;. An interval without its method cannot be compared with another. Optional: it works when decision is loaded.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Outcome">xeo:Outcome</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
+<section id="ciUpper" class="term">
+  <h3>confidence interval, upper <span class="layer" style="--h:#805AD5">derivation</span> <span class="status">draft</span><span class="mod">xeo-experiments</span></h3>
+  <code class="iri">xeo:ciUpper</code>
+  <p>The upper end of the confidence interval around an Outcome&#x27;s absoluteChange. Stated with ciLower and ciMethod. Optional: it works when decision is loaded.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Outcome">xeo:Outcome</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div></dl>
+</section>
 <section id="citationRank" class="term">
   <h3>citation rank <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-visibility</span></h3>
   <code class="iri">xeo:citationRank</code>
@@ -1668,6 +1917,30 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <code class="iri">xeo:citationRate</code>
   <p>Share of captured responses in the window that cite the brand&#x27;s owned URLs. Cited and mentioned diverge — a page can ground an answer that names someone else.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div></dl>
+</section>
+<section id="claimSourceUri" class="term">
+  <h3>claim source URI <span class="layer" style="--h:#718096">entity</span> <span class="status">draft</span><span class="mod">xeo-experiments</span></h3>
+  <code class="iri">xeo:claimSourceUri</code>
+  <p>Where a Claim was made: the page, post, talk or document, as a URI. Research §2 (Claim).</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Claim">xeo:Claim</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
+<section id="claimVerdict" class="term">
+  <h3>claim verdict <span class="layer" style="--h:#DD6B20">interpretation</span> <span class="status">draft</span><span class="mod">xeo-experiments</span></h3>
+  <code class="iri">xeo:claimVerdict</code>
+  <p>What a ClaimCheck found, from xeos:claimVerdict: confirmed, real_but_small, real_with_conditions, debunked, unverified or unsubstantiated. Exactly one per check. Research §4.5 and §7 (claimVerdict).</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#ClaimCheck">xeo:ClaimCheck</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
+<section id="claimedAt" class="term">
+  <h3>claimed at <span class="layer" style="--h:#319795">episode</span> <span class="status">draft</span><span class="mod">xeo-experiments</span></h3>
+  <code class="iri">xeo:claimedAt</code>
+  <p>The day a Claim was made or published. With claimedBy and statement, its identity: the same words a year later are a new claim about a newer version. Name ours.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Claim">xeo:Claim</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#date" class="ext">xsd:date</a></dd></div></dl>
+</section>
+<section id="claimedValue" class="term">
+  <h3>claimed value <span class="layer" style="--h:#DD6B20">interpretation</span> <span class="status">draft</span><span class="mod">xeo-experiments</span></h3>
+  <code class="iri">xeo:claimedValue</code>
+  <p>The number a Claim states, in the unit of its claimMetric, a ratio as a 0 to 1 quotient: &#x27;saves 40% of tokens&#x27; is 0.4 on a token-reduction metric. Absent where the claim states no number. Research §4.5.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Claim">xeo:Claim</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div></dl>
 </section>
 <section id="clickIdentifier" class="term">
   <h3>click identifier <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-attribution</span></h3>
@@ -1800,6 +2073,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <code class="iri">xeo:costBasis</code>
   <p>Where a costAmount came from: estimated_list_price, configured_rate or invoice (xeos:costBasis). The first two are computed; invoice was read from what the provider billed. Amounts on different bases are not summed.</p>
   <dl><div class="row"><dt>expected on</dt><dd><a href="#AgentSession">xeo:AgentSession</a> · <a href="#ModelCall">xeo:ModelCall</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
+<section id="counterfactual" class="term">
+  <h3>counterfactual <span class="layer" style="--h:#DD6B20">interpretation</span> <span class="status">draft</span><span class="mod">xeo-experiments</span></h3>
+  <code class="iri">xeo:counterfactual</code>
+  <p>What a Claim compares against, in plain language: &#x27;the same agent with no tool&#x27;, &#x27;the page before the change&#x27;. A claimed saving means nothing until it says compared with what; where the claimant does not say, this records what the checker assumed. Research §4.5.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Claim">xeo:Claim</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
 <section id="crawlDepth" class="term">
   <h3>crawl depth <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-core</span></h3>
@@ -1957,6 +2236,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>Fixed run length of a project that has an end date, in days. For a one-off; absent on a retainer, and on a Project with no set end.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Project">xeo:Project</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div></dl>
 </section>
+<section id="effectiveN" class="term">
+  <h3>effective sample size <span class="layer" style="--h:#805AD5">derivation</span> <span class="status">draft</span><span class="mod">xeo-experiments</span></h3>
+  <code class="iri">xeo:effectiveN</code>
+  <p>The sample size an Outcome&#x27;s interval actually rests on, once repeats of the same task or page are accounted for. Thirty trials over five tasks are closer to five independent observations than to thirty. Not a whole number in general. Optional: it works when decision is loaded.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Outcome">xeo:Outcome</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div></dl>
+</section>
 <section id="eligibleTouchType" class="term">
   <h3>eligible touch type <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-attribution</span></h3>
   <code class="iri">xeo:eligibleTouchType</code>
@@ -2047,6 +2332,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>On a derived Metric: the arithmetic over its inputMetrics, each named by its notation (&#x27;revenue_won / deals_won&#x27;). Required on a derived metric. On a simple Metric it may state a row-level computation applied before aggregation, where the number is not the slot&#x27;s own value (&#x27;days from recordCreatedAt to dealClosedAt&#x27;). Plain arithmetic in neutral names, never a vendor&#x27;s query syntax.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Metric">xeo:Metric</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
 </section>
+<section id="failureClass" class="term">
+  <h3>failure class <span class="layer" style="--h:#319795">episode</span> <span class="status">draft</span><span class="mod">xeo-experiments</span></h3>
+  <code class="iri">xeo:failureClass</code>
+  <p>Why a Trial did not produce a usable score: agent (the thing under test failed, which counts against its arm), infrastructure (the environment failed, which does not), or excluded (removed by a rule set before the experiment started). Codes in xeos:failureClass. Absent on a trial that finished. Research §4.4.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Trial">xeo:Trial</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
 <section id="failureMode" class="term">
   <h3>failure mode <span class="layer" style="--h:#D69E2E">norm</span> <span class="status">draft</span><span class="mod">xeo-agentic</span></h3>
   <code class="iri">xeo:failureMode</code>
@@ -2094,6 +2385,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <code class="iri">xeo:fromStageRef</code>
   <p>The tenant&#x27;s identifier of the stage the record left. Absent on the first entry, and where the source reports entries without what came before.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#StageTransition">xeo:StageTransition</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>bigquery</dd></div></dl>
+</section>
+<section id="graderKind" class="term">
+  <h3>grader kind <span class="layer" style="--h:#718096">entity</span> <span class="status">draft</span><span class="mod">xeo-experiments</span></h3>
+  <code class="iri">xeo:graderKind</code>
+  <p>How a Benchmark&#x27;s tasks are scored: verifier (a deterministic check), llm_judge (a model), human (a person) or none (not graded; the trials are read by other means). Codes in xeos:graderKind. It decides whether a trialScore is an observation or a derivation. Research §4.4.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Benchmark">xeo:Benchmark</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
 <section id="grossAmount" class="term">
   <h3>gross amount <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-attribution</span></h3>
@@ -2148,6 +2445,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <code class="iri">xeo:interventionQuota</code>
   <p>Ceiling on interventions this project may deploy per period (retainer) or in total (one-off). Optional: a Project without one states no ceiling, which is not a ceiling of zero. Where it is set, Recommendations in an open status — pending, in_progress, blocked — consume it; advised work does not.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Project">xeo:Project</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div></dl>
+</section>
+<section id="isBaseline" class="term">
+  <h3>is baseline <span class="layer" style="--h:#718096">entity</span> <span class="status">draft</span><span class="mod">xeo-experiments</span></h3>
+  <code class="iri">xeo:isBaseline</code>
+  <p>Marks the Arm the others are read against: the current version, the unchanged harness, the control condition. At most one arm per experiment is the baseline.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Arm">xeo:Arm</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#boolean" class="ext">xsd:boolean</a></dd></div></dl>
 </section>
 <section id="isPrimary" class="term">
   <h3>is primary <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">xeo-work</span></h3>
@@ -2431,6 +2734,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>Carried on an appliedPractice edge: &#x27;vetoed&#x27; (a guardrail removed the candidate), &#x27;reranked&#x27; (a preference moved it), or &#x27;caveated&#x27; (guidance flagged it and changed nothing). One value per practiceKind. Domain left open because it rides on the edge, not on a node.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
+<section id="preRegistrationRef" class="term">
+  <h3>pre-registration reference <span class="layer" style="--h:#319795">episode</span> <span class="status">draft</span><span class="mod">xeo-experiments</span></h3>
+  <code class="iri">xeo:preRegistrationRef</code>
+  <p>Where the plan for the Experiment was written down before it started: what is tested, on what, and how the result will be judged, so the goalposts cannot be moved afterwards. A URI to a fixed copy: a tagged commit, a dated document. An experiment with none was exploratory, and its result should be read as such. Optional: it works when decision is loaded. Research §4.4.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Experiment">xeo:Experiment</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
 <section id="projection" class="term">
   <h3>projection <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-analysis</span></h3>
   <code class="iri">xeo:projection</code>
@@ -2687,7 +2996,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <h3>statement <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:statement</code>
   <p>The rule in plain language, as a human authored or confirmed it — e.g. &#x27;Never 301 a paginated archive URL for ranking purposes.&#x27; The canonical human-facing form; the structural fields (practiceKind, appliesToConcept, constrains) make it executable.</p>
-  <dl><div class="row"><dt>expected on</dt><dd><a href="#Feedback">xeo:Feedback</a> · <a href="#Gap">xeo:Gap</a> · <a href="#Objective">xeo:Objective</a> · <a href="#Practice">xeo:Practice</a> · <a href="#Recommendation">xeo:Recommendation</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#Claim">xeo:Claim</a> · <a href="#Feedback">xeo:Feedback</a> · <a href="#Gap">xeo:Gap</a> · <a href="#Lesson">xeo:Lesson</a> · <a href="#Objective">xeo:Objective</a> · <a href="#Practice">xeo:Practice</a> · <a href="#Recommendation">xeo:Recommendation</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
 <section id="status" class="term">
   <h3>status <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">xeo-decision</span></h3>
@@ -2736,6 +3045,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <code class="iri">xeo:targetValue</code>
   <p>The value the metric should reach, interpreted per targetKind. Bounded per metric and kind at the edge — a percentage, a count, a rank and a currency do not share a range. In the Metric&#x27;s unit, a ratio as a 0 to 1 quotient; a currency target also states targetCurrency.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#MetricTarget">xeo:MetricTarget</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div></dl>
+</section>
+<section id="taskRef" class="term">
+  <h3>task reference <span class="layer" style="--h:#718096">entity</span> <span class="status">draft</span><span class="mod">xeo-experiments</span></h3>
+  <code class="iri">xeo:taskRef</code>
+  <p>The id a Benchmark gives one of its tasks. Unique within one version of the benchmark, so a task is identified by its benchmark, the version and this id. Name ours.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#BenchmarkTask">xeo:BenchmarkTask</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
 <section id="taxAmount" class="term">
   <h3>tax amount <span class="layer" style="--h:#38A169">observation</span><span class="mod">xeo-attribution</span></h3>
@@ -2826,6 +3141,24 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <code class="iri">xeo:touchType</code>
   <p>What kind of interaction a Touchpoint was, as a code from a slotted-in scheme (ad_click, ad_view, visit, email, email_open, text_message, call, form, chat, meeting, offline, other — xeos:touchType is a published reference filling). One per Touchpoint. An email_open is not eligible for credit unless a model says so.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Touchpoint">xeo:Touchpoint</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>The ad platform&#x27;s or store&#x27;s reporting API contract (per-vendor, mapped in mappings/)</dd></div></dl>
+</section>
+<section id="trialBlock" class="term">
+  <h3>trial block <span class="layer" style="--h:#319795">episode</span> <span class="status">draft</span><span class="mod">xeo-experiments</span></h3>
+  <code class="iri">xeo:trialBlock</code>
+  <p>The block a Trial was run in, where the design groups trials so that what varies between groups (a day, a machine, a model version) is not read as an effect of the arm. Absent where trials are not blocked. Plan of record (block is trialBlock); research §4.4.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Trial">xeo:Trial</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
+<section id="trialReplicate" class="term">
+  <h3>trial replicate <span class="layer" style="--h:#319795">episode</span> <span class="status">draft</span><span class="mod">xeo-experiments</span></h3>
+  <code class="iri">xeo:trialReplicate</code>
+  <p>Which repeat of the same arm on the same task this Trial is, counted from 1. Repeats are what let a noisy score be averaged, and are why effectiveN is smaller than the number of trials. Research §4.4 (replicate; renamed under the naming rule).</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Trial">xeo:Trial</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div></dl>
+</section>
+<section id="trialScore" class="term">
+  <h3>trial score <span class="layer" style="--h:#38A169">observation</span> <span class="status">draft</span><span class="mod">xeo-experiments</span></h3>
+  <code class="iri">xeo:trialScore</code>
+  <p>The score a Trial received on the experiment&#x27;s primary metric: a pass as 1 and a fail as 0, or a graded value. An observation when a deterministic grader set it (a test suite, an exact match). Where a model or a person judged it, the score is a derivation and carries method and, for a model, producedByModel (core): the Benchmark&#x27;s graderKind says which. One per Trial. Plan of record (reward is trialScore); research §4.4.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Trial">xeo:Trial</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>grounded in</dt><dd>The benchmark&#x27;s grading contract, applied by a deterministic grader</dd></div></dl>
 </section>
 <section id="turnRef" class="term">
   <h3>turn reference <span class="layer" style="--h:#319795">episode</span> <span class="status">draft</span><span class="mod">xeo-agentic</span></h3>

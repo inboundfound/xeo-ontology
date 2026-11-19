@@ -79,6 +79,13 @@
       "id": "ex:bad-deal-2", "crmRecordRef": "hubspot:12345:deal:2",
       "dealAmount": "42000", "currencyCode": "gbp", "expect": "CurrencyCodeFormat"
     },
-    { "id": "ex:bad-transition", "type": "StageTransition", "toStageRef": "closedwon", "expect": "StageTransitionShape" }
+    { "id": "ex:bad-transition", "type": "StageTransition", "toStageRef": "closedwon", "expect": "StageTransitionShape" },
+
+    { "id": "ex:bad-trial", "type": "Trial", "trialReplicate": 1, "trialScore": "1", "expect": "TrialShape" },
+    { "id": "ex:bad-claim-check", "type": "ClaimCheck", "claimVerdict": "probably_true", "expect": "ClaimCheckShape" },
+    { "id": "ex:bad-recording", "type": "Recording", "artifactUri": "https://example.com/recordings/0001.mp4", "expect": "RecordingShape" },
+    { "id": "ex:bad-transcript", "type": "Transcript", "artifactUri": "https://example.com/transcripts/0001.txt", "expect": "TranscriptShape" },
+    { "id": "ex:bad-summary", "type": "Summary", "artifactUri": "https://example.com/notes/0001.md", "expect": "SummaryNamesItsSource" },
+    { "id": "ex:bad-action-item", "type": "ActionItem", "name": "Send the audit to the client", "expect": "ActionItemNamesWhereRaised" }
   ]
 }
