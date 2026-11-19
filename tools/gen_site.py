@@ -64,7 +64,8 @@ XEOS = "https://xeoontology.org/schemes#"
 MODULE_ORDER = [
     "xeo-core", "xeo-visibility", "xeo-analysis", "xeo-sales", "xeo-attribution",
     "xeo-attribution-sales", "xeo-work",
-    "xeo-decision", "xeo-agentic", "xeo-schemes", "xeo-align",
+    "xeo-decision", "xeo-agentic", "xeo-experiments", "xeo-knowledge",
+    "xeo-schemes", "xeo-align",
 ]
 
 # Files and folders copied into public/ as-is, if the release has them.

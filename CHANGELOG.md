@@ -7,6 +7,63 @@ and corrects prose; a domain or range is not narrowed.
 
 Versions before 0.6.0 are reconstructed from the git history.
 
+## Unreleased — draft: the experiments and company knowledge modules
+
+Two new add-on modules for the next release, every term in both marked
+`xeo:termStatus "draft"`: declared so they can be tried, and free to change or go without a
+deprecation step. Nothing released is renamed, removed, retyped or narrowed. The version stays
+0.7.2 until the release commit.
+
+### `xeo-experiments.ttl`
+
+From the 0.7 plan of record and the research report on agent harnesses (§2 to §4.5, §7).
+42 terms: `Arm`, `Trial`, `Benchmark`, `BenchmarkTask`, `Claim`, `ClaimCheck`, `Lesson`; how an
+experiment is designed (`hasArm`, `testsTactic`, `isBaseline`, `primaryMetric`,
+`guardrailMetric`, `preRegistrationRef`) and run (`hasTrial`, `onTask`, `inBenchmark`,
+`trialReplicate`, `trialBlock`, `trialScore`, `failureClass`, `benchmarkVersion`,
+`graderKind`, `taskRef`); what an arm measured (`armMean`, `armStandardDeviation`,
+`armSampleSize`) and the interval around a change (`forArm`, `ciLower`, `ciUpper`,
+`ciMethod`, `effectiveN`); claims (`claimedBy`, `claimMetric`, `claimedValue`,
+`counterfactual`, `claimSourceUri`, `claimedAt`, `checksClaim`, `checkedBy`,
+`claimVerdict`); lessons (`drawnFrom`, `adoptedAs`).
+
+- **`Experiment` and `Outcome` stay in `xeo-decision.ttl`.** The plan lists them in the new
+  module; they are released and cited by line number, so the move waits for a release
+  decision. The new module points at them, and those links are optional.
+- **An arm's own figures sit on the `Arm`, not on an `Outcome`.** An Outcome is a comparison
+  and must state a `result`; the baseline arm has nothing to be compared with.
+- **A `Lesson` is not a subclass of `Practice`.** XEO tells lessons, SOPs and best practices
+  apart by source, not by class. A Lesson is the finding; the rule adopted from it is a
+  Practice whose source is `learned` (`adoptedAs`).
+- **Renamed from the research under the naming rule:** `block` is `trialBlock`, `reward` is
+  `trialScore`, `replicate` is `trialReplicate`.
+- **Three draft schemes:** `graderKind`, `failureClass`, `claimVerdict`. `confirmed` is added
+  to the research's verdicts, which had no code for a claim that held.
+
+### `xeo-knowledge.ttl`
+
+Stage 2 of the company-knowledge planning brief: what schema.org lacks, each thing with its
+layer. 13 terms: `Meeting` (episode), `Recording` and `Transcript` (observations, kept as
+pointers), `Summary` (derivation), `ActionItem` (interpretation); `attendee`, `recordingOf`,
+`transcriptOf`, `summarizes`, `raisedIn`, `assignedTo`; and `memberOf` and `unitOf` (from the
+W3C Organization Ontology) for people and departments. A message, a thread and a document are
+schema.org's `Message`, `Conversation` and `DigitalDocument`, and no class is minted for them.
+
+### Also
+
+- **Shapes:** six, for the rules the two modules state as required (a trial belongs to one
+  arm; a claim check names one claim and one verdict; a recording and a transcript name what
+  they record; a summary and an action item name their source), each with a failing case in
+  `examples/invalid/broken-rules.jsonld`.
+- **Alignment:** `xeo-align.ttl` gains bridges to schema.org, PROV-O, ML-Schema and the W3C
+  Organization Ontology for the new terms, and `Experiment` closeMatch `mls:Experiment`.
+- **Examples:** `examples/experiment-arms.jsonld` and `examples/company-knowledge.jsonld` load
+  every new class.
+- `statement` (decision) may also sit on a `Claim` or a `Lesson`, and `artifactUri` (core) on
+  a `Recording`, `Transcript` or `Summary`: two open lists widened.
+- Generated files regenerated; `tools/gen_docs.py`, `gen_profile.py` and `gen_site.py` list the
+  two modules.
+
 ## 0.7.2 — five wider edges, and three descriptions that now say one thing (2026-11-17)
 
 A patch from mapping XEO against the production code its decision and work modules were lifted

@@ -4099,3 +4099,122 @@ xeos:specKind-functional_requirements a skos:Concept ;
     skos:notation "functional_requirements" ;
     skos:prefLabel "Functional requirements"@en ;
     skos:definition "The behaviours the result must have"@en .
+
+# --- Draft schemes for the experiments module (after 0.7.2) ---------------------------
+# Appended at the foot, so no line above moves. Each fills a slot of the draft
+# experiments module and is marked draft with the terms it fills. The codes are the
+# research report's; the definitions are XEO's wording, and claimVerdict's
+# 'confirmed' is XEO's addition, because the report's list had no code for a claim
+# that held.
+
+xeos:graderKind a skos:ConceptScheme ;
+    skos:prefLabel "Grader kinds"@en ;
+    xeo:fillsSlot xeo:graderKind ;
+    xeo:termStatus "draft" ;
+    dct:source "XEO Harness Module research report and handoff, 2026-11-10 (§4.4, graderKind; §7, xeos:graderKind). The definitions are XEO's wording; the report gives the codes" ;
+    dct:description "How a Benchmark's tasks are scored. It decides whether a trial's score is an observation (verifier) or a derivation (the others)." .
+
+xeos:graderKind-verifier a skos:Concept ;
+    skos:inScheme xeos:graderKind ;
+    skos:topConceptOf xeos:graderKind ;
+    skos:notation "verifier" ;
+    skos:prefLabel "Verifier"@en ;
+    skos:definition "A deterministic check scores the task: a test suite, an exact match, a script"@en .
+
+xeos:graderKind-llm_judge a skos:Concept ;
+    skos:inScheme xeos:graderKind ;
+    skos:topConceptOf xeos:graderKind ;
+    skos:notation "llm_judge" ;
+    skos:prefLabel "Model judge"@en ;
+    skos:definition "A language model scores the task against a rubric"@en .
+
+xeos:graderKind-human a skos:Concept ;
+    skos:inScheme xeos:graderKind ;
+    skos:topConceptOf xeos:graderKind ;
+    skos:notation "human" ;
+    skos:prefLabel "Human"@en ;
+    skos:definition "A person scores the task"@en .
+
+xeos:graderKind-none a skos:Concept ;
+    skos:inScheme xeos:graderKind ;
+    skos:topConceptOf xeos:graderKind ;
+    skos:notation "none" ;
+    skos:prefLabel "Not graded"@en ;
+    skos:definition "The tasks carry no grade; the trials are read by other means, such as cost or time"@en .
+
+xeos:failureClass a skos:ConceptScheme ;
+    skos:prefLabel "Trial failure classes"@en ;
+    xeo:fillsSlot xeo:failureClass ;
+    xeo:termStatus "draft" ;
+    dct:source "XEO Harness Module research report and handoff, 2026-11-10 (§4.4, failureClass; §7, xeos:failureClass). The definitions are XEO's wording; the report gives the codes" ;
+    dct:description "Why a Trial did not produce a usable score. Only an agent failure counts against the arm." .
+
+xeos:failureClass-agent a skos:Concept ;
+    skos:inScheme xeos:failureClass ;
+    skos:topConceptOf xeos:failureClass ;
+    skos:notation "agent" ;
+    skos:prefLabel "Agent"@en ;
+    skos:definition "The thing under test failed: it gave up, ran out of budget or produced nothing gradable. Counts against its arm"@en .
+
+xeos:failureClass-infrastructure a skos:Concept ;
+    skos:inScheme xeos:failureClass ;
+    skos:topConceptOf xeos:failureClass ;
+    skos:notation "infrastructure" ;
+    skos:prefLabel "Infrastructure"@en ;
+    skos:definition "The environment failed: a timeout, an outage, a broken container. Left out of the arm's figures"@en .
+
+xeos:failureClass-excluded a skos:Concept ;
+    skos:inScheme xeos:failureClass ;
+    skos:topConceptOf xeos:failureClass ;
+    skos:notation "excluded" ;
+    skos:prefLabel "Excluded"@en ;
+    skos:definition "Removed by a rule set before the experiment started. Left out of the arm's figures"@en .
+
+xeos:claimVerdict a skos:ConceptScheme ;
+    skos:prefLabel "Claim verdicts"@en ;
+    xeo:fillsSlot xeo:claimVerdict ;
+    xeo:termStatus "draft" ;
+    dct:source "XEO Harness Module research report and handoff, 2026-11-10 (§4.5, claimVerdict; §7, xeos:claimVerdict). The definitions are XEO's wording; the report gives every code except confirmed, which XEO adds" ;
+    dct:description "What a ClaimCheck found. One per check." .
+
+xeos:claimVerdict-confirmed a skos:Concept ;
+    skos:inScheme xeos:claimVerdict ;
+    skos:topConceptOf xeos:claimVerdict ;
+    skos:notation "confirmed" ;
+    skos:prefLabel "Confirmed"@en ;
+    skos:definition "The test found the effect the claim states, at about the size it states"@en .
+
+xeos:claimVerdict-real_but_small a skos:Concept ;
+    skos:inScheme xeos:claimVerdict ;
+    skos:topConceptOf xeos:claimVerdict ;
+    skos:notation "real_but_small" ;
+    skos:prefLabel "Real but small"@en ;
+    skos:definition "The test found the effect, clearly smaller than claimed"@en .
+
+xeos:claimVerdict-real_with_conditions a skos:Concept ;
+    skos:inScheme xeos:claimVerdict ;
+    skos:topConceptOf xeos:claimVerdict ;
+    skos:notation "real_with_conditions" ;
+    skos:prefLabel "Real with conditions"@en ;
+    skos:definition "The test found the effect only under conditions the claim does not state"@en .
+
+xeos:claimVerdict-debunked a skos:Concept ;
+    skos:inScheme xeos:claimVerdict ;
+    skos:topConceptOf xeos:claimVerdict ;
+    skos:notation "debunked" ;
+    skos:prefLabel "Debunked"@en ;
+    skos:definition "The test found no effect, or the opposite one"@en .
+
+xeos:claimVerdict-unverified a skos:Concept ;
+    skos:inScheme xeos:claimVerdict ;
+    skos:topConceptOf xeos:claimVerdict ;
+    skos:notation "unverified" ;
+    skos:prefLabel "Unverified"@en ;
+    skos:definition "The claim can be tested, and this test could not settle it: too few trials, or an inconclusive result"@en .
+
+xeos:claimVerdict-unsubstantiated a skos:Concept ;
+    skos:inScheme xeos:claimVerdict ;
+    skos:topConceptOf xeos:claimVerdict ;
+    skos:notation "unsubstantiated" ;
+    skos:prefLabel "Unsubstantiated"@en ;
+    skos:definition "The claim, as made, cannot be tested: it names no measure or nothing to compare against"@en .

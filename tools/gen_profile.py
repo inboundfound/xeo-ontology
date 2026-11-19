@@ -68,6 +68,7 @@ TERM_MODULES = [
     "xeo-core.ttl", "xeo-visibility.ttl", "xeo-analysis.ttl",
     "xeo-sales.ttl", "xeo-attribution.ttl", "xeo-attribution-sales.ttl",
     "xeo-work.ttl", "xeo-decision.ttl", "xeo-agentic.ttl",
+    "xeo-experiments.ttl", "xeo-knowledge.ttl",
 ]
 SCHEMES_MODULE = "xeo-schemes.ttl"
 LAYERS = ["entity", "episode", "observation", "derivation", "interpretation", "norm"]

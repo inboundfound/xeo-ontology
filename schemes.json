@@ -548,6 +548,59 @@
         }
       ]
     },
+    "claimVerdict": {
+      "iri": "https://xeoontology.org/schemes#claimVerdict",
+      "label": "Claim verdicts",
+      "fillsSlot": "xeo:claimVerdict",
+      "description": "What a ClaimCheck found. One per check.",
+      "source": "XEO Harness Module research report and handoff, 2026-11-10 (§4.5, claimVerdict; §7, xeos:claimVerdict). The definitions are XEO's wording; the report gives every code except confirmed, which XEO adds",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "confirmed",
+          "iri": "https://xeoontology.org/schemes#claimVerdict-confirmed",
+          "label": "Confirmed",
+          "definition": "The test found the effect the claim states, at about the size it states",
+          "note": null
+        },
+        {
+          "code": "debunked",
+          "iri": "https://xeoontology.org/schemes#claimVerdict-debunked",
+          "label": "Debunked",
+          "definition": "The test found no effect, or the opposite one",
+          "note": null
+        },
+        {
+          "code": "real_but_small",
+          "iri": "https://xeoontology.org/schemes#claimVerdict-real_but_small",
+          "label": "Real but small",
+          "definition": "The test found the effect, clearly smaller than claimed",
+          "note": null
+        },
+        {
+          "code": "real_with_conditions",
+          "iri": "https://xeoontology.org/schemes#claimVerdict-real_with_conditions",
+          "label": "Real with conditions",
+          "definition": "The test found the effect only under conditions the claim does not state",
+          "note": null
+        },
+        {
+          "code": "unsubstantiated",
+          "iri": "https://xeoontology.org/schemes#claimVerdict-unsubstantiated",
+          "label": "Unsubstantiated",
+          "definition": "The claim, as made, cannot be tested: it names no measure or nothing to compare against",
+          "note": null
+        },
+        {
+          "code": "unverified",
+          "iri": "https://xeoontology.org/schemes#claimVerdict-unverified",
+          "label": "Unverified",
+          "definition": "The claim can be tested, and this test could not settle it: too few trials, or an inconclusive result",
+          "note": null
+        }
+      ],
+      "status": "draft"
+    },
     "compactionTrigger": {
       "iri": "https://xeoontology.org/schemes#compactionTrigger",
       "label": "Compaction triggers",
@@ -1382,6 +1435,38 @@
         }
       ]
     },
+    "failureClass": {
+      "iri": "https://xeoontology.org/schemes#failureClass",
+      "label": "Trial failure classes",
+      "fillsSlot": "xeo:failureClass",
+      "description": "Why a Trial did not produce a usable score. Only an agent failure counts against the arm.",
+      "source": "XEO Harness Module research report and handoff, 2026-11-10 (§4.4, failureClass; §7, xeos:failureClass). The definitions are XEO's wording; the report gives the codes",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "agent",
+          "iri": "https://xeoontology.org/schemes#failureClass-agent",
+          "label": "Agent",
+          "definition": "The thing under test failed: it gave up, ran out of budget or produced nothing gradable. Counts against its arm",
+          "note": null
+        },
+        {
+          "code": "excluded",
+          "iri": "https://xeoontology.org/schemes#failureClass-excluded",
+          "label": "Excluded",
+          "definition": "Removed by a rule set before the experiment started. Left out of the arm's figures",
+          "note": null
+        },
+        {
+          "code": "infrastructure",
+          "iri": "https://xeoontology.org/schemes#failureClass-infrastructure",
+          "label": "Infrastructure",
+          "definition": "The environment failed: a timeout, an outage, a broken container. Left out of the arm's figures",
+          "note": null
+        }
+      ],
+      "status": "draft"
+    },
     "failureMode": {
       "iri": "https://xeoontology.org/schemes#failureMode",
       "label": "Failure modes",
@@ -1674,6 +1759,45 @@
           "note": null
         }
       ]
+    },
+    "graderKind": {
+      "iri": "https://xeoontology.org/schemes#graderKind",
+      "label": "Grader kinds",
+      "fillsSlot": "xeo:graderKind",
+      "description": "How a Benchmark's tasks are scored. It decides whether a trial's score is an observation (verifier) or a derivation (the others).",
+      "source": "XEO Harness Module research report and handoff, 2026-11-10 (§4.4, graderKind; §7, xeos:graderKind). The definitions are XEO's wording; the report gives the codes",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "human",
+          "iri": "https://xeoontology.org/schemes#graderKind-human",
+          "label": "Human",
+          "definition": "A person scores the task",
+          "note": null
+        },
+        {
+          "code": "llm_judge",
+          "iri": "https://xeoontology.org/schemes#graderKind-llm_judge",
+          "label": "Model judge",
+          "definition": "A language model scores the task against a rubric",
+          "note": null
+        },
+        {
+          "code": "none",
+          "iri": "https://xeoontology.org/schemes#graderKind-none",
+          "label": "Not graded",
+          "definition": "The tasks carry no grade; the trials are read by other means, such as cost or time",
+          "note": null
+        },
+        {
+          "code": "verifier",
+          "iri": "https://xeoontology.org/schemes#graderKind-verifier",
+          "label": "Verifier",
+          "definition": "A deterministic check scores the task: a test suite, an exact match, a script",
+          "note": null
+        }
+      ],
+      "status": "draft"
     },
     "harnessComponentKind": {
       "iri": "https://xeoontology.org/schemes#harnessComponentKind",
