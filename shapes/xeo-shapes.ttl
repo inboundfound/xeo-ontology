@@ -544,7 +544,7 @@ xeosh:DesignDecisionShape a sh:NodeShape ;
     ] ;
     sh:property [
         sh:path xeo:designVerdict ; sh:minCount 1 ; sh:maxCount 1 ;
-        sh:in ( "keep" "replace" "remove" "approve" "shortlist" "reject" "defer" ) ;
+        sh:in ( "keep" "replace" "remove" "approve" "shortlist" "revise" "reject" "defer" ) ;
         sh:message "A xeo:DesignDecision requires one xeo:designVerdict from xeos:designVerdict."
     ] ;
     sh:property [

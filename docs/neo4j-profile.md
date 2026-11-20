@@ -750,7 +750,7 @@ Generated from XEO 0.8.0. Do not edit between the markers; run `tools/gen_profil
 | `dealOutcome` | `lost` · `open` · `won` |
 | `dealStageClass` | `lost` · `open` · `won` |
 | `decisionSource` | `classifier` · `config` · `hook` · `user` |
-| `designVerdict` | `approve` · `defer` · `keep` · `reject` · `remove` · `replace` · `shortlist` |
+| `designVerdict` | `approve` · `defer` · `keep` · `reject` · `remove` · `replace` · `revise` · `shortlist` |
 | `device` | `desktop` · `mobile` · `tablet` |
 | `effort` | `hours` · `days` · `weeks` · `quarter` |
 | `elementKind` | `color` · `component` · `iconography` · `illustration` · `imagery` · `layout` · `logo` · `motion` · `navigation` · `pattern` · `typography` |

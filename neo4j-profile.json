@@ -248,7 +248,7 @@
       "status": "draft"
     },
     "DesignDecision": {
-      "definition": "A reviewer's call on one piece of a design proposal: keep, replace or remove an element of the existing site; approve, shortlist or reject a direction or a concept; or defer (designVerdict). Names what it decides on (decidesOn), who decided (decidedBy), when (occurredAt, core), and, where the call holds under one direction only, which (underDirection). A replacement may name the concept chosen (chosenConcept). The reviewer's reason in their own words is its statement (decision). An interpretation: a judgment of fit, labeled as one. A changed mind is a new decision beside the old one, never an edit of it. Not Feedback (decision), which judges a machine's claim about a gap or a recommendation.",
+      "definition": "A reviewer's call on one piece of a design proposal: keep, replace or remove an element of the existing site; approve, shortlist, send back for changes (revise) or reject a direction or a concept; or defer (designVerdict). Names what it decides on (decidesOn), who decided (decidedBy), when (occurredAt, core), and, where the call holds under one direction only, which (underDirection). A replacement may name the concept chosen (chosenConcept). The reviewer's reason in their own words is its statement (decision). An interpretation: a judgment of fit, labeled as one. A changed mind is a new decision beside the old one, never an edit of it. Not Feedback (decision), which judges a machine's claim about a gap or a recommendation.",
       "iri": "https://xeoontology.org/xeo#DesignDecision",
       "layer": "interpretation",
       "module": "design",
@@ -6154,6 +6154,7 @@
       "reject",
       "remove",
       "replace",
+      "revise",
       "shortlist"
     ],
     "device": [

@@ -23,7 +23,7 @@ ontology. 0.8.0 adds three draft modules, widens one released property and remov
 - **New example files:** `examples/experiment-arms.jsonld`, `examples/company-knowledge.jsonld`
   and `examples/design-review.jsonld`, if the site links the examples.
 - **No new tombstone.** `tombstones.json` still lists 15 terms.
-- **Counts:** 102 classes, 192 object properties, 268 datatype properties, 85 schemes, 484
+- **Counts:** 102 classes, 192 object properties, 268 datatype properties, 85 schemes, 485
   concepts, 174 draft terms. The pages read these from `xeo-release.json`; nothing is typed.
 
 ## Steps

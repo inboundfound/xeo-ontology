@@ -1298,8 +1298,8 @@
       "iri": "https://xeoontology.org/schemes#designVerdict",
       "label": "Design verdicts",
       "fillsSlot": "xeo:designVerdict",
-      "description": "The call a design decision makes. keep, replace and remove are for an element of the existing site; approve, shortlist and reject for a direction or a concept; defer for any of them.",
-      "source": "XEO's codes, from the working practice of reviewing a design proposal element by element and direction by direction (2026-11-20)",
+      "description": "The call a design decision makes. keep, replace and remove are for an element of the existing site; approve, shortlist, revise and reject for a direction or a concept; defer for any of them.",
+      "source": "XEO's codes, from the working practice of reviewing a design proposal element by element and direction by direction (2026-11-20). revise added after reading Figma's branch review (Approve, Request changes; help.figma.com/hc/en-us/articles/5691414603543) and Canva's design approval (Approved, Needs changes; canva.com/help/get-approval/), read on 2026-11-20",
       "ordered": false,
       "concepts": [
         {
@@ -1343,6 +1343,17 @@
           "label": "Replace",
           "definition": "Replace the element, with the chosen concept where one is named",
           "note": null
+        },
+        {
+          "code": "revise",
+          "iri": "https://xeoontology.org/schemes#designVerdict-revise",
+          "label": "Revise",
+          "definition": "Not yet: rework this direction or concept and bring it back for another call",
+          "note": null,
+          "altLabels": [
+            "Needs changes",
+            "Request changes"
+          ]
         },
         {
           "code": "shortlist",
@@ -4408,7 +4419,7 @@
       "label": "Token tiers",
       "fillsSlot": "xeo:tokenTier",
       "description": "Which tier of a design system a token sits in.",
-      "source": "XEO's codes for the tiers most design systems name, under different names (reference, system and component; global, alias and component), as read on 2026-11-20",
+      "source": "XEO's codes for the tiers most design systems name, under different names: Material Design 3's reference, system and component (m3.material.io/foundations/design-tokens/overview); the Design Tokens Color Module 2025.10's non-normative base, alias and component; Adobe Spectrum's primitive (aka global), semantic and component-specific, whose design-data spec uses these three codes as its tokenTier values. All read on 2026-11-20",
       "ordered": false,
       "concepts": [
         {
@@ -4416,21 +4427,33 @@
           "iri": "https://xeoontology.org/schemes#tokenTier-component",
           "label": "Component",
           "definition": "A value for one component, such as button.background, usually an alias of a semantic token",
-          "note": null
+          "note": null,
+          "altLabels": [
+            "Component-specific"
+          ]
         },
         {
           "code": "primitive",
           "iri": "https://xeoontology.org/schemes#tokenTier-primitive",
           "label": "Primitive",
           "definition": "A raw value with no meaning of its own, such as blue.500 or space.4",
-          "note": null
+          "note": null,
+          "altLabels": [
+            "Base",
+            "Global",
+            "Reference"
+          ]
         },
         {
           "code": "semantic",
           "iri": "https://xeoontology.org/schemes#tokenTier-semantic",
           "label": "Semantic",
           "definition": "A value named for its use, such as color.action.primary, usually an alias of a primitive",
-          "note": null
+          "note": null,
+          "altLabels": [
+            "Alias",
+            "System"
+          ]
         }
       ],
       "status": "draft"
@@ -4440,7 +4463,7 @@
       "label": "Design token types",
       "fillsSlot": "xeo:tokenType",
       "description": "What kind of value a design token holds. The codes are the Design Tokens Format's own type names, so a token file's $type is stored as it is written.",
-      "source": "W3C Design Tokens Community Group, Design Tokens Format Module 2025.10 (the $type names, spelled as the format spells them); string and boolean from Figma's variable types, as documented on 2026-11-20. The definitions are XEO's wording",
+      "source": "W3C Design Tokens Community Group, Design Tokens Format Module 2025.10 (the $type names, spelled as the format spells them); string and boolean from Figma's variable types (Figma REST API resolvedType STRING and BOOLEAN; Tokens Studio's text and boolean tokens), as documented on 2026-11-20. The definitions are XEO's wording",
       "ordered": false,
       "concepts": [
         {
