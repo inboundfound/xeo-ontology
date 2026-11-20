@@ -404,6 +404,7 @@ def main():
         tombs.pop("$comment", None)
         write_json(os.path.join(out, "xeo-tombstones.json"), tombs)
         if not a.no_copy:
+            os.makedirs(os.path.join(site, "public"), exist_ok=True)
             for f in tombs.get("files", []):
                 with open(os.path.join(site, "public", f["file"]), "w", encoding="utf-8") as fh:
                     fh.write(f"# {f['file']} was removed from XEO in {f['removedIn']}.\n# {f['note']}\n"
