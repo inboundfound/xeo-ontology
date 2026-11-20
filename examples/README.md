@@ -11,6 +11,9 @@ must conform to `shapes/xeo-shapes.ttl`.
 | `metrics-and-pipeline.jsonld` | What 0.6.0 adds for measurement: a tenant's own `Metric`, two `MetricReading`s, an `Outcome` computed from them, and a CRM deal pointer with its stage history. |
 | `neo4j-export.jsonld` | A few of the same nodes written the way Neo4j names things (UPPER_SNAKE relationship types, concept slots stored as codes), lifted by `context.neo4j.jsonld`. Includes a `Metric`, a `MetricReading` and a `MetricTarget`. |
 | `agent-session.jsonld` | The draft terms of 0.7.1: one harness, one agent session under it, the spec it worked from, and a deliverable from the agent beside one made by hand. Loads all fourteen draft classes. |
+| `experiment-arms.jsonld` | The draft experiments module: a benchmark of audit tasks, an experiment with a baseline arm and a treated arm and some of their trials, the outcome of one against the other with its interval, a vendor's claim and our check of it, and the lesson drawn and the practice it became. Loads all seven of its classes. |
+| `company-knowledge.jsonld` | The draft company knowledge module: a team that is a unit of an agency, its members, a meeting with its recording, transcript and summary, and two action items, one raised in an email kept as `schema:EmailMessage`. Loads all five of its classes. |
+| `design-review.jsonld` | The draft design module: an existing site's elements up for review, two directions proposed in one deliverable, card concepts under each, a reviewer's keep, replace, approve and shortlist decisions, and the design system built from the approved direction, with tokens (an alias, a light and a dark mode), components, a variant, a pattern, a page template and assets. Loads all ten of its classes. |
 | `invalid/broken-rules.jsonld` | One deliberately wrong node or edge per SHACL shape, each tagged with the shape it must break. The validator fails if a shape stops firing. |
 | `profiles/agency-delivery/` | Test data for the optional profile `shapes/profiles/agency-delivery.ttl`, and for nothing else: a retainer and a one-off that meet one agency's contract rules, and in `invalid/` the graphs that break them (an internal project among them, which is valid XEO). The files above are never held to a profile. |
 
@@ -90,3 +93,58 @@ Every new term in it is draft. The runtime, provider and model are invented.
    other fulfils the second and was made by a person, so it names no session.
 7. **The next day.** A second session, `startType` `continue`, which `continuesSession` the
    first.
+
+## What `experiment-arms.jsonld` walks through
+
+Every new term in it is draft. The tool, its maker and the numbers are invented.
+
+1. **Two Metrics of the team's own.** `task_pass_rate`, the mean of the trial scores, is the
+   experiment's `primaryMetric`; `cost_per_task` is its `guardrailMetric`.
+2. **A benchmark.** `Example SEO audit tasks`, version 1.0, graded by a `verifier`, with two
+   `BenchmarkTask`s.
+3. **The experiment and its arms.** It `tests` a `Tactic` (give the agent a content-audit
+   skill), names where its plan was written beforehand (`preRegistrationRef`) and `hasArm` two
+   arms: the baseline without the skill (`isBaseline`) and the treated arm that `testsTactic`.
+   Each arm carries its mean, standard deviation and sample size on the primary metric.
+4. **Trials.** Five of the arms' 79 counted trials are shown, each `onTask` with a
+   `trialReplicate` and a `trialScore`. One failed for an infrastructure reason
+   (`failureClass`), has no score, and is left out of its arm's figures.
+5. **The outcome.** One `Outcome` `forArm` the treated arm: 0.15 more than the baseline, a
+   quarter more, `significant`, with a 95% interval from 0.04 to 0.26 and an `effectiveN` of 18.5.
+6. **A claim and its check.** A vendor's `Claim` that the skill adds 40 points, against the
+   same agent without it, and a `ClaimCheck` `checkedBy` the experiment: `real_but_small`.
+7. **What was learned.** A `Lesson` `drawnFrom` the outcome and the check, `adoptedAs` a
+   `Practice` whose source is `learned`.
+
+## What `company-knowledge.jsonld` walks through
+
+Every new term in it is draft. The people have no names on purpose; the agency is invented.
+
+1. **People and units.** A content team that is a `unitOf` an agency, and two people who are
+   each a `memberOf` it.
+2. **A meeting and its records.** A `Meeting` with its two `attendee`s; a `Recording` of it, a
+   `Transcript` of the recording, and a `Summary` of the transcript written by a model. Each
+   record is a pointer (`artifactUri`); no audio or words are in the graph.
+3. **What was agreed.** One `ActionItem` `raisedIn` the meeting and its summary, `assignedTo` a
+   person; another raised in an email, kept as a `schema:EmailMessage`, and assigned to the team.
+
+## What `design-review.jsonld` walks through
+
+Every new term in it is draft. The site, the reviewer and the colours are invented.
+
+1. **The existing site.** Three `DesignElement`s of `example.org`, each with its `elementKind`
+   and the pages it is `seenOn`: the logo lockup, a wave divider, and a news card.
+2. **Two directions.** `Calm editorial` and `Bold and bright`, each `directionFor` the site and
+   the redesign `Project`, both `proposedIn` one `Deliverable`, each with its idea as a `statement`.
+3. **Concepts.** A news-card concept under each direction (`depicts` the card component and the
+   old news card, `replacesElement` the old one), and a section-break concept that replaces the
+   divider under the calm direction. Each is a pointer to its image.
+4. **The review.** Four `DesignDecision`s by one reviewer: keep the logo; replace the divider
+   under the calm direction with its concept (`chosenConcept`); approve the calm direction; and
+   shortlist the bold card for later.
+5. **The system built from the pick.** A `DesignSystem` `fromDirection` the calm direction, which
+   the site `usesDesignSystem`. A primitive colour, a semantic colour that is an `aliasOf` it in
+   light mode and has its own value in dark mode, a spacing step; a headline font and the logo
+   file as `DesignAsset`s (the old logo element is `realizedAs` the file); a button, its quiet
+   `variantOf`, the card `composedOf` the button, a news-listing `DesignPattern`, and an article
+   `PageTemplate` that a news page `usesTemplate`.

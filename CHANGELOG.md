@@ -7,6 +7,127 @@ and corrects prose; a domain or range is not narrowed.
 
 Versions before 0.6.0 are reconstructed from the git history.
 
+## 0.8.0 — three draft modules, released together: experiments, company knowledge, design (release candidate, not tagged)
+
+Everything drafted or queued since 0.7.2, released at once rather than one module at a time:
+the modules inform each other, and a release that holds them all keeps them in step. Three new
+add-on modules, every term in them marked `xeo:termStatus "draft"`: declared so they can be
+tried, and free to change or go without a deprecation step. One released property is widened.
+Nothing released is renamed, removed, retyped or narrowed, so data that was valid in 0.7.2 is
+valid in 0.8.0. No tombstone is added. Every module file carries 0.8.0.
+
+**Why 0.8 and not 0.7.3.** Three modules and 93 terms are a new layer of the ontology, not a
+correction, even though everything added is draft. **Nobody outside uses XEO before 1.0, and
+released terms may still change.**
+
+**In numbers:** 14 module files (three new: `xeo-experiments.ttl`, `xeo-knowledge.ttl`,
+`xeo-design.ttl`), 102 classes, 192 object properties, 268 datatype properties; 85 reference
+schemes and 485 concepts; 174 draft terms, 36 of them classes, every class loaded by an example.
+The release is not tagged and not on GitHub's releases page until the maintainer says so.
+
+### `xeo-experiments.ttl`
+
+From the 0.7 plan of record and the research report on agent harnesses (§2 to §4.5, §7).
+42 terms: `Arm`, `Trial`, `Benchmark`, `BenchmarkTask`, `Claim`, `ClaimCheck`, `Lesson`; how an
+experiment is designed (`hasArm`, `testsTactic`, `isBaseline`, `primaryMetric`,
+`guardrailMetric`, `preRegistrationRef`) and run (`hasTrial`, `onTask`, `inBenchmark`,
+`trialReplicate`, `trialBlock`, `trialScore`, `failureClass`, `benchmarkVersion`,
+`graderKind`, `taskRef`); what an arm measured (`armMean`, `armStandardDeviation`,
+`armSampleSize`) and the interval around a change (`forArm`, `ciLower`, `ciUpper`,
+`ciMethod`, `effectiveN`); claims (`claimedBy`, `claimMetric`, `claimedValue`,
+`counterfactual`, `claimSourceUri`, `claimedAt`, `checksClaim`, `checkedBy`,
+`claimVerdict`); lessons (`drawnFrom`, `adoptedAs`).
+
+- **`Experiment` and `Outcome` stay in `xeo-decision.ttl`.** The plan lists them in the new
+  module; they are released and cited by line number, so the move waits for a release
+  decision. The new module points at them, and those links are optional.
+- **An arm's own figures sit on the `Arm`, not on an `Outcome`.** An Outcome is a comparison
+  and must state a `result`; the baseline arm has nothing to be compared with.
+- **A `Lesson` is not a subclass of `Practice`.** XEO tells lessons, SOPs and best practices
+  apart by source, not by class. A Lesson is the finding; the rule adopted from it is a
+  Practice whose source is `learned` (`adoptedAs`).
+- **Renamed from the research under the naming rule:** `block` is `trialBlock`, `reward` is
+  `trialScore`, `replicate` is `trialReplicate`.
+- **Three draft schemes:** `graderKind`, `failureClass`, `claimVerdict`. `confirmed` is added
+  to the research's verdicts, which had no code for a claim that held.
+
+### `xeo-knowledge.ttl`
+
+Stage 2 of the company-knowledge planning brief: what schema.org lacks, each thing with its
+layer. 13 terms: `Meeting` (episode), `Recording` and `Transcript` (observations, kept as
+pointers), `Summary` (derivation), `ActionItem` (interpretation); `attendee`, `recordingOf`,
+`transcriptOf`, `summarizes`, `raisedIn`, `assignedTo`; and `memberOf` and `unitOf` (from the
+W3C Organization Ontology) for people and departments. A message, a thread and a document are
+schema.org's `Message`, `Conversation` and `DigitalDocument`, and no class is minted for them.
+
+### `xeo-design.ttl`
+
+Design and web development: what a site is designed and built with, and how a new design is
+proposed, shown and decided. 38 terms. The design system: `DesignSystem`, `DesignToken`,
+`DesignComponent`, `DesignPattern`, `PageTemplate`, `DesignAsset`; `inDesignSystem`,
+`usesDesignSystem` (from a `Website`), `aliasOf`, `usesToken`, `composedOf`, `variantOf`,
+`usesAsset`, `usesTemplate` (from a `URL`), `designSystemVersion`, `tokenType`, `tokenValue`,
+`tokenTier`, `tokenMode`, `assetKind`. The review: `DesignDirection`, `DesignElement`,
+`DesignConcept`, `DesignDecision`; `directionFor`, `proposedIn` (a `Deliverable`), `elementOf`,
+`seenOn`, `realizedAs`, `depicts`, `underDirection`, `replacesElement`, `fromDirection`,
+`decidesOn`, `chosenConcept`, `decidedBy`, `elementKind`, `designVerdict`.
+
+- **Tokens follow the W3C Design Tokens Format (2025.10).** `tokenType`'s codes are its type
+  names, spelled as it spells them (camelCase), plus `string` and `boolean` for Figma's
+  variables of those types. An alias is `aliasOf`. A token with a value per mode is one token
+  per mode, checked against the format's Resolver Module 2025.10, where each context of a
+  modifier (the dark context of a theme) is its own set of token files merged by path.
+- **Approval is a decision, not a flag.** A direction carries no status; a `DesignDecision`
+  about it does, with who and when, so a changed mind is a new decision beside the old one.
+- **A card concept is a `DesignConcept` that depicts a card component.** No class for one kind
+  of concept.
+- **Not `Feedback`.** Feedback (decision) judges a machine's claim; a design decision is a
+  person's call on a proposal.
+- **Five draft schemes:** `tokenType`, `tokenTier`, `elementKind`, `assetKind`, `designVerdict`.
+- **Checked against the design tools (2026-11-20).** `docs/design/research-results-2026-11-20.md`
+  crosswalks all 38 terms against the token format, Figma, Claude, Canva, Adobe, `theme.json` and
+  others. Fixes it supported, made in place: `designVerdict` gains `revise` (Figma's Request
+  changes, Canva's Needs changes); `tokenValue` says the 2025.10 format writes a colour, a
+  dimension and a duration as JSON objects; `tokenTier` names each source's tier names (and its
+  codes carry them as `skos:altLabel`); `aliasOf` covers a `$ref` to a whole token; `tokenType`
+  is the type the format resolves to; `variantOf` says how Figma's component sets map. Larger
+  changes are listed in the report as proposals, not made.
+- `docs/design/research-prompt.md`: the prompt for checking the module against Figma, Claude's
+  design features, Canva, Adobe and the token format.
+
+### An owner for internal work
+
+- **`owns` (core) may point at a `Project`.** Since 0.7.1 a Project need not have a Website, and
+  its only link was `hasProject` from a Website, so internal work had no owner. An Organization
+  now `owns` a Project that has no Website. A client Project still reaches its owner through its
+  Website. A widened range (`xeo:rangeIncludes`, stated at the foot of `xeo-work.ttl`); no term
+  added. The descriptions of `owns` and `hasProject` say so, edited in place.
+  `examples/agent-session.jsonld` gives its internal project an owner.
+
+### Also
+
+- **Shapes (design):** five, each with a failing case: a token has one type and at most one
+  alias; a token has a value or an alias; an element belongs to one website; a concept names
+  what it depicts, under at most one direction; a decision names one thing and one verdict.
+- **Alignment (design):** `DesignAsset` closeMatch `schema:MediaObject`, `DesignConcept`
+  closeMatch `schema:CreativeWork`, `DesignDecision` closeMatch `schema:Review`, `usesAsset`
+  closeMatch `schema:associatedMedia`.
+- **Example (design):** `examples/design-review.jsonld` loads all ten design classes.
+- `artifactUri` (core) may also sit on six design classes, and `statement` (decision) on a
+  `DesignDirection` or a `DesignDecision`.
+- **Shapes:** six, for the rules the two modules state as required (a trial belongs to one
+  arm; a claim check names one claim and one verdict; a recording and a transcript name what
+  they record; a summary and an action item name their source), each with a failing case in
+  `examples/invalid/broken-rules.jsonld`.
+- **Alignment:** `xeo-align.ttl` gains bridges to schema.org, PROV-O, ML-Schema and the W3C
+  Organization Ontology for the new terms, and `Experiment` closeMatch `mls:Experiment`.
+- **Examples:** `examples/experiment-arms.jsonld` and `examples/company-knowledge.jsonld` load
+  every new class.
+- `statement` (decision) may also sit on a `Claim` or a `Lesson`, and `artifactUri` (core) on
+  a `Recording`, `Transcript` or `Summary`: two open lists widened.
+- Generated files regenerated; `tools/gen_docs.py`, `gen_profile.py` and `gen_site.py` list the
+  two modules.
+
 ## 0.7.2 — five wider edges, and three descriptions that now say one thing (2026-11-17)
 
 A patch from mapping XEO against the production code its decision and work modules were lifted

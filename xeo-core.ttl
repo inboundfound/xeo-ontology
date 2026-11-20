@@ -12,7 +12,7 @@ xeo: a owl:Ontology ;
     dct:title "XEO Core Ontology" ;
     dct:description "XEO core: sites, pages, queries, crawls, search results, engines, observations, metrics, website conversions, people, organizations, consent and money. Every add-on module needs only this one. Entities are durable, episodes are immutable, observations name what they are grounded in, derivations carry provenance." ;
     dct:creator "Inbound Found" ;
-    owl:versionInfo "0.7.2" .
+    owl:versionInfo "0.8.0" .
 
 # --- Annotation properties -------------------------------------------------
 
@@ -590,7 +590,7 @@ xeo:owns a owl:ObjectProperty ;
     rdfs:domain xeo:Organization ;
     xeo:xeoLayer "entity" ;
     xeo:rangeIncludes xeo:Website , xeo:Brand ;
-    dct:description "A Website or Brand this Organization is responsible for. Ownership in the working sense — whose site it is — not a legal claim. Range left open across Website and Brand." .
+    dct:description "A Website or Brand this Organization is responsible for, and, where work is loaded, a Project with no Website (internal work), so that it has an owner. Ownership in the working sense — whose site it is — not a legal claim. A client Project needs no owns: its owner is the owner of its Website. Range left open across Website, Brand and Project." .
 
 xeo:organizationKind a owl:ObjectProperty ;
     rdfs:label "organization kind" ;

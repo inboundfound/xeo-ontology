@@ -1,0 +1,50 @@
+{
+  "@context": [
+    "../context.jsonld",
+    { "ex": "https://example.com/graph/" }
+  ],
+  "@graph": [
+    { "id": "ex:agency", "type": "Organization", "name": "Example Agency" },
+    { "id": "ex:content-team", "type": "Organization", "name": "Content team", "unitOf": "ex:agency" },
+    { "id": "ex:person-1", "type": "Person", "memberOf": "ex:content-team" },
+    { "id": "ex:person-2", "type": "Person", "memberOf": ["ex:content-team", "ex:agency"] },
+
+    {
+      "id": "ex:meeting", "type": "Meeting", "name": "Weekly content review",
+      "startedAt": "2026-11-10T15:00:00Z", "endedAt": "2026-11-10T15:40:00Z",
+      "attendee": ["ex:person-1", "ex:person-2"]
+    },
+    {
+      "id": "ex:recording", "type": "Recording", "recordingOf": "ex:meeting",
+      "startedAt": "2026-11-10T15:01:00Z", "endedAt": "2026-11-10T15:40:00Z",
+      "artifactUri": "https://example.com/recordings/2026-11-10-content-review.mp4"
+    },
+    {
+      "id": "ex:transcript", "type": "Transcript", "transcriptOf": "ex:recording",
+      "method": "speech-to-text:example-transcriber",
+      "artifactUri": "https://example.com/transcripts/2026-11-10-content-review.txt"
+    },
+
+    { "id": "ex:model", "type": "Model", "modelFamily": "ExampleLM", "modelVersion": "2026-09-01", "modelKind": "language" },
+    {
+      "id": "ex:summary", "type": "Summary", "summarizes": "ex:transcript",
+      "method": "meeting-notes prompt v2", "producedByModel": "ex:model",
+      "artifactUri": "https://example.com/notes/2026-11-10-content-review.md"
+    },
+    {
+      "id": "ex:action-1", "type": "ActionItem", "name": "Send the calibration-guide audit to the client",
+      "raisedIn": ["ex:meeting", "ex:summary"], "assignedTo": "ex:person-2",
+      "method": "meeting-notes prompt v2", "producedByModel": "ex:model"
+    },
+
+    {
+      "id": "ex:email", "type": "schema:EmailMessage",
+      "schema:dateSent": "2026-11-11T09:12:00Z"
+    },
+    {
+      "id": "ex:action-2", "type": "ActionItem", "name": "Book the next review with the client",
+      "raisedIn": "ex:email", "assignedTo": "ex:content-team",
+      "method": "read by hand"
+    }
+  ]
+}

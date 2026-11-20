@@ -52,7 +52,7 @@ xeo:work-module a owl:Ontology ;
     dct:title "XEO Work (clients, contracts, projects, campaigns, objectives)" ;
     dct:description "The container work is delivered in: a Project (a bounded body of work, client or internal; where it is a contract, its type, quota and scope), its Campaigns (a body of work, usually against one Topic), the Objective a campaign is measured by, and the MetricTargets an Experiment is read against. None of those parts is required of the one above it. Also the agency side: which Organization is whose client, and what it holds. Lifted from a production implementation. Named xeo-delivery until 0.7. Since 0.7.1 also, as draft terms: what is to be built (Spec), the steps (WorkItem) and what was handed back (Deliverable), whoever does the work." ;
     dct:creator "Inbound Found" ;
-    owl:versionInfo "0.7.2" .
+    owl:versionInfo "0.8.0" .
 
 # --- Classes ----------------------------------------------------------------
 
@@ -81,7 +81,7 @@ xeo:MetricTarget a owl:Class ;
 xeo:hasProject a owl:ObjectProperty ;
     rdfs:domain xeo:Website ; rdfs:range xeo:Project ;
     xeo:xeoLayer "entity" ;
-    dct:description "A Project whose work is on this Website: a client contract, or any other body of work about the site. A Project that is not about one website (internal work) has no such link. Tenancy rides on websiteId, as everywhere." .
+    dct:description "A Project whose work is on this Website: a client contract, or any other body of work about the site. A Project that is not about one website (internal work) has no such link; the Organization whose work it is owns it (core). Tenancy rides on websiteId, as everywhere." .
 
 xeo:hasCampaign a owl:ObjectProperty ;
     rdfs:domain xeo:Project ; rdfs:range xeo:Campaign ;
@@ -458,3 +458,15 @@ xeo:specKind a owl:DatatypeProperty ;
 # measured. It is the first only. The pages, and the basis that says how each
 # came to be measured, are on treats (xeo-decision.ttl). Domain, range and layer
 # are unchanged, and no term was renamed.
+
+# --- 0.8 (an owner for internal work, 2026-11-20) -------------------------------------
+# Appended at the foot; the description it pairs with is edited in place above (and
+# owns in core), one line for one line, so no line moved.
+#
+# WIDENED. owns (core) may point at a Project. Since 0.7.1 a Project need not have
+# a Website, and a Project's only link was hasProject from a Website, so internal
+# work had no owner and code that places records by owner could not place it. A
+# client Project still reaches its owner through its Website (owns, then
+# hasProject); owns on a Project is for work with no Website. No term added.
+
+xeo:owns xeo:rangeIncludes xeo:Project .

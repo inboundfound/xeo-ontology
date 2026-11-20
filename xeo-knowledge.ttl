@@ -1,0 +1,170 @@
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix dct:  <http://purl.org/dc/terms/> .
+@prefix xeo:  <https://xeoontology.org/xeo#> .
+
+# XEO Company Knowledge module: what a company says and agrees in its own
+# meetings, and who belongs to which part of it.
+#
+# DRAFT, new in 0.8. Every term here carries xeo:termStatus
+# "draft": declared so it can be tried against real data, and free to change or
+# go without a deprecation step. A class stays draft until an example file loads
+# it and its maintainer lifts the mark. examples/company-knowledge.jsonld loads
+# all five classes, and tools/validate.py says so in a note.
+#
+#   Meeting - attendee -> Person (core)
+#   Recording - recordingOf -> Meeting
+#   Transcript - transcriptOf -> Recording
+#   Summary - summarizes -> Transcript | Meeting | any record
+#   ActionItem - raisedIn -> Meeting | Transcript | Summary | any record
+#   ActionItem - assignedTo -> Person | Organization (core)
+#   Person - memberOf -> Organization ;  Organization - unitOf -> Organization
+#
+# SCHEMA.ORG FIRST. Where schema.org already has the class, XEO mints none: a
+# message is schema:Message (an email schema:EmailMessage), a thread
+# schema:Conversation, a document schema:DigitalDocument, and an internal piece
+# of work XEO's own Project (work). This module holds what schema.org lacks or
+# leaves loose: it has no class for a meeting (an Event is "a concert, lecture,
+# or festival"), a recording is any MediaObject, and a transcript is a text field
+# on one. xeo-align.ttl bridges each class here to its nearest schema.org term.
+#
+# EACH THING HAS ITS LAYER, as every XEO term does. A meeting is an episode; its
+# recording and its transcript are observations of it; a summary is a
+# derivation (two summarisers write two summaries); an action item is an
+# interpretation (a reading of what was agreed). What is derived always points
+# back at what it was derived from: a Summary names what it summarizes and an
+# ActionItem where it was raised, and the shapes check both.
+#
+# THE CONTENT STAYS WHERE IT IS RECORDED. A recording and a transcript are
+# personal data. As XEO keeps a CRM record out of the graph and holds a pointer,
+# the graph holds where each is kept (artifactUri, core) and never the audio or
+# the words. Whether a person agreed to be recorded is a Consent (core).
+#
+# A DEPARTMENT IS AN ORGANIZATION. A team or department is an Organization
+# (core) that is a unitOf another; a person belongs to one with memberOf. No
+# Role, post or reporting line is declared: job titles, and roles in the sense
+# of "an approach to work under", are open questions.
+#
+# NOT HERE YET, and each an open question: how much authority a document carries
+# (steering, working material, memory); mission and voice; a decision record;
+# whether this is an open module for any company or one company's profile; and
+# who owns a Project that has no Website.
+#
+# NEEDS core only (Person, Organization, artifactUri, startedAt, endedAt,
+# occurredAt). Uses method (decision) and producedByModel (core) on a Summary and
+# an ActionItem, as every derivation and interpretation does.
+#
+# Sources: the XEO planning brief on company knowledge (2026-11-16), stage 2;
+# schema.org's vocabulary as read on 2026-11-16 for what it has and lacks; the
+# W3C Organization Ontology (2014) for memberOf and unitOf. Names here are ours
+# unless the line says otherwise.
+
+xeo:knowledge-module a owl:Ontology ;
+    dct:title "XEO Company Knowledge (meetings, recordings, transcripts, summaries, action items, membership)" ;
+    dct:description "Draft. A company's own record of what was said and agreed: a Meeting, its Recording and Transcript, a Summary of any record, and the ActionItems raised in it; and the membership of people and units in an Organization. Reuses schema.org for messages, threads and documents, and holds pointers, never content. Needs only core. Every term is marked draft." ;
+    dct:creator "Inbound Found" ;
+    owl:versionInfo "0.8.0" .
+
+# --- Meetings and what records them ---------------------------------------------
+
+xeo:Meeting a owl:Class ;
+    rdfs:label "Meeting" ;
+    xeo:xeoLayer "episode" ;
+    xeo:termStatus "draft" ;
+    dct:description "People meeting at a time, in a room or on a call, whether or not it was recorded. Immutable once it has ended. Carries startedAt and endedAt (core), a name where it has one, and who was there (attendee). Not a BookedMeeting (attribution), which is the conversion of a meeting being booked; a meeting that was booked and then held can be both." .
+
+xeo:Recording a owl:Class ;
+    rdfs:label "Recording" ;
+    xeo:xeoLayer "observation" ;
+    xeo:groundedIn "The recording system's file, as it captured the meeting" ;
+    xeo:termStatus "draft" ;
+    dct:description "An audio or video capture of a Meeting (recordingOf), identified by where the file is kept (artifactUri, core). The graph holds that pointer and never the media. Carries startedAt and endedAt for the stretch it covers. A meeting recorded twice has two." .
+
+xeo:Transcript a owl:Class ;
+    rdfs:label "Transcript" ;
+    xeo:xeoLayer "observation" ;
+    xeo:groundedIn "The recording it was transcribed from, as the transcription system returned it" ;
+    xeo:termStatus "draft" ;
+    dct:description "The words spoken in a Recording (transcriptOf), as text with who said them, identified by where it is kept (artifactUri, core). The graph holds the pointer and never the words. Taken as the transcription system returned it. A transcript corrected by hand, or produced again by another system, is a new Transcript of the same recording, and method says how it was made." .
+
+xeo:attendee a owl:ObjectProperty ;
+    rdfs:label "attendee" ;
+    rdfs:domain xeo:Meeting ; rdfs:range xeo:Person ;
+    xeo:xeoLayer "episode" ;
+    xeo:termStatus "draft" ;
+    dct:description "A Person (core) who was at a Meeting. Invited and absent is not attending. schema.org's attendee says the same of an Event." .
+
+xeo:recordingOf a owl:ObjectProperty ;
+    rdfs:label "recording of" ;
+    rdfs:domain xeo:Recording ; rdfs:range xeo:Meeting ;
+    xeo:xeoLayer "episode" ;
+    xeo:termStatus "draft" ;
+    dct:description "The Meeting a Recording captured. Exactly one per recording." .
+
+xeo:transcriptOf a owl:ObjectProperty ;
+    rdfs:label "transcript of" ;
+    rdfs:domain xeo:Transcript ; rdfs:range xeo:Recording ;
+    xeo:xeoLayer "episode" ;
+    xeo:termStatus "draft" ;
+    dct:description "The Recording a Transcript was made from. Exactly one per transcript. A transcript typed up from notes, with no recording behind it, is not a Transcript; it is a document." .
+
+# --- What is drawn from a record ------------------------------------------------
+
+xeo:Summary a owl:Class ;
+    rdfs:label "Summary" ;
+    xeo:xeoLayer "derivation" ;
+    xeo:termStatus "draft" ;
+    dct:description "A shorter account of a record, written by a person or a model: a meeting's notes, a thread's digest, a document's abstract. Names what it summarizes. A derivation: carries method and, where a model wrote it, producedByModel (core). Kept where it was written (artifactUri, core), like the record it summarizes." .
+
+xeo:ActionItem a owl:Class ;
+    rdfs:label "Action Item" ;
+    xeo:xeoLayer "interpretation" ;
+    xeo:termStatus "draft" ;
+    dct:description "Something a person or a team was understood to have agreed to do, read from a meeting or a message: where it was raised (raisedIn), who is to do it (assignedTo), and what, in plain language (name). An interpretation, because it is a reading of what was agreed; one a model extracted carries method and producedByModel (core). Not a WorkItem (work): an action item is what was agreed, a work item is a step someone has taken on." .
+
+xeo:summarizes a owl:ObjectProperty ;
+    rdfs:label "summarizes" ;
+    rdfs:domain xeo:Summary ;
+    xeo:rangeIncludes xeo:Transcript , xeo:Meeting ;
+    xeo:xeoLayer "derivation" ;
+    xeo:termStatus "draft" ;
+    dct:description "The record a Summary was drawn from: a Transcript, a Meeting, or a message, thread or document kept with its schema.org type. At least one per summary: a summary with no source cannot be checked. Range left open across the terms listed and those schema.org types." .
+
+xeo:raisedIn a owl:ObjectProperty ;
+    rdfs:label "raised in" ;
+    rdfs:domain xeo:ActionItem ;
+    xeo:rangeIncludes xeo:Meeting , xeo:Transcript , xeo:Summary ;
+    xeo:xeoLayer "interpretation" ;
+    xeo:termStatus "draft" ;
+    dct:description "Where an ActionItem was raised: the Meeting, the Transcript or Summary it was read from, or a message kept with its schema.org type. At least one per action item. Range left open across the terms listed and that type." .
+
+xeo:assignedTo a owl:ObjectProperty ;
+    rdfs:label "assigned to" ;
+    rdfs:domain xeo:ActionItem ;
+    xeo:rangeIncludes xeo:Person , xeo:Organization ;
+    xeo:xeoLayer "interpretation" ;
+    xeo:termStatus "draft" ;
+    dct:description "Who is to carry out an ActionItem: a Person, or an Organization such as a team. Part of the reading of what was agreed, so an interpretation. Absent where nobody was named. Range left open across the two terms listed." .
+
+# --- People and units ---------------------------------------------------------------
+# W3C Organization Ontology (org:memberOf, org:unitOf), 2014.
+
+xeo:memberOf a owl:ObjectProperty ;
+    rdfs:label "member of" ;
+    rdfs:domain xeo:Person ; rdfs:range xeo:Organization ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "A Person belongs to this Organization (core): works there, or sits in that team. Membership in the working sense, not a contract. Carries startedAt and endedAt where the dates are known; a past membership is kept with its end, not deleted. What the person does there is not a term yet. W3C ORG's memberOf." .
+
+xeo:unitOf a owl:ObjectProperty ;
+    rdfs:label "unit of" ;
+    rdfs:domain xeo:Organization ; rdfs:range xeo:Organization ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "This Organization is a department, team or other unit of that one. A unit is an Organization in its own right, so it can own a Website, hold a Capability and have members. Not clientOf (work), which joins two separate parties. W3C ORG's unitOf." .
+
+# --- Terms from elsewhere, used here ----------------------------------------------
+# New triples about terms declared in other modules; nothing is redefined.
+
+xeo:artifactUri xeo:domainIncludes xeo:Recording , xeo:Transcript , xeo:Summary .

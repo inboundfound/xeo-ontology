@@ -25,9 +25,19 @@
     "xeo-work.ttl",
     "xeo-decision.ttl",
     "xeo-agentic.ttl",
+    "xeo-experiments.ttl",
+    "xeo-knowledge.ttl",
+    "xeo-design.ttl",
     "xeo-schemes.ttl"
   ],
   "labels": {
+    "ActionItem": {
+      "definition": "Something a person or a team was understood to have agreed to do, read from a meeting or a message: where it was raised (raisedIn), who is to do it (assignedTo), and what, in plain language (name). An interpretation, because it is a reading of what was agreed; one a model extracted carries method and producedByModel (core). Not a WorkItem (work): an action item is what was agreed, a work item is a step someone has taken on.",
+      "iri": "https://xeoontology.org/xeo#ActionItem",
+      "layer": "interpretation",
+      "module": "knowledge",
+      "status": "draft"
+    },
     "AgentRuntime": {
       "definition": "The product that runs the agent loop and loads a harness (Claude Code, Codex CLI, Gemini CLI, OpenCode). Identified by name with runtimeVersion: one node per version. Not a library for building agents, and not a harness: the runtime is the vendor's program, the harness is what is loaded into it.",
       "iri": "https://xeoontology.org/xeo#AgentRuntime",
@@ -64,6 +74,13 @@
         "Engine"
       ]
     },
+    "Arm": {
+      "definition": "One version in an Experiment: the A or the B. A named condition that differs from the baseline in what it changes (testsTactic), or is the baseline itself (isBaseline). Identified by its Experiment (hasArm) and its name. Its trials are hasTrial. Its own figures on the experiment's primaryMetric, computed over those trials, are armMean, armStandardDeviation and armSampleSize.",
+      "iri": "https://xeoontology.org/xeo#Arm",
+      "layer": "entity",
+      "module": "experiments",
+      "status": "draft"
+    },
     "AttributedCredit": {
       "definition": "One touch's credit for one conversion under one model: creditedTouchpoint, creditFor, usesAttributionModel, creditShare, and attributedRevenue and attributedConversions where they apply. The credits of one conversion under one model sum to 1 (or, for full_credit_each, each is 1).",
       "iri": "https://xeoontology.org/xeo#AttributedCredit",
@@ -84,6 +101,20 @@
       "subClassOf": [
         "MetricReading"
       ]
+    },
+    "Benchmark": {
+      "definition": "A fixed set of test tasks plus a way to grade them. A public model benchmark counts, and so does a team's own set of twenty SEO audit tasks. Identified by name with benchmarkVersion: changing a task or the grading makes a new version. graderKind says how its tasks are scored.",
+      "iri": "https://xeoontology.org/xeo#Benchmark",
+      "layer": "entity",
+      "module": "experiments",
+      "status": "draft"
+    },
+    "BenchmarkTask": {
+      "definition": "One task inside one version of a Benchmark (inBenchmark), identified there by its taskRef. A Trial runs an arm on one task (onTask).",
+      "iri": "https://xeoontology.org/xeo#BenchmarkTask",
+      "layer": "entity",
+      "module": "experiments",
+      "status": "draft"
     },
     "BookedMeeting": {
       "definition": "A meeting booked through a scheduler or by a salesperson: a kind of ConversionEvent. Its outcome (held, no-show) is callOutcome.",
@@ -129,6 +160,20 @@
       "subClassOf": [
         "RevenueEvent"
       ]
+    },
+    "Claim": {
+      "definition": "A party's assertion about an effect: 'this tool saves 40% of tokens', 'FAQ markup doubles AI citations'. Never an observation, whoever makes it. Carries its words (statement), who made it (claimedBy), when (claimedAt) and where (claimSourceUri), and where it states a number, the claimedValue, the Metric it is a value of (claimMetric) and what it is compared against (counterfactual). Identified by claimant, statement and date. Whether it holds is a ClaimCheck.",
+      "iri": "https://xeoontology.org/xeo#Claim",
+      "layer": "interpretation",
+      "module": "experiments",
+      "status": "draft"
+    },
+    "ClaimCheck": {
+      "definition": "Our test of a Claim: the Claim it checks (checksClaim), the Experiment that ran (checkedBy) and the verdict (claimVerdict). An interpretation, because a verdict is a reading of an experiment against what was claimed. A claim may be checked more than once; each check is its own node.",
+      "iri": "https://xeoontology.org/xeo#ClaimCheck",
+      "layer": "interpretation",
+      "module": "experiments",
+      "status": "draft"
     },
     "Compaction": {
       "definition": "The replacement of a session's conversation history by a summary, at a time. Carries compactionTrigger, occurredAt, inSession and, where the runtime reports them, tokensBefore and tokensAfter. Where the runtime keeps the summary it wrote, artifactUri (core) points at it: the summary is what the next turn loads.",
@@ -179,6 +224,69 @@
       "iri": "https://xeoontology.org/xeo#Deliverable",
       "layer": "episode",
       "module": "work",
+      "status": "draft"
+    },
+    "DesignAsset": {
+      "definition": "A file a design uses: a logo, an icon, an illustration, a photograph, a graphic, a font, a video (assetKind). Identified by where the file is kept (artifactUri, core); the graph holds the pointer, never the file. Used by components, patterns, templates, concepts and pages (usesAsset). Who may use it, and on what terms, is not a term yet.",
+      "iri": "https://xeoontology.org/xeo#DesignAsset",
+      "layer": "entity",
+      "module": "design",
+      "status": "draft"
+    },
+    "DesignComponent": {
+      "definition": "A reusable piece of interface with a name and a defined anatomy: a button, a card, a header, a form field. Built from tokens (usesToken), smaller components (composedOf) and assets (usesAsset). A variant (the primary button of a button, the compact card of a card) is a component of its own that points at the one it varies (variantOf). Kept where it is defined, a design file or a code library (artifactUri, core); the component in the design file and the one in code are one DesignComponent where they are meant to match. Not an HTML element, and not a CMS block, though a block may implement one.",
+      "iri": "https://xeoontology.org/xeo#DesignComponent",
+      "layer": "entity",
+      "module": "design",
+      "status": "draft"
+    },
+    "DesignConcept": {
+      "definition": "A rendered proposal for one piece of interface, usually under one DesignDirection: a card, a hero, a page, or a direction's version of an element of the existing site. Names what it depicts (depicts: a component, pattern, template, element or page) and the direction it was drawn under (underDirection); where it is offered in place of an element of the existing site, replacesElement names that element. Kept as an image, a design-file frame or a prototype (artifactUri, core). Where a model drew it, method and producedByModel (core) say how. A card concept is a DesignConcept that depicts a card component. Not a skos:Concept, which is a code in a scheme.",
+      "iri": "https://xeoontology.org/xeo#DesignConcept",
+      "layer": "entity",
+      "module": "design",
+      "status": "draft"
+    },
+    "DesignDecision": {
+      "definition": "A reviewer's call on one piece of a design proposal: keep, replace or remove an element of the existing site; approve, shortlist, send back for changes (revise) or reject a direction or a concept; or defer (designVerdict). Names what it decides on (decidesOn), who decided (decidedBy), when (occurredAt, core), and, where the call holds under one direction only, which (underDirection). A replacement may name the concept chosen (chosenConcept). The reviewer's reason in their own words is its statement (decision). An interpretation: a judgment of fit, labeled as one. A changed mind is a new decision beside the old one, never an edit of it. Not Feedback (decision), which judges a machine's claim about a gap or a recommendation.",
+      "iri": "https://xeoontology.org/xeo#DesignDecision",
+      "layer": "interpretation",
+      "module": "design",
+      "status": "draft"
+    },
+    "DesignDirection": {
+      "definition": "One proposed visual approach for a site or a brand: a name, the idea behind it in words (statement, decision), and how it treats type, colour, imagery and layout, shown through the DesignConcepts drawn under it (underDirection). Several are usually proposed together, in one Deliverable (proposedIn, work), for one Website, Brand or Project (directionFor). A durable option that concepts and decisions point at. Whether it fits is a reviewer's call, kept as a DesignDecision about it, never as a flag on the direction. A design system built out of a chosen direction names it (fromDirection).",
+      "iri": "https://xeoontology.org/xeo#DesignDirection",
+      "layer": "entity",
+      "module": "design",
+      "status": "draft"
+    },
+    "DesignElement": {
+      "definition": "One part of an existing site's design, catalogued so it can be reviewed: a logo treatment, a colour, a type style, a style of photography, a divider, the navigation, a recurring component (elementKind). Belongs to one Website (elementOf) and is seen on its pages (seenOn). Where the same thing is also catalogued in a design system, realizedAs names the token, component, pattern, template or asset. A redesign asks of each element whether to keep, replace or remove it, and under each direction with what: a DesignDecision, and the DesignConcepts that replace it (replacesElement).",
+      "iri": "https://xeoontology.org/xeo#DesignElement",
+      "layer": "entity",
+      "module": "design",
+      "status": "draft"
+    },
+    "DesignPattern": {
+      "definition": "A reusable answer to a recurring interface problem, made of components: a hero, a pricing table, a filtered listing, a sign-up flow. Larger than a component and smaller than a page; composedOf names the components and patterns it is made of. A pattern says how a problem is solved. Whether a page must use it is a Practice (decision), not a property of the pattern.",
+      "iri": "https://xeoontology.org/xeo#DesignPattern",
+      "layer": "entity",
+      "module": "design",
+      "status": "draft"
+    },
+    "DesignSystem": {
+      "definition": "A named, versioned set of the decisions a brand's or a site's interfaces are built from: its tokens, components, patterns and page templates (each inDesignSystem), and the assets they use. Identified by name and designSystemVersion. Kept where it is maintained, a design file, a code library or a documentation site (artifactUri, core): the graph holds the pointer and the structure, never the files. A Website is built with one (usesDesignSystem). One built out of a proposed direction names it (fromDirection).",
+      "iri": "https://xeoontology.org/xeo#DesignSystem",
+      "layer": "entity",
+      "module": "design",
+      "status": "draft"
+    },
+    "DesignToken": {
+      "definition": "One named design decision stored as a value, so design files and code share it: a colour, a spacing step, a font family, a duration, a shadow. Its name (core) is its path in the token file, such as color.brand.primary; its tokenType is one of the W3C Design Tokens Format's types; its tokenValue is the value as written there. A token that refers to another (an alias, {color.blue.500} in that format) names it with aliasOf and need carry no value of its own. tokenTier says whether it is a primitive, a semantic or a component token. A token whose value changes by mode (light and dark, one brand and another; Figma calls these modes) is one token per mode, each with its tokenMode. Belongs to one DesignSystem.",
+      "iri": "https://xeoontology.org/xeo#DesignToken",
+      "layer": "entity",
+      "module": "design",
       "status": "draft"
     },
     "Diagnostic": {
@@ -308,6 +416,20 @@
       "layer": "episode",
       "module": "visibility"
     },
+    "Lesson": {
+      "definition": "What was learned, in plain language (statement), with the evidence it was drawn from (drawnFrom): 'a skill loaded on demand saves more than one always loaded, on tasks that rarely use it'. A finding, not yet a rule: when it is adopted as a standing rule, the rule is a Practice (decision) whose source is 'learned', and the Lesson points at it (adoptedAs). The cue a harness reads it on is that Practice's appliesToConcept. Not a subclass of Practice, because XEO tells lessons, SOPs and best practices apart by source and not by class. Carries method (who or what drew it) and confidence.",
+      "iri": "https://xeoontology.org/xeo#Lesson",
+      "layer": "interpretation",
+      "module": "experiments",
+      "status": "draft"
+    },
+    "Meeting": {
+      "definition": "People meeting at a time, in a room or on a call, whether or not it was recorded. Immutable once it has ended. Carries startedAt and endedAt (core), a name where it has one, and who was there (attendee). Not a BookedMeeting (attribution), which is the conversion of a meeting being booked; a meeting that was booked and then held can be both.",
+      "iri": "https://xeoontology.org/xeo#Meeting",
+      "layer": "episode",
+      "module": "knowledge",
+      "status": "draft"
+    },
     "Metric": {
       "definition": "A named, reusable definition of a measured quantity: what is counted or computed, over which records, aggregated how, in what unit, and which way is better. A rule, not a number: the number is a MetricReading. One node per definition, identified by its skos:notation within its scheme (xeos:metric is the published reference scheme). Two Metrics are the same when metricType, aggregation, readsSlot or inputs, metricFilter, timeAnchor and unit all match; changing any of them makes a new Metric, never an edit, because readings and targets are anchored to the definition. Carries exactly one metricType, unit, betterDirection and additivity. A simple metric also carries aggregation and readsSlot; a ratio carries numerator and denominator and has unit ratio; a derived metric carries expression and at least one inputMetric. A skos:Concept, so a consumer adds its own metrics as instances without touching the ontology.",
       "iri": "https://xeoontology.org/xeo#Metric",
@@ -373,6 +495,13 @@
       "module": "sales",
       "status": "extension"
     },
+    "PageTemplate": {
+      "definition": "The layout a kind of page is built from, and the patterns and components it holds (composedOf): the template for a home page, a service page, an article, a case study. Many URLs use one (usesTemplate). Not a page role (hasRole, decision), which is a reading of what a page is for: a template is what the page is built from, as the CMS or the build records it.",
+      "iri": "https://xeoontology.org/xeo#PageTemplate",
+      "layer": "entity",
+      "module": "design",
+      "status": "draft"
+    },
     "Payment": {
       "definition": "Money received against an Order or a Subscription. Carries paidAmount.",
       "iri": "https://xeoontology.org/xeo#Payment",
@@ -426,6 +555,13 @@
       "iri": "https://xeoontology.org/xeo#Recommendation",
       "layer": "interpretation",
       "module": "decision"
+    },
+    "Recording": {
+      "definition": "An audio or video capture of a Meeting (recordingOf), identified by where the file is kept (artifactUri, core). The graph holds that pointer and never the media. Carries startedAt and endedAt for the stretch it covers. A meeting recorded twice has two.",
+      "iri": "https://xeoontology.org/xeo#Recording",
+      "layer": "observation",
+      "module": "knowledge",
+      "status": "draft"
     },
     "Refund": {
       "definition": "Money returned to the buyer against an Order (refundsOrder). Carries refundedAmount.",
@@ -500,6 +636,13 @@
       "layer": "entity",
       "module": "attribution"
     },
+    "Summary": {
+      "definition": "A shorter account of a record, written by a person or a model: a meeting's notes, a thread's digest, a document's abstract. Names what it summarizes. A derivation: carries method and, where a model wrote it, producedByModel (core). Kept where it was written (artifactUri, core), like the record it summarizes.",
+      "iri": "https://xeoontology.org/xeo#Summary",
+      "layer": "derivation",
+      "module": "knowledge",
+      "status": "draft"
+    },
     "Tactic": {
       "definition": "A durable, named approach that can address gaps. Categorized by a slotted-in intervention taxonomy (inIntervention), scored on slotted-in dimensions (assessedAs -> TacticAssessment), and gated by the Capabilities it requires.",
       "iri": "https://xeoontology.org/xeo#Tactic",
@@ -536,6 +679,20 @@
       "iri": "https://xeoontology.org/xeo#Touchpoint",
       "layer": "episode",
       "module": "attribution"
+    },
+    "Transcript": {
+      "definition": "The words spoken in a Recording (transcriptOf), as text with who said them, identified by where it is kept (artifactUri, core). The graph holds the pointer and never the words. Taken as the transcription system returned it. A transcript corrected by hand, or produced again by another system, is a new Transcript of the same recording, and method says how it was made.",
+      "iri": "https://xeoontology.org/xeo#Transcript",
+      "layer": "observation",
+      "module": "knowledge",
+      "status": "draft"
+    },
+    "Trial": {
+      "definition": "One run of one Arm on one task: five runs make five trials. Immutable once finished. Belongs to exactly one Arm (hasTrial). Identified by its arm, its task (onTask, where it ran on a BenchmarkTask), its trialReplicate and, where the design blocks, its trialBlock. Carries startedAt and endedAt (core), its trialScore, and failureClass when it did not finish. High-volume: the column store keeps the rows, the graph keeps the arms they roll up to.",
+      "iri": "https://xeoontology.org/xeo#Trial",
+      "layer": "episode",
+      "module": "experiments",
+      "status": "draft"
     },
     "URL": {
       "definition": "A resource address within a Website. Durable identity; the state of the resource at a time is recorded by Fetch observations.",
@@ -735,18 +892,70 @@
       "layer": "interpretation",
       "module": "decision"
     },
+    "armMean": {
+      "datatype": "xsd:decimal",
+      "domain": [
+        "Arm"
+      ],
+      "iri": "https://xeoontology.org/xeo#armMean",
+      "layer": "derivation",
+      "module": "experiments",
+      "status": "draft"
+    },
+    "armSampleSize": {
+      "datatype": "xsd:integer",
+      "domain": [
+        "Arm"
+      ],
+      "iri": "https://xeoontology.org/xeo#armSampleSize",
+      "layer": "derivation",
+      "module": "experiments",
+      "status": "draft"
+    },
+    "armStandardDeviation": {
+      "datatype": "xsd:decimal",
+      "domain": [
+        "Arm"
+      ],
+      "iri": "https://xeoontology.org/xeo#armStandardDeviation",
+      "layer": "derivation",
+      "module": "experiments",
+      "status": "draft"
+    },
     "artifactUri": {
       "datatype": "xsd:string",
       "domain": [
         "Compaction",
         "Deliverable",
+        "DesignAsset",
+        "DesignComponent",
+        "DesignConcept",
+        "DesignPattern",
+        "DesignSystem",
         "HarnessComponent",
+        "PageTemplate",
+        "Recording",
         "Spec",
+        "Summary",
+        "Transcript",
         "WorkItem"
       ],
       "iri": "https://xeoontology.org/xeo#artifactUri",
       "layer": "entity",
       "module": "core",
+      "status": "draft"
+    },
+    "assetKind": {
+      "datatype": "xsd:string",
+      "domain": [
+        "DesignAsset"
+      ],
+      "iri": "https://xeoontology.org/xeo#assetKind",
+      "layer": "entity",
+      "module": "design",
+      "schemes": [
+        "assetKind"
+      ],
       "status": "draft"
     },
     "assignedAt": {
@@ -828,6 +1037,16 @@
       "schemes": [
         "similarityBasis"
       ]
+    },
+    "benchmarkVersion": {
+      "datatype": "xsd:string",
+      "domain": [
+        "Benchmark"
+      ],
+      "iri": "https://xeoontology.org/xeo#benchmarkVersion",
+      "layer": "entity",
+      "module": "experiments",
+      "status": "draft"
     },
     "betterDirection": {
       "conceptSlot": true,
@@ -941,6 +1160,36 @@
       "module": "agentic",
       "status": "draft"
     },
+    "ciLower": {
+      "datatype": "xsd:decimal",
+      "domain": [
+        "Outcome"
+      ],
+      "iri": "https://xeoontology.org/xeo#ciLower",
+      "layer": "derivation",
+      "module": "experiments",
+      "status": "draft"
+    },
+    "ciMethod": {
+      "datatype": "xsd:string",
+      "domain": [
+        "Outcome"
+      ],
+      "iri": "https://xeoontology.org/xeo#ciMethod",
+      "layer": "derivation",
+      "module": "experiments",
+      "status": "draft"
+    },
+    "ciUpper": {
+      "datatype": "xsd:decimal",
+      "domain": [
+        "Outcome"
+      ],
+      "iri": "https://xeoontology.org/xeo#ciUpper",
+      "layer": "derivation",
+      "module": "experiments",
+      "status": "draft"
+    },
     "citationRank": {
       "datatype": "xsd:integer",
       "iri": "https://xeoontology.org/xeo#citationRank",
@@ -952,6 +1201,49 @@
       "iri": "https://xeoontology.org/xeo#citationRate",
       "layer": "derivation",
       "module": "visibility"
+    },
+    "claimSourceUri": {
+      "datatype": "xsd:string",
+      "domain": [
+        "Claim"
+      ],
+      "iri": "https://xeoontology.org/xeo#claimSourceUri",
+      "layer": "entity",
+      "module": "experiments",
+      "status": "draft"
+    },
+    "claimVerdict": {
+      "datatype": "xsd:string",
+      "domain": [
+        "ClaimCheck"
+      ],
+      "iri": "https://xeoontology.org/xeo#claimVerdict",
+      "layer": "interpretation",
+      "module": "experiments",
+      "schemes": [
+        "claimVerdict"
+      ],
+      "status": "draft"
+    },
+    "claimedAt": {
+      "datatype": "xsd:date",
+      "domain": [
+        "Claim"
+      ],
+      "iri": "https://xeoontology.org/xeo#claimedAt",
+      "layer": "episode",
+      "module": "experiments",
+      "status": "draft"
+    },
+    "claimedValue": {
+      "datatype": "xsd:decimal",
+      "domain": [
+        "Claim"
+      ],
+      "iri": "https://xeoontology.org/xeo#claimedValue",
+      "layer": "interpretation",
+      "module": "experiments",
+      "status": "draft"
     },
     "clickIdentifier": {
       "datatype": "xsd:string",
@@ -1165,6 +1457,16 @@
       ],
       "status": "draft"
     },
+    "counterfactual": {
+      "datatype": "xsd:string",
+      "domain": [
+        "Claim"
+      ],
+      "iri": "https://xeoontology.org/xeo#counterfactual",
+      "layer": "interpretation",
+      "module": "experiments",
+      "status": "draft"
+    },
     "crawlDepth": {
       "datatype": "xsd:integer",
       "iri": "https://xeoontology.org/xeo#crawlDepth",
@@ -1366,6 +1668,29 @@
       "layer": "observation",
       "module": "core"
     },
+    "designSystemVersion": {
+      "datatype": "xsd:string",
+      "domain": [
+        "DesignSystem"
+      ],
+      "iri": "https://xeoontology.org/xeo#designSystemVersion",
+      "layer": "entity",
+      "module": "design",
+      "status": "draft"
+    },
+    "designVerdict": {
+      "datatype": "xsd:string",
+      "domain": [
+        "DesignDecision"
+      ],
+      "iri": "https://xeoontology.org/xeo#designVerdict",
+      "layer": "interpretation",
+      "module": "design",
+      "schemes": [
+        "designVerdict"
+      ],
+      "status": "draft"
+    },
     "device": {
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#device",
@@ -1393,6 +1718,16 @@
       "layer": "entity",
       "module": "work"
     },
+    "effectiveN": {
+      "datatype": "xsd:decimal",
+      "domain": [
+        "Outcome"
+      ],
+      "iri": "https://xeoontology.org/xeo#effectiveN",
+      "layer": "derivation",
+      "module": "experiments",
+      "status": "draft"
+    },
     "effortEstimate": {
       "conceptSlot": true,
       "datatype": "xsd:string",
@@ -1402,6 +1737,19 @@
       "schemes": [
         "effort"
       ]
+    },
+    "elementKind": {
+      "datatype": "xsd:string",
+      "domain": [
+        "DesignElement"
+      ],
+      "iri": "https://xeoontology.org/xeo#elementKind",
+      "layer": "entity",
+      "module": "design",
+      "schemes": [
+        "elementKind"
+      ],
+      "status": "draft"
     },
     "eligibleTouchType": {
       "datatype": "xsd:string",
@@ -1539,6 +1887,19 @@
       "layer": "norm",
       "module": "core"
     },
+    "failureClass": {
+      "datatype": "xsd:string",
+      "domain": [
+        "Trial"
+      ],
+      "iri": "https://xeoontology.org/xeo#failureClass",
+      "layer": "episode",
+      "module": "experiments",
+      "schemes": [
+        "failureClass"
+      ],
+      "status": "draft"
+    },
     "failureMode": {
       "datatype": "xsd:string",
       "domain": [
@@ -1627,6 +1988,19 @@
       "schemes": [
         "gapType"
       ]
+    },
+    "graderKind": {
+      "datatype": "xsd:string",
+      "domain": [
+        "Benchmark"
+      ],
+      "iri": "https://xeoontology.org/xeo#graderKind",
+      "layer": "entity",
+      "module": "experiments",
+      "schemes": [
+        "graderKind"
+      ],
+      "status": "draft"
     },
     "grainToDate": {
       "conceptSlot": true,
@@ -1723,6 +2097,16 @@
       "iri": "https://xeoontology.org/xeo#interventionQuota",
       "layer": "entity",
       "module": "work"
+    },
+    "isBaseline": {
+      "datatype": "xsd:boolean",
+      "domain": [
+        "Arm"
+      ],
+      "iri": "https://xeoontology.org/xeo#isBaseline",
+      "layer": "entity",
+      "module": "experiments",
+      "status": "draft"
     },
     "isPrimary": {
       "datatype": "xsd:boolean",
@@ -2152,6 +2536,16 @@
         "practiceOutcome"
       ]
     },
+    "preRegistrationRef": {
+      "datatype": "xsd:string",
+      "domain": [
+        "Experiment"
+      ],
+      "iri": "https://xeoontology.org/xeo#preRegistrationRef",
+      "layer": "episode",
+      "module": "experiments",
+      "status": "draft"
+    },
     "projection": {
       "datatype": "xsd:string",
       "domain": [
@@ -2536,8 +2930,12 @@
     "statement": {
       "datatype": "xsd:string",
       "domain": [
+        "Claim",
+        "DesignDecision",
+        "DesignDirection",
         "Feedback",
         "Gap",
+        "Lesson",
         "Objective",
         "Practice",
         "Recommendation"
@@ -2619,6 +3017,16 @@
       "layer": "interpretation",
       "module": "work"
     },
+    "taskRef": {
+      "datatype": "xsd:string",
+      "domain": [
+        "BenchmarkTask"
+      ],
+      "iri": "https://xeoontology.org/xeo#taskRef",
+      "layer": "entity",
+      "module": "experiments",
+      "status": "draft"
+    },
     "taxAmount": {
       "datatype": "xsd:decimal",
       "domain": [
@@ -2677,6 +3085,52 @@
       "iri": "https://xeoontology.org/xeo#toStageRef",
       "layer": "episode",
       "module": "sales"
+    },
+    "tokenMode": {
+      "datatype": "xsd:string",
+      "domain": [
+        "DesignToken"
+      ],
+      "iri": "https://xeoontology.org/xeo#tokenMode",
+      "layer": "entity",
+      "module": "design",
+      "status": "draft"
+    },
+    "tokenTier": {
+      "datatype": "xsd:string",
+      "domain": [
+        "DesignToken"
+      ],
+      "iri": "https://xeoontology.org/xeo#tokenTier",
+      "layer": "entity",
+      "module": "design",
+      "schemes": [
+        "tokenTier"
+      ],
+      "status": "draft"
+    },
+    "tokenType": {
+      "datatype": "xsd:string",
+      "domain": [
+        "DesignToken"
+      ],
+      "iri": "https://xeoontology.org/xeo#tokenType",
+      "layer": "entity",
+      "module": "design",
+      "schemes": [
+        "tokenType"
+      ],
+      "status": "draft"
+    },
+    "tokenValue": {
+      "datatype": "xsd:string",
+      "domain": [
+        "DesignToken"
+      ],
+      "iri": "https://xeoontology.org/xeo#tokenValue",
+      "layer": "entity",
+      "module": "design",
+      "status": "draft"
     },
     "tokensAfter": {
       "datatype": "xsd:integer",
@@ -2761,6 +3215,36 @@
       "schemes": [
         "touchType"
       ]
+    },
+    "trialBlock": {
+      "datatype": "xsd:string",
+      "domain": [
+        "Trial"
+      ],
+      "iri": "https://xeoontology.org/xeo#trialBlock",
+      "layer": "episode",
+      "module": "experiments",
+      "status": "draft"
+    },
+    "trialReplicate": {
+      "datatype": "xsd:integer",
+      "domain": [
+        "Trial"
+      ],
+      "iri": "https://xeoontology.org/xeo#trialReplicate",
+      "layer": "episode",
+      "module": "experiments",
+      "status": "draft"
+    },
+    "trialScore": {
+      "datatype": "xsd:decimal",
+      "domain": [
+        "Trial"
+      ],
+      "iri": "https://xeoontology.org/xeo#trialScore",
+      "layer": "observation",
+      "module": "experiments",
+      "status": "draft"
     },
     "turnRef": {
       "datatype": "xsd:string",
@@ -2970,6 +3454,19 @@
       ],
       "term": "addressableBy"
     },
+    "ADOPTED_AS": {
+      "domain": [
+        "Lesson"
+      ],
+      "iri": "https://xeoontology.org/xeo#adoptedAs",
+      "layer": "norm",
+      "module": "experiments",
+      "range": [
+        "Practice"
+      ],
+      "status": "draft",
+      "term": "adoptedAs"
+    },
     "AGGREGATION": {
       "conceptSlot": true,
       "domain": [
@@ -3018,6 +3515,19 @@
         "algorithm"
       ],
       "term": "algorithm"
+    },
+    "ALIAS_OF": {
+      "domain": [
+        "DesignToken"
+      ],
+      "iri": "https://xeoontology.org/xeo#aliasOf",
+      "layer": "entity",
+      "module": "design",
+      "range": [
+        "DesignToken"
+      ],
+      "status": "draft",
+      "term": "aliasOf"
     },
     "APPLIED_PRACTICE": {
       "domain": [
@@ -3092,6 +3602,33 @@
         "TacticAssessment"
       ],
       "term": "assessedAs"
+    },
+    "ASSIGNED_TO": {
+      "domain": [
+        "ActionItem"
+      ],
+      "iri": "https://xeoontology.org/xeo#assignedTo",
+      "layer": "interpretation",
+      "module": "knowledge",
+      "range": [
+        "Organization",
+        "Person"
+      ],
+      "status": "draft",
+      "term": "assignedTo"
+    },
+    "ATTENDEE": {
+      "domain": [
+        "Meeting"
+      ],
+      "iri": "https://xeoontology.org/xeo#attendee",
+      "layer": "episode",
+      "module": "knowledge",
+      "range": [
+        "Person"
+      ],
+      "status": "draft",
+      "term": "attendee"
     },
     "ATTRIBUTED_RESPONSE": {
       "domain": [
@@ -3213,6 +3750,32 @@
       ],
       "term": "capturedBy"
     },
+    "CHECKED_BY": {
+      "domain": [
+        "ClaimCheck"
+      ],
+      "iri": "https://xeoontology.org/xeo#checkedBy",
+      "layer": "interpretation",
+      "module": "experiments",
+      "range": [
+        "Experiment"
+      ],
+      "status": "draft",
+      "term": "checkedBy"
+    },
+    "CHECKS_CLAIM": {
+      "domain": [
+        "ClaimCheck"
+      ],
+      "iri": "https://xeoontology.org/xeo#checksClaim",
+      "layer": "interpretation",
+      "module": "experiments",
+      "range": [
+        "Claim"
+      ],
+      "status": "draft",
+      "term": "checksClaim"
+    },
     "CHILD_OF": {
       "domain": [
         "Topic"
@@ -3238,6 +3801,19 @@
       "status": "draft",
       "term": "childSession"
     },
+    "CHOSEN_CONCEPT": {
+      "domain": [
+        "DesignDecision"
+      ],
+      "iri": "https://xeoontology.org/xeo#chosenConcept",
+      "layer": "interpretation",
+      "module": "design",
+      "range": [
+        "DesignConcept"
+      ],
+      "status": "draft",
+      "term": "chosenConcept"
+    },
     "CITES": {
       "domain": [
         "LLMResponse"
@@ -3249,6 +3825,33 @@
         "URL"
       ],
       "term": "cites"
+    },
+    "CLAIMED_BY": {
+      "domain": [
+        "Claim"
+      ],
+      "iri": "https://xeoontology.org/xeo#claimedBy",
+      "layer": "interpretation",
+      "module": "experiments",
+      "range": [
+        "Organization",
+        "Person"
+      ],
+      "status": "draft",
+      "term": "claimedBy"
+    },
+    "CLAIM_METRIC": {
+      "domain": [
+        "Claim"
+      ],
+      "iri": "https://xeoontology.org/xeo#claimMetric",
+      "layer": "interpretation",
+      "module": "experiments",
+      "range": [
+        "Metric"
+      ],
+      "status": "draft",
+      "term": "claimMetric"
     },
     "CLIENT_OF": {
       "domain": [
@@ -3289,6 +3892,22 @@
         "Website"
       ],
       "term": "competesWith"
+    },
+    "COMPOSED_OF": {
+      "domain": [
+        "DesignComponent",
+        "DesignPattern",
+        "PageTemplate"
+      ],
+      "iri": "https://xeoontology.org/xeo#composedOf",
+      "layer": "entity",
+      "module": "design",
+      "range": [
+        "DesignComponent",
+        "DesignPattern"
+      ],
+      "status": "draft",
+      "term": "composedOf"
     },
     "COMPUTED_BY": {
       "domain": [
@@ -3449,6 +4068,34 @@
       "status": "extension",
       "term": "dataState"
     },
+    "DECIDED_BY": {
+      "domain": [
+        "DesignDecision"
+      ],
+      "iri": "https://xeoontology.org/xeo#decidedBy",
+      "layer": "interpretation",
+      "module": "design",
+      "range": [
+        "Person"
+      ],
+      "status": "draft",
+      "term": "decidedBy"
+    },
+    "DECIDES_ON": {
+      "domain": [
+        "DesignDecision"
+      ],
+      "iri": "https://xeoontology.org/xeo#decidesOn",
+      "layer": "interpretation",
+      "module": "design",
+      "range": [
+        "DesignConcept",
+        "DesignDirection",
+        "DesignElement"
+      ],
+      "status": "draft",
+      "term": "decidesOn"
+    },
     "DENOMINATOR": {
       "domain": [
         "Metric"
@@ -3460,6 +4107,53 @@
         "Metric"
       ],
       "term": "denominator"
+    },
+    "DEPICTS": {
+      "domain": [
+        "DesignConcept"
+      ],
+      "iri": "https://xeoontology.org/xeo#depicts",
+      "layer": "entity",
+      "module": "design",
+      "range": [
+        "DesignComponent",
+        "DesignElement",
+        "DesignPattern",
+        "PageTemplate",
+        "URL"
+      ],
+      "status": "draft",
+      "term": "depicts"
+    },
+    "DIRECTION_FOR": {
+      "domain": [
+        "DesignDirection"
+      ],
+      "iri": "https://xeoontology.org/xeo#directionFor",
+      "layer": "entity",
+      "module": "design",
+      "range": [
+        "Brand",
+        "Project",
+        "Website"
+      ],
+      "status": "draft",
+      "term": "directionFor"
+    },
+    "DRAWN_FROM": {
+      "domain": [
+        "Lesson"
+      ],
+      "iri": "https://xeoontology.org/xeo#drawnFrom",
+      "layer": "derivation",
+      "module": "experiments",
+      "range": [
+        "ClaimCheck",
+        "Experiment",
+        "Outcome"
+      ],
+      "status": "draft",
+      "term": "drawnFrom"
     },
     "EFFORT_ESTIMATE": {
       "conceptSlot": true,
@@ -3476,6 +4170,19 @@
         "effort"
       ],
       "term": "effortEstimate"
+    },
+    "ELEMENT_OF": {
+      "domain": [
+        "DesignElement"
+      ],
+      "iri": "https://xeoontology.org/xeo#elementOf",
+      "layer": "entity",
+      "module": "design",
+      "range": [
+        "Website"
+      ],
+      "status": "draft",
+      "term": "elementOf"
     },
     "EVALUATED_PRACTICE": {
       "domain": [
@@ -3584,6 +4291,19 @@
       "status": "draft",
       "term": "firedPractice"
     },
+    "FOR_ARM": {
+      "domain": [
+        "Outcome"
+      ],
+      "iri": "https://xeoontology.org/xeo#forArm",
+      "layer": "episode",
+      "module": "experiments",
+      "range": [
+        "Arm"
+      ],
+      "status": "draft",
+      "term": "forArm"
+    },
     "FRAMEWORK_KIND": {
       "conceptSlot": true,
       "domain": [
@@ -3599,6 +4319,19 @@
         "frameworkKind"
       ],
       "term": "frameworkKind"
+    },
+    "FROM_DIRECTION": {
+      "domain": [
+        "DesignSystem"
+      ],
+      "iri": "https://xeoontology.org/xeo#fromDirection",
+      "layer": "entity",
+      "module": "design",
+      "range": [
+        "DesignDirection"
+      ],
+      "status": "draft",
+      "term": "fromDirection"
     },
     "FULFILS": {
       "domain": [
@@ -3645,6 +4378,32 @@
       ],
       "status": "extension",
       "term": "grainToDate"
+    },
+    "GUARDRAIL_METRIC": {
+      "domain": [
+        "Experiment"
+      ],
+      "iri": "https://xeoontology.org/xeo#guardrailMetric",
+      "layer": "episode",
+      "module": "experiments",
+      "range": [
+        "Metric"
+      ],
+      "status": "draft",
+      "term": "guardrailMetric"
+    },
+    "HAS_ARM": {
+      "domain": [
+        "Experiment"
+      ],
+      "iri": "https://xeoontology.org/xeo#hasArm",
+      "layer": "episode",
+      "module": "experiments",
+      "range": [
+        "Arm"
+      ],
+      "status": "draft",
+      "term": "hasArm"
     },
     "HAS_CAMPAIGN": {
       "domain": [
@@ -3868,6 +4627,19 @@
       ],
       "term": "hasTouchpoint"
     },
+    "HAS_TRIAL": {
+      "domain": [
+        "Arm"
+      ],
+      "iri": "https://xeoontology.org/xeo#hasTrial",
+      "layer": "episode",
+      "module": "experiments",
+      "range": [
+        "Trial"
+      ],
+      "status": "draft",
+      "term": "hasTrial"
+    },
     "HAS_TURN": {
       "domain": [
         "AgentSession"
@@ -3957,6 +4729,19 @@
       ],
       "term": "inputMetric"
     },
+    "IN_BENCHMARK": {
+      "domain": [
+        "BenchmarkTask"
+      ],
+      "iri": "https://xeoontology.org/xeo#inBenchmark",
+      "layer": "entity",
+      "module": "experiments",
+      "range": [
+        "Benchmark"
+      ],
+      "status": "draft",
+      "term": "inBenchmark"
+    },
     "IN_CONTEXT": {
       "domain": [
         "Experiment"
@@ -3968,6 +4753,23 @@
         "Gap"
       ],
       "term": "inContext"
+    },
+    "IN_DESIGN_SYSTEM": {
+      "domain": [
+        "DesignAsset",
+        "DesignComponent",
+        "DesignPattern",
+        "DesignToken",
+        "PageTemplate"
+      ],
+      "iri": "https://xeoontology.org/xeo#inDesignSystem",
+      "layer": "entity",
+      "module": "design",
+      "range": [
+        "DesignSystem"
+      ],
+      "status": "draft",
+      "term": "inDesignSystem"
     },
     "IN_INTERVENTION": {
       "domain": [
@@ -4116,6 +4918,19 @@
       ],
       "term": "measures"
     },
+    "MEMBER_OF": {
+      "domain": [
+        "Person"
+      ],
+      "iri": "https://xeoontology.org/xeo#memberOf",
+      "layer": "entity",
+      "module": "knowledge",
+      "range": [
+        "Organization"
+      ],
+      "status": "draft",
+      "term": "memberOf"
+    },
     "MENTIONS": {
       "domain": [
         "LLMResponse"
@@ -4230,6 +5045,19 @@
       "status": "draft",
       "term": "onRuntime"
     },
+    "ON_TASK": {
+      "domain": [
+        "Trial"
+      ],
+      "iri": "https://xeoontology.org/xeo#onTask",
+      "layer": "episode",
+      "module": "experiments",
+      "range": [
+        "BenchmarkTask"
+      ],
+      "status": "draft",
+      "term": "onTask"
+    },
     "ON_TOOL_CALL": {
       "domain": [
         "EnforcementEvent"
@@ -4268,6 +5096,7 @@
       "module": "core",
       "range": [
         "Brand",
+        "Project",
         "Website"
       ],
       "term": "owns"
@@ -4298,6 +5127,19 @@
         "similarTo"
       ],
       "term": "precedentFor"
+    },
+    "PRIMARY_METRIC": {
+      "domain": [
+        "Experiment"
+      ],
+      "iri": "https://xeoontology.org/xeo#primaryMetric",
+      "layer": "episode",
+      "module": "experiments",
+      "range": [
+        "Metric"
+      ],
+      "status": "draft",
+      "term": "primaryMetric"
     },
     "PRODUCED_BY_MODEL": {
       "domain": [],
@@ -4333,6 +5175,35 @@
         "Outcome"
       ],
       "term": "producedOutcome"
+    },
+    "PROPOSED_IN": {
+      "domain": [
+        "DesignConcept",
+        "DesignDirection"
+      ],
+      "iri": "https://xeoontology.org/xeo#proposedIn",
+      "layer": "entity",
+      "module": "design",
+      "range": [
+        "Deliverable"
+      ],
+      "status": "draft",
+      "term": "proposedIn"
+    },
+    "RAISED_IN": {
+      "domain": [
+        "ActionItem"
+      ],
+      "iri": "https://xeoontology.org/xeo#raisedIn",
+      "layer": "interpretation",
+      "module": "knowledge",
+      "range": [
+        "Meeting",
+        "Summary",
+        "Transcript"
+      ],
+      "status": "draft",
+      "term": "raisedIn"
     },
     "RANKS_FOR": {
       "domain": [
@@ -4370,6 +5241,23 @@
       ],
       "term": "readsSlot"
     },
+    "REALIZED_AS": {
+      "domain": [
+        "DesignElement"
+      ],
+      "iri": "https://xeoontology.org/xeo#realizedAs",
+      "layer": "entity",
+      "module": "design",
+      "range": [
+        "DesignAsset",
+        "DesignComponent",
+        "DesignPattern",
+        "DesignToken",
+        "PageTemplate"
+      ],
+      "status": "draft",
+      "term": "realizedAs"
+    },
     "RECOMMENDS": {
       "domain": [
         "Recommendation"
@@ -4382,6 +5270,19 @@
         "Tactic"
       ],
       "term": "recommends"
+    },
+    "RECORDING_OF": {
+      "domain": [
+        "Recording"
+      ],
+      "iri": "https://xeoontology.org/xeo#recordingOf",
+      "layer": "episode",
+      "module": "knowledge",
+      "range": [
+        "Meeting"
+      ],
+      "status": "draft",
+      "term": "recordingOf"
     },
     "REDIRECTS_TO": {
       "domain": [
@@ -4471,6 +5372,19 @@
         "URL"
       ],
       "term": "relativeTo"
+    },
+    "REPLACES_ELEMENT": {
+      "domain": [
+        "DesignConcept"
+      ],
+      "iri": "https://xeoontology.org/xeo#replacesElement",
+      "layer": "entity",
+      "module": "design",
+      "range": [
+        "DesignElement"
+      ],
+      "status": "draft",
+      "term": "replacesElement"
     },
     "REQUIRES_CAPABILITY": {
       "domain": [
@@ -4589,6 +5503,19 @@
       ],
       "term": "scopedTo"
     },
+    "SEEN_ON": {
+      "domain": [
+        "DesignElement"
+      ],
+      "iri": "https://xeoontology.org/xeo#seenOn",
+      "layer": "entity",
+      "module": "design",
+      "range": [
+        "URL"
+      ],
+      "status": "draft",
+      "term": "seenOn"
+    },
     "SHOWN_ON_SEARCH_ENGINE": {
       "domain": [
         "GenerativeOverview"
@@ -4633,6 +5560,20 @@
         "Tactic"
       ],
       "term": "suggests"
+    },
+    "SUMMARIZES": {
+      "domain": [
+        "Summary"
+      ],
+      "iri": "https://xeoontology.org/xeo#summarizes",
+      "layer": "derivation",
+      "module": "knowledge",
+      "range": [
+        "Meeting",
+        "Transcript"
+      ],
+      "status": "draft",
+      "term": "summarizes"
     },
     "SUPERSEDES": {
       "domain": [
@@ -4706,6 +5647,19 @@
       ],
       "term": "tests"
     },
+    "TESTS_TACTIC": {
+      "domain": [
+        "Arm"
+      ],
+      "iri": "https://xeoontology.org/xeo#testsTactic",
+      "layer": "episode",
+      "module": "experiments",
+      "range": [
+        "Tactic"
+      ],
+      "status": "draft",
+      "term": "testsTactic"
+    },
     "TIME_ANCHOR": {
       "domain": [
         "Metric"
@@ -4756,6 +5710,19 @@
       ],
       "term": "tracksPrompt"
     },
+    "TRANSCRIPT_OF": {
+      "domain": [
+        "Transcript"
+      ],
+      "iri": "https://xeoontology.org/xeo#transcriptOf",
+      "layer": "episode",
+      "module": "knowledge",
+      "range": [
+        "Recording"
+      ],
+      "status": "draft",
+      "term": "transcriptOf"
+    },
     "TREATS": {
       "domain": [
         "Experiment"
@@ -4768,6 +5735,20 @@
         "URL"
       ],
       "term": "treats"
+    },
+    "UNDER_DIRECTION": {
+      "domain": [
+        "DesignConcept",
+        "DesignDecision"
+      ],
+      "iri": "https://xeoontology.org/xeo#underDirection",
+      "layer": "entity",
+      "module": "design",
+      "range": [
+        "DesignDirection"
+      ],
+      "status": "draft",
+      "term": "underDirection"
     },
     "UNDER_HARNESS": {
       "domain": [
@@ -4798,6 +5779,19 @@
       ],
       "term": "unit"
     },
+    "UNIT_OF": {
+      "domain": [
+        "Organization"
+      ],
+      "iri": "https://xeoontology.org/xeo#unitOf",
+      "layer": "entity",
+      "module": "knowledge",
+      "range": [
+        "Organization"
+      ],
+      "status": "draft",
+      "term": "unitOf"
+    },
     "USED_CONFIG": {
       "domain": [
         "LLMResponse",
@@ -4812,6 +5806,23 @@
       "status": "draft",
       "term": "usedConfig"
     },
+    "USES_ASSET": {
+      "domain": [
+        "DesignComponent",
+        "DesignConcept",
+        "DesignPattern",
+        "PageTemplate",
+        "URL"
+      ],
+      "iri": "https://xeoontology.org/xeo#usesAsset",
+      "layer": "entity",
+      "module": "design",
+      "range": [
+        "DesignAsset"
+      ],
+      "status": "draft",
+      "term": "usesAsset"
+    },
     "USES_ATTRIBUTION_MODEL": {
       "domain": [
         "AttributedCredit",
@@ -4824,6 +5835,61 @@
         "AttributionModel"
       ],
       "term": "usesAttributionModel"
+    },
+    "USES_DESIGN_SYSTEM": {
+      "domain": [
+        "Website"
+      ],
+      "iri": "https://xeoontology.org/xeo#usesDesignSystem",
+      "layer": "entity",
+      "module": "design",
+      "range": [
+        "DesignSystem"
+      ],
+      "status": "draft",
+      "term": "usesDesignSystem"
+    },
+    "USES_TEMPLATE": {
+      "domain": [
+        "URL"
+      ],
+      "iri": "https://xeoontology.org/xeo#usesTemplate",
+      "layer": "entity",
+      "module": "design",
+      "range": [
+        "PageTemplate"
+      ],
+      "status": "draft",
+      "term": "usesTemplate"
+    },
+    "USES_TOKEN": {
+      "domain": [
+        "DesignComponent",
+        "DesignConcept",
+        "DesignPattern",
+        "PageTemplate"
+      ],
+      "iri": "https://xeoontology.org/xeo#usesToken",
+      "layer": "entity",
+      "module": "design",
+      "range": [
+        "DesignToken"
+      ],
+      "status": "draft",
+      "term": "usesToken"
+    },
+    "VARIANT_OF": {
+      "domain": [
+        "DesignComponent"
+      ],
+      "iri": "https://xeoontology.org/xeo#variantOf",
+      "layer": "entity",
+      "module": "design",
+      "range": [
+        "DesignComponent"
+      ],
+      "status": "draft",
+      "term": "variantOf"
     },
     "VERDICT": {
       "conceptSlot": true,
@@ -4941,6 +6007,16 @@
       "opportunity_created",
       "qualified"
     ],
+    "assetKind": [
+      "animation",
+      "font",
+      "graphic",
+      "icon",
+      "illustration",
+      "logo",
+      "photograph",
+      "video"
+    ],
     "betterDirection": [
       "down",
       "none",
@@ -4964,6 +6040,14 @@
       "previously_marked_good_lead",
       "qualified",
       "unqualified"
+    ],
+    "claimVerdict": [
+      "confirmed",
+      "debunked",
+      "real_but_small",
+      "real_with_conditions",
+      "unsubstantiated",
+      "unverified"
     ],
     "compactionTrigger": [
       "auto",
@@ -5063,6 +6147,16 @@
       "hook",
       "user"
     ],
+    "designVerdict": [
+      "approve",
+      "defer",
+      "keep",
+      "reject",
+      "remove",
+      "replace",
+      "revise",
+      "shortlist"
+    ],
     "device": [
       "desktop",
       "mobile",
@@ -5073,6 +6167,19 @@
       "days",
       "weeks",
       "quarter"
+    ],
+    "elementKind": [
+      "color",
+      "component",
+      "iconography",
+      "illustration",
+      "imagery",
+      "layout",
+      "logo",
+      "motion",
+      "navigation",
+      "pattern",
+      "typography"
     ],
     "enforcementPoint": [
       "config",
@@ -5095,6 +6202,11 @@
       "concluded",
       "cancelled",
       "unmeasurable"
+    ],
+    "failureClass": [
+      "agent",
+      "excluded",
+      "infrastructure"
     ],
     "failureMode": [
       "fail_closed",
@@ -5140,6 +6252,12 @@
       "fix_first",
       "hold",
       "ignore"
+    ],
+    "graderKind": [
+      "human",
+      "llm_judge",
+      "none",
+      "verifier"
     ],
     "harnessComponentKind": [
       "hook",
@@ -5436,6 +6554,28 @@
       "week",
       "year"
     ],
+    "tokenTier": [
+      "component",
+      "primitive",
+      "semantic"
+    ],
+    "tokenType": [
+      "boolean",
+      "border",
+      "color",
+      "cubicBezier",
+      "dimension",
+      "duration",
+      "fontFamily",
+      "fontWeight",
+      "gradient",
+      "number",
+      "shadow",
+      "string",
+      "strokeStyle",
+      "transition",
+      "typography"
+    ],
     "toolSource": [
       "builtin",
       "mcp",
@@ -5465,5 +6605,5 @@
     ]
   },
   "schemesNamespace": "https://xeoontology.org/schemes#",
-  "version": "0.7.2"
+  "version": "0.8.0"
 }

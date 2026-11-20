@@ -1,0 +1,399 @@
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix dct:  <http://purl.org/dc/terms/> .
+@prefix xeo:  <https://xeoontology.org/xeo#> .
+
+# XEO Experiments module: how a test is designed, run and read, and what is
+# learned from it.
+#
+# DRAFT, new in 0.8. Every term here carries xeo:termStatus
+# "draft": declared so it can be tried against real data, and free to change or
+# go without a deprecation step. A class stays draft until an example file loads
+# it and its maintainer lifts the mark. examples/experiment-arms.jsonld loads
+# all seven classes, and tools/validate.py says so in a note.
+#
+#   Experiment (decision) - hasArm -> Arm - hasTrial -> Trial - onTask -> BenchmarkTask
+#                                     Arm - testsTactic -> Tactic (decision)
+#   BenchmarkTask - inBenchmark -> Benchmark
+#   Experiment (decision) - primaryMetric, guardrailMetric -> Metric (core)
+#   Outcome (decision) - forArm -> Arm             (one treated arm against the baseline arm)
+#   Claim - claimedBy -> Person | Organization (core)
+#   ClaimCheck - checksClaim -> Claim, - checkedBy -> Experiment (decision)
+#   Lesson - drawnFrom -> Experiment | Outcome | ClaimCheck, - adoptedAs -> Practice (decision)
+#
+# WHY A MODULE OF ITS OWN. Arms and trials are where people look for them in an
+# experiments module, not in decision. Decision keeps gaps, diagnostics, tactics
+# and recommendations. A model benchmark, a set of twenty SEO audit tasks and a
+# split test of title tags are all experiments here.
+#
+# EXPERIMENT AND OUTCOME STAY IN xeo-decision.ttl FOR NOW. The plan of record
+# lists them in this module. They are released terms, and consumers cite
+# xeo-decision.ttl by line number, so moving them is a release decision and not
+# a draft one. This module points at them, and those links are optional: they
+# work when decision is loaded too.
+#
+# AN ARM IS A CONDITION, A TRIAL IS ONE RUN OF IT. Two arms, five tasks and three
+# replicates make thirty trials. The baseline arm is the one the others are read
+# against (isBaseline). A trial's score is an observation when a deterministic
+# grader set it and a derivation, carrying method and model, when a model or a
+# person judged it, the same rule a MetricReading follows.
+#
+# WHAT EACH ARM MEASURED, AND HOW TWO ARMS COMPARE. An arm's own figures on the
+# experiment's primary metric (armMean, armStandardDeviation, armSampleSize) are
+# computed over its trials and sit on the Arm, as a node score does in the
+# analysis module. The comparison of a treated arm with the baseline arm is an
+# Outcome (decision), as every comparison is: forArm names the treated arm, and
+# absoluteChange, relativeChange and result keep their meaning. The interval
+# around the change (ciLower, ciUpper, ciMethod) and the sample size after
+# accounting for repeats (effectiveN) are new here.
+#
+# A CLAIM IS NOT AN OBSERVATION. "This tool saves 40% of tokens" is a party's
+# assertion, kept as an interpretation with who made it and against what. A
+# ClaimCheck is our test of it, pointing at the Experiment that ran, with a
+# verdict.
+#
+# A LESSON IS WHAT WAS LEARNED; A PRACTICE IS THE RULE ADOPTED FROM IT. XEO says
+# lessons learned, SOPs and best practices are all Practices, told apart by
+# source and not by class. So a Lesson here is the finding, in plain language
+# with its evidence (drawnFrom). When it is adopted as a standing rule, that rule
+# is a Practice whose source is 'learned', which is learnedFrom the same
+# evidence, and the Lesson points at it with adoptedAs.
+#
+# NEEDS core only (Metric, Person, Organization, name, startedAt, endedAt).
+# Its links to decision (hasArm, testsTactic, forArm and the four interval terms
+# on an Outcome, checkedBy, adoptedAs, and primaryMetric, guardrailMetric and
+# preRegistrationRef on an Experiment) are optional: they work when decision is
+# loaded too. The text of
+# a Claim or a Lesson is decision's statement, which is domain-free.
+#
+# CODED SLOTS ARE STRINGS WITH A SCHEME, as in the attribution and agentic
+# modules: graderKind, failureClass and claimVerdict take their codes from
+# xeo-schemes.ttl.
+#
+# Sources: the XEO 0.7 plan of record (2026-11-12), "Experiments module", for
+# the term list and the naming rule (block is trialBlock, reward is trialScore);
+# and the XEO research report on agent harnesses and AI-assisted development and
+# its handoff (2026-11-10), §2 to §4.5 and §7, cited below as "research §n" by the
+# handoff's sections.
+# A name neither gives is marked "name ours".
+
+xeo:experiments-module a owl:Ontology ;
+    dct:title "XEO Experiments (arms, trials, benchmarks, claims, lessons)" ;
+    dct:description "Draft. How a test is designed and read: the arms of an Experiment and the trials each was run as, the benchmarks and tasks trials are run on, an arm's figures on the primary metric, the interval around a change, the claims an experiment checks, and the lessons drawn from what it found. Extends decision's Experiment and Outcome, which stay in xeo-decision.ttl. Needs only core. Every term is marked draft." ;
+    dct:creator "Inbound Found" ;
+    owl:versionInfo "0.8.0" .
+
+# --- Arms and trials -----------------------------------------------------------
+# Plan of record, "Experiments module" (Arm, Trial); research §2 and §4.4.
+
+xeo:Arm a owl:Class ;
+    rdfs:label "Arm" ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "One version in an Experiment: the A or the B. A named condition that differs from the baseline in what it changes (testsTactic), or is the baseline itself (isBaseline). Identified by its Experiment (hasArm) and its name. Its trials are hasTrial. Its own figures on the experiment's primaryMetric, computed over those trials, are armMean, armStandardDeviation and armSampleSize." .
+
+xeo:Trial a owl:Class ;
+    rdfs:label "Trial" ;
+    xeo:xeoLayer "episode" ;
+    xeo:termStatus "draft" ;
+    dct:description "One run of one Arm on one task: five runs make five trials. Immutable once finished. Belongs to exactly one Arm (hasTrial). Identified by its arm, its task (onTask, where it ran on a BenchmarkTask), its trialReplicate and, where the design blocks, its trialBlock. Carries startedAt and endedAt (core), its trialScore, and failureClass when it did not finish. High-volume: the column store keeps the rows, the graph keeps the arms they roll up to." .
+
+xeo:hasArm a owl:ObjectProperty ;
+    rdfs:label "has arm" ;
+    rdfs:domain xeo:Experiment ; rdfs:range xeo:Arm ;
+    xeo:xeoLayer "episode" ;
+    xeo:termStatus "draft" ;
+    dct:description "An Arm of this Experiment. Fixed when the experiment starts: adding an arm later makes a different experiment. An experiment run before and after on the same pages, with no arms, has none; its control is on hasControl (decision). Optional: it works when decision is loaded." .
+
+xeo:testsTactic a owl:ObjectProperty ;
+    rdfs:label "tests tactic" ;
+    rdfs:domain xeo:Arm ; rdfs:range xeo:Tactic ;
+    xeo:xeoLayer "episode" ;
+    xeo:termStatus "draft" ;
+    dct:description "The Tactic (decision) this Arm applies, where it applies one: a title rewrite, a harness edit, a prompt change. An arm that combines several names each. The baseline arm has none. The experiment as a whole tests what its tests edge names; this says which arm carries which change. Optional: it works when decision is loaded. Research §4.4." .
+
+xeo:hasTrial a owl:ObjectProperty ;
+    rdfs:label "has trial" ;
+    rdfs:domain xeo:Arm ; rdfs:range xeo:Trial ;
+    xeo:xeoLayer "episode" ;
+    xeo:termStatus "draft" ;
+    dct:description "A Trial run under this Arm. Every Trial belongs to exactly one Arm." .
+
+xeo:isBaseline a owl:DatatypeProperty ;
+    rdfs:label "is baseline" ;
+    rdfs:domain xeo:Arm ; rdfs:range xsd:boolean ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "Marks the Arm the others are read against: the current version, the unchanged harness, the control condition. At most one arm per experiment is the baseline." .
+
+xeo:trialReplicate a owl:DatatypeProperty ;
+    rdfs:label "trial replicate" ;
+    rdfs:domain xeo:Trial ; rdfs:range xsd:integer ;
+    xeo:xeoLayer "episode" ;
+    xeo:termStatus "draft" ;
+    dct:description "Which repeat of the same arm on the same task this Trial is, counted from 1. Repeats are what let a noisy score be averaged, and are why effectiveN is smaller than the number of trials. Research §4.4 (replicate; renamed under the naming rule)." .
+
+xeo:trialBlock a owl:DatatypeProperty ;
+    rdfs:label "trial block" ;
+    rdfs:domain xeo:Trial ; rdfs:range xsd:string ;
+    xeo:xeoLayer "episode" ;
+    xeo:termStatus "draft" ;
+    dct:description "The block a Trial was run in, where the design groups trials so that what varies between groups (a day, a machine, a model version) is not read as an effect of the arm. Absent where trials are not blocked. Plan of record (block is trialBlock); research §4.4." .
+
+xeo:trialScore a owl:DatatypeProperty ;
+    rdfs:label "trial score" ;
+    rdfs:domain xeo:Trial ; rdfs:range xsd:decimal ;
+    xeo:xeoLayer "observation" ;
+    xeo:groundedIn "The benchmark's grading contract, applied by a deterministic grader" ;
+    xeo:termStatus "draft" ;
+    dct:description "The score a Trial received on the experiment's primary metric: a pass as 1 and a fail as 0, or a graded value. An observation when a deterministic grader set it (a test suite, an exact match). Where a model or a person judged it, the score is a derivation and carries method and, for a model, producedByModel (core): the Benchmark's graderKind says which. One per Trial. Plan of record (reward is trialScore); research §4.4." .
+
+xeo:failureClass a owl:DatatypeProperty ;
+    rdfs:label "failure class" ;
+    rdfs:domain xeo:Trial ; rdfs:range xsd:string ;
+    xeo:xeoLayer "episode" ;
+    xeo:termStatus "draft" ;
+    dct:description "Why a Trial did not produce a usable score: agent (the thing under test failed, which counts against its arm), infrastructure (the environment failed, which does not), or excluded (removed by a rule set before the experiment started). Codes in xeos:failureClass. Absent on a trial that finished. Research §4.4." .
+
+# --- Benchmarks -----------------------------------------------------------------
+# Plan of record (Benchmark, BenchmarkTask); research §2 and §4.4.
+
+xeo:Benchmark a owl:Class ;
+    rdfs:label "Benchmark" ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "A fixed set of test tasks plus a way to grade them. A public model benchmark counts, and so does a team's own set of twenty SEO audit tasks. Identified by name with benchmarkVersion: changing a task or the grading makes a new version. graderKind says how its tasks are scored." .
+
+xeo:BenchmarkTask a owl:Class ;
+    rdfs:label "Benchmark Task" ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "One task inside one version of a Benchmark (inBenchmark), identified there by its taskRef. A Trial runs an arm on one task (onTask)." .
+
+xeo:onTask a owl:ObjectProperty ;
+    rdfs:label "on task" ;
+    rdfs:domain xeo:Trial ; rdfs:range xeo:BenchmarkTask ;
+    xeo:xeoLayer "episode" ;
+    xeo:termStatus "draft" ;
+    dct:description "The BenchmarkTask a Trial was run on. A trial in an experiment that runs on live pages, not on a benchmark, has none." .
+
+xeo:inBenchmark a owl:ObjectProperty ;
+    rdfs:label "in benchmark" ;
+    rdfs:domain xeo:BenchmarkTask ; rdfs:range xeo:Benchmark ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "The Benchmark version a task belongs to. Exactly one per task: the same task in a new version is a new BenchmarkTask." .
+
+xeo:benchmarkVersion a owl:DatatypeProperty ;
+    rdfs:label "benchmark version" ;
+    rdfs:domain xeo:Benchmark ; rdfs:range xsd:string ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "The version of a Benchmark, as its maintainer names it. With name, its identity. Scores from two versions are not compared." .
+
+xeo:graderKind a owl:DatatypeProperty ;
+    rdfs:label "grader kind" ;
+    rdfs:domain xeo:Benchmark ; rdfs:range xsd:string ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "How a Benchmark's tasks are scored: verifier (a deterministic check), llm_judge (a model), human (a person) or none (not graded; the trials are read by other means). Codes in xeos:graderKind. It decides whether a trialScore is an observation or a derivation. Research §4.4." .
+
+xeo:taskRef a owl:DatatypeProperty ;
+    rdfs:label "task reference" ;
+    rdfs:domain xeo:BenchmarkTask ; rdfs:range xsd:string ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "The id a Benchmark gives one of its tasks. Unique within one version of the benchmark, so a task is identified by its benchmark, the version and this id. Name ours." .
+
+# --- How the experiment is read ----------------------------------------------
+# Plan of record (primaryMetric, guardrailMetric, preRegistrationRef, Outcome
+# with ciLower, ciUpper, ciMethod and effectiveN); research §4.4. The layer of
+# primaryMetric and guardrailMetric follows measures (work): the design of an
+# experiment, fixed when it starts, is an episode.
+
+xeo:primaryMetric a owl:ObjectProperty ;
+    rdfs:label "primary metric" ;
+    rdfs:domain xeo:Experiment ; rdfs:range xeo:Metric ;
+    xeo:xeoLayer "episode" ;
+    xeo:termStatus "draft" ;
+    dct:description "The one Metric (core) the Experiment is judged on, fixed before it starts. Where the experiment measures a campaign's primary MetricTarget (work), it is that target's Metric; this edge is for an experiment that has no target to read against, such as a benchmark run. Trial scores and arm figures are on this metric. At most one per experiment. Optional: it works when decision is loaded." .
+
+xeo:guardrailMetric a owl:ObjectProperty ;
+    rdfs:label "guardrail metric" ;
+    rdfs:domain xeo:Experiment ; rdfs:range xeo:Metric ;
+    xeo:xeoLayer "episode" ;
+    xeo:termStatus "draft" ;
+    dct:description "A Metric that must not get worse while the primary one is moved: raise clickthrough rate without raising bounce rate, cut tokens without cutting the pass rate. Fixed before the experiment starts. An experiment may have several. How far it may fall before the arm fails is not a term yet. Optional: it works when decision is loaded." .
+
+xeo:preRegistrationRef a owl:DatatypeProperty ;
+    rdfs:label "pre-registration reference" ;
+    rdfs:domain xeo:Experiment ; rdfs:range xsd:string ;
+    xeo:xeoLayer "episode" ;
+    xeo:termStatus "draft" ;
+    dct:description "Where the plan for the Experiment was written down before it started: what is tested, on what, and how the result will be judged, so the goalposts cannot be moved afterwards. A URI to a fixed copy: a tagged commit, a dated document. An experiment with none was exploratory, and its result should be read as such. Optional: it works when decision is loaded. Research §4.4." .
+
+xeo:armMean a owl:DatatypeProperty ;
+    rdfs:label "arm mean" ;
+    rdfs:domain xeo:Arm ; rdfs:range xsd:decimal ;
+    xeo:xeoLayer "derivation" ;
+    xeo:termStatus "draft" ;
+    dct:description "The mean trialScore of an Arm's trials on the experiment's primaryMetric, in that metric's unit. Trials with a failureClass of infrastructure or excluded are left out; agent failures count. Carries method where anything else was left out. The plan of record puts the mean on the Outcome; it is here because an Outcome is a comparison and the baseline arm has none. Name ours." .
+
+xeo:armStandardDeviation a owl:DatatypeProperty ;
+    rdfs:label "arm standard deviation" ;
+    rdfs:domain xeo:Arm ; rdfs:range xsd:decimal ;
+    xeo:xeoLayer "derivation" ;
+    xeo:termStatus "draft" ;
+    dct:description "The standard deviation of the trial scores behind armMean, over the same trials. Name ours." .
+
+xeo:armSampleSize a owl:DatatypeProperty ;
+    rdfs:label "arm sample size" ;
+    rdfs:domain xeo:Arm ; rdfs:range xsd:integer ;
+    xeo:xeoLayer "derivation" ;
+    xeo:termStatus "draft" ;
+    dct:description "How many trials armMean and armStandardDeviation were computed over: the arm's trials, less those left out. Never negative. Name ours." .
+
+xeo:forArm a owl:ObjectProperty ;
+    rdfs:label "for arm" ;
+    rdfs:domain xeo:Outcome ; rdfs:range xeo:Arm ;
+    xeo:xeoLayer "episode" ;
+    xeo:termStatus "draft" ;
+    dct:description "The treated Arm an Outcome (decision) reads against the experiment's baseline arm, on its primaryMetric. absoluteChange is that arm's armMean less the baseline's; relativeChange and result keep their meaning. An experiment with three arms has two such Outcomes. An Outcome of an experiment with no arms has none. Optional: it works when decision is loaded. Name ours." .
+
+xeo:ciLower a owl:DatatypeProperty ;
+    rdfs:label "confidence interval, lower" ;
+    rdfs:domain xeo:Outcome ; rdfs:range xsd:decimal ;
+    xeo:xeoLayer "derivation" ;
+    xeo:termStatus "draft" ;
+    dct:description "The lower end of the confidence interval around an Outcome's absoluteChange: the range the true change probably falls in ('clicks rose 12%, likely between 4% and 20%'). In the same unit as absoluteChange. Stated with ciUpper and ciMethod. Optional: it works when decision is loaded." .
+
+xeo:ciUpper a owl:DatatypeProperty ;
+    rdfs:label "confidence interval, upper" ;
+    rdfs:domain xeo:Outcome ; rdfs:range xsd:decimal ;
+    xeo:xeoLayer "derivation" ;
+    xeo:termStatus "draft" ;
+    dct:description "The upper end of the confidence interval around an Outcome's absoluteChange. Stated with ciLower and ciMethod. Optional: it works when decision is loaded." .
+
+xeo:ciMethod a owl:DatatypeProperty ;
+    rdfs:label "confidence interval method" ;
+    rdfs:domain xeo:Outcome ; rdfs:range xsd:string ;
+    xeo:xeoLayer "derivation" ;
+    xeo:termStatus "draft" ;
+    dct:description "How the confidence interval was calculated, and at what level: 'task-clustered bootstrap, 95%', 'Welch t, 90%'. An interval without its method cannot be compared with another. Optional: it works when decision is loaded." .
+
+xeo:effectiveN a owl:DatatypeProperty ;
+    rdfs:label "effective sample size" ;
+    rdfs:domain xeo:Outcome ; rdfs:range xsd:decimal ;
+    xeo:xeoLayer "derivation" ;
+    xeo:termStatus "draft" ;
+    dct:description "The sample size an Outcome's interval actually rests on, once repeats of the same task or page are accounted for. Thirty trials over five tasks are closer to five independent observations than to thirty. Not a whole number in general. Optional: it works when decision is loaded." .
+
+# --- Claims and their checks ---------------------------------------------------
+# Plan of record (Claim, ClaimCheck); research §2 and §4.5.
+
+xeo:Claim a owl:Class ;
+    rdfs:label "Claim" ;
+    xeo:xeoLayer "interpretation" ;
+    xeo:termStatus "draft" ;
+    dct:description "A party's assertion about an effect: 'this tool saves 40% of tokens', 'FAQ markup doubles AI citations'. Never an observation, whoever makes it. Carries its words (statement), who made it (claimedBy), when (claimedAt) and where (claimSourceUri), and where it states a number, the claimedValue, the Metric it is a value of (claimMetric) and what it is compared against (counterfactual). Identified by claimant, statement and date. Whether it holds is a ClaimCheck." .
+
+xeo:ClaimCheck a owl:Class ;
+    rdfs:label "Claim Check" ;
+    xeo:xeoLayer "interpretation" ;
+    xeo:termStatus "draft" ;
+    dct:description "Our test of a Claim: the Claim it checks (checksClaim), the Experiment that ran (checkedBy) and the verdict (claimVerdict). An interpretation, because a verdict is a reading of an experiment against what was claimed. A claim may be checked more than once; each check is its own node." .
+
+xeo:claimedBy a owl:ObjectProperty ;
+    rdfs:label "claimed by" ;
+    rdfs:domain xeo:Claim ;
+    xeo:rangeIncludes xeo:Person , xeo:Organization ;
+    xeo:xeoLayer "interpretation" ;
+    xeo:termStatus "draft" ;
+    dct:description "The Person or Organization (core) that made a Claim: a vendor, an author, a team member. Range left open across the two terms listed. Research §4.5." .
+
+xeo:claimMetric a owl:ObjectProperty ;
+    rdfs:label "claim metric" ;
+    rdfs:domain xeo:Claim ; rdfs:range xeo:Metric ;
+    xeo:xeoLayer "interpretation" ;
+    xeo:termStatus "draft" ;
+    dct:description "The Metric (core) a Claim's claimedValue is a value of, where the claim states a number: the unit and the better direction are then the Metric's. A number with no metric cannot be checked. Name ours." .
+
+xeo:checksClaim a owl:ObjectProperty ;
+    rdfs:label "checks claim" ;
+    rdfs:domain xeo:ClaimCheck ; rdfs:range xeo:Claim ;
+    xeo:xeoLayer "interpretation" ;
+    xeo:termStatus "draft" ;
+    dct:description "The Claim a ClaimCheck tests. Exactly one per check. Research §4.5." .
+
+xeo:checkedBy a owl:ObjectProperty ;
+    rdfs:label "checked by" ;
+    rdfs:domain xeo:ClaimCheck ; rdfs:range xeo:Experiment ;
+    xeo:xeoLayer "interpretation" ;
+    xeo:termStatus "draft" ;
+    dct:description "The Experiment (decision) a ClaimCheck rests on. A verdict with no experiment behind it is an opinion and is not a ClaimCheck. Optional: it works when decision is loaded. Research §4.5." .
+
+xeo:claimedValue a owl:DatatypeProperty ;
+    rdfs:label "claimed value" ;
+    rdfs:domain xeo:Claim ; rdfs:range xsd:decimal ;
+    xeo:xeoLayer "interpretation" ;
+    xeo:termStatus "draft" ;
+    dct:description "The number a Claim states, in the unit of its claimMetric, a ratio as a 0 to 1 quotient: 'saves 40% of tokens' is 0.4 on a token-reduction metric. Absent where the claim states no number. Research §4.5." .
+
+xeo:counterfactual a owl:DatatypeProperty ;
+    rdfs:label "counterfactual" ;
+    rdfs:domain xeo:Claim ; rdfs:range xsd:string ;
+    xeo:xeoLayer "interpretation" ;
+    xeo:termStatus "draft" ;
+    dct:description "What a Claim compares against, in plain language: 'the same agent with no tool', 'the page before the change'. A claimed saving means nothing until it says compared with what; where the claimant does not say, this records what the checker assumed. Research §4.5." .
+
+xeo:claimSourceUri a owl:DatatypeProperty ;
+    rdfs:label "claim source URI" ;
+    rdfs:domain xeo:Claim ; rdfs:range xsd:string ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "Where a Claim was made: the page, post, talk or document, as a URI. Research §2 (Claim)." .
+
+xeo:claimedAt a owl:DatatypeProperty ;
+    rdfs:label "claimed at" ;
+    rdfs:domain xeo:Claim ; rdfs:range xsd:date ;
+    xeo:xeoLayer "episode" ;
+    xeo:termStatus "draft" ;
+    dct:description "The day a Claim was made or published. With claimedBy and statement, its identity: the same words a year later are a new claim about a newer version. Name ours." .
+
+xeo:claimVerdict a owl:DatatypeProperty ;
+    rdfs:label "claim verdict" ;
+    rdfs:domain xeo:ClaimCheck ; rdfs:range xsd:string ;
+    xeo:xeoLayer "interpretation" ;
+    xeo:termStatus "draft" ;
+    dct:description "What a ClaimCheck found, from xeos:claimVerdict: confirmed, real_but_small, real_with_conditions, debunked, unverified or unsubstantiated. Exactly one per check. Research §4.5 and §7 (claimVerdict)." .
+
+# --- Lessons ----------------------------------------------------------------------
+# Plan of record ("HarnessLesson becomes plain Lesson, because SEO tests produce
+# learned rules too"). Research §3 (HarnessLesson: cue, lesson, evidence).
+
+xeo:Lesson a owl:Class ;
+    rdfs:label "Lesson" ;
+    xeo:xeoLayer "interpretation" ;
+    xeo:termStatus "draft" ;
+    dct:description "What was learned, in plain language (statement), with the evidence it was drawn from (drawnFrom): 'a skill loaded on demand saves more than one always loaded, on tasks that rarely use it'. A finding, not yet a rule: when it is adopted as a standing rule, the rule is a Practice (decision) whose source is 'learned', and the Lesson points at it (adoptedAs). The cue a harness reads it on is that Practice's appliesToConcept. Not a subclass of Practice, because XEO tells lessons, SOPs and best practices apart by source and not by class. Carries method (who or what drew it) and confidence." .
+
+xeo:drawnFrom a owl:ObjectProperty ;
+    rdfs:label "drawn from" ;
+    rdfs:domain xeo:Lesson ;
+    xeo:rangeIncludes xeo:Experiment , xeo:Outcome , xeo:ClaimCheck ;
+    xeo:xeoLayer "derivation" ;
+    xeo:termStatus "draft" ;
+    dct:description "The evidence a Lesson was drawn from: Experiments, their Outcomes, or ClaimChecks. A lesson with none is an opinion. Carries method and confidence. Range left open across the three terms listed. The Lesson's counterpart of learnedFrom (decision), which says the same of a Practice. Research §4.5 (evidencedByExperiment)." .
+
+xeo:adoptedAs a owl:ObjectProperty ;
+    rdfs:label "adopted as" ;
+    rdfs:domain xeo:Lesson ; rdfs:range xeo:Practice ;
+    xeo:xeoLayer "norm" ;
+    xeo:termStatus "draft" ;
+    dct:description "The Practice (decision) a Lesson became when it was adopted as a standing rule. That Practice's source is 'learned' and it is learnedFrom the evidence the Lesson was drawnFrom. A lesson not adopted has none. Optional: it works when decision is loaded. Name ours." .
+
+# --- Terms from elsewhere, used here ----------------------------------------------
+# New triples about terms declared in other modules; nothing is redefined.
+
+xeo:statement xeo:domainIncludes xeo:Claim , xeo:Lesson .

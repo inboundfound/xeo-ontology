@@ -64,7 +64,8 @@ XEOS = "https://xeoontology.org/schemes#"
 MODULE_ORDER = [
     "xeo-core", "xeo-visibility", "xeo-analysis", "xeo-sales", "xeo-attribution",
     "xeo-attribution-sales", "xeo-work",
-    "xeo-decision", "xeo-agentic", "xeo-schemes", "xeo-align",
+    "xeo-decision", "xeo-agentic", "xeo-experiments", "xeo-knowledge", "xeo-design",
+    "xeo-schemes", "xeo-align",
 ]
 
 # Files and folders copied into public/ as-is, if the release has them.
@@ -403,6 +404,7 @@ def main():
         tombs.pop("$comment", None)
         write_json(os.path.join(out, "xeo-tombstones.json"), tombs)
         if not a.no_copy:
+            os.makedirs(os.path.join(site, "public"), exist_ok=True)
             for f in tombs.get("files", []):
                 with open(os.path.join(site, "public", f["file"]), "w", encoding="utf-8") as fh:
                     fh.write(f"# {f['file']} was removed from XEO in {f['removedIn']}.\n# {f['note']}\n"
