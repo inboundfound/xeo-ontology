@@ -52,7 +52,7 @@ xeo:work-module a owl:Ontology ;
     dct:title "XEO Work (clients, contracts, projects, campaigns, objectives)" ;
     dct:description "The container work is delivered in: a Project (a bounded body of work, client or internal; where it is a contract, its type, quota and scope), its Campaigns (a body of work, usually against one Topic), the Objective a campaign is measured by, and the MetricTargets an Experiment is read against. None of those parts is required of the one above it. Also the agency side: which Organization is whose client, and what it holds. Lifted from a production implementation. Named xeo-delivery until 0.7. Since 0.7.1 also, as draft terms: what is to be built (Spec), the steps (WorkItem) and what was handed back (Deliverable), whoever does the work." ;
     dct:creator "Inbound Found" ;
-    owl:versionInfo "0.7.2" .
+    owl:versionInfo "0.8.0" .
 
 # --- Classes ----------------------------------------------------------------
 

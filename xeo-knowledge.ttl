@@ -7,7 +7,7 @@
 # XEO Company Knowledge module: what a company says and agrees in its own
 # meetings, and who belongs to which part of it.
 #
-# DRAFT, for the release after 0.7.2. Every term here carries xeo:termStatus
+# DRAFT, new in 0.8. Every term here carries xeo:termStatus
 # "draft": declared so it can be tried against real data, and free to change or
 # go without a deprecation step. A class stays draft until an example file loads
 # it and its maintainer lifts the mark. examples/company-knowledge.jsonld loads
@@ -64,7 +64,7 @@ xeo:knowledge-module a owl:Ontology ;
     dct:title "XEO Company Knowledge (meetings, recordings, transcripts, summaries, action items, membership)" ;
     dct:description "Draft. A company's own record of what was said and agreed: a Meeting, its Recording and Transcript, a Summary of any record, and the ActionItems raised in it; and the membership of people and units in an Organization. Reuses schema.org for messages, threads and documents, and holds pointers, never content. Needs only core. Every term is marked draft." ;
     dct:creator "Inbound Found" ;
-    owl:versionInfo "0.7.2" .
+    owl:versionInfo "0.8.0" .
 
 # --- Meetings and what records them ---------------------------------------------
 

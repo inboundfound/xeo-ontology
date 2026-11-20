@@ -7,12 +7,23 @@ and corrects prose; a domain or range is not narrowed.
 
 Versions before 0.6.0 are reconstructed from the git history.
 
-## Unreleased — draft: the experiments, company knowledge and design modules
+## 0.8.0 — three draft modules, released together: experiments, company knowledge, design (release candidate, not tagged)
 
-Three new add-on modules for the next release, every term in both marked
-`xeo:termStatus "draft"`: declared so they can be tried, and free to change or go without a
-deprecation step. Nothing released is renamed, removed, retyped or narrowed. The version stays
-0.7.2 until the release commit.
+Everything drafted or queued since 0.7.2, released at once rather than one module at a time:
+the modules inform each other, and a release that holds them all keeps them in step. Three new
+add-on modules, every term in them marked `xeo:termStatus "draft"`: declared so they can be
+tried, and free to change or go without a deprecation step. One released property is widened.
+Nothing released is renamed, removed, retyped or narrowed, so data that was valid in 0.7.2 is
+valid in 0.8.0. No tombstone is added. Every module file carries 0.8.0.
+
+**Why 0.8 and not 0.7.3.** Three modules and 93 terms are a new layer of the ontology, not a
+correction, even though everything added is draft. **Nobody outside uses XEO before 1.0, and
+released terms may still change.**
+
+**In numbers:** 14 module files (three new: `xeo-experiments.ttl`, `xeo-knowledge.ttl`,
+`xeo-design.ttl`), 102 classes, 192 object properties, 268 datatype properties; 85 reference
+schemes and 484 concepts; 174 draft terms, 36 of them classes, every class loaded by an example.
+The release is not tagged and not on GitHub's releases page until the maintainer says so.
 
 ### `xeo-experiments.ttl`
 
