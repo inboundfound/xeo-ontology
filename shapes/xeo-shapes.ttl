@@ -35,7 +35,7 @@ xeosh: a owl:Ontology ;
     dct:title "XEO Shapes" ;
     dct:description "SHACL shapes for the rules the XEO ontology states in prose. Conservative: each shape checks one rule a term's description already makes, and none closes a class." ;
     dct:creator "Inbound Found" ;
-    owl:versionInfo "0.7.2" .
+    owl:versionInfo "0.8.0" .
 
 # --- Values in range ---------------------------------------------------------
 
@@ -427,7 +427,7 @@ xeosh:CreditShareIsAShare a sh:NodeShape ;
         sh:message "xeo:creditShare is one number from 0 to 1."
     ] .
 
-# --- Draft: experiments and company knowledge (after 0.7.2) ------------------------
+# --- Draft: experiments and company knowledge (0.8) --------------------------------
 # The rules the two draft modules state as required. Their terms are draft, and
 # so are these shapes: they change or go with the terms.
 

@@ -7,7 +7,7 @@
 # XEO Design module: what a website is designed and built with, and how a new
 # design is proposed, shown and decided.
 #
-# DRAFT, for 0.8. Every term here carries xeo:termStatus "draft": declared so it
+# DRAFT, new in 0.8. Every term here carries xeo:termStatus "draft": declared so it
 # can be tried against real data, and free to change or go without a deprecation
 # step. A class stays draft until an example file loads it and its maintainer
 # lifts the mark. examples/design-review.jsonld loads all ten classes, and
@@ -71,7 +71,7 @@ xeo:design-module a owl:Ontology ;
     dct:title "XEO Design (design systems, tokens, components, patterns, templates, assets, directions, concepts, review decisions)" ;
     dct:description "Draft. What a website is designed and built with: a DesignSystem of tokens, components, patterns and page templates, and the assets they use; and how a new design is proposed and decided: DesignDirections, the existing site's DesignElements, DesignConcepts drawn under a direction, and the reviewer's DesignDecisions to keep, replace or approve. Holds pointers, never files. Needs only core. Every term is marked draft." ;
     dct:creator "Inbound Found" ;
-    owl:versionInfo "0.7.2" .
+    owl:versionInfo "0.8.0" .
 
 # --- The design system -------------------------------------------------------------
 

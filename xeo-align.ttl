@@ -27,7 +27,7 @@ xeo:align-module a owl:Ontology ;
     dct:title "XEO Alignment (schema.org · PROV-O · SKOS)" ;
     dct:description "Optional crosswalk from XEO terms to foundational web vocabularies. Alignments, not imports: XEO is self-contained without them." ;
     dct:creator "Inbound Found" ;
-    owl:versionInfo "0.7.2" ;
+    owl:versionInfo "0.8.0" ;
     rdfs:seeAlso <https://schema.org/> , <http://www.w3.org/ns/prov#> ,
                  <http://www.w3.org/2004/02/skos/core#> .
 
@@ -245,7 +245,7 @@ xeo:consentStatus skos:closeMatch dpv:hasConsentStatus .
 # agentic engineering module after 0.7.
 
 # ===========================================================================
-# Draft: the experiments and company knowledge modules (after 0.7.2), appended
+# Draft: the experiments and company knowledge modules (0.8), appended
 # at the foot. Their terms are draft, and so are these bridges. Same two stances
 # as above. ML-Schema is the W3C community group's vocabulary for machine-learning
 # experiments; the W3C Organization Ontology (2014) is where memberOf and unitOf

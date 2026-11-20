@@ -6,7 +6,7 @@ modules cover AI visibility, graph analysis, sales, attribution, client work,
 decisions, and (in draft) agentic engineering, experiments, company knowledge and design. Every term states the kind of claim it makes and what it is grounded in.
 
 **Prefix:** `xeo:` · **Namespace:** `https://xeoontology.org/xeo#`
-· **Status:** v0.7 — open draft. Issues and PRs welcome.
+· **Status:** v0.8 — open draft. Issues and PRs welcome.
 What changed and why: [`CHANGELOG.md`](CHANGELOG.md).
 
 **The name** is written `XEO` in prose and `xeo` in prefixes, file names and code. No other casing is used.
