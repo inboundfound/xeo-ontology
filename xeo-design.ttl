@@ -1,0 +1,351 @@
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix dct:  <http://purl.org/dc/terms/> .
+@prefix xeo:  <https://xeoontology.org/xeo#> .
+
+# XEO Design module: what a website is designed and built with, and how a new
+# design is proposed, shown and decided.
+#
+# DRAFT, for 0.8. Every term here carries xeo:termStatus "draft": declared so it
+# can be tried against real data, and free to change or go without a deprecation
+# step. A class stays draft until an example file loads it and its maintainer
+# lifts the mark. examples/design-review.jsonld loads all ten classes, and
+# tools/validate.py says so in a note. docs/design/research-prompt.md is the
+# prompt for checking these terms against the design tools' own vocabularies.
+#
+# TWO HALVES.
+#
+#   What a site is built with (durable, the design system):
+#     DesignSystem - the tokens, components, patterns and templates (inDesignSystem)
+#     DesignToken  - aliasOf -> DesignToken ; tokenType, tokenValue, tokenTier, tokenMode
+#     DesignComponent - variantOf -> DesignComponent ; usesToken, composedOf, usesAsset
+#     DesignPattern   - composedOf -> DesignComponent | DesignPattern
+#     PageTemplate    - composedOf -> DesignComponent | DesignPattern
+#     DesignAsset     - a file: logo, icon, image, font (assetKind)
+#     Website - usesDesignSystem -> DesignSystem ;  URL - usesTemplate -> PageTemplate
+#
+#   How a new design is proposed and decided (the review):
+#     DesignDirection - directionFor -> Website | Brand | Project ; proposedIn -> Deliverable
+#     DesignElement   - elementOf -> Website ; seenOn -> URL   (the existing site's parts)
+#     DesignConcept   - depicts -> component | pattern | template | element | URL
+#                       underDirection -> DesignDirection ; replacesElement -> DesignElement
+#     DesignDecision  - decidesOn -> element | direction | concept ; designVerdict
+#                       underDirection, chosenConcept, decidedBy -> Person
+#     DesignSystem - fromDirection -> DesignDirection   (the system built from the pick)
+#
+# EACH THING HAS ITS LAYER. Everything in a design system, and every direction,
+# element and concept, is an entity: a durable thing other records point at. The
+# one interpretation is the DesignDecision, a reviewer's judgment of fit. A
+# direction carries no "approved" flag: approval is a decision about it, kept
+# with who made it and when, so a later change of mind does not overwrite it.
+#
+# TOKENS FOLLOW THE W3C DESIGN TOKENS FORMAT. A token's name is its path in the
+# token file, its type one of that format's types (xeos:tokenType), and an alias
+# is a token pointing at another. Modes (light and dark, one brand and another)
+# are one token per mode until the format's own answer to themes is checked.
+#
+# POINTERS, NEVER FILES. A design file, a component library, a mockup and an
+# image stay where they are made and kept; the graph holds where (artifactUri,
+# core) and how they relate. Vendor identifiers (a Figma node key, a Canva design
+# id) belong in a mapping file, not here.
+#
+# NOT HERE YET, and each an open question: the rights to an asset (licence,
+# credit, expiry); accessibility results (contrast, a component's checks);
+# breakpoints and responsive rules; a CMS block as a kind of component; the
+# atomic-design levels (atom, molecule, organism) as a scheme; a design file's
+# pages and frames; and a direction's ranking within its proposal.
+#
+# NEEDS core only (Website, URL, Person, name, artifactUri, occurredAt). Points
+# at Brand (visibility), Project and Deliverable (work) and statement (decision)
+# where those are loaded; each such link is optional.
+#
+# Sources: the W3C Design Tokens Community Group's Design Tokens Format Module
+# 2025.10 for token types and aliases; Figma's documentation of variables, modes,
+# components and variants, as read on 2026-11-20; atomic design (Frost, 2016) for
+# the ladder from component to pattern to template; and the working practice of
+# a design proposal reviewed element by element. Names here are ours unless the
+# line says otherwise.
+
+xeo:design-module a owl:Ontology ;
+    dct:title "XEO Design (design systems, tokens, components, patterns, templates, assets, directions, concepts, review decisions)" ;
+    dct:description "Draft. What a website is designed and built with: a DesignSystem of tokens, components, patterns and page templates, and the assets they use; and how a new design is proposed and decided: DesignDirections, the existing site's DesignElements, DesignConcepts drawn under a direction, and the reviewer's DesignDecisions to keep, replace or approve. Holds pointers, never files. Needs only core. Every term is marked draft." ;
+    dct:creator "Inbound Found" ;
+    owl:versionInfo "0.7.2" .
+
+# --- The design system -------------------------------------------------------------
+
+xeo:DesignSystem a owl:Class ;
+    rdfs:label "Design System" ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "A named, versioned set of the decisions a brand's or a site's interfaces are built from: its tokens, components, patterns and page templates (each inDesignSystem), and the assets they use. Identified by name and designSystemVersion. Kept where it is maintained, a design file, a code library or a documentation site (artifactUri, core): the graph holds the pointer and the structure, never the files. A Website is built with one (usesDesignSystem). One built out of a proposed direction names it (fromDirection)." .
+
+xeo:DesignToken a owl:Class ;
+    rdfs:label "Design Token" ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "One named design decision stored as a value, so design files and code share it: a colour, a spacing step, a font family, a duration, a shadow. Its name (core) is its path in the token file, such as color.brand.primary; its tokenType is one of the W3C Design Tokens Format's types; its tokenValue is the value as written there. A token that refers to another (an alias, {color.blue.500} in that format) names it with aliasOf and need carry no value of its own. tokenTier says whether it is a primitive, a semantic or a component token. A token whose value changes by mode (light and dark, one brand and another; Figma calls these modes) is one token per mode, each with its tokenMode. Belongs to one DesignSystem." .
+
+xeo:DesignComponent a owl:Class ;
+    rdfs:label "Design Component" ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "A reusable piece of interface with a name and a defined anatomy: a button, a card, a header, a form field. Built from tokens (usesToken), smaller components (composedOf) and assets (usesAsset). A variant (the primary button of a button, the compact card of a card) is a component of its own that points at the one it varies (variantOf). Kept where it is defined, a design file or a code library (artifactUri, core); the component in the design file and the one in code are one DesignComponent where they are meant to match. Not an HTML element, and not a CMS block, though a block may implement one." .
+
+xeo:DesignPattern a owl:Class ;
+    rdfs:label "Design Pattern" ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "A reusable answer to a recurring interface problem, made of components: a hero, a pricing table, a filtered listing, a sign-up flow. Larger than a component and smaller than a page; composedOf names the components and patterns it is made of. A pattern says how a problem is solved. Whether a page must use it is a Practice (decision), not a property of the pattern." .
+
+xeo:PageTemplate a owl:Class ;
+    rdfs:label "Page Template" ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "The layout a kind of page is built from, and the patterns and components it holds (composedOf): the template for a home page, a service page, an article, a case study. Many URLs use one (usesTemplate). Not a page role (hasRole, decision), which is a reading of what a page is for: a template is what the page is built from, as the CMS or the build records it." .
+
+xeo:DesignAsset a owl:Class ;
+    rdfs:label "Design Asset" ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "A file a design uses: a logo, an icon, an illustration, a photograph, a graphic, a font, a video (assetKind). Identified by where the file is kept (artifactUri, core); the graph holds the pointer, never the file. Used by components, patterns, templates, concepts and pages (usesAsset). Who may use it, and on what terms, is not a term yet." .
+
+xeo:inDesignSystem a owl:ObjectProperty ;
+    rdfs:label "in design system" ;
+    xeo:domainIncludes xeo:DesignToken , xeo:DesignComponent , xeo:DesignPattern , xeo:PageTemplate , xeo:DesignAsset ;
+    rdfs:range xeo:DesignSystem ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "The DesignSystem a token, component, pattern, template or asset belongs to. One per token; a component or an asset shared by two systems may name both. Domain left open across the terms listed." .
+
+xeo:usesDesignSystem a owl:ObjectProperty ;
+    rdfs:label "uses design system" ;
+    rdfs:domain xeo:Website ; rdfs:range xeo:DesignSystem ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "The DesignSystem a Website's pages are built with. A site moving to a new system keeps both links, each with startedAt and endedAt where the dates are known." .
+
+xeo:aliasOf a owl:ObjectProperty ;
+    rdfs:label "alias of" ;
+    rdfs:domain xeo:DesignToken ; rdfs:range xeo:DesignToken ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "The token whose value this token takes: a semantic token such as color.action.primary pointing at a primitive such as color.blue.500. At most one. A chain of aliases is followed to the token that holds the value; a loop is an error. The Design Tokens Format's alias, written {group.token} there." .
+
+xeo:usesToken a owl:ObjectProperty ;
+    rdfs:label "uses token" ;
+    xeo:domainIncludes xeo:DesignComponent , xeo:DesignPattern , xeo:PageTemplate , xeo:DesignConcept ;
+    rdfs:range xeo:DesignToken ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "A DesignToken a component, pattern, template or concept is styled with. Says which decisions it depends on, so a token's change can be traced to everything it touches. Domain left open across the terms listed." .
+
+xeo:composedOf a owl:ObjectProperty ;
+    rdfs:label "composed of" ;
+    xeo:domainIncludes xeo:DesignComponent , xeo:DesignPattern , xeo:PageTemplate ;
+    xeo:rangeIncludes xeo:DesignComponent , xeo:DesignPattern ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "A component or pattern this one is built from: a card from a heading, an image and a button; a hero from a heading and a call to action; a template from its patterns. Order and slots are not modelled. Domain and range left open across the terms listed." .
+
+xeo:variantOf a owl:ObjectProperty ;
+    rdfs:label "variant of" ;
+    rdfs:domain xeo:DesignComponent ; rdfs:range xeo:DesignComponent ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "The component this one is a variant of: the primary button of a button, the compact card of a card. What makes it a variant (size, state, emphasis) is in its name for now. Figma's variant within a component set." .
+
+xeo:usesAsset a owl:ObjectProperty ;
+    rdfs:label "uses asset" ;
+    xeo:domainIncludes xeo:DesignComponent , xeo:DesignPattern , xeo:PageTemplate , xeo:DesignConcept , xeo:URL ;
+    rdfs:range xeo:DesignAsset ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "A DesignAsset shown or loaded by a component, pattern, template, concept or page: the logo in a header, the photograph on a page, the font a template loads. Domain left open across the terms listed." .
+
+xeo:usesTemplate a owl:ObjectProperty ;
+    rdfs:label "uses template" ;
+    rdfs:domain xeo:URL ; rdfs:range xeo:PageTemplate ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "The PageTemplate a page is built from, as the CMS or the build records it. One per page at a time. A template inferred from a crawl, by comparing layouts, is a reading and carries method." .
+
+xeo:designSystemVersion a owl:DatatypeProperty ;
+    rdfs:label "design system version" ;
+    rdfs:domain xeo:DesignSystem ; rdfs:range xsd:string ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "The version of a DesignSystem as its maintainers name it, such as 3.2.0. A new version is the same DesignSystem with a new value, or a new node where both versions are in use at once." .
+
+xeo:tokenType a owl:DatatypeProperty ;
+    rdfs:label "token type" ;
+    rdfs:domain xeo:DesignToken ; rdfs:range xsd:string ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "What kind of value a DesignToken holds, as one of the W3C Design Tokens Format's type names: color, dimension, fontFamily, fontWeight, duration, cubicBezier, number, and the composite strokeStyle, border, transition, shadow, gradient and typography. Two more, string and boolean, are not in that format and cover Figma's variables of those types. Codes in xeos:tokenType, spelled as the format spells them. Exactly one per token." .
+
+xeo:tokenValue a owl:DatatypeProperty ;
+    rdfs:label "token value" ;
+    rdfs:domain xeo:DesignToken ; rdfs:range xsd:string ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "A DesignToken's value as written in its token file, as text: #1a73e8, 16px, 200ms; a composite value (a shadow, a typography style) as the JSON the format writes. Absent on an alias, which takes its value from the token it names (aliasOf)." .
+
+xeo:tokenTier a owl:DatatypeProperty ;
+    rdfs:label "token tier" ;
+    rdfs:domain xeo:DesignToken ; rdfs:range xsd:string ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "Which tier of a design system a DesignToken sits in: primitive (a raw value with no meaning of its own, such as blue.500), semantic (a value named for its use, such as color.action.primary, usually an alias of a primitive) or component (a value for one component, such as button.background). Codes in xeos:tokenTier. Systems name the tiers differently (reference, system and component; global, alias and component); the codes are XEO's." .
+
+xeo:tokenMode a owl:DatatypeProperty ;
+    rdfs:label "token mode" ;
+    rdfs:domain xeo:DesignToken ; rdfs:range xsd:string ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "The mode a DesignToken's value holds in, where the system has more than one: light or dark, one brand or another, compact or comfortable. A token with a value per mode is one DesignToken per mode, each with the same name and its tokenMode. Free text, named as the system names its modes. Absent where the system has one mode." .
+
+xeo:assetKind a owl:DatatypeProperty ;
+    rdfs:label "asset kind" ;
+    rdfs:domain xeo:DesignAsset ; rdfs:range xsd:string ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "What kind of file a DesignAsset is: logo, icon, illustration, photograph, graphic (a made image such as a banner or a social post), font, video or animation. Codes in xeos:assetKind. One per asset." .
+
+# --- Proposing and deciding a design ---------------------------------------------
+
+xeo:DesignDirection a owl:Class ;
+    rdfs:label "Design Direction" ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "One proposed visual approach for a site or a brand: a name, the idea behind it in words (statement, decision), and how it treats type, colour, imagery and layout, shown through the DesignConcepts drawn under it (underDirection). Several are usually proposed together, in one Deliverable (proposedIn, work), for one Website, Brand or Project (directionFor). A durable option that concepts and decisions point at. Whether it fits is a reviewer's call, kept as a DesignDecision about it, never as a flag on the direction. A design system built out of a chosen direction names it (fromDirection)." .
+
+xeo:DesignElement a owl:Class ;
+    rdfs:label "Design Element" ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "One part of an existing site's design, catalogued so it can be reviewed: a logo treatment, a colour, a type style, a style of photography, a divider, the navigation, a recurring component (elementKind). Belongs to one Website (elementOf) and is seen on its pages (seenOn). Where the same thing is also catalogued in a design system, realizedAs names the token, component, pattern, template or asset. A redesign asks of each element whether to keep, replace or remove it, and under each direction with what: a DesignDecision, and the DesignConcepts that replace it (replacesElement)." .
+
+xeo:DesignConcept a owl:Class ;
+    rdfs:label "Design Concept" ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "A rendered proposal for one piece of interface, usually under one DesignDirection: a card, a hero, a page, or a direction's version of an element of the existing site. Names what it depicts (depicts: a component, pattern, template, element or page) and the direction it was drawn under (underDirection); where it is offered in place of an element of the existing site, replacesElement names that element. Kept as an image, a design-file frame or a prototype (artifactUri, core). Where a model drew it, method and producedByModel (core) say how. A card concept is a DesignConcept that depicts a card component. Not a skos:Concept, which is a code in a scheme." .
+
+xeo:DesignDecision a owl:Class ;
+    rdfs:label "Design Decision" ;
+    xeo:xeoLayer "interpretation" ;
+    xeo:termStatus "draft" ;
+    dct:description "A reviewer's call on one piece of a design proposal: keep, replace or remove an element of the existing site; approve, shortlist or reject a direction or a concept; or defer (designVerdict). Names what it decides on (decidesOn), who decided (decidedBy), when (occurredAt, core), and, where the call holds under one direction only, which (underDirection). A replacement may name the concept chosen (chosenConcept). The reviewer's reason in their own words is its statement (decision). An interpretation: a judgment of fit, labeled as one. A changed mind is a new decision beside the old one, never an edit of it. Not Feedback (decision), which judges a machine's claim about a gap or a recommendation." .
+
+xeo:directionFor a owl:ObjectProperty ;
+    rdfs:label "direction for" ;
+    rdfs:domain xeo:DesignDirection ;
+    xeo:rangeIncludes xeo:Website , xeo:Brand , xeo:Project ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "What a DesignDirection is proposed for: a Website, a Brand (visibility) or a Project (work), such as a new site that has no address yet. Range left open across the terms listed." .
+
+xeo:proposedIn a owl:ObjectProperty ;
+    rdfs:label "proposed in" ;
+    xeo:domainIncludes xeo:DesignDirection , xeo:DesignConcept ;
+    xeo:rangeIncludes xeo:Deliverable ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "The Deliverable (work) a direction or a concept was handed over in: a proposal document, a proposal site, a review page. One deliverable usually holds several directions. Domain and range left open." .
+
+xeo:elementOf a owl:ObjectProperty ;
+    rdfs:label "element of" ;
+    rdfs:domain xeo:DesignElement ; rdfs:range xeo:Website ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "The Website a DesignElement is part of. Exactly one per element." .
+
+xeo:seenOn a owl:ObjectProperty ;
+    rdfs:label "seen on" ;
+    rdfs:domain xeo:DesignElement ; rdfs:range xeo:URL ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "A page where a DesignElement appears, as catalogued for review: an example, not a complete list. An element that is on every page names one or two." .
+
+xeo:realizedAs a owl:ObjectProperty ;
+    rdfs:label "realized as" ;
+    rdfs:domain xeo:DesignElement ;
+    xeo:rangeIncludes xeo:DesignToken , xeo:DesignComponent , xeo:DesignPattern , xeo:PageTemplate , xeo:DesignAsset ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "The design-system part an element of the existing site is: the colour token, the header component, the logo file. Absent where the site has no catalogued system, which is common on an older site. Range left open across the terms listed." .
+
+xeo:depicts a owl:ObjectProperty ;
+    rdfs:label "depicts" ;
+    rdfs:domain xeo:DesignConcept ;
+    xeo:rangeIncludes xeo:DesignComponent , xeo:DesignPattern , xeo:PageTemplate , xeo:DesignElement , xeo:URL ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "What a DesignConcept shows: a component (a card), a pattern (a hero), a template (an article page), an element of the existing site, or one page (a URL). At least one per concept. Range left open across the terms listed." .
+
+xeo:underDirection a owl:ObjectProperty ;
+    rdfs:label "under direction" ;
+    xeo:domainIncludes xeo:DesignConcept , xeo:DesignDecision ;
+    rdfs:range xeo:DesignDirection ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "The DesignDirection a concept was drawn under, or a decision holds under: 'replace the divider, under direction three, with this'. At most one. A decision with none holds whichever direction is chosen. Domain left open across the terms listed." .
+
+xeo:replacesElement a owl:ObjectProperty ;
+    rdfs:label "replaces element" ;
+    rdfs:domain xeo:DesignConcept ; rdfs:range xeo:DesignElement ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "The element of the existing site a DesignConcept is offered in place of: one replacement option. Each direction may offer its own; the reviewer picks one with chosenConcept." .
+
+xeo:fromDirection a owl:ObjectProperty ;
+    rdfs:label "from direction" ;
+    rdfs:domain xeo:DesignSystem ; rdfs:range xeo:DesignDirection ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "The DesignDirection a DesignSystem was built out of, once a direction was chosen. Absent on a system that came first." .
+
+xeo:elementKind a owl:DatatypeProperty ;
+    rdfs:label "element kind" ;
+    rdfs:domain xeo:DesignElement ; rdfs:range xsd:string ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "What kind of part of a design a DesignElement is: logo, color, typography, imagery, iconography, illustration, layout, navigation, component, pattern or motion. Codes in xeos:elementKind. One per element; something that is two kinds is catalogued as two elements." .
+
+xeo:decidesOn a owl:ObjectProperty ;
+    rdfs:label "decides on" ;
+    rdfs:domain xeo:DesignDecision ;
+    xeo:rangeIncludes xeo:DesignElement , xeo:DesignDirection , xeo:DesignConcept ;
+    xeo:xeoLayer "interpretation" ;
+    xeo:termStatus "draft" ;
+    dct:description "What a DesignDecision is about: an element of the existing site, a direction, or a concept. Exactly one per decision. Range left open across the terms listed." .
+
+xeo:chosenConcept a owl:ObjectProperty ;
+    rdfs:label "chosen concept" ;
+    rdfs:domain xeo:DesignDecision ; rdfs:range xeo:DesignConcept ;
+    xeo:xeoLayer "interpretation" ;
+    xeo:termStatus "draft" ;
+    dct:description "The concept a reviewer picked to replace an element, on a decision whose verdict is replace. Absent where the reviewer said replace and left the choice open." .
+
+xeo:decidedBy a owl:ObjectProperty ;
+    rdfs:label "decided by" ;
+    rdfs:domain xeo:DesignDecision ; rdfs:range xeo:Person ;
+    xeo:xeoLayer "interpretation" ;
+    xeo:termStatus "draft" ;
+    dct:description "The Person (core) who made a DesignDecision: the client's reviewer, the designer, the team lead. Several where a group decided together." .
+
+xeo:designVerdict a owl:DatatypeProperty ;
+    rdfs:label "design verdict" ;
+    rdfs:domain xeo:DesignDecision ; rdfs:range xsd:string ;
+    xeo:xeoLayer "interpretation" ;
+    xeo:termStatus "draft" ;
+    dct:description "The call a DesignDecision makes: keep, replace or remove (for an element of the existing site), approve, shortlist or reject (for a direction or a concept), or defer (for any of them). Codes in xeos:designVerdict. Exactly one per decision." .
+
+# --- Terms from elsewhere, used here ----------------------------------------------
+# New triples about terms declared in other modules; nothing is redefined.
+
+xeo:artifactUri xeo:domainIncludes xeo:DesignSystem , xeo:DesignComponent , xeo:DesignPattern , xeo:PageTemplate , xeo:DesignAsset , xeo:DesignConcept .
+
+xeo:statement xeo:domainIncludes xeo:DesignDirection , xeo:DesignDecision .

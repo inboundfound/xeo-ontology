@@ -27,6 +27,7 @@
     "xeo-agentic.ttl",
     "xeo-experiments.ttl",
     "xeo-knowledge.ttl",
+    "xeo-design.ttl",
     "xeo-schemes.ttl"
   ],
   "labels": {
@@ -223,6 +224,69 @@
       "iri": "https://xeoontology.org/xeo#Deliverable",
       "layer": "episode",
       "module": "work",
+      "status": "draft"
+    },
+    "DesignAsset": {
+      "definition": "A file a design uses: a logo, an icon, an illustration, a photograph, a graphic, a font, a video (assetKind). Identified by where the file is kept (artifactUri, core); the graph holds the pointer, never the file. Used by components, patterns, templates, concepts and pages (usesAsset). Who may use it, and on what terms, is not a term yet.",
+      "iri": "https://xeoontology.org/xeo#DesignAsset",
+      "layer": "entity",
+      "module": "design",
+      "status": "draft"
+    },
+    "DesignComponent": {
+      "definition": "A reusable piece of interface with a name and a defined anatomy: a button, a card, a header, a form field. Built from tokens (usesToken), smaller components (composedOf) and assets (usesAsset). A variant (the primary button of a button, the compact card of a card) is a component of its own that points at the one it varies (variantOf). Kept where it is defined, a design file or a code library (artifactUri, core); the component in the design file and the one in code are one DesignComponent where they are meant to match. Not an HTML element, and not a CMS block, though a block may implement one.",
+      "iri": "https://xeoontology.org/xeo#DesignComponent",
+      "layer": "entity",
+      "module": "design",
+      "status": "draft"
+    },
+    "DesignConcept": {
+      "definition": "A rendered proposal for one piece of interface, usually under one DesignDirection: a card, a hero, a page, or a direction's version of an element of the existing site. Names what it depicts (depicts: a component, pattern, template, element or page) and the direction it was drawn under (underDirection); where it is offered in place of an element of the existing site, replacesElement names that element. Kept as an image, a design-file frame or a prototype (artifactUri, core). Where a model drew it, method and producedByModel (core) say how. A card concept is a DesignConcept that depicts a card component. Not a skos:Concept, which is a code in a scheme.",
+      "iri": "https://xeoontology.org/xeo#DesignConcept",
+      "layer": "entity",
+      "module": "design",
+      "status": "draft"
+    },
+    "DesignDecision": {
+      "definition": "A reviewer's call on one piece of a design proposal: keep, replace or remove an element of the existing site; approve, shortlist or reject a direction or a concept; or defer (designVerdict). Names what it decides on (decidesOn), who decided (decidedBy), when (occurredAt, core), and, where the call holds under one direction only, which (underDirection). A replacement may name the concept chosen (chosenConcept). The reviewer's reason in their own words is its statement (decision). An interpretation: a judgment of fit, labeled as one. A changed mind is a new decision beside the old one, never an edit of it. Not Feedback (decision), which judges a machine's claim about a gap or a recommendation.",
+      "iri": "https://xeoontology.org/xeo#DesignDecision",
+      "layer": "interpretation",
+      "module": "design",
+      "status": "draft"
+    },
+    "DesignDirection": {
+      "definition": "One proposed visual approach for a site or a brand: a name, the idea behind it in words (statement, decision), and how it treats type, colour, imagery and layout, shown through the DesignConcepts drawn under it (underDirection). Several are usually proposed together, in one Deliverable (proposedIn, work), for one Website, Brand or Project (directionFor). A durable option that concepts and decisions point at. Whether it fits is a reviewer's call, kept as a DesignDecision about it, never as a flag on the direction. A design system built out of a chosen direction names it (fromDirection).",
+      "iri": "https://xeoontology.org/xeo#DesignDirection",
+      "layer": "entity",
+      "module": "design",
+      "status": "draft"
+    },
+    "DesignElement": {
+      "definition": "One part of an existing site's design, catalogued so it can be reviewed: a logo treatment, a colour, a type style, a style of photography, a divider, the navigation, a recurring component (elementKind). Belongs to one Website (elementOf) and is seen on its pages (seenOn). Where the same thing is also catalogued in a design system, realizedAs names the token, component, pattern, template or asset. A redesign asks of each element whether to keep, replace or remove it, and under each direction with what: a DesignDecision, and the DesignConcepts that replace it (replacesElement).",
+      "iri": "https://xeoontology.org/xeo#DesignElement",
+      "layer": "entity",
+      "module": "design",
+      "status": "draft"
+    },
+    "DesignPattern": {
+      "definition": "A reusable answer to a recurring interface problem, made of components: a hero, a pricing table, a filtered listing, a sign-up flow. Larger than a component and smaller than a page; composedOf names the components and patterns it is made of. A pattern says how a problem is solved. Whether a page must use it is a Practice (decision), not a property of the pattern.",
+      "iri": "https://xeoontology.org/xeo#DesignPattern",
+      "layer": "entity",
+      "module": "design",
+      "status": "draft"
+    },
+    "DesignSystem": {
+      "definition": "A named, versioned set of the decisions a brand's or a site's interfaces are built from: its tokens, components, patterns and page templates (each inDesignSystem), and the assets they use. Identified by name and designSystemVersion. Kept where it is maintained, a design file, a code library or a documentation site (artifactUri, core): the graph holds the pointer and the structure, never the files. A Website is built with one (usesDesignSystem). One built out of a proposed direction names it (fromDirection).",
+      "iri": "https://xeoontology.org/xeo#DesignSystem",
+      "layer": "entity",
+      "module": "design",
+      "status": "draft"
+    },
+    "DesignToken": {
+      "definition": "One named design decision stored as a value, so design files and code share it: a colour, a spacing step, a font family, a duration, a shadow. Its name (core) is its path in the token file, such as color.brand.primary; its tokenType is one of the W3C Design Tokens Format's types; its tokenValue is the value as written there. A token that refers to another (an alias, {color.blue.500} in that format) names it with aliasOf and need carry no value of its own. tokenTier says whether it is a primitive, a semantic or a component token. A token whose value changes by mode (light and dark, one brand and another; Figma calls these modes) is one token per mode, each with its tokenMode. Belongs to one DesignSystem.",
+      "iri": "https://xeoontology.org/xeo#DesignToken",
+      "layer": "entity",
+      "module": "design",
       "status": "draft"
     },
     "Diagnostic": {
@@ -430,6 +494,13 @@
       "layer": "episode",
       "module": "sales",
       "status": "extension"
+    },
+    "PageTemplate": {
+      "definition": "The layout a kind of page is built from, and the patterns and components it holds (composedOf): the template for a home page, a service page, an article, a case study. Many URLs use one (usesTemplate). Not a page role (hasRole, decision), which is a reading of what a page is for: a template is what the page is built from, as the CMS or the build records it.",
+      "iri": "https://xeoontology.org/xeo#PageTemplate",
+      "layer": "entity",
+      "module": "design",
+      "status": "draft"
     },
     "Payment": {
       "definition": "Money received against an Order or a Subscription. Carries paidAmount.",
@@ -856,7 +927,13 @@
       "domain": [
         "Compaction",
         "Deliverable",
+        "DesignAsset",
+        "DesignComponent",
+        "DesignConcept",
+        "DesignPattern",
+        "DesignSystem",
         "HarnessComponent",
+        "PageTemplate",
         "Recording",
         "Spec",
         "Summary",
@@ -866,6 +943,19 @@
       "iri": "https://xeoontology.org/xeo#artifactUri",
       "layer": "entity",
       "module": "core",
+      "status": "draft"
+    },
+    "assetKind": {
+      "datatype": "xsd:string",
+      "domain": [
+        "DesignAsset"
+      ],
+      "iri": "https://xeoontology.org/xeo#assetKind",
+      "layer": "entity",
+      "module": "design",
+      "schemes": [
+        "assetKind"
+      ],
       "status": "draft"
     },
     "assignedAt": {
@@ -1578,6 +1668,29 @@
       "layer": "observation",
       "module": "core"
     },
+    "designSystemVersion": {
+      "datatype": "xsd:string",
+      "domain": [
+        "DesignSystem"
+      ],
+      "iri": "https://xeoontology.org/xeo#designSystemVersion",
+      "layer": "entity",
+      "module": "design",
+      "status": "draft"
+    },
+    "designVerdict": {
+      "datatype": "xsd:string",
+      "domain": [
+        "DesignDecision"
+      ],
+      "iri": "https://xeoontology.org/xeo#designVerdict",
+      "layer": "interpretation",
+      "module": "design",
+      "schemes": [
+        "designVerdict"
+      ],
+      "status": "draft"
+    },
     "device": {
       "datatype": "xsd:string",
       "iri": "https://xeoontology.org/xeo#device",
@@ -1624,6 +1737,19 @@
       "schemes": [
         "effort"
       ]
+    },
+    "elementKind": {
+      "datatype": "xsd:string",
+      "domain": [
+        "DesignElement"
+      ],
+      "iri": "https://xeoontology.org/xeo#elementKind",
+      "layer": "entity",
+      "module": "design",
+      "schemes": [
+        "elementKind"
+      ],
+      "status": "draft"
     },
     "eligibleTouchType": {
       "datatype": "xsd:string",
@@ -2805,6 +2931,8 @@
       "datatype": "xsd:string",
       "domain": [
         "Claim",
+        "DesignDecision",
+        "DesignDirection",
         "Feedback",
         "Gap",
         "Lesson",
@@ -2957,6 +3085,52 @@
       "iri": "https://xeoontology.org/xeo#toStageRef",
       "layer": "episode",
       "module": "sales"
+    },
+    "tokenMode": {
+      "datatype": "xsd:string",
+      "domain": [
+        "DesignToken"
+      ],
+      "iri": "https://xeoontology.org/xeo#tokenMode",
+      "layer": "entity",
+      "module": "design",
+      "status": "draft"
+    },
+    "tokenTier": {
+      "datatype": "xsd:string",
+      "domain": [
+        "DesignToken"
+      ],
+      "iri": "https://xeoontology.org/xeo#tokenTier",
+      "layer": "entity",
+      "module": "design",
+      "schemes": [
+        "tokenTier"
+      ],
+      "status": "draft"
+    },
+    "tokenType": {
+      "datatype": "xsd:string",
+      "domain": [
+        "DesignToken"
+      ],
+      "iri": "https://xeoontology.org/xeo#tokenType",
+      "layer": "entity",
+      "module": "design",
+      "schemes": [
+        "tokenType"
+      ],
+      "status": "draft"
+    },
+    "tokenValue": {
+      "datatype": "xsd:string",
+      "domain": [
+        "DesignToken"
+      ],
+      "iri": "https://xeoontology.org/xeo#tokenValue",
+      "layer": "entity",
+      "module": "design",
+      "status": "draft"
     },
     "tokensAfter": {
       "datatype": "xsd:integer",
@@ -3342,6 +3516,19 @@
       ],
       "term": "algorithm"
     },
+    "ALIAS_OF": {
+      "domain": [
+        "DesignToken"
+      ],
+      "iri": "https://xeoontology.org/xeo#aliasOf",
+      "layer": "entity",
+      "module": "design",
+      "range": [
+        "DesignToken"
+      ],
+      "status": "draft",
+      "term": "aliasOf"
+    },
     "APPLIED_PRACTICE": {
       "domain": [
         "Recommendation"
@@ -3614,6 +3801,19 @@
       "status": "draft",
       "term": "childSession"
     },
+    "CHOSEN_CONCEPT": {
+      "domain": [
+        "DesignDecision"
+      ],
+      "iri": "https://xeoontology.org/xeo#chosenConcept",
+      "layer": "interpretation",
+      "module": "design",
+      "range": [
+        "DesignConcept"
+      ],
+      "status": "draft",
+      "term": "chosenConcept"
+    },
     "CITES": {
       "domain": [
         "LLMResponse"
@@ -3692,6 +3892,22 @@
         "Website"
       ],
       "term": "competesWith"
+    },
+    "COMPOSED_OF": {
+      "domain": [
+        "DesignComponent",
+        "DesignPattern",
+        "PageTemplate"
+      ],
+      "iri": "https://xeoontology.org/xeo#composedOf",
+      "layer": "entity",
+      "module": "design",
+      "range": [
+        "DesignComponent",
+        "DesignPattern"
+      ],
+      "status": "draft",
+      "term": "composedOf"
     },
     "COMPUTED_BY": {
       "domain": [
@@ -3852,6 +4068,34 @@
       "status": "extension",
       "term": "dataState"
     },
+    "DECIDED_BY": {
+      "domain": [
+        "DesignDecision"
+      ],
+      "iri": "https://xeoontology.org/xeo#decidedBy",
+      "layer": "interpretation",
+      "module": "design",
+      "range": [
+        "Person"
+      ],
+      "status": "draft",
+      "term": "decidedBy"
+    },
+    "DECIDES_ON": {
+      "domain": [
+        "DesignDecision"
+      ],
+      "iri": "https://xeoontology.org/xeo#decidesOn",
+      "layer": "interpretation",
+      "module": "design",
+      "range": [
+        "DesignConcept",
+        "DesignDirection",
+        "DesignElement"
+      ],
+      "status": "draft",
+      "term": "decidesOn"
+    },
     "DENOMINATOR": {
       "domain": [
         "Metric"
@@ -3863,6 +4107,38 @@
         "Metric"
       ],
       "term": "denominator"
+    },
+    "DEPICTS": {
+      "domain": [
+        "DesignConcept"
+      ],
+      "iri": "https://xeoontology.org/xeo#depicts",
+      "layer": "entity",
+      "module": "design",
+      "range": [
+        "DesignComponent",
+        "DesignElement",
+        "DesignPattern",
+        "PageTemplate",
+        "URL"
+      ],
+      "status": "draft",
+      "term": "depicts"
+    },
+    "DIRECTION_FOR": {
+      "domain": [
+        "DesignDirection"
+      ],
+      "iri": "https://xeoontology.org/xeo#directionFor",
+      "layer": "entity",
+      "module": "design",
+      "range": [
+        "Brand",
+        "Project",
+        "Website"
+      ],
+      "status": "draft",
+      "term": "directionFor"
     },
     "DRAWN_FROM": {
       "domain": [
@@ -3894,6 +4170,19 @@
         "effort"
       ],
       "term": "effortEstimate"
+    },
+    "ELEMENT_OF": {
+      "domain": [
+        "DesignElement"
+      ],
+      "iri": "https://xeoontology.org/xeo#elementOf",
+      "layer": "entity",
+      "module": "design",
+      "range": [
+        "Website"
+      ],
+      "status": "draft",
+      "term": "elementOf"
     },
     "EVALUATED_PRACTICE": {
       "domain": [
@@ -4030,6 +4319,19 @@
         "frameworkKind"
       ],
       "term": "frameworkKind"
+    },
+    "FROM_DIRECTION": {
+      "domain": [
+        "DesignSystem"
+      ],
+      "iri": "https://xeoontology.org/xeo#fromDirection",
+      "layer": "entity",
+      "module": "design",
+      "range": [
+        "DesignDirection"
+      ],
+      "status": "draft",
+      "term": "fromDirection"
     },
     "FULFILS": {
       "domain": [
@@ -4452,6 +4754,23 @@
       ],
       "term": "inContext"
     },
+    "IN_DESIGN_SYSTEM": {
+      "domain": [
+        "DesignAsset",
+        "DesignComponent",
+        "DesignPattern",
+        "DesignToken",
+        "PageTemplate"
+      ],
+      "iri": "https://xeoontology.org/xeo#inDesignSystem",
+      "layer": "entity",
+      "module": "design",
+      "range": [
+        "DesignSystem"
+      ],
+      "status": "draft",
+      "term": "inDesignSystem"
+    },
     "IN_INTERVENTION": {
       "domain": [
         "Tactic"
@@ -4856,6 +5175,20 @@
       ],
       "term": "producedOutcome"
     },
+    "PROPOSED_IN": {
+      "domain": [
+        "DesignConcept",
+        "DesignDirection"
+      ],
+      "iri": "https://xeoontology.org/xeo#proposedIn",
+      "layer": "entity",
+      "module": "design",
+      "range": [
+        "Deliverable"
+      ],
+      "status": "draft",
+      "term": "proposedIn"
+    },
     "RAISED_IN": {
       "domain": [
         "ActionItem"
@@ -4906,6 +5239,23 @@
         "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
       ],
       "term": "readsSlot"
+    },
+    "REALIZED_AS": {
+      "domain": [
+        "DesignElement"
+      ],
+      "iri": "https://xeoontology.org/xeo#realizedAs",
+      "layer": "entity",
+      "module": "design",
+      "range": [
+        "DesignAsset",
+        "DesignComponent",
+        "DesignPattern",
+        "DesignToken",
+        "PageTemplate"
+      ],
+      "status": "draft",
+      "term": "realizedAs"
     },
     "RECOMMENDS": {
       "domain": [
@@ -5021,6 +5371,19 @@
         "URL"
       ],
       "term": "relativeTo"
+    },
+    "REPLACES_ELEMENT": {
+      "domain": [
+        "DesignConcept"
+      ],
+      "iri": "https://xeoontology.org/xeo#replacesElement",
+      "layer": "entity",
+      "module": "design",
+      "range": [
+        "DesignElement"
+      ],
+      "status": "draft",
+      "term": "replacesElement"
     },
     "REQUIRES_CAPABILITY": {
       "domain": [
@@ -5138,6 +5501,19 @@
         "Website"
       ],
       "term": "scopedTo"
+    },
+    "SEEN_ON": {
+      "domain": [
+        "DesignElement"
+      ],
+      "iri": "https://xeoontology.org/xeo#seenOn",
+      "layer": "entity",
+      "module": "design",
+      "range": [
+        "URL"
+      ],
+      "status": "draft",
+      "term": "seenOn"
     },
     "SHOWN_ON_SEARCH_ENGINE": {
       "domain": [
@@ -5359,6 +5735,20 @@
       ],
       "term": "treats"
     },
+    "UNDER_DIRECTION": {
+      "domain": [
+        "DesignConcept",
+        "DesignDecision"
+      ],
+      "iri": "https://xeoontology.org/xeo#underDirection",
+      "layer": "entity",
+      "module": "design",
+      "range": [
+        "DesignDirection"
+      ],
+      "status": "draft",
+      "term": "underDirection"
+    },
     "UNDER_HARNESS": {
       "domain": [
         "AgentSession"
@@ -5415,6 +5805,23 @@
       "status": "draft",
       "term": "usedConfig"
     },
+    "USES_ASSET": {
+      "domain": [
+        "DesignComponent",
+        "DesignConcept",
+        "DesignPattern",
+        "PageTemplate",
+        "URL"
+      ],
+      "iri": "https://xeoontology.org/xeo#usesAsset",
+      "layer": "entity",
+      "module": "design",
+      "range": [
+        "DesignAsset"
+      ],
+      "status": "draft",
+      "term": "usesAsset"
+    },
     "USES_ATTRIBUTION_MODEL": {
       "domain": [
         "AttributedCredit",
@@ -5427,6 +5834,61 @@
         "AttributionModel"
       ],
       "term": "usesAttributionModel"
+    },
+    "USES_DESIGN_SYSTEM": {
+      "domain": [
+        "Website"
+      ],
+      "iri": "https://xeoontology.org/xeo#usesDesignSystem",
+      "layer": "entity",
+      "module": "design",
+      "range": [
+        "DesignSystem"
+      ],
+      "status": "draft",
+      "term": "usesDesignSystem"
+    },
+    "USES_TEMPLATE": {
+      "domain": [
+        "URL"
+      ],
+      "iri": "https://xeoontology.org/xeo#usesTemplate",
+      "layer": "entity",
+      "module": "design",
+      "range": [
+        "PageTemplate"
+      ],
+      "status": "draft",
+      "term": "usesTemplate"
+    },
+    "USES_TOKEN": {
+      "domain": [
+        "DesignComponent",
+        "DesignConcept",
+        "DesignPattern",
+        "PageTemplate"
+      ],
+      "iri": "https://xeoontology.org/xeo#usesToken",
+      "layer": "entity",
+      "module": "design",
+      "range": [
+        "DesignToken"
+      ],
+      "status": "draft",
+      "term": "usesToken"
+    },
+    "VARIANT_OF": {
+      "domain": [
+        "DesignComponent"
+      ],
+      "iri": "https://xeoontology.org/xeo#variantOf",
+      "layer": "entity",
+      "module": "design",
+      "range": [
+        "DesignComponent"
+      ],
+      "status": "draft",
+      "term": "variantOf"
     },
     "VERDICT": {
       "conceptSlot": true,
@@ -5543,6 +6005,16 @@
       "lead_created",
       "opportunity_created",
       "qualified"
+    ],
+    "assetKind": [
+      "animation",
+      "font",
+      "graphic",
+      "icon",
+      "illustration",
+      "logo",
+      "photograph",
+      "video"
     ],
     "betterDirection": [
       "down",
@@ -5674,6 +6146,15 @@
       "hook",
       "user"
     ],
+    "designVerdict": [
+      "approve",
+      "defer",
+      "keep",
+      "reject",
+      "remove",
+      "replace",
+      "shortlist"
+    ],
     "device": [
       "desktop",
       "mobile",
@@ -5684,6 +6165,19 @@
       "days",
       "weeks",
       "quarter"
+    ],
+    "elementKind": [
+      "color",
+      "component",
+      "iconography",
+      "illustration",
+      "imagery",
+      "layout",
+      "logo",
+      "motion",
+      "navigation",
+      "pattern",
+      "typography"
     ],
     "enforcementPoint": [
       "config",
@@ -6057,6 +6551,28 @@
       "quarter",
       "week",
       "year"
+    ],
+    "tokenTier": [
+      "component",
+      "primitive",
+      "semantic"
+    ],
+    "tokenType": [
+      "boolean",
+      "border",
+      "color",
+      "cubicBezier",
+      "dimension",
+      "duration",
+      "fontFamily",
+      "fontWeight",
+      "gradient",
+      "number",
+      "shadow",
+      "string",
+      "strokeStyle",
+      "transition",
+      "typography"
     ],
     "toolSource": [
       "builtin",

@@ -7,9 +7,9 @@ and corrects prose; a domain or range is not narrowed.
 
 Versions before 0.6.0 are reconstructed from the git history.
 
-## Unreleased — draft: the experiments and company knowledge modules
+## Unreleased — draft: the experiments, company knowledge and design modules
 
-Two new add-on modules for the next release, every term in both marked
+Three new add-on modules for the next release, every term in both marked
 `xeo:termStatus "draft"`: declared so they can be tried, and free to change or go without a
 deprecation step. Nothing released is renamed, removed, retyped or narrowed. The version stays
 0.7.2 until the release commit.
@@ -49,8 +49,43 @@ pointers), `Summary` (derivation), `ActionItem` (interpretation); `attendee`, `r
 W3C Organization Ontology) for people and departments. A message, a thread and a document are
 schema.org's `Message`, `Conversation` and `DigitalDocument`, and no class is minted for them.
 
+### `xeo-design.ttl`
+
+Design and web development: what a site is designed and built with, and how a new design is
+proposed, shown and decided. 38 terms. The design system: `DesignSystem`, `DesignToken`,
+`DesignComponent`, `DesignPattern`, `PageTemplate`, `DesignAsset`; `inDesignSystem`,
+`usesDesignSystem` (from a `Website`), `aliasOf`, `usesToken`, `composedOf`, `variantOf`,
+`usesAsset`, `usesTemplate` (from a `URL`), `designSystemVersion`, `tokenType`, `tokenValue`,
+`tokenTier`, `tokenMode`, `assetKind`. The review: `DesignDirection`, `DesignElement`,
+`DesignConcept`, `DesignDecision`; `directionFor`, `proposedIn` (a `Deliverable`), `elementOf`,
+`seenOn`, `realizedAs`, `depicts`, `underDirection`, `replacesElement`, `fromDirection`,
+`decidesOn`, `chosenConcept`, `decidedBy`, `elementKind`, `designVerdict`.
+
+- **Tokens follow the W3C Design Tokens Format (2025.10).** `tokenType`'s codes are its type
+  names, spelled as it spells them (camelCase), plus `string` and `boolean` for Figma's
+  variables of those types. An alias is `aliasOf`. A token with a value per mode is one token
+  per mode, until the format's own answer to themes is checked.
+- **Approval is a decision, not a flag.** A direction carries no status; a `DesignDecision`
+  about it does, with who and when, so a changed mind is a new decision beside the old one.
+- **A card concept is a `DesignConcept` that depicts a card component.** No class for one kind
+  of concept.
+- **Not `Feedback`.** Feedback (decision) judges a machine's claim; a design decision is a
+  person's call on a proposal.
+- **Five draft schemes:** `tokenType`, `tokenTier`, `elementKind`, `assetKind`, `designVerdict`.
+- `docs/design/research-prompt.md`: the prompt for checking the module against Figma, Claude's
+  design features, Canva, Adobe and the token format.
+
 ### Also
 
+- **Shapes (design):** five, each with a failing case: a token has one type and at most one
+  alias; a token has a value or an alias; an element belongs to one website; a concept names
+  what it depicts, under at most one direction; a decision names one thing and one verdict.
+- **Alignment (design):** `DesignAsset` closeMatch `schema:MediaObject`, `DesignConcept`
+  closeMatch `schema:CreativeWork`, `DesignDecision` closeMatch `schema:Review`, `usesAsset`
+  closeMatch `schema:associatedMedia`.
+- **Example (design):** `examples/design-review.jsonld` loads all ten design classes.
+- `artifactUri` (core) may also sit on six design classes, and `statement` (decision) on a
+  `DesignDirection` or a `DesignDecision`.
 - **Shapes:** six, for the rules the two modules state as required (a trial belongs to one
   arm; a claim check names one claim and one verdict; a recording and a transcript name what
   they record; a summary and an action item name their source), each with a failing case in
