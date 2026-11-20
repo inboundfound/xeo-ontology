@@ -276,7 +276,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 <section id="DesignDecision" class="term">
   <h3>Design Decision <span class="layer" style="--h:#DD6B20">interpretation</span> <span class="status">draft</span><span class="mod">xeo-design</span></h3>
   <code class="iri">xeo:DesignDecision</code>
-  <p>A reviewer&#x27;s call on one piece of a design proposal: keep, replace or remove an element of the existing site; approve, shortlist or reject a direction or a concept; or defer (designVerdict). Names what it decides on (decidesOn), who decided (decidedBy), when (occurredAt, core), and, where the call holds under one direction only, which (underDirection). A replacement may name the concept chosen (chosenConcept). The reviewer&#x27;s reason in their own words is its statement (decision). An interpretation: a judgment of fit, labeled as one. A changed mind is a new decision beside the old one, never an edit of it. Not Feedback (decision), which judges a machine&#x27;s claim about a gap or a recommendation.</p>
+  <p>A reviewer&#x27;s call on one piece of a design proposal: keep, replace or remove an element of the existing site; approve, shortlist, send back for changes (revise) or reject a direction or a concept; or defer (designVerdict). Names what it decides on (decidesOn), who decided (decidedBy), when (occurredAt, core), and, where the call holds under one direction only, which (underDirection). A replacement may name the concept chosen (chosenConcept). The reviewer&#x27;s reason in their own words is its statement (decision). An interpretation: a judgment of fit, labeled as one. A changed mind is a new decision beside the old one, never an edit of it. Not Feedback (decision), which judges a machine&#x27;s claim about a gap or a recommendation.</p>
   <dl><div class="row"><dt>closeMatch</dt><dd><a href="https://schema.org/Review" class="ext">schema:Review</a></dd></div></dl>
 </section>
 <section id="DesignDirection" class="term">
@@ -763,7 +763,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 <section id="aliasOf" class="term">
   <h3>alias of <span class="layer" style="--h:#718096">entity</span> <span class="status">draft</span><span class="mod">xeo-design</span></h3>
   <code class="iri">xeo:aliasOf</code>
-  <p>The token whose value this token takes: a semantic token such as color.action.primary pointing at a primitive such as color.blue.500. At most one. A chain of aliases is followed to the token that holds the value; a loop is an error. The Design Tokens Format&#x27;s alias, written {group.token} there.</p>
+  <p>The token whose value this token takes: a semantic token such as color.action.primary pointing at a primitive such as color.blue.500. At most one. A chain of aliases is followed to the token that holds the value; a loop is an error. The Design Tokens Format&#x27;s alias, written {group.token} there, or a $ref JSON Pointer to the whole token. A reference to one part of a composite value ($ref into a shadow&#x27;s colour, say) is not an alias: it stays inside the tokenValue as written.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#DesignToken">xeo:DesignToken</a></dd></div><div class="row"><dt>range</dt><dd><a href="#DesignToken">xeo:DesignToken</a></dd></div></dl>
 </section>
 <section id="appliedPractice" class="term">
@@ -1825,7 +1825,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 <section id="variantOf" class="term">
   <h3>variant of <span class="layer" style="--h:#718096">entity</span> <span class="status">draft</span><span class="mod">xeo-design</span></h3>
   <code class="iri">xeo:variantOf</code>
-  <p>The component this one is a variant of: the primary button of a button, the compact card of a card. What makes it a variant (size, state, emphasis) is in its name for now. Figma&#x27;s variant within a component set.</p>
+  <p>The component this one is a variant of: the primary button of a button, the compact card of a card. What makes it a variant (size, state, emphasis) is in its name for now. Figma&#x27;s variant within a component set: there each variant is a component inside the set, so the variant points at the DesignComponent that stands for the set. Penpot&#x27;s variants are the same shape. Adobe Spectrum uses the word variant for one option of a component (accent, primary), not for a component of its own.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#DesignComponent">xeo:DesignComponent</a></dd></div><div class="row"><dt>range</dt><dd><a href="#DesignComponent">xeo:DesignComponent</a></dd></div></dl>
 </section>
 <section id="verdict" class="term">
@@ -2414,7 +2414,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 <section id="designVerdict" class="term">
   <h3>design verdict <span class="layer" style="--h:#DD6B20">interpretation</span> <span class="status">draft</span><span class="mod">xeo-design</span></h3>
   <code class="iri">xeo:designVerdict</code>
-  <p>The call a DesignDecision makes: keep, replace or remove (for an element of the existing site), approve, shortlist or reject (for a direction or a concept), or defer (for any of them). Codes in xeos:designVerdict. Exactly one per decision.</p>
+  <p>The call a DesignDecision makes: keep, replace or remove (for an element of the existing site), approve, shortlist, revise or reject (for a direction or a concept), or defer (for any of them). revise is the changes-requested call design tools name: Figma&#x27;s Request changes in a branch review, Canva&#x27;s Needs changes in a design approval. Codes in xeos:designVerdict. Exactly one per decision.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#DesignDecision">xeo:DesignDecision</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
 <section id="device" class="term">
@@ -3302,25 +3302,25 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 <section id="tokenMode" class="term">
   <h3>token mode <span class="layer" style="--h:#718096">entity</span> <span class="status">draft</span><span class="mod">xeo-design</span></h3>
   <code class="iri">xeo:tokenMode</code>
-  <p>The mode a DesignToken&#x27;s value holds in, where the system has more than one: light or dark, one brand or another, compact or comfortable. A token with a value per mode is one DesignToken per mode, each with the same name and its tokenMode. Free text, named as the system names its modes. Absent where the system has one mode.</p>
+  <p>The mode a DesignToken&#x27;s value holds in, where the system has more than one: light or dark, one brand or another, compact or comfortable. A token with a value per mode is one DesignToken per mode, each with the same name and its tokenMode. The Design Tokens Format&#x27;s Resolver Module calls a mode a context of a modifier (the dark context of a theme modifier); Figma, a mode of a variable collection. Free text, named as the system names its modes. Absent where the system has one mode.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#DesignToken">xeo:DesignToken</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
 <section id="tokenTier" class="term">
   <h3>token tier <span class="layer" style="--h:#718096">entity</span> <span class="status">draft</span><span class="mod">xeo-design</span></h3>
   <code class="iri">xeo:tokenTier</code>
-  <p>Which tier of a design system a DesignToken sits in: primitive (a raw value with no meaning of its own, such as blue.500), semantic (a value named for its use, such as color.action.primary, usually an alias of a primitive) or component (a value for one component, such as button.background). Codes in xeos:tokenTier. Systems name the tiers differently (reference, system and component; global, alias and component); the codes are XEO&#x27;s.</p>
+  <p>Which tier of a design system a DesignToken sits in: primitive (a raw value with no meaning of its own, such as blue.500), semantic (a value named for its use, such as color.action.primary, usually an alias of a primitive) or component (a value for one component, such as button.background). Codes in xeos:tokenTier. Systems name the tiers differently: Material Design 3 says reference, system and component; the Design Tokens Format&#x27;s Color Module, in a non-normative note, base, alias and component; Adobe Spectrum primitive (also global), semantic and component, its own spelling of these three codes. The Design Tokens Format itself defines no tiers.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#DesignToken">xeo:DesignToken</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
 <section id="tokenType" class="term">
   <h3>token type <span class="layer" style="--h:#718096">entity</span> <span class="status">draft</span><span class="mod">xeo-design</span></h3>
   <code class="iri">xeo:tokenType</code>
-  <p>What kind of value a DesignToken holds, as one of the W3C Design Tokens Format&#x27;s type names: color, dimension, fontFamily, fontWeight, duration, cubicBezier, number, and the composite strokeStyle, border, transition, shadow, gradient and typography. Two more, string and boolean, are not in that format and cover Figma&#x27;s variables of those types. Codes in xeos:tokenType, spelled as the format spells them. Exactly one per token.</p>
+  <p>What kind of value a DesignToken holds, as one of the W3C Design Tokens Format&#x27;s type names: color, dimension, fontFamily, fontWeight, duration, cubicBezier, number, and the composite strokeStyle, border, transition, shadow, gradient and typography. Two more, string and boolean, are not in that format and cover Figma&#x27;s variables of those types (and Tokens Studio&#x27;s text and boolean tokens). Codes in xeos:tokenType, spelled as the format spells them. Exactly one per token: where the file sets the type on a group, or leaves an alias to take its target&#x27;s type, the type the format resolves to.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#DesignToken">xeo:DesignToken</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
 <section id="tokenValue" class="term">
   <h3>token value <span class="layer" style="--h:#718096">entity</span> <span class="status">draft</span><span class="mod">xeo-design</span></h3>
   <code class="iri">xeo:tokenValue</code>
-  <p>A DesignToken&#x27;s value as written in its token file, as text: #1a73e8, 16px, 200ms; a composite value (a shadow, a typography style) as the JSON the format writes. Absent on an alias, which takes its value from the token it names (aliasOf).</p>
+  <p>A DesignToken&#x27;s value as written in its token file, as text. Where the file writes a JSON object or array, the JSON: in the Design Tokens Format 2025.10 a colour ({&quot;colorSpace&quot;: &quot;srgb&quot;, &quot;components&quot;: [0.1, 0.45, 0.91], &quot;hex&quot;: &quot;#1a73e8&quot;}), a dimension ({&quot;value&quot;: 16, &quot;unit&quot;: &quot;px&quot;}), a duration ({&quot;value&quot;: 200, &quot;unit&quot;: &quot;ms&quot;}) and every composite (a shadow, a typography style) are objects. A file in an older or a tool&#x27;s own format may write #1a73e8, 16px or 200ms, stored as written. Absent on an alias, which takes its value from the token it names (aliasOf).</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#DesignToken">xeo:DesignToken</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
 <section id="tokensAfter" class="term">

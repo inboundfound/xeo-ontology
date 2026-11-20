@@ -43,7 +43,11 @@
 # TOKENS FOLLOW THE W3C DESIGN TOKENS FORMAT. A token's name is its path in the
 # token file, its type one of that format's types (xeos:tokenType), and an alias
 # is a token pointing at another. Modes (light and dark, one brand and another)
-# are one token per mode until the format's own answer to themes is checked.
+# are one token per mode. Checked on 2026-11-20 against the format's Resolver
+# Module 2025.10: a mode there is a context of a modifier, each context its own
+# set of token files merged by path, so one value per token per context; Adobe
+# Spectrum's design data likewise keeps one row per mode
+# (docs/design/research-results-2026-11-20.md).
 #
 # POINTERS, NEVER FILES. A design file, a component library, a mockup and an
 # image stay where they are made and kept; the graph holds where (artifactUri,
@@ -61,7 +65,8 @@
 # where those are loaded; each such link is optional.
 #
 # Sources: the W3C Design Tokens Community Group's Design Tokens Format Module
-# 2025.10 for token types and aliases; Figma's documentation of variables, modes,
+# 2025.10 for token types and aliases, and its Resolver Module 2025.10 for modes;
+# Figma's documentation of variables, modes,
 # components and variants, as read on 2026-11-20; atomic design (Frost, 2016) for
 # the ladder from component to pattern to template; and the working practice of
 # a design proposal reviewed element by element. Names here are ours unless the
@@ -131,7 +136,7 @@ xeo:aliasOf a owl:ObjectProperty ;
     rdfs:domain xeo:DesignToken ; rdfs:range xeo:DesignToken ;
     xeo:xeoLayer "entity" ;
     xeo:termStatus "draft" ;
-    dct:description "The token whose value this token takes: a semantic token such as color.action.primary pointing at a primitive such as color.blue.500. At most one. A chain of aliases is followed to the token that holds the value; a loop is an error. The Design Tokens Format's alias, written {group.token} there." .
+    dct:description "The token whose value this token takes: a semantic token such as color.action.primary pointing at a primitive such as color.blue.500. At most one. A chain of aliases is followed to the token that holds the value; a loop is an error. The Design Tokens Format's alias, written {group.token} there, or a $ref JSON Pointer to the whole token. A reference to one part of a composite value ($ref into a shadow's colour, say) is not an alias: it stays inside the tokenValue as written." .
 
 xeo:usesToken a owl:ObjectProperty ;
     rdfs:label "uses token" ;
@@ -154,7 +159,7 @@ xeo:variantOf a owl:ObjectProperty ;
     rdfs:domain xeo:DesignComponent ; rdfs:range xeo:DesignComponent ;
     xeo:xeoLayer "entity" ;
     xeo:termStatus "draft" ;
-    dct:description "The component this one is a variant of: the primary button of a button, the compact card of a card. What makes it a variant (size, state, emphasis) is in its name for now. Figma's variant within a component set." .
+    dct:description "The component this one is a variant of: the primary button of a button, the compact card of a card. What makes it a variant (size, state, emphasis) is in its name for now. Figma's variant within a component set: there each variant is a component inside the set, so the variant points at the DesignComponent that stands for the set. Penpot's variants are the same shape. Adobe Spectrum uses the word variant for one option of a component (accent, primary), not for a component of its own." .
 
 xeo:usesAsset a owl:ObjectProperty ;
     rdfs:label "uses asset" ;
@@ -183,28 +188,28 @@ xeo:tokenType a owl:DatatypeProperty ;
     rdfs:domain xeo:DesignToken ; rdfs:range xsd:string ;
     xeo:xeoLayer "entity" ;
     xeo:termStatus "draft" ;
-    dct:description "What kind of value a DesignToken holds, as one of the W3C Design Tokens Format's type names: color, dimension, fontFamily, fontWeight, duration, cubicBezier, number, and the composite strokeStyle, border, transition, shadow, gradient and typography. Two more, string and boolean, are not in that format and cover Figma's variables of those types. Codes in xeos:tokenType, spelled as the format spells them. Exactly one per token." .
+    dct:description "What kind of value a DesignToken holds, as one of the W3C Design Tokens Format's type names: color, dimension, fontFamily, fontWeight, duration, cubicBezier, number, and the composite strokeStyle, border, transition, shadow, gradient and typography. Two more, string and boolean, are not in that format and cover Figma's variables of those types (and Tokens Studio's text and boolean tokens). Codes in xeos:tokenType, spelled as the format spells them. Exactly one per token: where the file sets the type on a group, or leaves an alias to take its target's type, the type the format resolves to." .
 
 xeo:tokenValue a owl:DatatypeProperty ;
     rdfs:label "token value" ;
     rdfs:domain xeo:DesignToken ; rdfs:range xsd:string ;
     xeo:xeoLayer "entity" ;
     xeo:termStatus "draft" ;
-    dct:description "A DesignToken's value as written in its token file, as text: #1a73e8, 16px, 200ms; a composite value (a shadow, a typography style) as the JSON the format writes. Absent on an alias, which takes its value from the token it names (aliasOf)." .
+    dct:description "A DesignToken's value as written in its token file, as text. Where the file writes a JSON object or array, the JSON: in the Design Tokens Format 2025.10 a colour ({\"colorSpace\": \"srgb\", \"components\": [0.1, 0.45, 0.91], \"hex\": \"#1a73e8\"}), a dimension ({\"value\": 16, \"unit\": \"px\"}), a duration ({\"value\": 200, \"unit\": \"ms\"}) and every composite (a shadow, a typography style) are objects. A file in an older or a tool's own format may write #1a73e8, 16px or 200ms, stored as written. Absent on an alias, which takes its value from the token it names (aliasOf)." .
 
 xeo:tokenTier a owl:DatatypeProperty ;
     rdfs:label "token tier" ;
     rdfs:domain xeo:DesignToken ; rdfs:range xsd:string ;
     xeo:xeoLayer "entity" ;
     xeo:termStatus "draft" ;
-    dct:description "Which tier of a design system a DesignToken sits in: primitive (a raw value with no meaning of its own, such as blue.500), semantic (a value named for its use, such as color.action.primary, usually an alias of a primitive) or component (a value for one component, such as button.background). Codes in xeos:tokenTier. Systems name the tiers differently (reference, system and component; global, alias and component); the codes are XEO's." .
+    dct:description "Which tier of a design system a DesignToken sits in: primitive (a raw value with no meaning of its own, such as blue.500), semantic (a value named for its use, such as color.action.primary, usually an alias of a primitive) or component (a value for one component, such as button.background). Codes in xeos:tokenTier. Systems name the tiers differently: Material Design 3 says reference, system and component; the Design Tokens Format's Color Module, in a non-normative note, base, alias and component; Adobe Spectrum primitive (also global), semantic and component, its own spelling of these three codes. The Design Tokens Format itself defines no tiers." .
 
 xeo:tokenMode a owl:DatatypeProperty ;
     rdfs:label "token mode" ;
     rdfs:domain xeo:DesignToken ; rdfs:range xsd:string ;
     xeo:xeoLayer "entity" ;
     xeo:termStatus "draft" ;
-    dct:description "The mode a DesignToken's value holds in, where the system has more than one: light or dark, one brand or another, compact or comfortable. A token with a value per mode is one DesignToken per mode, each with the same name and its tokenMode. Free text, named as the system names its modes. Absent where the system has one mode." .
+    dct:description "The mode a DesignToken's value holds in, where the system has more than one: light or dark, one brand or another, compact or comfortable. A token with a value per mode is one DesignToken per mode, each with the same name and its tokenMode. The Design Tokens Format's Resolver Module calls a mode a context of a modifier (the dark context of a theme modifier); Figma, a mode of a variable collection. Free text, named as the system names its modes. Absent where the system has one mode." .
 
 xeo:assetKind a owl:DatatypeProperty ;
     rdfs:label "asset kind" ;
@@ -237,7 +242,7 @@ xeo:DesignDecision a owl:Class ;
     rdfs:label "Design Decision" ;
     xeo:xeoLayer "interpretation" ;
     xeo:termStatus "draft" ;
-    dct:description "A reviewer's call on one piece of a design proposal: keep, replace or remove an element of the existing site; approve, shortlist or reject a direction or a concept; or defer (designVerdict). Names what it decides on (decidesOn), who decided (decidedBy), when (occurredAt, core), and, where the call holds under one direction only, which (underDirection). A replacement may name the concept chosen (chosenConcept). The reviewer's reason in their own words is its statement (decision). An interpretation: a judgment of fit, labeled as one. A changed mind is a new decision beside the old one, never an edit of it. Not Feedback (decision), which judges a machine's claim about a gap or a recommendation." .
+    dct:description "A reviewer's call on one piece of a design proposal: keep, replace or remove an element of the existing site; approve, shortlist, send back for changes (revise) or reject a direction or a concept; or defer (designVerdict). Names what it decides on (decidesOn), who decided (decidedBy), when (occurredAt, core), and, where the call holds under one direction only, which (underDirection). A replacement may name the concept chosen (chosenConcept). The reviewer's reason in their own words is its statement (decision). An interpretation: a judgment of fit, labeled as one. A changed mind is a new decision beside the old one, never an edit of it. Not Feedback (decision), which judges a machine's claim about a gap or a recommendation." .
 
 xeo:directionFor a owl:ObjectProperty ;
     rdfs:label "direction for" ;
@@ -341,7 +346,7 @@ xeo:designVerdict a owl:DatatypeProperty ;
     rdfs:domain xeo:DesignDecision ; rdfs:range xsd:string ;
     xeo:xeoLayer "interpretation" ;
     xeo:termStatus "draft" ;
-    dct:description "The call a DesignDecision makes: keep, replace or remove (for an element of the existing site), approve, shortlist or reject (for a direction or a concept), or defer (for any of them). Codes in xeos:designVerdict. Exactly one per decision." .
+    dct:description "The call a DesignDecision makes: keep, replace or remove (for an element of the existing site), approve, shortlist, revise or reject (for a direction or a concept), or defer (for any of them). revise is the changes-requested call design tools name: Figma's Request changes in a branch review, Canva's Needs changes in a design approval. Codes in xeos:designVerdict. Exactly one per decision." .
 
 # --- Terms from elsewhere, used here ----------------------------------------------
 # New triples about terms declared in other modules; nothing is redefined.

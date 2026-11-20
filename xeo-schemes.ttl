@@ -4229,7 +4229,7 @@ xeos:tokenType a skos:ConceptScheme ;
     skos:prefLabel "Design token types"@en ;
     xeo:fillsSlot xeo:tokenType ;
     xeo:termStatus "draft" ;
-    dct:source "W3C Design Tokens Community Group, Design Tokens Format Module 2025.10 (the $type names, spelled as the format spells them); string and boolean from Figma's variable types, as documented on 2026-11-20. The definitions are XEO's wording" ;
+    dct:source "W3C Design Tokens Community Group, Design Tokens Format Module 2025.10 (the $type names, spelled as the format spells them); string and boolean from Figma's variable types (Figma REST API resolvedType STRING and BOOLEAN; Tokens Studio's text and boolean tokens), as documented on 2026-11-20. The definitions are XEO's wording" ;
     dct:description "What kind of value a design token holds. The codes are the Design Tokens Format's own type names, so a token file's $type is stored as it is written." .
 
 xeos:tokenType-color a skos:Concept ;
@@ -4341,7 +4341,7 @@ xeos:tokenTier a skos:ConceptScheme ;
     skos:prefLabel "Token tiers"@en ;
     xeo:fillsSlot xeo:tokenTier ;
     xeo:termStatus "draft" ;
-    dct:source "XEO's codes for the tiers most design systems name, under different names (reference, system and component; global, alias and component), as read on 2026-11-20" ;
+    dct:source "XEO's codes for the tiers most design systems name, under different names: Material Design 3's reference, system and component (m3.material.io/foundations/design-tokens/overview); the Design Tokens Color Module 2025.10's non-normative base, alias and component; Adobe Spectrum's primitive (aka global), semantic and component-specific, whose design-data spec uses these three codes as its tokenTier values. All read on 2026-11-20" ;
     dct:description "Which tier of a design system a token sits in." .
 
 xeos:tokenTier-primitive a skos:Concept ;
@@ -4349,6 +4349,7 @@ xeos:tokenTier-primitive a skos:Concept ;
     skos:topConceptOf xeos:tokenTier ;
     skos:notation "primitive" ;
     skos:prefLabel "Primitive"@en ;
+    skos:altLabel "Reference"@en , "Base"@en , "Global"@en ;
     skos:definition "A raw value with no meaning of its own, such as blue.500 or space.4"@en .
 
 xeos:tokenTier-semantic a skos:Concept ;
@@ -4356,6 +4357,7 @@ xeos:tokenTier-semantic a skos:Concept ;
     skos:topConceptOf xeos:tokenTier ;
     skos:notation "semantic" ;
     skos:prefLabel "Semantic"@en ;
+    skos:altLabel "System"@en , "Alias"@en ;
     skos:definition "A value named for its use, such as color.action.primary, usually an alias of a primitive"@en .
 
 xeos:tokenTier-component a skos:Concept ;
@@ -4363,6 +4365,7 @@ xeos:tokenTier-component a skos:Concept ;
     skos:topConceptOf xeos:tokenTier ;
     skos:notation "component" ;
     skos:prefLabel "Component"@en ;
+    skos:altLabel "Component-specific"@en ;
     skos:definition "A value for one component, such as button.background, usually an alias of a semantic token"@en .
 
 xeos:elementKind a skos:ConceptScheme ;
@@ -4516,8 +4519,8 @@ xeos:designVerdict a skos:ConceptScheme ;
     skos:prefLabel "Design verdicts"@en ;
     xeo:fillsSlot xeo:designVerdict ;
     xeo:termStatus "draft" ;
-    dct:source "XEO's codes, from the working practice of reviewing a design proposal element by element and direction by direction (2026-11-20)" ;
-    dct:description "The call a design decision makes. keep, replace and remove are for an element of the existing site; approve, shortlist and reject for a direction or a concept; defer for any of them." .
+    dct:source "XEO's codes, from the working practice of reviewing a design proposal element by element and direction by direction (2026-11-20). revise added after reading Figma's branch review (Approve, Request changes; help.figma.com/hc/en-us/articles/5691414603543) and Canva's design approval (Approved, Needs changes; canva.com/help/get-approval/), read on 2026-11-20" ;
+    dct:description "The call a design decision makes. keep, replace and remove are for an element of the existing site; approve, shortlist, revise and reject for a direction or a concept; defer for any of them." .
 
 xeos:designVerdict-keep a skos:Concept ;
     skos:inScheme xeos:designVerdict ;
@@ -4553,6 +4556,14 @@ xeos:designVerdict-shortlist a skos:Concept ;
     skos:notation "shortlist" ;
     skos:prefLabel "Shortlist"@en ;
     skos:definition "Keep this direction or concept in the running"@en .
+
+xeos:designVerdict-revise a skos:Concept ;
+    skos:inScheme xeos:designVerdict ;
+    skos:topConceptOf xeos:designVerdict ;
+    skos:notation "revise" ;
+    skos:prefLabel "Revise"@en ;
+    skos:altLabel "Request changes"@en , "Needs changes"@en ;
+    skos:definition "Not yet: rework this direction or concept and bring it back for another call"@en .
 
 xeos:designVerdict-reject a skos:Concept ;
     skos:inScheme xeos:designVerdict ;

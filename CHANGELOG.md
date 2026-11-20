@@ -22,7 +22,7 @@ released terms may still change.**
 
 **In numbers:** 14 module files (three new: `xeo-experiments.ttl`, `xeo-knowledge.ttl`,
 `xeo-design.ttl`), 102 classes, 192 object properties, 268 datatype properties; 85 reference
-schemes and 484 concepts; 174 draft terms, 36 of them classes, every class loaded by an example.
+schemes and 485 concepts; 174 draft terms, 36 of them classes, every class loaded by an example.
 The release is not tagged and not on GitHub's releases page until the maintainer says so.
 
 ### `xeo-experiments.ttl`
@@ -75,7 +75,8 @@ proposed, shown and decided. 38 terms. The design system: `DesignSystem`, `Desig
 - **Tokens follow the W3C Design Tokens Format (2025.10).** `tokenType`'s codes are its type
   names, spelled as it spells them (camelCase), plus `string` and `boolean` for Figma's
   variables of those types. An alias is `aliasOf`. A token with a value per mode is one token
-  per mode, until the format's own answer to themes is checked.
+  per mode, checked against the format's Resolver Module 2025.10, where each context of a
+  modifier (the dark context of a theme) is its own set of token files merged by path.
 - **Approval is a decision, not a flag.** A direction carries no status; a `DesignDecision`
   about it does, with who and when, so a changed mind is a new decision beside the old one.
 - **A card concept is a `DesignConcept` that depicts a card component.** No class for one kind
@@ -83,6 +84,14 @@ proposed, shown and decided. 38 terms. The design system: `DesignSystem`, `Desig
 - **Not `Feedback`.** Feedback (decision) judges a machine's claim; a design decision is a
   person's call on a proposal.
 - **Five draft schemes:** `tokenType`, `tokenTier`, `elementKind`, `assetKind`, `designVerdict`.
+- **Checked against the design tools (2026-11-20).** `docs/design/research-results-2026-11-20.md`
+  crosswalks all 38 terms against the token format, Figma, Claude, Canva, Adobe, `theme.json` and
+  others. Fixes it supported, made in place: `designVerdict` gains `revise` (Figma's Request
+  changes, Canva's Needs changes); `tokenValue` says the 2025.10 format writes a colour, a
+  dimension and a duration as JSON objects; `tokenTier` names each source's tier names (and its
+  codes carry them as `skos:altLabel`); `aliasOf` covers a `$ref` to a whole token; `tokenType`
+  is the type the format resolves to; `variantOf` says how Figma's component sets map. Larger
+  changes are listed in the report as proposals, not made.
 - `docs/design/research-prompt.md`: the prompt for checking the module against Figma, Claude's
   design features, Canva, Adobe and the token format.
 
