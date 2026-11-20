@@ -488,3 +488,66 @@ xeosh:ActionItemNamesWhereRaised a sh:NodeShape ;
         sh:path xeo:raisedIn ; sh:minCount 1 ;
         sh:message "A xeo:ActionItem requires at least one xeo:raisedIn."
     ] .
+
+# --- Draft: design (0.8) -------------------------------------------------------------
+# The rules the draft design module states as required. Its terms are draft, and
+# so are these shapes: they change or go with the terms.
+
+xeosh:DesignTokenShape a sh:NodeShape ;
+    rdfs:label "a design token has one type and at most one alias" ;
+    sh:targetClass xeo:DesignToken ;
+    sh:property [
+        sh:path xeo:tokenType ; sh:minCount 1 ; sh:maxCount 1 ;
+        sh:in ( "color" "dimension" "fontFamily" "fontWeight" "duration" "cubicBezier" "number" "strokeStyle" "border" "transition" "shadow" "gradient" "typography" "string" "boolean" ) ;
+        sh:message "A xeo:DesignToken requires one xeo:tokenType from xeos:tokenType."
+    ] ;
+    sh:property [
+        sh:path xeo:aliasOf ; sh:maxCount 1 ;
+        sh:message "A xeo:DesignToken is an alias of at most one other token."
+    ] .
+
+xeosh:DesignTokenHasValue a sh:NodeShape ;
+    rdfs:label "a design token has a value or names the token it takes one from" ;
+    sh:targetClass xeo:DesignToken ;
+    sh:or (
+        [ sh:path xeo:tokenValue ; sh:minCount 1 ]
+        [ sh:path xeo:aliasOf ; sh:minCount 1 ]
+    ) ;
+    sh:message "A xeo:DesignToken requires a xeo:tokenValue or a xeo:aliasOf." .
+
+xeosh:DesignElementShape a sh:NodeShape ;
+    rdfs:label "a design element belongs to one website" ;
+    sh:targetClass xeo:DesignElement ;
+    sh:property [
+        sh:path xeo:elementOf ; sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "A xeo:DesignElement requires exactly one xeo:elementOf."
+    ] .
+
+xeosh:DesignConceptShape a sh:NodeShape ;
+    rdfs:label "a design concept names what it depicts, under at most one direction" ;
+    sh:targetClass xeo:DesignConcept ;
+    sh:property [
+        sh:path xeo:depicts ; sh:minCount 1 ;
+        sh:message "A xeo:DesignConcept requires at least one xeo:depicts."
+    ] ;
+    sh:property [
+        sh:path xeo:underDirection ; sh:maxCount 1 ;
+        sh:message "A xeo:DesignConcept is drawn under at most one xeo:DesignDirection."
+    ] .
+
+xeosh:DesignDecisionShape a sh:NodeShape ;
+    rdfs:label "a design decision names one thing and one verdict" ;
+    sh:targetClass xeo:DesignDecision ;
+    sh:property [
+        sh:path xeo:decidesOn ; sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "A xeo:DesignDecision requires exactly one xeo:decidesOn."
+    ] ;
+    sh:property [
+        sh:path xeo:designVerdict ; sh:minCount 1 ; sh:maxCount 1 ;
+        sh:in ( "keep" "replace" "remove" "approve" "shortlist" "reject" "defer" ) ;
+        sh:message "A xeo:DesignDecision requires one xeo:designVerdict from xeos:designVerdict."
+    ] ;
+    sh:property [
+        sh:path xeo:underDirection ; sh:maxCount 1 ;
+        sh:message "A xeo:DesignDecision holds under at most one xeo:DesignDirection."
+    ] .

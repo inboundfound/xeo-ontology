@@ -41,6 +41,10 @@
       "@id": "xeo:algorithm",
       "@type": "@id"
     },
+    "ALIAS_OF": {
+      "@id": "xeo:aliasOf",
+      "@type": "@id"
+    },
     "APPLIED_PRACTICE": {
       "@id": "xeo:appliedPractice",
       "@type": "@id"
@@ -135,6 +139,10 @@
       "@id": "xeo:childSession",
       "@type": "@id"
     },
+    "CHOSEN_CONCEPT": {
+      "@id": "xeo:chosenConcept",
+      "@type": "@id"
+    },
     "CITES": {
       "@id": "xeo:cites",
       "@type": "@id"
@@ -157,6 +165,10 @@
     },
     "COMPETES_WITH": {
       "@id": "xeo:competesWith",
+      "@type": "@id"
+    },
+    "COMPOSED_OF": {
+      "@id": "xeo:composedOf",
       "@type": "@id"
     },
     "COMPUTED_BY": {
@@ -219,8 +231,24 @@
       "@id": "xeo:dataState",
       "@type": "@id"
     },
+    "DECIDED_BY": {
+      "@id": "xeo:decidedBy",
+      "@type": "@id"
+    },
+    "DECIDES_ON": {
+      "@id": "xeo:decidesOn",
+      "@type": "@id"
+    },
     "DENOMINATOR": {
       "@id": "xeo:denominator",
+      "@type": "@id"
+    },
+    "DEPICTS": {
+      "@id": "xeo:depicts",
+      "@type": "@id"
+    },
+    "DIRECTION_FOR": {
+      "@id": "xeo:directionFor",
       "@type": "@id"
     },
     "DRAWN_FROM": {
@@ -229,11 +257,24 @@
     },
     "Delegation": "xeo:Delegation",
     "Deliverable": "xeo:Deliverable",
+    "DesignAsset": "xeo:DesignAsset",
+    "DesignComponent": "xeo:DesignComponent",
+    "DesignConcept": "xeo:DesignConcept",
+    "DesignDecision": "xeo:DesignDecision",
+    "DesignDirection": "xeo:DesignDirection",
+    "DesignElement": "xeo:DesignElement",
+    "DesignPattern": "xeo:DesignPattern",
+    "DesignSystem": "xeo:DesignSystem",
+    "DesignToken": "xeo:DesignToken",
     "Diagnostic": "xeo:Diagnostic",
     "DiagnosticRun": "xeo:DiagnosticRun",
     "Domain": "xeo:Domain",
     "EFFORT_ESTIMATE": {
       "@id": "xeo:effortEstimate",
+      "@type": "@id"
+    },
+    "ELEMENT_OF": {
+      "@id": "xeo:elementOf",
       "@type": "@id"
     },
     "EVALUATED_PRACTICE": {
@@ -280,6 +321,10 @@
     },
     "FRAMEWORK_KIND": {
       "@id": "xeo:frameworkKind",
+      "@type": "@id"
+    },
+    "FROM_DIRECTION": {
+      "@id": "xeo:fromDirection",
       "@type": "@id"
     },
     "FULFILS": {
@@ -418,6 +463,10 @@
     },
     "IN_CONTEXT": {
       "@id": "xeo:inContext",
+      "@type": "@id"
+    },
+    "IN_DESIGN_SYSTEM": {
+      "@id": "xeo:inDesignSystem",
       "@type": "@id"
     },
     "IN_INTERVENTION": {
@@ -562,6 +611,11 @@
       "@id": "xeo:producedOutcome",
       "@type": "@id"
     },
+    "PROPOSED_IN": {
+      "@id": "xeo:proposedIn",
+      "@type": "@id"
+    },
+    "PageTemplate": "xeo:PageTemplate",
     "Payment": "xeo:Payment",
     "Person": "xeo:Person",
     "PipelineRollup": "xeo:PipelineRollup",
@@ -583,6 +637,10 @@
     },
     "READS_SLOT": {
       "@id": "xeo:readsSlot",
+      "@type": "@id"
+    },
+    "REALIZED_AS": {
+      "@id": "xeo:realizedAs",
       "@type": "@id"
     },
     "RECOMMENDS": {
@@ -619,6 +677,10 @@
     },
     "RELATIVE_TO": {
       "@id": "xeo:relativeTo",
+      "@type": "@id"
+    },
+    "REPLACES_ELEMENT": {
+      "@id": "xeo:replacesElement",
       "@type": "@id"
     },
     "REQUIRES_CAPABILITY": {
@@ -659,6 +721,10 @@
     },
     "SCOPED_TO": {
       "@id": "xeo:scopedTo",
+      "@type": "@id"
+    },
+    "SEEN_ON": {
+      "@id": "xeo:seenOn",
       "@type": "@id"
     },
     "SHOWN_ON_SEARCH_ENGINE": {
@@ -743,6 +809,10 @@
     "Touchpoint": "xeo:Touchpoint",
     "Transcript": "xeo:Transcript",
     "Trial": "xeo:Trial",
+    "UNDER_DIRECTION": {
+      "@id": "xeo:underDirection",
+      "@type": "@id"
+    },
     "UNDER_HARNESS": {
       "@id": "xeo:underHarness",
       "@type": "@id"
@@ -760,8 +830,28 @@
       "@id": "xeo:usedConfig",
       "@type": "@id"
     },
+    "USES_ASSET": {
+      "@id": "xeo:usesAsset",
+      "@type": "@id"
+    },
     "USES_ATTRIBUTION_MODEL": {
       "@id": "xeo:usesAttributionModel",
+      "@type": "@id"
+    },
+    "USES_DESIGN_SYSTEM": {
+      "@id": "xeo:usesDesignSystem",
+      "@type": "@id"
+    },
+    "USES_TEMPLATE": {
+      "@id": "xeo:usesTemplate",
+      "@type": "@id"
+    },
+    "USES_TOKEN": {
+      "@id": "xeo:usesToken",
+      "@type": "@id"
+    },
+    "VARIANT_OF": {
+      "@id": "xeo:variantOf",
       "@type": "@id"
     },
     "VERDICT": {
@@ -859,6 +949,7 @@
       "@type": "xsd:decimal"
     },
     "artifactUri": "xeo:artifactUri",
+    "assetKind": "xeo:assetKind",
     "assignedAt": {
       "@id": "xeo:assignedAt",
       "@type": "xsd:dateTime"
@@ -1075,6 +1166,8 @@
       "@id": "xeo:denominatorValue",
       "@type": "xsd:decimal"
     },
+    "designSystemVersion": "xeo:designSystemVersion",
+    "designVerdict": "xeo:designVerdict",
     "device": "xeo:device",
     "discountAmount": {
       "@id": "xeo:discountAmount",
@@ -1099,6 +1192,7 @@
       "@id": "xeo:effortEstimate",
       "@type": "@vocab"
     },
+    "elementKind": "xeo:elementKind",
     "eligibleTouchType": "xeo:eligibleTouchType",
     "embeddedAt": {
       "@id": "xeo:embeddedAt",
@@ -1485,6 +1579,10 @@
     },
     "title": "xeo:title",
     "toStageRef": "xeo:toStageRef",
+    "tokenMode": "xeo:tokenMode",
+    "tokenTier": "xeo:tokenTier",
+    "tokenType": "xeo:tokenType",
+    "tokenValue": "xeo:tokenValue",
     "tokensAfter": {
       "@id": "xeo:tokensAfter",
       "@type": "xsd:integer"

@@ -396,6 +396,73 @@
         }
       ]
     },
+    "assetKind": {
+      "iri": "https://xeoontology.org/schemes#assetKind",
+      "label": "Design asset kinds",
+      "fillsSlot": "xeo:assetKind",
+      "description": "What kind of file a design asset is.",
+      "source": "XEO's codes (2026-11-20)",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "animation",
+          "iri": "https://xeoontology.org/schemes#assetKind-animation",
+          "label": "Animation",
+          "definition": "An animation file, such as a Lottie file or an animated image",
+          "note": null
+        },
+        {
+          "code": "font",
+          "iri": "https://xeoontology.org/schemes#assetKind-font",
+          "label": "Font",
+          "definition": "A font file",
+          "note": null
+        },
+        {
+          "code": "graphic",
+          "iri": "https://xeoontology.org/schemes#assetKind-graphic",
+          "label": "Graphic",
+          "definition": "A made image for one use, such as a banner, a social post or a slide",
+          "note": null
+        },
+        {
+          "code": "icon",
+          "iri": "https://xeoontology.org/schemes#assetKind-icon",
+          "label": "Icon",
+          "definition": "An icon",
+          "note": null
+        },
+        {
+          "code": "illustration",
+          "iri": "https://xeoontology.org/schemes#assetKind-illustration",
+          "label": "Illustration",
+          "definition": "A drawn or made image",
+          "note": null
+        },
+        {
+          "code": "logo",
+          "iri": "https://xeoontology.org/schemes#assetKind-logo",
+          "label": "Logo",
+          "definition": "A logo file, in one of its versions",
+          "note": null
+        },
+        {
+          "code": "photograph",
+          "iri": "https://xeoontology.org/schemes#assetKind-photograph",
+          "label": "Photograph",
+          "definition": "A photograph",
+          "note": null
+        },
+        {
+          "code": "video",
+          "iri": "https://xeoontology.org/schemes#assetKind-video",
+          "label": "Video",
+          "definition": "A video",
+          "note": null
+        }
+      ],
+      "status": "draft"
+    },
     "betterDirection": {
       "iri": "https://xeoontology.org/schemes#betterDirection",
       "label": "Better directions",
@@ -1227,6 +1294,66 @@
       ],
       "status": "draft"
     },
+    "designVerdict": {
+      "iri": "https://xeoontology.org/schemes#designVerdict",
+      "label": "Design verdicts",
+      "fillsSlot": "xeo:designVerdict",
+      "description": "The call a design decision makes. keep, replace and remove are for an element of the existing site; approve, shortlist and reject for a direction or a concept; defer for any of them.",
+      "source": "XEO's codes, from the working practice of reviewing a design proposal element by element and direction by direction (2026-11-20)",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "approve",
+          "iri": "https://xeoontology.org/schemes#designVerdict-approve",
+          "label": "Approve",
+          "definition": "Go ahead with this direction or concept",
+          "note": null
+        },
+        {
+          "code": "defer",
+          "iri": "https://xeoontology.org/schemes#designVerdict-defer",
+          "label": "Defer",
+          "definition": "No call yet; decide later",
+          "note": null
+        },
+        {
+          "code": "keep",
+          "iri": "https://xeoontology.org/schemes#designVerdict-keep",
+          "label": "Keep",
+          "definition": "Keep the element as it is",
+          "note": null
+        },
+        {
+          "code": "reject",
+          "iri": "https://xeoontology.org/schemes#designVerdict-reject",
+          "label": "Reject",
+          "definition": "Do not go ahead with this direction or concept",
+          "note": null
+        },
+        {
+          "code": "remove",
+          "iri": "https://xeoontology.org/schemes#designVerdict-remove",
+          "label": "Remove",
+          "definition": "Drop the element and put nothing in its place",
+          "note": null
+        },
+        {
+          "code": "replace",
+          "iri": "https://xeoontology.org/schemes#designVerdict-replace",
+          "label": "Replace",
+          "definition": "Replace the element, with the chosen concept where one is named",
+          "note": null
+        },
+        {
+          "code": "shortlist",
+          "iri": "https://xeoontology.org/schemes#designVerdict-shortlist",
+          "label": "Shortlist",
+          "definition": "Keep this direction or concept in the running",
+          "note": null
+        }
+      ],
+      "status": "draft"
+    },
     "device": {
       "iri": "https://xeoontology.org/schemes#device",
       "label": "Devices",
@@ -1295,6 +1422,94 @@
           "note": null
         }
       ]
+    },
+    "elementKind": {
+      "iri": "https://xeoontology.org/schemes#elementKind",
+      "label": "Design element kinds",
+      "fillsSlot": "xeo:elementKind",
+      "description": "What kind of part of a design an element of an existing site is.",
+      "source": "XEO's codes, from the parts a design review of an existing site catalogues (2026-11-20)",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "color",
+          "iri": "https://xeoontology.org/schemes#elementKind-color",
+          "label": "Colour",
+          "definition": "A colour or a palette in use",
+          "note": null
+        },
+        {
+          "code": "component",
+          "iri": "https://xeoontology.org/schemes#elementKind-component",
+          "label": "Component",
+          "definition": "A recurring piece of interface, such as a card or a button",
+          "note": null
+        },
+        {
+          "code": "iconography",
+          "iri": "https://xeoontology.org/schemes#elementKind-iconography",
+          "label": "Iconography",
+          "definition": "A set or style of icons",
+          "note": null
+        },
+        {
+          "code": "illustration",
+          "iri": "https://xeoontology.org/schemes#elementKind-illustration",
+          "label": "Illustration",
+          "definition": "A style of drawn or made imagery",
+          "note": null
+        },
+        {
+          "code": "imagery",
+          "iri": "https://xeoontology.org/schemes#elementKind-imagery",
+          "label": "Imagery",
+          "definition": "A style of photography or image treatment",
+          "note": null
+        },
+        {
+          "code": "layout",
+          "iri": "https://xeoontology.org/schemes#elementKind-layout",
+          "label": "Layout",
+          "definition": "A grid, spacing or page structure",
+          "note": null
+        },
+        {
+          "code": "logo",
+          "iri": "https://xeoontology.org/schemes#elementKind-logo",
+          "label": "Logo",
+          "definition": "The mark and its lockups",
+          "note": null
+        },
+        {
+          "code": "motion",
+          "iri": "https://xeoontology.org/schemes#elementKind-motion",
+          "label": "Motion",
+          "definition": "Animation and transitions",
+          "note": null
+        },
+        {
+          "code": "navigation",
+          "iri": "https://xeoontology.org/schemes#elementKind-navigation",
+          "label": "Navigation",
+          "definition": "The header, menus, footer or other ways around the site",
+          "note": null
+        },
+        {
+          "code": "pattern",
+          "iri": "https://xeoontology.org/schemes#elementKind-pattern",
+          "label": "Pattern",
+          "definition": "A recurring arrangement of components, such as a hero or a listing",
+          "note": null
+        },
+        {
+          "code": "typography",
+          "iri": "https://xeoontology.org/schemes#elementKind-typography",
+          "label": "Typography",
+          "definition": "A typeface or a type style in use",
+          "note": null
+        }
+      ],
+      "status": "draft"
     },
     "enforcementPoint": {
       "iri": "https://xeoontology.org/schemes#enforcementPoint",
@@ -4187,6 +4402,154 @@
         }
       ],
       "status": "extension"
+    },
+    "tokenTier": {
+      "iri": "https://xeoontology.org/schemes#tokenTier",
+      "label": "Token tiers",
+      "fillsSlot": "xeo:tokenTier",
+      "description": "Which tier of a design system a token sits in.",
+      "source": "XEO's codes for the tiers most design systems name, under different names (reference, system and component; global, alias and component), as read on 2026-11-20",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "component",
+          "iri": "https://xeoontology.org/schemes#tokenTier-component",
+          "label": "Component",
+          "definition": "A value for one component, such as button.background, usually an alias of a semantic token",
+          "note": null
+        },
+        {
+          "code": "primitive",
+          "iri": "https://xeoontology.org/schemes#tokenTier-primitive",
+          "label": "Primitive",
+          "definition": "A raw value with no meaning of its own, such as blue.500 or space.4",
+          "note": null
+        },
+        {
+          "code": "semantic",
+          "iri": "https://xeoontology.org/schemes#tokenTier-semantic",
+          "label": "Semantic",
+          "definition": "A value named for its use, such as color.action.primary, usually an alias of a primitive",
+          "note": null
+        }
+      ],
+      "status": "draft"
+    },
+    "tokenType": {
+      "iri": "https://xeoontology.org/schemes#tokenType",
+      "label": "Design token types",
+      "fillsSlot": "xeo:tokenType",
+      "description": "What kind of value a design token holds. The codes are the Design Tokens Format's own type names, so a token file's $type is stored as it is written.",
+      "source": "W3C Design Tokens Community Group, Design Tokens Format Module 2025.10 (the $type names, spelled as the format spells them); string and boolean from Figma's variable types, as documented on 2026-11-20. The definitions are XEO's wording",
+      "ordered": false,
+      "concepts": [
+        {
+          "code": "boolean",
+          "iri": "https://xeoontology.org/schemes#tokenType-boolean",
+          "label": "True or false",
+          "definition": "A switch. Not a Design Tokens Format type; Figma's boolean variables",
+          "note": null
+        },
+        {
+          "code": "border",
+          "iri": "https://xeoontology.org/schemes#tokenType-border",
+          "label": "Border",
+          "definition": "A composite: a colour, a width and a stroke style",
+          "note": null
+        },
+        {
+          "code": "color",
+          "iri": "https://xeoontology.org/schemes#tokenType-color",
+          "label": "Colour",
+          "definition": "A colour",
+          "note": null
+        },
+        {
+          "code": "cubicBezier",
+          "iri": "https://xeoontology.org/schemes#tokenType-cubicBezier",
+          "label": "Cubic Bézier",
+          "definition": "An easing curve, as four numbers",
+          "note": null
+        },
+        {
+          "code": "dimension",
+          "iri": "https://xeoontology.org/schemes#tokenType-dimension",
+          "label": "Dimension",
+          "definition": "A distance with a unit: a spacing step, a radius, a font size",
+          "note": null
+        },
+        {
+          "code": "duration",
+          "iri": "https://xeoontology.org/schemes#tokenType-duration",
+          "label": "Duration",
+          "definition": "A length of time, for an animation or a transition",
+          "note": null
+        },
+        {
+          "code": "fontFamily",
+          "iri": "https://xeoontology.org/schemes#tokenType-fontFamily",
+          "label": "Font family",
+          "definition": "One font name, or a list of them in order of preference",
+          "note": null
+        },
+        {
+          "code": "fontWeight",
+          "iri": "https://xeoontology.org/schemes#tokenType-fontWeight",
+          "label": "Font weight",
+          "definition": "A font's weight, as a number from 1 to 1000 or a named weight",
+          "note": null
+        },
+        {
+          "code": "gradient",
+          "iri": "https://xeoontology.org/schemes#tokenType-gradient",
+          "label": "Gradient",
+          "definition": "A composite: colours at positions along a line",
+          "note": null
+        },
+        {
+          "code": "number",
+          "iri": "https://xeoontology.org/schemes#tokenType-number",
+          "label": "Number",
+          "definition": "A plain number with no unit, such as a line-height ratio",
+          "note": null
+        },
+        {
+          "code": "shadow",
+          "iri": "https://xeoontology.org/schemes#tokenType-shadow",
+          "label": "Shadow",
+          "definition": "A composite: a colour, offsets, a blur and a spread, or a list of them",
+          "note": null
+        },
+        {
+          "code": "string",
+          "iri": "https://xeoontology.org/schemes#tokenType-string",
+          "label": "Text",
+          "definition": "A piece of text, such as a label. Not a Design Tokens Format type; Figma's string variables",
+          "note": null
+        },
+        {
+          "code": "strokeStyle",
+          "iri": "https://xeoontology.org/schemes#tokenType-strokeStyle",
+          "label": "Stroke style",
+          "definition": "How a line is drawn: solid, dashed, dotted, or a dash pattern",
+          "note": null
+        },
+        {
+          "code": "transition",
+          "iri": "https://xeoontology.org/schemes#tokenType-transition",
+          "label": "Transition",
+          "definition": "A composite: a duration, a delay and an easing curve",
+          "note": null
+        },
+        {
+          "code": "typography",
+          "iri": "https://xeoontology.org/schemes#tokenType-typography",
+          "label": "Typography",
+          "definition": "A composite: a font family, size, weight, letter spacing and line height",
+          "note": null
+        }
+      ],
+      "status": "draft"
     },
     "toolSource": {
       "iri": "https://xeoontology.org/schemes#toolSource",

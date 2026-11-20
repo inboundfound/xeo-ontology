@@ -64,7 +64,7 @@ XEOS = "https://xeoontology.org/schemes#"
 MODULE_ORDER = [
     "xeo-core", "xeo-visibility", "xeo-analysis", "xeo-sales", "xeo-attribution",
     "xeo-attribution-sales", "xeo-work",
-    "xeo-decision", "xeo-agentic", "xeo-experiments", "xeo-knowledge",
+    "xeo-decision", "xeo-agentic", "xeo-experiments", "xeo-knowledge", "xeo-design",
     "xeo-schemes", "xeo-align",
 ]
 

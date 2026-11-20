@@ -4218,3 +4218,352 @@ xeos:claimVerdict-unsubstantiated a skos:Concept ;
     skos:notation "unsubstantiated" ;
     skos:prefLabel "Unsubstantiated"@en ;
     skos:definition "The claim, as made, cannot be tested: it names no measure or nothing to compare against"@en .
+
+# --- Draft schemes for the design module (0.8) ------------------------------------
+# Appended at the foot, so no line above moves. Each fills a slot of the draft
+# design module and is marked draft with the terms it fills. tokenType's codes are
+# the W3C Design Tokens Format's own type names, camelCase as the format writes them,
+# so a token file's $type is stored as it is written.
+
+xeos:tokenType a skos:ConceptScheme ;
+    skos:prefLabel "Design token types"@en ;
+    xeo:fillsSlot xeo:tokenType ;
+    xeo:termStatus "draft" ;
+    dct:source "W3C Design Tokens Community Group, Design Tokens Format Module 2025.10 (the $type names, spelled as the format spells them); string and boolean from Figma's variable types, as documented on 2026-11-20. The definitions are XEO's wording" ;
+    dct:description "What kind of value a design token holds. The codes are the Design Tokens Format's own type names, so a token file's $type is stored as it is written." .
+
+xeos:tokenType-color a skos:Concept ;
+    skos:inScheme xeos:tokenType ;
+    skos:topConceptOf xeos:tokenType ;
+    skos:notation "color" ;
+    skos:prefLabel "Colour"@en ;
+    skos:definition "A colour"@en .
+
+xeos:tokenType-dimension a skos:Concept ;
+    skos:inScheme xeos:tokenType ;
+    skos:topConceptOf xeos:tokenType ;
+    skos:notation "dimension" ;
+    skos:prefLabel "Dimension"@en ;
+    skos:definition "A distance with a unit: a spacing step, a radius, a font size"@en .
+
+xeos:tokenType-fontFamily a skos:Concept ;
+    skos:inScheme xeos:tokenType ;
+    skos:topConceptOf xeos:tokenType ;
+    skos:notation "fontFamily" ;
+    skos:prefLabel "Font family"@en ;
+    skos:definition "One font name, or a list of them in order of preference"@en .
+
+xeos:tokenType-fontWeight a skos:Concept ;
+    skos:inScheme xeos:tokenType ;
+    skos:topConceptOf xeos:tokenType ;
+    skos:notation "fontWeight" ;
+    skos:prefLabel "Font weight"@en ;
+    skos:definition "A font's weight, as a number from 1 to 1000 or a named weight"@en .
+
+xeos:tokenType-duration a skos:Concept ;
+    skos:inScheme xeos:tokenType ;
+    skos:topConceptOf xeos:tokenType ;
+    skos:notation "duration" ;
+    skos:prefLabel "Duration"@en ;
+    skos:definition "A length of time, for an animation or a transition"@en .
+
+xeos:tokenType-cubicBezier a skos:Concept ;
+    skos:inScheme xeos:tokenType ;
+    skos:topConceptOf xeos:tokenType ;
+    skos:notation "cubicBezier" ;
+    skos:prefLabel "Cubic Bézier"@en ;
+    skos:definition "An easing curve, as four numbers"@en .
+
+xeos:tokenType-number a skos:Concept ;
+    skos:inScheme xeos:tokenType ;
+    skos:topConceptOf xeos:tokenType ;
+    skos:notation "number" ;
+    skos:prefLabel "Number"@en ;
+    skos:definition "A plain number with no unit, such as a line-height ratio"@en .
+
+xeos:tokenType-strokeStyle a skos:Concept ;
+    skos:inScheme xeos:tokenType ;
+    skos:topConceptOf xeos:tokenType ;
+    skos:notation "strokeStyle" ;
+    skos:prefLabel "Stroke style"@en ;
+    skos:definition "How a line is drawn: solid, dashed, dotted, or a dash pattern"@en .
+
+xeos:tokenType-border a skos:Concept ;
+    skos:inScheme xeos:tokenType ;
+    skos:topConceptOf xeos:tokenType ;
+    skos:notation "border" ;
+    skos:prefLabel "Border"@en ;
+    skos:definition "A composite: a colour, a width and a stroke style"@en .
+
+xeos:tokenType-transition a skos:Concept ;
+    skos:inScheme xeos:tokenType ;
+    skos:topConceptOf xeos:tokenType ;
+    skos:notation "transition" ;
+    skos:prefLabel "Transition"@en ;
+    skos:definition "A composite: a duration, a delay and an easing curve"@en .
+
+xeos:tokenType-shadow a skos:Concept ;
+    skos:inScheme xeos:tokenType ;
+    skos:topConceptOf xeos:tokenType ;
+    skos:notation "shadow" ;
+    skos:prefLabel "Shadow"@en ;
+    skos:definition "A composite: a colour, offsets, a blur and a spread, or a list of them"@en .
+
+xeos:tokenType-gradient a skos:Concept ;
+    skos:inScheme xeos:tokenType ;
+    skos:topConceptOf xeos:tokenType ;
+    skos:notation "gradient" ;
+    skos:prefLabel "Gradient"@en ;
+    skos:definition "A composite: colours at positions along a line"@en .
+
+xeos:tokenType-typography a skos:Concept ;
+    skos:inScheme xeos:tokenType ;
+    skos:topConceptOf xeos:tokenType ;
+    skos:notation "typography" ;
+    skos:prefLabel "Typography"@en ;
+    skos:definition "A composite: a font family, size, weight, letter spacing and line height"@en .
+
+xeos:tokenType-string a skos:Concept ;
+    skos:inScheme xeos:tokenType ;
+    skos:topConceptOf xeos:tokenType ;
+    skos:notation "string" ;
+    skos:prefLabel "Text"@en ;
+    skos:definition "A piece of text, such as a label. Not a Design Tokens Format type; Figma's string variables"@en .
+
+xeos:tokenType-boolean a skos:Concept ;
+    skos:inScheme xeos:tokenType ;
+    skos:topConceptOf xeos:tokenType ;
+    skos:notation "boolean" ;
+    skos:prefLabel "True or false"@en ;
+    skos:definition "A switch. Not a Design Tokens Format type; Figma's boolean variables"@en .
+
+xeos:tokenTier a skos:ConceptScheme ;
+    skos:prefLabel "Token tiers"@en ;
+    xeo:fillsSlot xeo:tokenTier ;
+    xeo:termStatus "draft" ;
+    dct:source "XEO's codes for the tiers most design systems name, under different names (reference, system and component; global, alias and component), as read on 2026-11-20" ;
+    dct:description "Which tier of a design system a token sits in." .
+
+xeos:tokenTier-primitive a skos:Concept ;
+    skos:inScheme xeos:tokenTier ;
+    skos:topConceptOf xeos:tokenTier ;
+    skos:notation "primitive" ;
+    skos:prefLabel "Primitive"@en ;
+    skos:definition "A raw value with no meaning of its own, such as blue.500 or space.4"@en .
+
+xeos:tokenTier-semantic a skos:Concept ;
+    skos:inScheme xeos:tokenTier ;
+    skos:topConceptOf xeos:tokenTier ;
+    skos:notation "semantic" ;
+    skos:prefLabel "Semantic"@en ;
+    skos:definition "A value named for its use, such as color.action.primary, usually an alias of a primitive"@en .
+
+xeos:tokenTier-component a skos:Concept ;
+    skos:inScheme xeos:tokenTier ;
+    skos:topConceptOf xeos:tokenTier ;
+    skos:notation "component" ;
+    skos:prefLabel "Component"@en ;
+    skos:definition "A value for one component, such as button.background, usually an alias of a semantic token"@en .
+
+xeos:elementKind a skos:ConceptScheme ;
+    skos:prefLabel "Design element kinds"@en ;
+    xeo:fillsSlot xeo:elementKind ;
+    xeo:termStatus "draft" ;
+    dct:source "XEO's codes, from the parts a design review of an existing site catalogues (2026-11-20)" ;
+    dct:description "What kind of part of a design an element of an existing site is." .
+
+xeos:elementKind-logo a skos:Concept ;
+    skos:inScheme xeos:elementKind ;
+    skos:topConceptOf xeos:elementKind ;
+    skos:notation "logo" ;
+    skos:prefLabel "Logo"@en ;
+    skos:definition "The mark and its lockups"@en .
+
+xeos:elementKind-color a skos:Concept ;
+    skos:inScheme xeos:elementKind ;
+    skos:topConceptOf xeos:elementKind ;
+    skos:notation "color" ;
+    skos:prefLabel "Colour"@en ;
+    skos:definition "A colour or a palette in use"@en .
+
+xeos:elementKind-typography a skos:Concept ;
+    skos:inScheme xeos:elementKind ;
+    skos:topConceptOf xeos:elementKind ;
+    skos:notation "typography" ;
+    skos:prefLabel "Typography"@en ;
+    skos:definition "A typeface or a type style in use"@en .
+
+xeos:elementKind-imagery a skos:Concept ;
+    skos:inScheme xeos:elementKind ;
+    skos:topConceptOf xeos:elementKind ;
+    skos:notation "imagery" ;
+    skos:prefLabel "Imagery"@en ;
+    skos:definition "A style of photography or image treatment"@en .
+
+xeos:elementKind-iconography a skos:Concept ;
+    skos:inScheme xeos:elementKind ;
+    skos:topConceptOf xeos:elementKind ;
+    skos:notation "iconography" ;
+    skos:prefLabel "Iconography"@en ;
+    skos:definition "A set or style of icons"@en .
+
+xeos:elementKind-illustration a skos:Concept ;
+    skos:inScheme xeos:elementKind ;
+    skos:topConceptOf xeos:elementKind ;
+    skos:notation "illustration" ;
+    skos:prefLabel "Illustration"@en ;
+    skos:definition "A style of drawn or made imagery"@en .
+
+xeos:elementKind-layout a skos:Concept ;
+    skos:inScheme xeos:elementKind ;
+    skos:topConceptOf xeos:elementKind ;
+    skos:notation "layout" ;
+    skos:prefLabel "Layout"@en ;
+    skos:definition "A grid, spacing or page structure"@en .
+
+xeos:elementKind-navigation a skos:Concept ;
+    skos:inScheme xeos:elementKind ;
+    skos:topConceptOf xeos:elementKind ;
+    skos:notation "navigation" ;
+    skos:prefLabel "Navigation"@en ;
+    skos:definition "The header, menus, footer or other ways around the site"@en .
+
+xeos:elementKind-component a skos:Concept ;
+    skos:inScheme xeos:elementKind ;
+    skos:topConceptOf xeos:elementKind ;
+    skos:notation "component" ;
+    skos:prefLabel "Component"@en ;
+    skos:definition "A recurring piece of interface, such as a card or a button"@en .
+
+xeos:elementKind-pattern a skos:Concept ;
+    skos:inScheme xeos:elementKind ;
+    skos:topConceptOf xeos:elementKind ;
+    skos:notation "pattern" ;
+    skos:prefLabel "Pattern"@en ;
+    skos:definition "A recurring arrangement of components, such as a hero or a listing"@en .
+
+xeos:elementKind-motion a skos:Concept ;
+    skos:inScheme xeos:elementKind ;
+    skos:topConceptOf xeos:elementKind ;
+    skos:notation "motion" ;
+    skos:prefLabel "Motion"@en ;
+    skos:definition "Animation and transitions"@en .
+
+xeos:assetKind a skos:ConceptScheme ;
+    skos:prefLabel "Design asset kinds"@en ;
+    xeo:fillsSlot xeo:assetKind ;
+    xeo:termStatus "draft" ;
+    dct:source "XEO's codes (2026-11-20)" ;
+    dct:description "What kind of file a design asset is." .
+
+xeos:assetKind-logo a skos:Concept ;
+    skos:inScheme xeos:assetKind ;
+    skos:topConceptOf xeos:assetKind ;
+    skos:notation "logo" ;
+    skos:prefLabel "Logo"@en ;
+    skos:definition "A logo file, in one of its versions"@en .
+
+xeos:assetKind-icon a skos:Concept ;
+    skos:inScheme xeos:assetKind ;
+    skos:topConceptOf xeos:assetKind ;
+    skos:notation "icon" ;
+    skos:prefLabel "Icon"@en ;
+    skos:definition "An icon"@en .
+
+xeos:assetKind-illustration a skos:Concept ;
+    skos:inScheme xeos:assetKind ;
+    skos:topConceptOf xeos:assetKind ;
+    skos:notation "illustration" ;
+    skos:prefLabel "Illustration"@en ;
+    skos:definition "A drawn or made image"@en .
+
+xeos:assetKind-photograph a skos:Concept ;
+    skos:inScheme xeos:assetKind ;
+    skos:topConceptOf xeos:assetKind ;
+    skos:notation "photograph" ;
+    skos:prefLabel "Photograph"@en ;
+    skos:definition "A photograph"@en .
+
+xeos:assetKind-graphic a skos:Concept ;
+    skos:inScheme xeos:assetKind ;
+    skos:topConceptOf xeos:assetKind ;
+    skos:notation "graphic" ;
+    skos:prefLabel "Graphic"@en ;
+    skos:definition "A made image for one use, such as a banner, a social post or a slide"@en .
+
+xeos:assetKind-font a skos:Concept ;
+    skos:inScheme xeos:assetKind ;
+    skos:topConceptOf xeos:assetKind ;
+    skos:notation "font" ;
+    skos:prefLabel "Font"@en ;
+    skos:definition "A font file"@en .
+
+xeos:assetKind-video a skos:Concept ;
+    skos:inScheme xeos:assetKind ;
+    skos:topConceptOf xeos:assetKind ;
+    skos:notation "video" ;
+    skos:prefLabel "Video"@en ;
+    skos:definition "A video"@en .
+
+xeos:assetKind-animation a skos:Concept ;
+    skos:inScheme xeos:assetKind ;
+    skos:topConceptOf xeos:assetKind ;
+    skos:notation "animation" ;
+    skos:prefLabel "Animation"@en ;
+    skos:definition "An animation file, such as a Lottie file or an animated image"@en .
+
+xeos:designVerdict a skos:ConceptScheme ;
+    skos:prefLabel "Design verdicts"@en ;
+    xeo:fillsSlot xeo:designVerdict ;
+    xeo:termStatus "draft" ;
+    dct:source "XEO's codes, from the working practice of reviewing a design proposal element by element and direction by direction (2026-11-20)" ;
+    dct:description "The call a design decision makes. keep, replace and remove are for an element of the existing site; approve, shortlist and reject for a direction or a concept; defer for any of them." .
+
+xeos:designVerdict-keep a skos:Concept ;
+    skos:inScheme xeos:designVerdict ;
+    skos:topConceptOf xeos:designVerdict ;
+    skos:notation "keep" ;
+    skos:prefLabel "Keep"@en ;
+    skos:definition "Keep the element as it is"@en .
+
+xeos:designVerdict-replace a skos:Concept ;
+    skos:inScheme xeos:designVerdict ;
+    skos:topConceptOf xeos:designVerdict ;
+    skos:notation "replace" ;
+    skos:prefLabel "Replace"@en ;
+    skos:definition "Replace the element, with the chosen concept where one is named"@en .
+
+xeos:designVerdict-remove a skos:Concept ;
+    skos:inScheme xeos:designVerdict ;
+    skos:topConceptOf xeos:designVerdict ;
+    skos:notation "remove" ;
+    skos:prefLabel "Remove"@en ;
+    skos:definition "Drop the element and put nothing in its place"@en .
+
+xeos:designVerdict-approve a skos:Concept ;
+    skos:inScheme xeos:designVerdict ;
+    skos:topConceptOf xeos:designVerdict ;
+    skos:notation "approve" ;
+    skos:prefLabel "Approve"@en ;
+    skos:definition "Go ahead with this direction or concept"@en .
+
+xeos:designVerdict-shortlist a skos:Concept ;
+    skos:inScheme xeos:designVerdict ;
+    skos:topConceptOf xeos:designVerdict ;
+    skos:notation "shortlist" ;
+    skos:prefLabel "Shortlist"@en ;
+    skos:definition "Keep this direction or concept in the running"@en .
+
+xeos:designVerdict-reject a skos:Concept ;
+    skos:inScheme xeos:designVerdict ;
+    skos:topConceptOf xeos:designVerdict ;
+    skos:notation "reject" ;
+    skos:prefLabel "Reject"@en ;
+    skos:definition "Do not go ahead with this direction or concept"@en .
+
+xeos:designVerdict-defer a skos:Concept ;
+    skos:inScheme xeos:designVerdict ;
+    skos:topConceptOf xeos:designVerdict ;
+    skos:notation "defer" ;
+    skos:prefLabel "Defer"@en ;
+    skos:definition "No call yet; decide later"@en .

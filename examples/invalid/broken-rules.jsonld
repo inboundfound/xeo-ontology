@@ -86,6 +86,12 @@
     { "id": "ex:bad-recording", "type": "Recording", "artifactUri": "https://example.com/recordings/0001.mp4", "expect": "RecordingShape" },
     { "id": "ex:bad-transcript", "type": "Transcript", "artifactUri": "https://example.com/transcripts/0001.txt", "expect": "TranscriptShape" },
     { "id": "ex:bad-summary", "type": "Summary", "artifactUri": "https://example.com/notes/0001.md", "expect": "SummaryNamesItsSource" },
-    { "id": "ex:bad-action-item", "type": "ActionItem", "name": "Send the audit to the client", "expect": "ActionItemNamesWhereRaised" }
+    { "id": "ex:bad-action-item", "type": "ActionItem", "name": "Send the audit to the client", "expect": "ActionItemNamesWhereRaised" },
+
+    { "id": "ex:bad-token", "type": "DesignToken", "name": "color.brand", "tokenType": "colour", "tokenValue": "#123456", "expect": "DesignTokenShape" },
+    { "id": "ex:bad-token-value", "type": "DesignToken", "name": "space.8", "tokenType": "dimension", "expect": "DesignTokenHasValue" },
+    { "id": "ex:bad-element", "type": "DesignElement", "name": "Footer", "elementKind": "navigation", "expect": "DesignElementShape" },
+    { "id": "ex:bad-concept", "type": "DesignConcept", "name": "A hero", "artifactUri": "https://example.com/concepts/hero.png", "expect": "DesignConceptShape" },
+    { "id": "ex:bad-decision", "type": "DesignDecision", "designVerdict": "maybe", "expect": "DesignDecisionShape" }
   ]
 }

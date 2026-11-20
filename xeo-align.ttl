@@ -300,3 +300,22 @@ xeo:memberOf skos:closeMatch org:memberOf ;
 
 xeo:unitOf skos:closeMatch org:unitOf ;
     rdfs:comment "A unit and the organization it is part of; schema:parentOrganization says the same. closeMatch: org:unitOf points from an OrganizationalUnit to a FormalOrganization; an XEO unit is an Organization of its own." .
+
+# ===========================================================================
+# Draft: the design module (0.8), appended at the foot. Its terms are draft, and
+# so are these bridges. Same two stances as above. The W3C Design Tokens Format
+# is a JSON format, not an RDF vocabulary, so there is nothing to bridge to: the
+# module follows its type names (xeos:tokenType) and its alias instead.
+# ===========================================================================
+
+xeo:DesignAsset skos:closeMatch schema:MediaObject ;
+    rdfs:comment "A file used in a design. closeMatch: schema:ImageObject, schema:VideoObject and schema:AudioObject are its kinds there; schema.org has no class for a font file, and XEO keeps one class with an assetKind." .
+
+xeo:DesignConcept skos:closeMatch schema:CreativeWork ;
+    rdfs:comment "A made picture of a proposal. closeMatch: schema:CreativeWork is any made work; a DesignConcept is one proposal for one piece of interface, under one direction." .
+
+xeo:DesignDecision skos:closeMatch schema:Review ;
+    rdfs:comment "A person's judgment of an item, with their reason. closeMatch: a schema:Review rates an item; a DesignDecision makes a call (keep, replace, approve) and may hold under one direction only." .
+
+xeo:usesAsset skos:closeMatch schema:associatedMedia ;
+    rdfs:comment "A media file a work or page uses. closeMatch: schema:associatedMedia is on any CreativeWork." .
