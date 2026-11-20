@@ -75,6 +75,15 @@ proposed, shown and decided. 38 terms. The design system: `DesignSystem`, `Desig
 - `docs/design/research-prompt.md`: the prompt for checking the module against Figma, Claude's
   design features, Canva, Adobe and the token format.
 
+### An owner for internal work
+
+- **`owns` (core) may point at a `Project`.** Since 0.7.1 a Project need not have a Website, and
+  its only link was `hasProject` from a Website, so internal work had no owner. An Organization
+  now `owns` a Project that has no Website. A client Project still reaches its owner through its
+  Website. A widened range (`xeo:rangeIncludes`, stated at the foot of `xeo-work.ttl`); no term
+  added. The descriptions of `owns` and `hasProject` say so, edited in place.
+  `examples/agent-session.jsonld` gives its internal project an owner.
+
 ### Also
 
 - **Shapes (design):** five, each with a failing case: a token has one type and at most one

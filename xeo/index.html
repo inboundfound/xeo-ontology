@@ -1207,7 +1207,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 <section id="hasProject" class="term">
   <h3>has project <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-work</span></h3>
   <code class="iri">xeo:hasProject</code>
-  <p>A Project whose work is on this Website: a client contract, or any other body of work about the site. A Project that is not about one website (internal work) has no such link. Tenancy rides on websiteId, as everywhere.</p>
+  <p>A Project whose work is on this Website: a client contract, or any other body of work about the site. A Project that is not about one website (internal work) has no such link; the Organization whose work it is owns it (core). Tenancy rides on websiteId, as everywhere.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Website">xeo:Website</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Project">xeo:Project</a></dd></div></dl>
 </section>
 <section id="hasResponse" class="term">
@@ -1471,8 +1471,8 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 <section id="owns" class="term">
   <h3>owns <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-core</span></h3>
   <code class="iri">xeo:owns</code>
-  <p>A Website or Brand this Organization is responsible for. Ownership in the working sense — whose site it is — not a legal claim. Range left open across Website and Brand.</p>
-  <dl><div class="row"><dt>domain</dt><dd><a href="#Organization">xeo:Organization</a></dd></div><div class="row"><dt>expected to point at</dt><dd><a href="#Brand">xeo:Brand</a> · <a href="#Website">xeo:Website</a></dd></div><div class="row"><dt>closeMatch</dt><dd><a href="https://schema.org/owns" class="ext">schema:owns</a></dd></div></dl>
+  <p>A Website or Brand this Organization is responsible for, and, where work is loaded, a Project with no Website (internal work), so that it has an owner. Ownership in the working sense — whose site it is — not a legal claim. A client Project needs no owns: its owner is the owner of its Website. Range left open across Website, Brand and Project.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Organization">xeo:Organization</a></dd></div><div class="row"><dt>expected to point at</dt><dd><a href="#Brand">xeo:Brand</a> · <a href="#Project">xeo:Project</a> · <a href="#Website">xeo:Website</a></dd></div><div class="row"><dt>closeMatch</dt><dd><a href="https://schema.org/owns" class="ext">schema:owns</a></dd></div></dl>
 </section>
 <section id="partOf" class="term">
   <h3>part of <span class="layer" style="--h:#718096">entity</span><span class="mod">xeo-core</span></h3>
