@@ -54,6 +54,7 @@
       "tracesTo": "ex:spec"
     },
     { "id": "ex:project-internal", "type": "Project", "name": "Rebuild the content-audit skill" },
+    { "id": "ex:agency", "type": "Organization", "name": "Example Agency", "owns": "ex:project-internal" },
     {
       "id": "ex:spec-internal", "type": "Spec", "name": "Content-audit skill, version 2", "specKind": "design",
       "withinProject": "ex:project-internal",

@@ -358,7 +358,7 @@ Generated from XEO 0.7.2. Do not edit between the markers; run `tools/gen_profil
 | `ON_TASK` (draft) | `xeo:onTask` | `Trial` | `BenchmarkTask` | episode | experiments |
 | `ON_TOOL_CALL` (draft) | `xeo:onToolCall` | `EnforcementEvent` | `ToolCall` | episode | agentic |
 | `ORGANIZATION_KIND` | `xeo:organizationKind` | `Organization` | `skos:Concept` (concept slot) | entity | core |
-| `OWNS` | `xeo:owns` | `Organization` | `Brand` · `Website` | entity | core |
+| `OWNS` | `xeo:owns` | `Organization` | `Brand` · `Project` · `Website` | entity | core |
 | `PART_OF` | `xeo:partOf` | `URL` | `Website` | entity | core |
 | `PRECEDENT_FOR` | `xeo:precedentFor` | `Experiment` | `Experiment` | derivation | analysis |
 | `PRIMARY_METRIC` (draft) | `xeo:primaryMetric` | `Experiment` | `Metric` | episode | experiments |
