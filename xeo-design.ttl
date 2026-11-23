@@ -91,7 +91,7 @@ xeo:design-module a owl:Ontology ;
     dct:title "XEO Design (design systems, tokens, components, patterns, templates, assets, directions, concepts, review decisions)" ;
     dct:description "Draft. What a website is designed and built with: a DesignSystem of tokens, components, patterns and page templates, and the assets they use; and how a new design is proposed and decided: DesignDirections, the existing site's DesignElements, DesignConcepts drawn under a direction, and the reviewer's DesignDecisions to keep, replace or approve. Holds pointers, never files. Needs only core. Every term is marked draft." ;
     dct:creator "Inbound Found" ;
-    owl:versionInfo "0.8.0" .
+    owl:versionInfo "0.8.1" .
 
 # --- The design system -------------------------------------------------------------
 

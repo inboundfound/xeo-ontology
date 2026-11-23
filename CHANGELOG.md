@@ -7,6 +7,53 @@ and corrects prose; a domain or range is not narrowed.
 
 Versions before 0.6.0 are reconstructed from the git history.
 
+## 0.8.1 — each label's key is in the profile (2026-11-23)
+
+A patch from loading XEO into a property-graph database (Relate) from `neo4j-profile.json`
+alone. The profile named no property for 32 of the 80 labels then in it, so a loader had to
+invent one; the keys were declared in `schema.cypher` and nowhere the profile could be read.
+This copies them in. No term is added, renamed, removed or retyped, and no domain or range
+changes. `schema.cypher` is not touched and no constraint is added. Nothing is narrowed, so
+data that was valid in 0.8.0 is valid in 0.8.1. No tombstone is added. Every module file
+carries 0.8.1.
+
+### Keys in the profile
+
+- **`labels.<Label>.key`.** The property keys that identify a node of the label, from the
+  uniqueness constraints in `schema.cypher`: 45 labels. 36 are keyed by `id`; `Term` and
+  `Domain` by `name`; `Entity` by `entityRef`; `URL` by `address` with `websiteId`; `Prompt` by
+  `text` with `websiteId`; `Brand`, `Capability` and `Topic` by `name` with `websiteId`.
+  `Website` lists two keys, `id` and `origin`.
+- **`labels.<Label>.keyFrom`.** For 11 labels with no key of their own, the superclass whose key
+  they carry: `SearchEngine`, `AnswerEngine` and `GenerativeOverview` from `Engine`; `Order`,
+  `Payment`, `Refund` and `Chargeback` from `RevenueEvent`; `PipelineRollup` and
+  `AttributionRollup` from `MetricReading`; `Call` and `BookedMeeting` from `ConversionEvent`.
+- **`conventions.surrogateKey`.** `id`, the surrogate that 36 labels use. It is a
+  property-graph convention and not an XEO term; in `context.neo4j.jsonld` the same word is the
+  node's IRI.
+- **The label table in `docs/neo4j-profile.md`** gains a Key column, and the prose names the
+  convention. `tools/gen_profile.py` reads `schema.cypher`, and fails if it constrains a label
+  that is not a class.
+
+### What did not change
+
+46 of the 102 labels have neither a `key` nor a `keyFrom`. Four are classes that should not
+have one of their own: `SearchIntent` and `Intervention` (concepts, identified by IRI) and
+`OwnerChange` and `SearchPerformanceFact` (identified by what they carry). The other 42 were
+added after `schema.cypher` last had constraints written for them: the agentic module, and the
+experiments, knowledge and design modules of 0.8.0 (all draft). Many descriptions already name
+an identity (`sessionRef`, `turnRef`, `modelCallRef`, `toolCallRef`, `designRecordRef`, or a
+name with a version). Whether those get a uniqueness constraint, and whether `id` becomes a
+declared term, are open and not part of this release.
+
+### For a consumer
+
+- Read a label's identity from `key` or `keyFrom` in the profile; do not invent one.
+- A tool that rejects unknown keys in the profile will need to allow `key`, `keyFrom` and
+  `conventions.surrogateKey`.
+
+Site: `docs/site-handoff-0.8.1.md`.
+
 ## 0.8.0 — three draft modules, released together: experiments, company knowledge, design (2026-11-23)
 
 Everything drafted or queued since 0.7.2, released at once rather than one module at a time:

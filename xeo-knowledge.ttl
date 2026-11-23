@@ -64,7 +64,7 @@ xeo:knowledge-module a owl:Ontology ;
     dct:title "XEO Company Knowledge (meetings, recordings, transcripts, summaries, action items, membership)" ;
     dct:description "Draft. A company's own record of what was said and agreed: a Meeting, its Recording and Transcript, a Summary of any record, and the ActionItems raised in it; and the membership of people and units in an Organization. Reuses schema.org for messages, threads and documents, and holds pointers, never content. Needs only core. Every term is marked draft." ;
     dct:creator "Inbound Found" ;
-    owl:versionInfo "0.8.0" .
+    owl:versionInfo "0.8.1" .
 
 # --- Meetings and what records them ---------------------------------------------
 

@@ -12,7 +12,7 @@ xeo: a owl:Ontology ;
     dct:title "XEO Core Ontology" ;
     dct:description "XEO core: sites, pages, queries, crawls, search results, engines, observations, metrics, website conversions, people, organizations, consent and money. Every add-on module needs only this one. Entities are durable, episodes are immutable, observations name what they are grounded in, derivations carry provenance." ;
     dct:creator "Inbound Found" ;
-    owl:versionInfo "0.8.0" .
+    owl:versionInfo "0.8.1" .
 
 # --- Annotation properties -------------------------------------------------
 

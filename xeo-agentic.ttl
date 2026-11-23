@@ -78,7 +78,7 @@ xeo:agentic-module a owl:Ontology ;
     dct:title "XEO Agentic Engineering (harnesses, runtimes, sessions, model and tool calls, enforcement)" ;
     dct:description "Draft. The harness an agent runs under (its components and the runtime that loads them) and what happened in a session: turns, model calls with their settings, token counts and cost, tool calls, rule firings, compactions and delegations. Grounded in the OpenTelemetry GenAI conventions and provider usage contracts. Needs only core. Every term is marked draft." ;
     dct:creator "Inbound Found" ;
-    owl:versionInfo "0.8.0" .
+    owl:versionInfo "0.8.1" .
 
 xeo:tokenAccounting a owl:AnnotationProperty ;
     xeo:termStatus "draft" ;

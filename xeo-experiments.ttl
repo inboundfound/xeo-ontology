@@ -82,7 +82,7 @@ xeo:experiments-module a owl:Ontology ;
     dct:title "XEO Experiments (arms, trials, benchmarks, claims, lessons)" ;
     dct:description "Draft. How a test is designed and read: the arms of an Experiment and the trials each was run as, the benchmarks and tasks trials are run on, an arm's figures on the primary metric, the interval around a change, the claims an experiment checks, and the lessons drawn from what it found. Extends decision's Experiment and Outcome, which stay in xeo-decision.ttl. Needs only core. Every term is marked draft." ;
     dct:creator "Inbound Found" ;
-    owl:versionInfo "0.8.0" .
+    owl:versionInfo "0.8.1" .
 
 # --- Arms and trials -----------------------------------------------------------
 # Plan of record, "Experiments module" (Arm, Trial); research §2 and §4.4.

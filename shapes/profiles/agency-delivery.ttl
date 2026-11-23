@@ -34,7 +34,7 @@ xeoad: a owl:Ontology ;
     dct:title "XEO profile: agency delivery" ;
     dct:description "Optional SHACL shapes for the contract rules one agency runs client work under: a Project is a contract on one Website with an engagement type and an intervention quota; a retainer has a cadence and a one-off a run length; a Campaign works one Topic toward one Objective; an Objective has a results window and exactly one primary target. Load beside shapes/xeo-shapes.ttl. Not required by XEO." ;
     dct:creator "Inbound Found" ;
-    owl:versionInfo "0.8.0" .
+    owl:versionInfo "0.8.1" .
 
 # --- Project: a contract ---------------------------------------------------------
 
