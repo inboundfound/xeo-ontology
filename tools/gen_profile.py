@@ -73,6 +73,7 @@ TERM_MODULES = [
 SCHEMES_MODULE = "xeo-schemes.ttl"
 LAYERS = ["entity", "episode", "observation", "derivation", "interpretation", "norm"]
 
+SCHEMA_CYPHER = "schema.cypher"
 PROFILE_JSON = "neo4j-profile.json"
 NEO4J_CONTEXT = "context.neo4j.jsonld"
 PROFILE_DOC = os.path.join("docs", "neo4j-profile.md")
@@ -99,6 +100,24 @@ def short(iri) -> str:
     if s.startswith(str(XSD)):
         return "xsd:" + s[len(str(XSD)):]
     return s
+
+
+def load_keys() -> dict[str, list[list[str]]]:
+    """{label: [key, ...]} from the uniqueness constraints in schema.cypher.
+
+    A key is the list of property keys that together identify a node of the label:
+    ["id"], or ["name", "websiteId"] for a key scoped to a tenant. A label may have
+    more than one (Website: id and origin). schema.cypher stays the place a key is
+    declared; this only copies it into the profile so a consumer reads one file.
+    """
+    with open(os.path.join(HERE, SCHEMA_CYPHER), encoding="utf-8") as fh:
+        text = "\n".join(l for l in fh.read().splitlines() if not l.lstrip().startswith("//"))
+    keys: dict[str, list[list[str]]] = {}
+    pattern = re.compile(r"CREATE CONSTRAINT\s+\w+\s+IF NOT EXISTS\s+FOR\s+\((\w+):(\w+)\)"
+                         r"\s+REQUIRE\s+(.+?)\s+IS UNIQUE", re.S)
+    for var, label, props in pattern.findall(text):
+        keys.setdefault(label, []).append(re.findall(rf"\b{var}\.(\w+)", props))
+    return keys
 
 
 def load():
@@ -193,6 +212,26 @@ def build():
             entry["subClassOf"] = parents
         labels[local(c)] = mark(entry, c)
 
+    # Identity: the key schema.cypher declares for a label, or the nearest superclass's.
+    keys = load_keys()
+    unknown = sorted(set(keys) - set(labels))
+    if unknown:
+        raise SystemExit(f"schema.cypher constrains a label that is not a class: {unknown}")
+    for name, entry in labels.items():
+        if name in keys:
+            entry["key"] = keys[name]
+            continue
+        todo, seen = list(entry.get("subClassOf", [])), set()
+        while todo:
+            parent = todo.pop(0)
+            if parent in seen:
+                continue
+            seen.add(parent)
+            if parent in keys:
+                entry["keyFrom"] = parent
+                break
+            todo += labels[parent].get("subClassOf", [])
+
     relationship_types = {}
     properties = {}
     for p in terms(OWL.ObjectProperty):
@@ -259,6 +298,7 @@ def build():
             "relationshipType": "UPPER_SNAKE of the object property local name",
             "propertyKey": "the datatype property local name, camelCase",
             "tenancyKey": "websiteId",
+            "surrogateKey": "id",
             "layerKey": "xeoLayer",
             "layers": LAYERS,
         },
@@ -331,9 +371,15 @@ def mapping_tables(profile) -> str:
            f"Generated from XEO {profile['version']}. Do not edit between the markers; "
            "run `tools/gen_profile.py`.", ""]
     out += [f"### Node labels ({len(profile['labels'])})", "",
-            "| Label | XEO class | Layer | Module |", "|---|---|---|---|"]
+            "| Label | XEO class | Layer | Module | Key |", "|---|---|---|---|---|"]
     for name, e in profile["labels"].items():
-        out.append(f"| `{name}`{tag(e)} | `xeo:{name}` | {e['layer']} | {e['module']} |")
+        if e.get("key"):
+            key = " or ".join("`" + ", ".join(k) + "`" for k in e["key"])
+        elif e.get("keyFrom"):
+            key = f"as `{e['keyFrom']}`"
+        else:
+            key = ""
+        out.append(f"| `{name}`{tag(e)} | `xeo:{name}` | {e['layer']} | {e['module']} | {key} |")
     out += ["", f"### Relationship types ({len(profile['relationshipTypes'])})", "",
             "`open` means the ontology leaves that side unconstrained. A concept slot may "
             "also be stored as a property key holding the concept's code.", "",

@@ -13,12 +13,20 @@ produces. The list is generated from the Turtle by `tools/gen_profile.py`; the s
 | object property | relationship type | the local name in UPPER_SNAKE: an underscore before each capital, then upper-cased | `xeo:linksTo` → `:LINKS_TO`, `xeo:hasCanonical` → `:HAS_CANONICAL` |
 | datatype property | property key | the local name, camelCase, unchanged | `xeo:avgPosition` → `avgPosition` |
 
-Four conventions sit beside the rule.
+Five conventions sit beside the rule.
 
 - **Direction follows the ontology.** A relationship runs from the property's domain to its
   range: `(:URL)-[:PART_OF]->(:Website)`, never the reverse under another name.
 - **Tenancy is the `websiteId` property**, on every tenant-scoped node and relationship. It is
   never a label. `Domain`, `Entity`, `Term` and `Engine` are shared and carry none.
+- **A label's key is in the profile.** `labels.<Label>.key` lists the property keys that identify
+  a node of that label, copied from the uniqueness constraints in `schema.cypher`: `["id"]`,
+  or `["name", "websiteId"]` where identity is per tenant, and a second list where a label has
+  two keys (`Website`: `id` and `origin`). A label with no key of its own but a superclass that
+  has one carries `keyFrom` naming it (`SearchEngine` is keyed as `Engine`). A label with
+  neither (a concept such as `SearchIntent`, or an event named by what it links) has no key of
+  its own; that is stated, not an omission. `id` is a surrogate: it is not an XEO term, and in
+  the JSON-LD context it is the node's IRI. `conventions.surrogateKey` names it.
 - **Edge-carried properties stay on the relationship.** `avgPosition` belongs on `RANKS_FOR`,
   `anchorText` on `LINKS_TO`, `similarity` on `SIMILAR_TO`. Each property's description in the
   ontology says which relationship carries it.
@@ -119,110 +127,110 @@ Generated from XEO 0.8.0. Do not edit between the markers; run `tools/gen_profil
 
 ### Node labels (102)
 
-| Label | XEO class | Layer | Module |
-|---|---|---|---|
-| `ActionItem` (draft) | `xeo:ActionItem` | interpretation | knowledge |
-| `AgentRuntime` (draft) | `xeo:AgentRuntime` | entity | agentic |
-| `AgentSession` (draft) | `xeo:AgentSession` | episode | agentic |
-| `AgentTurn` (draft) | `xeo:AgentTurn` | episode | agentic |
-| `AlgorithmRun` | `xeo:AlgorithmRun` | episode | analysis |
-| `AnswerEngine` | `xeo:AnswerEngine` | entity | visibility |
-| `Arm` (draft) | `xeo:Arm` | entity | experiments |
-| `AttributedCredit` | `xeo:AttributedCredit` | derivation | attribution |
-| `AttributionModel` | `xeo:AttributionModel` | norm | attribution |
-| `AttributionRollup` | `xeo:AttributionRollup` | derivation | attribution |
-| `Benchmark` (draft) | `xeo:Benchmark` | entity | experiments |
-| `BenchmarkTask` (draft) | `xeo:BenchmarkTask` | entity | experiments |
-| `BookedMeeting` | `xeo:BookedMeeting` | episode | attribution |
-| `Brand` | `xeo:Brand` | entity | visibility |
-| `Call` | `xeo:Call` | episode | attribution |
-| `Campaign` | `xeo:Campaign` | entity | work |
-| `Capability` | `xeo:Capability` | entity | decision |
-| `Chargeback` | `xeo:Chargeback` | episode | attribution |
-| `Claim` (draft) | `xeo:Claim` | interpretation | experiments |
-| `ClaimCheck` (draft) | `xeo:ClaimCheck` | interpretation | experiments |
-| `Compaction` (draft) | `xeo:Compaction` | episode | agentic |
-| `Consent` | `xeo:Consent` | observation | core |
-| `ConversionEvent` | `xeo:ConversionEvent` | episode | core |
-| `ConversionPoint` | `xeo:ConversionPoint` | entity | core |
-| `Crawl` | `xeo:Crawl` | episode | core |
-| `CreditAnchor` | `xeo:CreditAnchor` | norm | attribution |
-| `Delegation` (draft) | `xeo:Delegation` | episode | agentic |
-| `Deliverable` (draft) | `xeo:Deliverable` | episode | work |
-| `DesignAsset` (draft) | `xeo:DesignAsset` | entity | design |
-| `DesignComponent` (draft) | `xeo:DesignComponent` | entity | design |
-| `DesignConcept` (draft) | `xeo:DesignConcept` | entity | design |
-| `DesignDecision` (draft) | `xeo:DesignDecision` | interpretation | design |
-| `DesignDirection` (draft) | `xeo:DesignDirection` | entity | design |
-| `DesignElement` (draft) | `xeo:DesignElement` | entity | design |
-| `DesignPattern` (draft) | `xeo:DesignPattern` | entity | design |
-| `DesignSystem` (draft) | `xeo:DesignSystem` | entity | design |
-| `DesignToken` (draft) | `xeo:DesignToken` | entity | design |
-| `Diagnostic` | `xeo:Diagnostic` | entity | decision |
-| `DiagnosticRun` | `xeo:DiagnosticRun` | episode | decision |
-| `Domain` | `xeo:Domain` | entity | core |
-| `EnforcementEvent` (draft) | `xeo:EnforcementEvent` | episode | agentic |
-| `Engine` | `xeo:Engine` | entity | core |
-| `Entity` | `xeo:Entity` | entity | core |
-| `Experiment` | `xeo:Experiment` | episode | decision |
-| `ExternalEvent` | `xeo:ExternalEvent` | episode | decision |
-| `Feedback` | `xeo:Feedback` | interpretation | decision |
-| `Framework` | `xeo:Framework` | norm | decision |
-| `Gap` | `xeo:Gap` | interpretation | decision |
-| `GenerativeOverview` | `xeo:GenerativeOverview` | entity | visibility |
-| `Harness` (draft) | `xeo:Harness` | entity | agentic |
-| `HarnessComponent` (draft) | `xeo:HarnessComponent` | entity | agentic |
-| `IdentityLink` | `xeo:IdentityLink` | derivation | attribution |
-| `InboundReference` | `xeo:InboundReference` | observation | core |
-| `Intervention` | `xeo:Intervention` | entity | decision |
-| `InvocationConfig` (draft) | `xeo:InvocationConfig` | entity | agentic |
-| `Journey` | `xeo:Journey` | derivation | attribution |
-| `LLMResponse` | `xeo:LLMResponse` | episode | visibility |
-| `Lesson` (draft) | `xeo:Lesson` | interpretation | experiments |
-| `Meeting` (draft) | `xeo:Meeting` | episode | knowledge |
-| `Metric` | `xeo:Metric` | norm | core |
-| `MetricReading` | `xeo:MetricReading` | observation | core |
-| `MetricTarget` | `xeo:MetricTarget` | interpretation | work |
-| `Model` | `xeo:Model` | entity | core |
-| `ModelCall` (draft) | `xeo:ModelCall` | episode | agentic |
-| `Objective` | `xeo:Objective` | interpretation | work |
-| `Order` | `xeo:Order` | episode | attribution |
-| `Organization` | `xeo:Organization` | entity | core |
-| `Outcome` | `xeo:Outcome` | observation | decision |
-| `OwnerChange` (extension) | `xeo:OwnerChange` | episode | sales |
-| `PageTemplate` (draft) | `xeo:PageTemplate` | entity | design |
-| `Payment` | `xeo:Payment` | episode | attribution |
-| `Person` | `xeo:Person` | entity | core |
-| `PipelineRollup` | `xeo:PipelineRollup` | derivation | sales |
-| `Playbook` | `xeo:Playbook` | entity | decision |
-| `Practice` | `xeo:Practice` | norm | decision |
-| `Project` | `xeo:Project` | entity | work |
-| `Prompt` | `xeo:Prompt` | entity | visibility |
-| `Recommendation` | `xeo:Recommendation` | interpretation | decision |
-| `Recording` (draft) | `xeo:Recording` | observation | knowledge |
-| `Refund` | `xeo:Refund` | episode | attribution |
-| `RevenueEvent` | `xeo:RevenueEvent` | episode | attribution |
-| `SearchEngine` | `xeo:SearchEngine` | entity | core |
-| `SearchIntent` | `xeo:SearchIntent` | entity | core |
-| `SearchPerformanceFact` | `xeo:SearchPerformanceFact` | observation | core |
-| `SerpSnapshot` | `xeo:SerpSnapshot` | episode | core |
-| `Spec` (draft) | `xeo:Spec` | entity | work |
-| `SpendRollup` | `xeo:SpendRollup` | observation | attribution |
-| `Stage` | `xeo:Stage` | norm | decision |
-| `StageTransition` | `xeo:StageTransition` | episode | sales |
-| `Subscription` | `xeo:Subscription` | entity | attribution |
-| `Summary` (draft) | `xeo:Summary` | derivation | knowledge |
-| `Tactic` | `xeo:Tactic` | entity | decision |
-| `TacticAssessment` | `xeo:TacticAssessment` | interpretation | decision |
-| `Term` | `xeo:Term` | entity | core |
-| `ToolCall` (draft) | `xeo:ToolCall` | episode | agentic |
-| `Topic` | `xeo:Topic` | derivation | core |
-| `Touchpoint` | `xeo:Touchpoint` | episode | attribution |
-| `Transcript` (draft) | `xeo:Transcript` | observation | knowledge |
-| `Trial` (draft) | `xeo:Trial` | episode | experiments |
-| `URL` | `xeo:URL` | entity | core |
-| `Website` | `xeo:Website` | entity | core |
-| `WorkItem` (draft) | `xeo:WorkItem` | entity | work |
+| Label | XEO class | Layer | Module | Key |
+|---|---|---|---|---|
+| `ActionItem` (draft) | `xeo:ActionItem` | interpretation | knowledge |  |
+| `AgentRuntime` (draft) | `xeo:AgentRuntime` | entity | agentic |  |
+| `AgentSession` (draft) | `xeo:AgentSession` | episode | agentic |  |
+| `AgentTurn` (draft) | `xeo:AgentTurn` | episode | agentic |  |
+| `AlgorithmRun` | `xeo:AlgorithmRun` | episode | analysis | `id` |
+| `AnswerEngine` | `xeo:AnswerEngine` | entity | visibility | as `Engine` |
+| `Arm` (draft) | `xeo:Arm` | entity | experiments |  |
+| `AttributedCredit` | `xeo:AttributedCredit` | derivation | attribution | `id` |
+| `AttributionModel` | `xeo:AttributionModel` | norm | attribution | `id` |
+| `AttributionRollup` | `xeo:AttributionRollup` | derivation | attribution | as `MetricReading` |
+| `Benchmark` (draft) | `xeo:Benchmark` | entity | experiments |  |
+| `BenchmarkTask` (draft) | `xeo:BenchmarkTask` | entity | experiments |  |
+| `BookedMeeting` | `xeo:BookedMeeting` | episode | attribution | as `ConversionEvent` |
+| `Brand` | `xeo:Brand` | entity | visibility | `name, websiteId` |
+| `Call` | `xeo:Call` | episode | attribution | as `ConversionEvent` |
+| `Campaign` | `xeo:Campaign` | entity | work | `id` |
+| `Capability` | `xeo:Capability` | entity | decision | `name, websiteId` |
+| `Chargeback` | `xeo:Chargeback` | episode | attribution | as `RevenueEvent` |
+| `Claim` (draft) | `xeo:Claim` | interpretation | experiments |  |
+| `ClaimCheck` (draft) | `xeo:ClaimCheck` | interpretation | experiments |  |
+| `Compaction` (draft) | `xeo:Compaction` | episode | agentic |  |
+| `Consent` | `xeo:Consent` | observation | core | `id` |
+| `ConversionEvent` | `xeo:ConversionEvent` | episode | core | `id` |
+| `ConversionPoint` | `xeo:ConversionPoint` | entity | core | `id` |
+| `Crawl` | `xeo:Crawl` | episode | core | `id` |
+| `CreditAnchor` | `xeo:CreditAnchor` | norm | attribution |  |
+| `Delegation` (draft) | `xeo:Delegation` | episode | agentic |  |
+| `Deliverable` (draft) | `xeo:Deliverable` | episode | work |  |
+| `DesignAsset` (draft) | `xeo:DesignAsset` | entity | design |  |
+| `DesignComponent` (draft) | `xeo:DesignComponent` | entity | design |  |
+| `DesignConcept` (draft) | `xeo:DesignConcept` | entity | design |  |
+| `DesignDecision` (draft) | `xeo:DesignDecision` | interpretation | design |  |
+| `DesignDirection` (draft) | `xeo:DesignDirection` | entity | design |  |
+| `DesignElement` (draft) | `xeo:DesignElement` | entity | design |  |
+| `DesignPattern` (draft) | `xeo:DesignPattern` | entity | design |  |
+| `DesignSystem` (draft) | `xeo:DesignSystem` | entity | design |  |
+| `DesignToken` (draft) | `xeo:DesignToken` | entity | design |  |
+| `Diagnostic` | `xeo:Diagnostic` | entity | decision | `id` |
+| `DiagnosticRun` | `xeo:DiagnosticRun` | episode | decision | `id` |
+| `Domain` | `xeo:Domain` | entity | core | `name` |
+| `EnforcementEvent` (draft) | `xeo:EnforcementEvent` | episode | agentic |  |
+| `Engine` | `xeo:Engine` | entity | core | `id` |
+| `Entity` | `xeo:Entity` | entity | core | `entityRef` |
+| `Experiment` | `xeo:Experiment` | episode | decision | `id` |
+| `ExternalEvent` | `xeo:ExternalEvent` | episode | decision | `id` |
+| `Feedback` | `xeo:Feedback` | interpretation | decision | `id` |
+| `Framework` | `xeo:Framework` | norm | decision | `id` |
+| `Gap` | `xeo:Gap` | interpretation | decision | `id` |
+| `GenerativeOverview` | `xeo:GenerativeOverview` | entity | visibility | as `Engine` |
+| `Harness` (draft) | `xeo:Harness` | entity | agentic |  |
+| `HarnessComponent` (draft) | `xeo:HarnessComponent` | entity | agentic |  |
+| `IdentityLink` | `xeo:IdentityLink` | derivation | attribution |  |
+| `InboundReference` | `xeo:InboundReference` | observation | core | `id` |
+| `Intervention` | `xeo:Intervention` | entity | decision |  |
+| `InvocationConfig` (draft) | `xeo:InvocationConfig` | entity | agentic |  |
+| `Journey` | `xeo:Journey` | derivation | attribution | `id` |
+| `LLMResponse` | `xeo:LLMResponse` | episode | visibility | `id` |
+| `Lesson` (draft) | `xeo:Lesson` | interpretation | experiments |  |
+| `Meeting` (draft) | `xeo:Meeting` | episode | knowledge |  |
+| `Metric` | `xeo:Metric` | norm | core | `id` |
+| `MetricReading` | `xeo:MetricReading` | observation | core | `id` |
+| `MetricTarget` | `xeo:MetricTarget` | interpretation | work | `id` |
+| `Model` | `xeo:Model` | entity | core | `id` |
+| `ModelCall` (draft) | `xeo:ModelCall` | episode | agentic |  |
+| `Objective` | `xeo:Objective` | interpretation | work | `id` |
+| `Order` | `xeo:Order` | episode | attribution | as `RevenueEvent` |
+| `Organization` | `xeo:Organization` | entity | core | `id` |
+| `Outcome` | `xeo:Outcome` | observation | decision |  |
+| `OwnerChange` (extension) | `xeo:OwnerChange` | episode | sales |  |
+| `PageTemplate` (draft) | `xeo:PageTemplate` | entity | design |  |
+| `Payment` | `xeo:Payment` | episode | attribution | as `RevenueEvent` |
+| `Person` | `xeo:Person` | entity | core | `id` |
+| `PipelineRollup` | `xeo:PipelineRollup` | derivation | sales | as `MetricReading` |
+| `Playbook` | `xeo:Playbook` | entity | decision | `id` |
+| `Practice` | `xeo:Practice` | norm | decision | `id` |
+| `Project` | `xeo:Project` | entity | work | `id` |
+| `Prompt` | `xeo:Prompt` | entity | visibility | `text, websiteId` |
+| `Recommendation` | `xeo:Recommendation` | interpretation | decision | `id` |
+| `Recording` (draft) | `xeo:Recording` | observation | knowledge |  |
+| `Refund` | `xeo:Refund` | episode | attribution | as `RevenueEvent` |
+| `RevenueEvent` | `xeo:RevenueEvent` | episode | attribution | `id` |
+| `SearchEngine` | `xeo:SearchEngine` | entity | core | as `Engine` |
+| `SearchIntent` | `xeo:SearchIntent` | entity | core |  |
+| `SearchPerformanceFact` | `xeo:SearchPerformanceFact` | observation | core |  |
+| `SerpSnapshot` | `xeo:SerpSnapshot` | episode | core | `id` |
+| `Spec` (draft) | `xeo:Spec` | entity | work |  |
+| `SpendRollup` | `xeo:SpendRollup` | observation | attribution |  |
+| `Stage` | `xeo:Stage` | norm | decision | `id` |
+| `StageTransition` | `xeo:StageTransition` | episode | sales |  |
+| `Subscription` | `xeo:Subscription` | entity | attribution | `id` |
+| `Summary` (draft) | `xeo:Summary` | derivation | knowledge |  |
+| `Tactic` | `xeo:Tactic` | entity | decision | `id` |
+| `TacticAssessment` | `xeo:TacticAssessment` | interpretation | decision |  |
+| `Term` | `xeo:Term` | entity | core | `name` |
+| `ToolCall` (draft) | `xeo:ToolCall` | episode | agentic |  |
+| `Topic` | `xeo:Topic` | derivation | core | `name, websiteId` |
+| `Touchpoint` | `xeo:Touchpoint` | episode | attribution | `id` |
+| `Transcript` (draft) | `xeo:Transcript` | observation | knowledge |  |
+| `Trial` (draft) | `xeo:Trial` | episode | experiments |  |
+| `URL` | `xeo:URL` | entity | core | `address, websiteId` |
+| `Website` | `xeo:Website` | entity | core | `id` or `origin` |
+| `WorkItem` (draft) | `xeo:WorkItem` | entity | work |  |
 
 ### Relationship types (192)
 
