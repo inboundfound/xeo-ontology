@@ -227,21 +227,21 @@
       "status": "draft"
     },
     "DesignAsset": {
-      "definition": "A file a design uses: a logo, an icon, an illustration, a photograph, a graphic, a font, a video (assetKind). Identified by where the file is kept (artifactUri, core); the graph holds the pointer, never the file. Used by components, patterns, templates, concepts and pages (usesAsset). Who may use it, and on what terms, is not a term yet.",
+      "definition": "A file a design uses: a logo, an icon, an illustration, a photograph, a graphic, a font, a video (assetKind). Identified by where the file is kept (artifactUri, core); the graph holds the pointer, never the file. Used by components, patterns, templates, concepts and pages (usesAsset). Who may use it, and on what terms (licence, credit, expiry), is not a term yet: it waits until a project needs it, and will then follow schema.org.",
       "iri": "https://xeoontology.org/xeo#DesignAsset",
       "layer": "entity",
       "module": "design",
       "status": "draft"
     },
     "DesignComponent": {
-      "definition": "A reusable piece of interface with a name and a defined anatomy: a button, a card, a header, a form field. Built from tokens (usesToken), smaller components (composedOf) and assets (usesAsset). A variant (the primary button of a button, the compact card of a card) is a component of its own that points at the one it varies (variantOf). Kept where it is defined, a design file or a code library (artifactUri, core); the component in the design file and the one in code are one DesignComponent where they are meant to match. Not an HTML element, and not a CMS block, though a block may implement one.",
+      "definition": "A reusable piece of interface with a name and a defined anatomy: a button, a card, a header, a form field. Built from tokens (usesToken), smaller components (composedOf) and assets (usesAsset). A variant (the primary button of a button, the compact card of a card) is a component of its own that points at the one it varies (variantOf) and says what sets it apart (variantValue). Kept where it is defined, a design file or a code library (artifactUri, core); the component in the design file and the one in code are one DesignComponent where they are meant to match. Not an HTML element, and not a CMS block, though a block may implement one.",
       "iri": "https://xeoontology.org/xeo#DesignComponent",
       "layer": "entity",
       "module": "design",
       "status": "draft"
     },
     "DesignConcept": {
-      "definition": "A rendered proposal for one piece of interface, usually under one DesignDirection: a card, a hero, a page, or a direction's version of an element of the existing site. Names what it depicts (depicts: a component, pattern, template, element or page) and the direction it was drawn under (underDirection); where it is offered in place of an element of the existing site, replacesElement names that element. Kept as an image, a design-file frame or a prototype (artifactUri, core). Where a model drew it, method and producedByModel (core) say how. A card concept is a DesignConcept that depicts a card component. Not a skos:Concept, which is a code in a scheme.",
+      "definition": "A rendered proposal for one piece of interface, usually under one DesignDirection: a card, a hero, a page, or a direction's version of an element of the existing site. Names what it depicts (depicts: a component, pattern, template, element or page) and the direction it was drawn under (underDirection); where it is offered in place of an element of the existing site, replacesElement names that element. Kept as an image, a design-file frame or a prototype (artifactUri, core); the tool's own id for that frame or page is its designRecordRef. Where a model drew it, method and producedByModel (core) say how. A card concept is a DesignConcept that depicts a card component. Not a skos:Concept, which is a code in a scheme.",
       "iri": "https://xeoontology.org/xeo#DesignConcept",
       "layer": "entity",
       "module": "design",
@@ -255,7 +255,7 @@
       "status": "draft"
     },
     "DesignDirection": {
-      "definition": "One proposed visual approach for a site or a brand: a name, the idea behind it in words (statement, decision), and how it treats type, colour, imagery and layout, shown through the DesignConcepts drawn under it (underDirection). Several are usually proposed together, in one Deliverable (proposedIn, work), for one Website, Brand or Project (directionFor). A durable option that concepts and decisions point at. Whether it fits is a reviewer's call, kept as a DesignDecision about it, never as a flag on the direction. A design system built out of a chosen direction names it (fromDirection).",
+      "definition": "One proposed visual approach for a site or a brand: a name, the idea behind it in words (statement, decision), and how it treats type, colour, imagery and layout, shown through the DesignConcepts drawn under it (underDirection). Several are usually proposed together, in one Deliverable (proposedIn, work), for one Website, Brand or Project (directionFor). A durable option that concepts and decisions point at. Whether it fits is a reviewer's call, kept as a DesignDecision about it, never as a flag on the direction. Its rank among the directions of a proposal is not a property either: a ranking is a judgment, kept as the DesignDecisions about each direction (shortlist, reject) with a statement. A design system built out of a chosen direction names it (fromDirection).",
       "iri": "https://xeoontology.org/xeo#DesignDirection",
       "layer": "entity",
       "module": "design",
@@ -283,7 +283,7 @@
       "status": "draft"
     },
     "DesignToken": {
-      "definition": "One named design decision stored as a value, so design files and code share it: a colour, a spacing step, a font family, a duration, a shadow. Its name (core) is its path in the token file, such as color.brand.primary; its tokenType is one of the W3C Design Tokens Format's types; its tokenValue is the value as written there. A token that refers to another (an alias, {color.blue.500} in that format) names it with aliasOf and need carry no value of its own. tokenTier says whether it is a primitive, a semantic or a component token. A token whose value changes by mode (light and dark, one brand and another; Figma calls these modes) is one token per mode, each with its tokenMode. Belongs to one DesignSystem.",
+      "definition": "One named design decision stored as a value, so design files and code share it: a colour, a spacing step, a font family, a duration, a shadow. Its name (core) is its path in the token file, such as color.brand.primary; its tokenType is one of the W3C Design Tokens Format's types; its tokenValue is the value as written there. A token that refers to another (an alias, {color.blue.500} in that format) names it with aliasOf and need carry no value of its own. tokenTier says whether it is a primitive, a semantic or a component token. A token whose value changes by mode (light and dark, one brand and another; Figma calls these modes) is one token per mode, each with its tokenMode; where the value depends on more than one axis (dark and mobile), one token per combination, with one tokenMode per axis. Belongs to one DesignSystem.",
       "iri": "https://xeoontology.org/xeo#DesignToken",
       "layer": "entity",
       "module": "design",
@@ -1667,6 +1667,22 @@
       "iri": "https://xeoontology.org/xeo#denominatorValue",
       "layer": "observation",
       "module": "core"
+    },
+    "designRecordRef": {
+      "datatype": "xsd:string",
+      "domain": [
+        "DesignAsset",
+        "DesignComponent",
+        "DesignConcept",
+        "DesignPattern",
+        "DesignSystem",
+        "DesignToken",
+        "PageTemplate"
+      ],
+      "iri": "https://xeoontology.org/xeo#designRecordRef",
+      "layer": "entity",
+      "module": "design",
+      "status": "draft"
     },
     "designSystemVersion": {
       "datatype": "xsd:string",
@@ -3329,6 +3345,16 @@
       "iri": "https://xeoontology.org/xeo#value",
       "layer": "observation",
       "module": "core"
+    },
+    "variantValue": {
+      "datatype": "xsd:string",
+      "domain": [
+        "DesignComponent"
+      ],
+      "iri": "https://xeoontology.org/xeo#variantValue",
+      "layer": "entity",
+      "module": "design",
+      "status": "draft"
     },
     "verdict": {
       "conceptSlot": true,

@@ -19,10 +19,11 @@
 #   What a site is built with (durable, the design system):
 #     DesignSystem - the tokens, components, patterns and templates (inDesignSystem)
 #     DesignToken  - aliasOf -> DesignToken ; tokenType, tokenValue, tokenTier, tokenMode
-#     DesignComponent - variantOf -> DesignComponent ; usesToken, composedOf, usesAsset
+#     DesignComponent - variantOf -> DesignComponent ; variantValue ; usesToken, composedOf, usesAsset
 #     DesignPattern   - composedOf -> DesignComponent | DesignPattern
 #     PageTemplate    - composedOf -> DesignComponent | DesignPattern
 #     DesignAsset     - a file: logo, icon, image, font (assetKind)
+#     designRecordRef - on any of these: the tool's own id for the record
 #     Website - usesDesignSystem -> DesignSystem ;  URL - usesTemplate -> PageTemplate
 #
 #   How a new design is proposed and decided (the review):
@@ -47,18 +48,32 @@
 # Module 2025.10: a mode there is a context of a modifier, each context its own
 # set of token files merged by path, so one value per token per context; Adobe
 # Spectrum's design data likewise keeps one row per mode
-# (docs/design/research-results-2026-11-20.md).
+# (docs/design/research-results-2026-11-20.md). A value that depends on more than
+# one axis (dark and mobile) is one token per combination, with one tokenMode per
+# axis, each written modifier:context (theme:dark, scale:mobile).
 #
 # POINTERS, NEVER FILES. A design file, a component library, a mockup and an
 # image stay where they are made and kept; the graph holds where (artifactUri,
-# core) and how they relate. Vendor identifiers (a Figma node key, a Canva design
-# id) belong in a mapping file, not here.
+# core) and how they relate. A tool's own identifier for a record (a Figma
+# variable key, a Canva design id) is its designRecordRef, the join back to the
+# tool. How a tool's fields map to these terms belongs in a mapping file.
 #
-# NOT HERE YET, and each an open question: the rights to an asset (licence,
-# credit, expiry); accessibility results (contrast, a component's checks);
-# breakpoints and responsive rules; a CMS block as a kind of component; the
-# atomic-design levels (atom, molecule, organism) as a scheme; a design file's
-# pages and frames; and a direction's ranking within its proposal.
+# SETTLED FOR 0.8, from the nine questions the check against the design tools
+# left open (docs/design/research-results-2026-11-20.md, section 6). Three are
+# terms: a mode on more than one axis is several tokenMode values; what makes a
+# variant is its variantValue; a tool's own id is a designRecordRef. The verdict
+# revise stays. Four are deliberately not terms here. A site's copy tone (voice)
+# is the brand's, not an elementKind. A direction's rank within its proposal is
+# a judgment, kept as DesignDecisions (shortlist, reject) with a statement. A
+# handoff state (ready for development, completed) is a state of the build
+# work, which belongs with the WorkItem (work), not a designVerdict. The rights
+# to an asset (licence, credit, expiry) wait until a project needs them, and
+# will then follow schema.org. And accessibility check results (contrast,
+# alternative text) are planned as a draft observation class for 0.9.
+#
+# NOT HERE YET, and each an open question: breakpoints and responsive rules; a
+# CMS block as a kind of component; the atomic-design levels (atom, molecule,
+# organism) as a scheme; and a design file's pages and frames.
 #
 # NEEDS core only (Website, URL, Person, name, artifactUri, occurredAt). Points
 # at Brand (visibility), Project and Deliverable (work) and statement (decision)
@@ -90,13 +105,13 @@ xeo:DesignToken a owl:Class ;
     rdfs:label "Design Token" ;
     xeo:xeoLayer "entity" ;
     xeo:termStatus "draft" ;
-    dct:description "One named design decision stored as a value, so design files and code share it: a colour, a spacing step, a font family, a duration, a shadow. Its name (core) is its path in the token file, such as color.brand.primary; its tokenType is one of the W3C Design Tokens Format's types; its tokenValue is the value as written there. A token that refers to another (an alias, {color.blue.500} in that format) names it with aliasOf and need carry no value of its own. tokenTier says whether it is a primitive, a semantic or a component token. A token whose value changes by mode (light and dark, one brand and another; Figma calls these modes) is one token per mode, each with its tokenMode. Belongs to one DesignSystem." .
+    dct:description "One named design decision stored as a value, so design files and code share it: a colour, a spacing step, a font family, a duration, a shadow. Its name (core) is its path in the token file, such as color.brand.primary; its tokenType is one of the W3C Design Tokens Format's types; its tokenValue is the value as written there. A token that refers to another (an alias, {color.blue.500} in that format) names it with aliasOf and need carry no value of its own. tokenTier says whether it is a primitive, a semantic or a component token. A token whose value changes by mode (light and dark, one brand and another; Figma calls these modes) is one token per mode, each with its tokenMode; where the value depends on more than one axis (dark and mobile), one token per combination, with one tokenMode per axis. Belongs to one DesignSystem." .
 
 xeo:DesignComponent a owl:Class ;
     rdfs:label "Design Component" ;
     xeo:xeoLayer "entity" ;
     xeo:termStatus "draft" ;
-    dct:description "A reusable piece of interface with a name and a defined anatomy: a button, a card, a header, a form field. Built from tokens (usesToken), smaller components (composedOf) and assets (usesAsset). A variant (the primary button of a button, the compact card of a card) is a component of its own that points at the one it varies (variantOf). Kept where it is defined, a design file or a code library (artifactUri, core); the component in the design file and the one in code are one DesignComponent where they are meant to match. Not an HTML element, and not a CMS block, though a block may implement one." .
+    dct:description "A reusable piece of interface with a name and a defined anatomy: a button, a card, a header, a form field. Built from tokens (usesToken), smaller components (composedOf) and assets (usesAsset). A variant (the primary button of a button, the compact card of a card) is a component of its own that points at the one it varies (variantOf) and says what sets it apart (variantValue). Kept where it is defined, a design file or a code library (artifactUri, core); the component in the design file and the one in code are one DesignComponent where they are meant to match. Not an HTML element, and not a CMS block, though a block may implement one." .
 
 xeo:DesignPattern a owl:Class ;
     rdfs:label "Design Pattern" ;
@@ -114,7 +129,7 @@ xeo:DesignAsset a owl:Class ;
     rdfs:label "Design Asset" ;
     xeo:xeoLayer "entity" ;
     xeo:termStatus "draft" ;
-    dct:description "A file a design uses: a logo, an icon, an illustration, a photograph, a graphic, a font, a video (assetKind). Identified by where the file is kept (artifactUri, core); the graph holds the pointer, never the file. Used by components, patterns, templates, concepts and pages (usesAsset). Who may use it, and on what terms, is not a term yet." .
+    dct:description "A file a design uses: a logo, an icon, an illustration, a photograph, a graphic, a font, a video (assetKind). Identified by where the file is kept (artifactUri, core); the graph holds the pointer, never the file. Used by components, patterns, templates, concepts and pages (usesAsset). Who may use it, and on what terms (licence, credit, expiry), is not a term yet: it waits until a project needs it, and will then follow schema.org." .
 
 xeo:inDesignSystem a owl:ObjectProperty ;
     rdfs:label "in design system" ;
@@ -159,7 +174,7 @@ xeo:variantOf a owl:ObjectProperty ;
     rdfs:domain xeo:DesignComponent ; rdfs:range xeo:DesignComponent ;
     xeo:xeoLayer "entity" ;
     xeo:termStatus "draft" ;
-    dct:description "The component this one is a variant of: the primary button of a button, the compact card of a card. What makes it a variant (size, state, emphasis) is in its name for now. Figma's variant within a component set: there each variant is a component inside the set, so the variant points at the DesignComponent that stands for the set. Penpot's variants are the same shape. Adobe Spectrum uses the word variant for one option of a component (accent, primary), not for a component of its own." .
+    dct:description "The component this one is a variant of: the primary button of a button, the compact card of a card. What makes it a variant (size, state, emphasis) is its variantValue. Figma's variant within a component set: there each variant is a component inside the set, so the variant points at the DesignComponent that stands for the set. Penpot's variants are the same shape. Adobe Spectrum uses the word variant for one option of a component (accent, primary), not for a component of its own." .
 
 xeo:usesAsset a owl:ObjectProperty ;
     rdfs:label "uses asset" ;
@@ -209,7 +224,7 @@ xeo:tokenMode a owl:DatatypeProperty ;
     rdfs:domain xeo:DesignToken ; rdfs:range xsd:string ;
     xeo:xeoLayer "entity" ;
     xeo:termStatus "draft" ;
-    dct:description "The mode a DesignToken's value holds in, where the system has more than one: light or dark, one brand or another, compact or comfortable. A token with a value per mode is one DesignToken per mode, each with the same name and its tokenMode. The Design Tokens Format's Resolver Module calls a mode a context of a modifier (the dark context of a theme modifier); Figma, a mode of a variable collection. Free text, named as the system names its modes. Absent where the system has one mode." .
+    dct:description "The mode a DesignToken's value holds in, where the system has more than one: light or dark, one brand or another, compact or comfortable. A token with a value per mode is one DesignToken per mode, each with the same name and its tokenMode. Where the system has one axis of modes, the mode as the system names it (dark). Where a value depends on more than one axis (dark and mobile), one tokenMode per axis, each written modifier:context (theme:dark, scale:mobile), and one DesignToken per combination that has a value of its own; a token carrying more than one tokenMode writes every one that way. The Design Tokens Format's Resolver Module calls a mode a context of a modifier (the dark context of a theme modifier), and the contexts of its modifiers multiply; Adobe Spectrum keeps mode sets for colour scheme, scale and contrast; Figma, a mode of a variable collection, one collection per axis. Free text, named as the system names its modifiers and modes. Absent where the system has one mode." .
 
 xeo:assetKind a owl:DatatypeProperty ;
     rdfs:label "asset kind" ;
@@ -218,13 +233,28 @@ xeo:assetKind a owl:DatatypeProperty ;
     xeo:termStatus "draft" ;
     dct:description "What kind of file a DesignAsset is: logo, icon, illustration, photograph, graphic (a made image such as a banner or a social post), font, video or animation. Codes in xeos:assetKind. One per asset." .
 
+xeo:variantValue a owl:DatatypeProperty ;
+    rdfs:label "variant value" ;
+    rdfs:domain xeo:DesignComponent ; rdfs:range xsd:string ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "One property, and the value of it, that sets a variant apart from the component it varies, written property=value: size=small, state=hover, emphasis=quiet. One per axis, so a small quiet button carries two. A state (hover, pressed, disabled) is written the same way, as Figma and Penpot model states. The property names are the design system's own and are not a fixed list, because systems differ in their axes. Figma's variant properties in a component set, Penpot's variant properties, Adobe Spectrum's options and states, and the args of a Storybook story. Sits on a component that has a variantOf; absent on the component that stands for the whole set." .
+
+xeo:designRecordRef a owl:DatatypeProperty ;
+    rdfs:label "design record reference" ;
+    xeo:domainIncludes xeo:DesignSystem , xeo:DesignToken , xeo:DesignComponent , xeo:DesignPattern , xeo:PageTemplate , xeo:DesignAsset , xeo:DesignConcept ;
+    rdfs:range xsd:string ;
+    xeo:xeoLayer "entity" ;
+    xeo:termStatus "draft" ;
+    dct:description "Identity key of one record in the design tool that holds it, written tool:file:objectType:id (figma:<file key>:variable:<variable key>, canva:<design id>:page:<page id>). Two refs are the same record when all four parts match. The join back to the tool for a thing that has no address of its own: a variable or a token has no URL, so artifactUri cannot hold it. The file part is whatever the tool scopes the id to: a Figma file, a Canva design, a Creative Cloud library; a record the tool scopes to the account alone (a Canva asset) leaves that part empty and keeps its colon. One per tool the record is kept in, so a component kept in a design file and in a code library may carry two. Modelled on crmRecordRef (sales): the graph holds the pointer and never mirrors the tool's own schema. Which of a tool's identifiers is stable enough to use is said in its mapping file. Domain left open across the terms listed." .
+
 # --- Proposing and deciding a design ---------------------------------------------
 
 xeo:DesignDirection a owl:Class ;
     rdfs:label "Design Direction" ;
     xeo:xeoLayer "entity" ;
     xeo:termStatus "draft" ;
-    dct:description "One proposed visual approach for a site or a brand: a name, the idea behind it in words (statement, decision), and how it treats type, colour, imagery and layout, shown through the DesignConcepts drawn under it (underDirection). Several are usually proposed together, in one Deliverable (proposedIn, work), for one Website, Brand or Project (directionFor). A durable option that concepts and decisions point at. Whether it fits is a reviewer's call, kept as a DesignDecision about it, never as a flag on the direction. A design system built out of a chosen direction names it (fromDirection)." .
+    dct:description "One proposed visual approach for a site or a brand: a name, the idea behind it in words (statement, decision), and how it treats type, colour, imagery and layout, shown through the DesignConcepts drawn under it (underDirection). Several are usually proposed together, in one Deliverable (proposedIn, work), for one Website, Brand or Project (directionFor). A durable option that concepts and decisions point at. Whether it fits is a reviewer's call, kept as a DesignDecision about it, never as a flag on the direction. Its rank among the directions of a proposal is not a property either: a ranking is a judgment, kept as the DesignDecisions about each direction (shortlist, reject) with a statement. A design system built out of a chosen direction names it (fromDirection)." .
 
 xeo:DesignElement a owl:Class ;
     rdfs:label "Design Element" ;
@@ -236,7 +266,7 @@ xeo:DesignConcept a owl:Class ;
     rdfs:label "Design Concept" ;
     xeo:xeoLayer "entity" ;
     xeo:termStatus "draft" ;
-    dct:description "A rendered proposal for one piece of interface, usually under one DesignDirection: a card, a hero, a page, or a direction's version of an element of the existing site. Names what it depicts (depicts: a component, pattern, template, element or page) and the direction it was drawn under (underDirection); where it is offered in place of an element of the existing site, replacesElement names that element. Kept as an image, a design-file frame or a prototype (artifactUri, core). Where a model drew it, method and producedByModel (core) say how. A card concept is a DesignConcept that depicts a card component. Not a skos:Concept, which is a code in a scheme." .
+    dct:description "A rendered proposal for one piece of interface, usually under one DesignDirection: a card, a hero, a page, or a direction's version of an element of the existing site. Names what it depicts (depicts: a component, pattern, template, element or page) and the direction it was drawn under (underDirection); where it is offered in place of an element of the existing site, replacesElement names that element. Kept as an image, a design-file frame or a prototype (artifactUri, core); the tool's own id for that frame or page is its designRecordRef. Where a model drew it, method and producedByModel (core) say how. A card concept is a DesignConcept that depicts a card component. Not a skos:Concept, which is a code in a scheme." .
 
 xeo:DesignDecision a owl:Class ;
     rdfs:label "Design Decision" ;
@@ -317,7 +347,7 @@ xeo:elementKind a owl:DatatypeProperty ;
     rdfs:domain xeo:DesignElement ; rdfs:range xsd:string ;
     xeo:xeoLayer "entity" ;
     xeo:termStatus "draft" ;
-    dct:description "What kind of part of a design a DesignElement is: logo, color, typography, imagery, iconography, illustration, layout, navigation, component, pattern or motion. Codes in xeos:elementKind. One per element; something that is two kinds is catalogued as two elements." .
+    dct:description "What kind of part of a design a DesignElement is: logo, color, typography, imagery, iconography, illustration, layout, navigation, component, pattern or motion. Codes in xeos:elementKind. One per element; something that is two kinds is catalogued as two elements. Copy tone (a brand's voice) is not a kind: the element review is visual, and voice belongs with the Brand (visibility)." .
 
 xeo:decidesOn a owl:ObjectProperty ;
     rdfs:label "decides on" ;
@@ -346,7 +376,7 @@ xeo:designVerdict a owl:DatatypeProperty ;
     rdfs:domain xeo:DesignDecision ; rdfs:range xsd:string ;
     xeo:xeoLayer "interpretation" ;
     xeo:termStatus "draft" ;
-    dct:description "The call a DesignDecision makes: keep, replace or remove (for an element of the existing site), approve, shortlist, revise or reject (for a direction or a concept), or defer (for any of them). revise is the changes-requested call design tools name: Figma's Request changes in a branch review, Canva's Needs changes in a design approval. Codes in xeos:designVerdict. Exactly one per decision." .
+    dct:description "The call a DesignDecision makes: keep, replace or remove (for an element of the existing site), approve, shortlist, revise or reject (for a direction or a concept), or defer (for any of them). revise is the changes-requested call design tools name: Figma's Request changes in a branch review, Canva's Needs changes in a design approval. A handoff state (ready for development, completed) is not a verdict: it is a state of the build work, which belongs with the WorkItem (work), not a call on fit. Codes in xeos:designVerdict. Exactly one per decision." .
 
 # --- Terms from elsewhere, used here ----------------------------------------------
 # New triples about terms declared in other modules; nothing is redefined.

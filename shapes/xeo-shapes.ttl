@@ -515,6 +515,15 @@ xeosh:DesignTokenHasValue a sh:NodeShape ;
     ) ;
     sh:message "A xeo:DesignToken requires a xeo:tokenValue or a xeo:aliasOf." .
 
+xeosh:DesignTokenModeShape a sh:NodeShape ;
+    rdfs:label "a design token with more than one mode writes each as modifier:context" ;
+    sh:targetClass xeo:DesignToken ;
+    sh:or (
+        [ sh:path xeo:tokenMode ; sh:maxCount 1 ]
+        [ sh:path xeo:tokenMode ; sh:pattern "^[^:]+:.+$" ]
+    ) ;
+    sh:message "A xeo:DesignToken with more than one xeo:tokenMode writes each as modifier:context." .
+
 xeosh:DesignElementShape a sh:NodeShape ;
     rdfs:label "a design element belongs to one website" ;
     sh:targetClass xeo:DesignElement ;

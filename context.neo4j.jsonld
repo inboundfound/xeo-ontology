@@ -1166,6 +1166,7 @@
       "@id": "xeo:denominatorValue",
       "@type": "xsd:decimal"
     },
+    "designRecordRef": "xeo:designRecordRef",
     "designSystemVersion": "xeo:designSystemVersion",
     "designVerdict": "xeo:designVerdict",
     "device": "xeo:device",
@@ -1628,6 +1629,7 @@
       "@id": "xeo:value",
       "@type": "xsd:decimal"
     },
+    "variantValue": "xeo:variantValue",
     "verdict": {
       "@id": "xeo:verdict",
       "@type": "@id"
