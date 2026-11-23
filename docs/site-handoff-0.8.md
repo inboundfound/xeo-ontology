@@ -10,7 +10,7 @@ ontology. 0.8.0 adds three draft modules, widens one released property and remov
 - **Three more module files:** `xeo-experiments.ttl` (experiments), `xeo-knowledge.ttl`
   (company knowledge) and `xeo-design.ttl` (design and web development). There are now
   fourteen.
-- **93 new terms, all marked draft:** 42 in experiments, 13 in knowledge, 38 in design. They
+- **95 new terms, all marked draft:** 42 in experiments, 13 in knowledge, 40 in design. They
   show the draft badge that 0.7.1 added, from `"status": "draft"` in `xeo-terms.json`.
 - **Eight new schemes, all draft:** `graderKind`, `failureClass`, `claimVerdict`
   (experiments) and `tokenType`, `tokenTier`, `elementKind`, `assetKind`, `designVerdict`
@@ -23,8 +23,8 @@ ontology. 0.8.0 adds three draft modules, widens one released property and remov
 - **New example files:** `examples/experiment-arms.jsonld`, `examples/company-knowledge.jsonld`
   and `examples/design-review.jsonld`, if the site links the examples.
 - **No new tombstone.** `tombstones.json` still lists 15 terms.
-- **Counts:** 102 classes, 192 object properties, 268 datatype properties, 85 schemes, 485
-  concepts, 174 draft terms. The pages read these from `xeo-release.json`; nothing is typed.
+- **Counts:** 102 classes, 192 object properties, 270 datatype properties, 85 schemes, 485
+  concepts, 176 draft terms. The pages read these from `xeo-release.json`; nothing is typed.
 
 ## Steps
 
@@ -66,7 +66,7 @@ and the data files to `public/`, the JSON to `src/lib/`, and the frozen copy to
    download.
 3. `https://xeoontology.org/xeo#DesignToken`, `#DesignDecision`, `#Meeting` and `#Trial` each
    scroll to their term, each with the draft badge, each under its own module.
-4. On `/xeo`, the status filter set to `draft` lists 174 terms.
+4. On `/xeo`, the status filter set to `draft` lists 176 terms.
 5. `/schemes#tokenType-fontFamily` and `/schemes#designVerdict-replace` show their codes.
 6. `#owns` lists Website, Brand and Project as expected to point at.
-7. The term count on `/xeo` is 93 more than for 0.7.2.
+7. The term count on `/xeo` is 95 more than for 0.7.2.

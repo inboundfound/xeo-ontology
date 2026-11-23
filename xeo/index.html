@@ -258,19 +258,19 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 <section id="DesignAsset" class="term">
   <h3>Design Asset <span class="layer" style="--h:#718096">entity</span> <span class="status">draft</span><span class="mod">xeo-design</span></h3>
   <code class="iri">xeo:DesignAsset</code>
-  <p>A file a design uses: a logo, an icon, an illustration, a photograph, a graphic, a font, a video (assetKind). Identified by where the file is kept (artifactUri, core); the graph holds the pointer, never the file. Used by components, patterns, templates, concepts and pages (usesAsset). Who may use it, and on what terms, is not a term yet.</p>
+  <p>A file a design uses: a logo, an icon, an illustration, a photograph, a graphic, a font, a video (assetKind). Identified by where the file is kept (artifactUri, core); the graph holds the pointer, never the file. Used by components, patterns, templates, concepts and pages (usesAsset). Who may use it, and on what terms (licence, credit, expiry), is not a term yet: it waits until a project needs it, and will then follow schema.org.</p>
   <dl><div class="row"><dt>closeMatch</dt><dd><a href="https://schema.org/MediaObject" class="ext">schema:MediaObject</a></dd></div></dl>
 </section>
 <section id="DesignComponent" class="term">
   <h3>Design Component <span class="layer" style="--h:#718096">entity</span> <span class="status">draft</span><span class="mod">xeo-design</span></h3>
   <code class="iri">xeo:DesignComponent</code>
-  <p>A reusable piece of interface with a name and a defined anatomy: a button, a card, a header, a form field. Built from tokens (usesToken), smaller components (composedOf) and assets (usesAsset). A variant (the primary button of a button, the compact card of a card) is a component of its own that points at the one it varies (variantOf). Kept where it is defined, a design file or a code library (artifactUri, core); the component in the design file and the one in code are one DesignComponent where they are meant to match. Not an HTML element, and not a CMS block, though a block may implement one.</p>
+  <p>A reusable piece of interface with a name and a defined anatomy: a button, a card, a header, a form field. Built from tokens (usesToken), smaller components (composedOf) and assets (usesAsset). A variant (the primary button of a button, the compact card of a card) is a component of its own that points at the one it varies (variantOf) and says what sets it apart (variantValue). Kept where it is defined, a design file or a code library (artifactUri, core); the component in the design file and the one in code are one DesignComponent where they are meant to match. Not an HTML element, and not a CMS block, though a block may implement one.</p>
   
 </section>
 <section id="DesignConcept" class="term">
   <h3>Design Concept <span class="layer" style="--h:#718096">entity</span> <span class="status">draft</span><span class="mod">xeo-design</span></h3>
   <code class="iri">xeo:DesignConcept</code>
-  <p>A rendered proposal for one piece of interface, usually under one DesignDirection: a card, a hero, a page, or a direction&#x27;s version of an element of the existing site. Names what it depicts (depicts: a component, pattern, template, element or page) and the direction it was drawn under (underDirection); where it is offered in place of an element of the existing site, replacesElement names that element. Kept as an image, a design-file frame or a prototype (artifactUri, core). Where a model drew it, method and producedByModel (core) say how. A card concept is a DesignConcept that depicts a card component. Not a skos:Concept, which is a code in a scheme.</p>
+  <p>A rendered proposal for one piece of interface, usually under one DesignDirection: a card, a hero, a page, or a direction&#x27;s version of an element of the existing site. Names what it depicts (depicts: a component, pattern, template, element or page) and the direction it was drawn under (underDirection); where it is offered in place of an element of the existing site, replacesElement names that element. Kept as an image, a design-file frame or a prototype (artifactUri, core); the tool&#x27;s own id for that frame or page is its designRecordRef. Where a model drew it, method and producedByModel (core) say how. A card concept is a DesignConcept that depicts a card component. Not a skos:Concept, which is a code in a scheme.</p>
   <dl><div class="row"><dt>closeMatch</dt><dd><a href="https://schema.org/CreativeWork" class="ext">schema:CreativeWork</a></dd></div></dl>
 </section>
 <section id="DesignDecision" class="term">
@@ -282,7 +282,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 <section id="DesignDirection" class="term">
   <h3>Design Direction <span class="layer" style="--h:#718096">entity</span> <span class="status">draft</span><span class="mod">xeo-design</span></h3>
   <code class="iri">xeo:DesignDirection</code>
-  <p>One proposed visual approach for a site or a brand: a name, the idea behind it in words (statement, decision), and how it treats type, colour, imagery and layout, shown through the DesignConcepts drawn under it (underDirection). Several are usually proposed together, in one Deliverable (proposedIn, work), for one Website, Brand or Project (directionFor). A durable option that concepts and decisions point at. Whether it fits is a reviewer&#x27;s call, kept as a DesignDecision about it, never as a flag on the direction. A design system built out of a chosen direction names it (fromDirection).</p>
+  <p>One proposed visual approach for a site or a brand: a name, the idea behind it in words (statement, decision), and how it treats type, colour, imagery and layout, shown through the DesignConcepts drawn under it (underDirection). Several are usually proposed together, in one Deliverable (proposedIn, work), for one Website, Brand or Project (directionFor). A durable option that concepts and decisions point at. Whether it fits is a reviewer&#x27;s call, kept as a DesignDecision about it, never as a flag on the direction. Its rank among the directions of a proposal is not a property either: a ranking is a judgment, kept as the DesignDecisions about each direction (shortlist, reject) with a statement. A design system built out of a chosen direction names it (fromDirection).</p>
   
 </section>
 <section id="DesignElement" class="term">
@@ -306,7 +306,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 <section id="DesignToken" class="term">
   <h3>Design Token <span class="layer" style="--h:#718096">entity</span> <span class="status">draft</span><span class="mod">xeo-design</span></h3>
   <code class="iri">xeo:DesignToken</code>
-  <p>One named design decision stored as a value, so design files and code share it: a colour, a spacing step, a font family, a duration, a shadow. Its name (core) is its path in the token file, such as color.brand.primary; its tokenType is one of the W3C Design Tokens Format&#x27;s types; its tokenValue is the value as written there. A token that refers to another (an alias, {color.blue.500} in that format) names it with aliasOf and need carry no value of its own. tokenTier says whether it is a primitive, a semantic or a component token. A token whose value changes by mode (light and dark, one brand and another; Figma calls these modes) is one token per mode, each with its tokenMode. Belongs to one DesignSystem.</p>
+  <p>One named design decision stored as a value, so design files and code share it: a colour, a spacing step, a font family, a duration, a shadow. Its name (core) is its path in the token file, such as color.brand.primary; its tokenType is one of the W3C Design Tokens Format&#x27;s types; its tokenValue is the value as written there. A token that refers to another (an alias, {color.blue.500} in that format) names it with aliasOf and need carry no value of its own. tokenTier says whether it is a primitive, a semantic or a component token. A token whose value changes by mode (light and dark, one brand and another; Figma calls these modes) is one token per mode, each with its tokenMode; where the value depends on more than one axis (dark and mobile), one token per combination, with one tokenMode per axis. Belongs to one DesignSystem.</p>
   
 </section>
 <section id="Diagnostic" class="term">
@@ -1825,7 +1825,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 <section id="variantOf" class="term">
   <h3>variant of <span class="layer" style="--h:#718096">entity</span> <span class="status">draft</span><span class="mod">xeo-design</span></h3>
   <code class="iri">xeo:variantOf</code>
-  <p>The component this one is a variant of: the primary button of a button, the compact card of a card. What makes it a variant (size, state, emphasis) is in its name for now. Figma&#x27;s variant within a component set: there each variant is a component inside the set, so the variant points at the DesignComponent that stands for the set. Penpot&#x27;s variants are the same shape. Adobe Spectrum uses the word variant for one option of a component (accent, primary), not for a component of its own.</p>
+  <p>The component this one is a variant of: the primary button of a button, the compact card of a card. What makes it a variant (size, state, emphasis) is its variantValue. Figma&#x27;s variant within a component set: there each variant is a component inside the set, so the variant points at the DesignComponent that stands for the set. Penpot&#x27;s variants are the same shape. Adobe Spectrum uses the word variant for one option of a component (accent, primary), not for a component of its own.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#DesignComponent">xeo:DesignComponent</a></dd></div><div class="row"><dt>range</dt><dd><a href="#DesignComponent">xeo:DesignComponent</a></dd></div></dl>
 </section>
 <section id="verdict" class="term">
@@ -1852,7 +1852,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>The Project a Spec belongs to, where the work is done under one: client work or internal work alike. A spec for work outside any Project has none.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Spec">xeo:Spec</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Project">xeo:Project</a></dd></div></dl>
 </section>
-<h2 id="datatype-properties">Datatype properties <span class="n">268</span></h2>
+<h2 id="datatype-properties">Datatype properties <span class="n">270</span></h2>
 <section id="absoluteChange" class="term">
   <h3>absolute change <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">xeo-decision</span></h3>
   <code class="iri">xeo:absoluteChange</code>
@@ -2405,6 +2405,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <p>The denominator behind a ratio reading, or the number of values behind a mean. Compared with the Metric&#x27;s minDenominator to decide whether the reading is reportable.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#MetricReading">xeo:MetricReading</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>grounded in</dt><dd>The API contract of the system named in the reading&#x27;s source</dd></div><div class="row"><dt>canonical store</dt><dd>bigquery</dd></div></dl>
 </section>
+<section id="designRecordRef" class="term">
+  <h3>design record reference <span class="layer" style="--h:#718096">entity</span> <span class="status">draft</span><span class="mod">xeo-design</span></h3>
+  <code class="iri">xeo:designRecordRef</code>
+  <p>Identity key of one record in the design tool that holds it, written tool:file:objectType:id (figma:&lt;file key&gt;:variable:&lt;variable key&gt;, canva:&lt;design id&gt;:page:&lt;page id&gt;). Two refs are the same record when all four parts match. The join back to the tool for a thing that has no address of its own: a variable or a token has no URL, so artifactUri cannot hold it. The file part is whatever the tool scopes the id to: a Figma file, a Canva design, a Creative Cloud library; a record the tool scopes to the account alone (a Canva asset) leaves that part empty and keeps its colon. One per tool the record is kept in, so a component kept in a design file and in a code library may carry two. Modelled on crmRecordRef (sales): the graph holds the pointer and never mirrors the tool&#x27;s own schema. Which of a tool&#x27;s identifiers is stable enough to use is said in its mapping file. Domain left open across the terms listed.</p>
+  <dl><div class="row"><dt>expected on</dt><dd><a href="#DesignAsset">xeo:DesignAsset</a> · <a href="#DesignComponent">xeo:DesignComponent</a> · <a href="#DesignConcept">xeo:DesignConcept</a> · <a href="#DesignPattern">xeo:DesignPattern</a> · <a href="#DesignSystem">xeo:DesignSystem</a> · <a href="#DesignToken">xeo:DesignToken</a> · <a href="#PageTemplate">xeo:PageTemplate</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
 <section id="designSystemVersion" class="term">
   <h3>design system version <span class="layer" style="--h:#718096">entity</span> <span class="status">draft</span><span class="mod">xeo-design</span></h3>
   <code class="iri">xeo:designSystemVersion</code>
@@ -2414,7 +2420,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 <section id="designVerdict" class="term">
   <h3>design verdict <span class="layer" style="--h:#DD6B20">interpretation</span> <span class="status">draft</span><span class="mod">xeo-design</span></h3>
   <code class="iri">xeo:designVerdict</code>
-  <p>The call a DesignDecision makes: keep, replace or remove (for an element of the existing site), approve, shortlist, revise or reject (for a direction or a concept), or defer (for any of them). revise is the changes-requested call design tools name: Figma&#x27;s Request changes in a branch review, Canva&#x27;s Needs changes in a design approval. Codes in xeos:designVerdict. Exactly one per decision.</p>
+  <p>The call a DesignDecision makes: keep, replace or remove (for an element of the existing site), approve, shortlist, revise or reject (for a direction or a concept), or defer (for any of them). revise is the changes-requested call design tools name: Figma&#x27;s Request changes in a branch review, Canva&#x27;s Needs changes in a design approval. A handoff state (ready for development, completed) is not a verdict: it is a state of the build work, which belongs with the WorkItem (work), not a call on fit. Codes in xeos:designVerdict. Exactly one per decision.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#DesignDecision">xeo:DesignDecision</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
 <section id="device" class="term">
@@ -2444,7 +2450,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 <section id="elementKind" class="term">
   <h3>element kind <span class="layer" style="--h:#718096">entity</span> <span class="status">draft</span><span class="mod">xeo-design</span></h3>
   <code class="iri">xeo:elementKind</code>
-  <p>What kind of part of a design a DesignElement is: logo, color, typography, imagery, iconography, illustration, layout, navigation, component, pattern or motion. Codes in xeos:elementKind. One per element; something that is two kinds is catalogued as two elements.</p>
+  <p>What kind of part of a design a DesignElement is: logo, color, typography, imagery, iconography, illustration, layout, navigation, component, pattern or motion. Codes in xeos:elementKind. One per element; something that is two kinds is catalogued as two elements. Copy tone (a brand&#x27;s voice) is not a kind: the element review is visual, and voice belongs with the Brand (visibility).</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#DesignElement">xeo:DesignElement</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
 <section id="eligibleTouchType" class="term">
@@ -3302,7 +3308,7 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
 <section id="tokenMode" class="term">
   <h3>token mode <span class="layer" style="--h:#718096">entity</span> <span class="status">draft</span><span class="mod">xeo-design</span></h3>
   <code class="iri">xeo:tokenMode</code>
-  <p>The mode a DesignToken&#x27;s value holds in, where the system has more than one: light or dark, one brand or another, compact or comfortable. A token with a value per mode is one DesignToken per mode, each with the same name and its tokenMode. The Design Tokens Format&#x27;s Resolver Module calls a mode a context of a modifier (the dark context of a theme modifier); Figma, a mode of a variable collection. Free text, named as the system names its modes. Absent where the system has one mode.</p>
+  <p>The mode a DesignToken&#x27;s value holds in, where the system has more than one: light or dark, one brand or another, compact or comfortable. A token with a value per mode is one DesignToken per mode, each with the same name and its tokenMode. Where the system has one axis of modes, the mode as the system names it (dark). Where a value depends on more than one axis (dark and mobile), one tokenMode per axis, each written modifier:context (theme:dark, scale:mobile), and one DesignToken per combination that has a value of its own; a token carrying more than one tokenMode writes every one that way. The Design Tokens Format&#x27;s Resolver Module calls a mode a context of a modifier (the dark context of a theme modifier), and the contexts of its modifiers multiply; Adobe Spectrum keeps mode sets for colour scheme, scale and contrast; Figma, a mode of a variable collection, one collection per axis. Free text, named as the system names its modifiers and modes. Absent where the system has one mode.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#DesignToken">xeo:DesignToken</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
 <section id="tokenTier" class="term">
@@ -3436,6 +3442,12 @@ SHACL <a href="shapes/xeo-shapes.ttl">shapes</a>.</div>
   <code class="iri">xeo:value</code>
   <p>The number the Metric took over the reading&#x27;s window and scope, in the Metric&#x27;s unit: a ratio as a 0 to 1 quotient, a rank 1-based, a currency amount in the reading&#x27;s currencyCode. Exactly one per reading. A rate the source computed itself goes here as returned; its parts, where the source gives them, go in numeratorValue and denominatorValue.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#MetricReading">xeo:MetricReading</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>grounded in</dt><dd>The API contract of the system named in the reading&#x27;s source</dd></div><div class="row"><dt>canonical store</dt><dd>bigquery</dd></div></dl>
+</section>
+<section id="variantValue" class="term">
+  <h3>variant value <span class="layer" style="--h:#718096">entity</span> <span class="status">draft</span><span class="mod">xeo-design</span></h3>
+  <code class="iri">xeo:variantValue</code>
+  <p>One property, and the value of it, that sets a variant apart from the component it varies, written property=value: size=small, state=hover, emphasis=quiet. One per axis, so a small quiet button carries two. A state (hover, pressed, disabled) is written the same way, as Figma and Penpot model states. The property names are the design system&#x27;s own and are not a fixed list, because systems differ in their axes. Figma&#x27;s variant properties in a component set, Penpot&#x27;s variant properties, Adobe Spectrum&#x27;s options and states, and the args of a Storybook story. Sits on a component that has a variantOf; absent on the component that stands for the whole set.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#DesignComponent">xeo:DesignComponent</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
 <section id="webSearchEnabled" class="term">
   <h3>web search enabled <span class="layer" style="--h:#319795">episode</span><span class="mod">xeo-visibility</span></h3>

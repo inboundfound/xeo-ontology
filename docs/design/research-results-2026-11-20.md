@@ -329,6 +329,27 @@ These are only the questions the sources cannot settle. Each is written as a dra
 | Q8 | Keep the new verdict code `revise`, made in this pass? | A. Keep `revise`. B. Rename it `changesRequested`. C. Remove it. | **A.** It is a verb like the other codes, and the tools' phrasings are its altLabels. |
 | Q9 | Accessibility check results: add an observation class? | A. Add a draft class in 0.9. B. Wait for the design-review PRD. C. Not in XEO. | **A.** Figma, Canva and Claude all run the check (P6), and design review will want the result. |
 
+### What was decided (2026-11-23)
+
+The maintainer took all nine recommendations as given, inside 0.8.0. What that did to the
+module:
+
+| # | Taken | In 0.8.0 |
+|---|---|---|
+| Q1 | B | `tokenMode` may repeat, one value per axis, written `modifier:context`; one token per combination. New shape `DesignTokenModeShape` (P2) |
+| Q2 | B | New draft term `variantValue`, `property=value`, repeated (P1) |
+| Q3 | B | New draft term `designRecordRef`, `tool:file:objectType:id` (P3) |
+| Q4 | B | No `voice` code. `elementKind` says copy tone belongs with the Brand |
+| Q5 | B | No rights terms. `DesignAsset` says they wait for a project, then follow schema.org |
+| Q6 | B | No rank term. `DesignDirection` says a rank is kept as decisions with a statement |
+| Q7 | B | No handoff codes. `designVerdict` says a handoff state belongs with the build work (P11) |
+| Q8 | A | `revise` stays |
+| Q9 | A | Nothing in 0.8.0: the accessibility check class is planned as a draft for 0.9 (P6) |
+
+Proposals P4, P5, P7, P8 and P12 were not among the nine and are not made. The crosswalk in §2
+and the notes in the mapping drafts in §5 are as written on 2026-11-20, before these terms
+existed, so they still call `variantValue` and `designRecordRef` proposed.
+
 ## 7. Sources (all read 2026-11-20)
 
 **W3C Design Tokens Community Group**

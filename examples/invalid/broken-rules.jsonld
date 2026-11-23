@@ -90,6 +90,7 @@
 
     { "id": "ex:bad-token", "type": "DesignToken", "name": "color.brand", "tokenType": "colour", "tokenValue": "#123456", "expect": "DesignTokenShape" },
     { "id": "ex:bad-token-value", "type": "DesignToken", "name": "space.8", "tokenType": "dimension", "expect": "DesignTokenHasValue" },
+    { "id": "ex:bad-token-modes", "type": "DesignToken", "name": "color.surface", "tokenType": "color", "tokenValue": "#101010", "tokenMode": ["dark", "mobile"], "expect": "DesignTokenModeShape" },
     { "id": "ex:bad-element", "type": "DesignElement", "name": "Footer", "elementKind": "navigation", "expect": "DesignElementShape" },
     { "id": "ex:bad-concept", "type": "DesignConcept", "name": "A hero", "artifactUri": "https://example.com/concepts/hero.png", "expect": "DesignConceptShape" },
     { "id": "ex:bad-decision", "type": "DesignDecision", "designVerdict": "maybe", "expect": "DesignDecisionShape" }

@@ -423,7 +423,7 @@ Generated from XEO 0.8.0. Do not edit between the markers; run `tools/gen_profil
 | `VISIBILITY_FOR` | `xeo:visibilityFor` | `Prompt` | `Brand` | observation | visibility |
 | `WITHIN_PROJECT` (draft) | `xeo:withinProject` | `Spec` | `Project` | entity | work |
 
-### Property keys (290)
+### Property keys (292)
 
 | Property key | Datatype | Values from | Layer | Module |
 |---|---|---|---|---|
@@ -541,6 +541,7 @@ Generated from XEO 0.8.0. Do not edit between the markers; run `tools/gen_profil
 | `degree` | `xsd:integer` |  | derivation | analysis |
 | `deletedAt` | `xsd:dateTime` |  | entity | work |
 | `denominatorValue` | `xsd:decimal` |  | observation | core |
+| `designRecordRef` (draft) | `xsd:string` |  | entity | design |
 | `designSystemVersion` (draft) | `xsd:string` |  | entity | design |
 | `designVerdict` (draft) | `xsd:string` | `designVerdict` | interpretation | design |
 | `device` | `xsd:string` | `device` | episode | core |
@@ -713,6 +714,7 @@ Generated from XEO 0.8.0. Do not edit between the markers; run `tools/gen_profil
 | `utmSource` | `xsd:string` |  | observation | attribution |
 | `utmTerm` | `xsd:string` |  | observation | attribution |
 | `value` | `xsd:decimal` |  | observation | core |
+| `variantValue` (draft) | `xsd:string` |  | entity | design |
 | `webSearchEnabled` | `xsd:boolean` |  | episode | visibility |
 | `websiteId` | `xsd:string` |  | entity | core |
 | `weightedAmount` (extension) | `xsd:decimal` |  | derivation | sales |

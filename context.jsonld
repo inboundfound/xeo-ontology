@@ -591,6 +591,8 @@
     "tokenTier": "xeo:tokenTier",
     "tokenMode": "xeo:tokenMode",
     "assetKind": "xeo:assetKind",
+    "variantValue": "xeo:variantValue",
+    "designRecordRef": "xeo:designRecordRef",
     "elementKind": "xeo:elementKind",
     "designVerdict": "xeo:designVerdict"
   }

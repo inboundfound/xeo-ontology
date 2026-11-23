@@ -7,7 +7,7 @@ and corrects prose; a domain or range is not narrowed.
 
 Versions before 0.6.0 are reconstructed from the git history.
 
-## 0.8.0 — three draft modules, released together: experiments, company knowledge, design (release candidate, not tagged)
+## 0.8.0 — three draft modules, released together: experiments, company knowledge, design (2026-11-23)
 
 Everything drafted or queued since 0.7.2, released at once rather than one module at a time:
 the modules inform each other, and a release that holds them all keeps them in step. Three new
@@ -16,14 +16,14 @@ tried, and free to change or go without a deprecation step. One released propert
 Nothing released is renamed, removed, retyped or narrowed, so data that was valid in 0.7.2 is
 valid in 0.8.0. No tombstone is added. Every module file carries 0.8.0.
 
-**Why 0.8 and not 0.7.3.** Three modules and 93 terms are a new layer of the ontology, not a
+**Why 0.8 and not 0.7.3.** Three modules and 95 terms are a new layer of the ontology, not a
 correction, even though everything added is draft. **Nobody outside uses XEO before 1.0, and
 released terms may still change.**
 
 **In numbers:** 14 module files (three new: `xeo-experiments.ttl`, `xeo-knowledge.ttl`,
-`xeo-design.ttl`), 102 classes, 192 object properties, 268 datatype properties; 85 reference
-schemes and 485 concepts; 174 draft terms, 36 of them classes, every class loaded by an example.
-The release is not tagged and not on GitHub's releases page until the maintainer says so.
+`xeo-design.ttl`), 102 classes, 192 object properties, 270 datatype properties; 85 reference
+schemes and 485 concepts; 176 draft terms, 36 of them classes, every class loaded by an example.
+Tagged `v0.8.0`, the first tagged release, and the first on GitHub's releases page.
 
 ### `xeo-experiments.ttl`
 
@@ -63,11 +63,11 @@ schema.org's `Message`, `Conversation` and `DigitalDocument`, and no class is mi
 ### `xeo-design.ttl`
 
 Design and web development: what a site is designed and built with, and how a new design is
-proposed, shown and decided. 38 terms. The design system: `DesignSystem`, `DesignToken`,
+proposed, shown and decided. 40 terms. The design system: `DesignSystem`, `DesignToken`,
 `DesignComponent`, `DesignPattern`, `PageTemplate`, `DesignAsset`; `inDesignSystem`,
 `usesDesignSystem` (from a `Website`), `aliasOf`, `usesToken`, `composedOf`, `variantOf`,
 `usesAsset`, `usesTemplate` (from a `URL`), `designSystemVersion`, `tokenType`, `tokenValue`,
-`tokenTier`, `tokenMode`, `assetKind`. The review: `DesignDirection`, `DesignElement`,
+`tokenTier`, `tokenMode`, `assetKind`, `variantValue`, `designRecordRef`. The review: `DesignDirection`, `DesignElement`,
 `DesignConcept`, `DesignDecision`; `directionFor`, `proposedIn` (a `Deliverable`), `elementOf`,
 `seenOn`, `realizedAs`, `depicts`, `underDirection`, `replacesElement`, `fromDirection`,
 `decidesOn`, `chosenConcept`, `decidedBy`, `elementKind`, `designVerdict`.
@@ -90,8 +90,27 @@ proposed, shown and decided. 38 terms. The design system: `DesignSystem`, `Desig
   changes, Canva's Needs changes); `tokenValue` says the 2025.10 format writes a colour, a
   dimension and a duration as JSON objects; `tokenTier` names each source's tier names (and its
   codes carry them as `skos:altLabel`); `aliasOf` covers a `$ref` to a whole token; `tokenType`
-  is the type the format resolves to; `variantOf` says how Figma's component sets map. Larger
-  changes are listed in the report as proposals, not made.
+  is the type the format resolves to; `variantOf` says how Figma's component sets map.
+- **The nine questions that check left open, settled as the report recommends** (its section 6;
+  2026-11-23). Three change the module:
+  - **A mode on more than one axis** (dark and mobile): `tokenMode` may repeat, one value per
+    axis, each written `modifier:context` (`theme:dark`, `scale:mobile`), with one token per
+    combination. As the Resolver Module's modifiers, Spectrum's mode sets and Figma's
+    collections do. No new term; one new shape.
+  - **What makes a variant** is data: new `variantValue`, written `property=value`
+    (`size=small`, `state=hover`), one per axis.
+  - **A tool's own id** for a record: new `designRecordRef`, written `tool:file:objectType:id`,
+    on the model of `crmRecordRef`. A variable or a token has no URL, so `artifactUri` could
+    not hold it.
+
+  The verdict `revise` stays. Four are settled as not terms here, and the descriptions say so:
+  a site's copy tone (voice) is the brand's, not an `elementKind`; a direction's rank is kept as
+  `DesignDecision`s (shortlist, reject) with a statement; a handoff state (ready for
+  development) belongs with the build work, a `WorkItem`, not in `designVerdict`; the rights to
+  an asset wait until a project needs them, and will then follow schema.org. Accessibility check
+  results are planned as a draft observation class for 0.9. The report's other proposals
+  (a token's name in code, deprecation, breakpoints, a decision on a whole deliverable) are
+  not made.
 - `docs/design/research-prompt.md`: the prompt for checking the module against Figma, Claude's
   design features, Canva, Adobe and the token format.
 
@@ -106,8 +125,9 @@ proposed, shown and decided. 38 terms. The design system: `DesignSystem`, `Desig
 
 ### Also
 
-- **Shapes (design):** five, each with a failing case: a token has one type and at most one
-  alias; a token has a value or an alias; an element belongs to one website; a concept names
+- **Shapes (design):** six, each with a failing case: a token has one type and at most one
+  alias; a token has a value or an alias; a token with more than one mode writes each as
+  `modifier:context`; an element belongs to one website; a concept names
   what it depicts, under at most one direction; a decision names one thing and one verdict.
 - **Alignment (design):** `DesignAsset` closeMatch `schema:MediaObject`, `DesignConcept`
   closeMatch `schema:CreativeWork`, `DesignDecision` closeMatch `schema:Review`, `usesAsset`
